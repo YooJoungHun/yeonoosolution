@@ -1,0 +1,24 @@
+#Server Port
+server: 
+  port: 8889
+
+#Oracle DB Setting
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@localhost:1521/xe
+    username: yeonoosolution
+    password: yeonoosolution
+    
+  mvc:
+    hiddenmethod: 
+      filter: 
+        enabled: true
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+        
+#Mybatis     
+mybatis :
+  config-location: classpath:configuration.xml
+  mapper-locations: classpath:mappers/**/*.xml
