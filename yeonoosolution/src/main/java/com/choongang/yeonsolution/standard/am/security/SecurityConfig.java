@@ -1,4 +1,4 @@
-package com.choongang.yeonsolution.standard.am.config;
+package com.choongang.yeonsolution.standard.am.security;
 
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -26,20 +26,30 @@ public class SecurityConfig{
     }
 	
 	/**
-	 * filterChain 설정
+	 * SecurityFilterChain 설정
 	 * 로그인페이지 설정 : /v1/standard/login → standard/login.jsp
 	 * 로그인페이지 인증제외 설정
 	 */
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
 		
+					//인증 허용 범위 설정
 		httpSecurity.authorizeHttpRequests()
+					.antMatchers("/v1/standard/login").permitAll() //로그인페이지 인증 제외
 					.anyRequest()
 					.authenticated()
 					.and()
+					//로그인 설정
 					.formLogin()
-					.loginPage("/v1/standard/login")
-					.permitAll();
+					.usernameParameter("memberId")
+					.passwordParameter("password")
+					.loginPage("/v1/standard/login") //custom 로그인 페이지 설정, GET 로그인 요청
+					.loginProcessingUrl("/v1/standard/auth") //POST 로그인 요청
+					.defaultSuccessUrl("/v1/") //로그인 성공시 url
+					.and()
+					//로그아웃설정
+					.logout()
+					.logoutSuccessUrl("/v1/");
 		
 		return httpSecurity.build();
 	}

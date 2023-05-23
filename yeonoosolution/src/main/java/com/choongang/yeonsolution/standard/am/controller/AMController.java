@@ -21,5 +21,6 @@ public class AMController {
 	public String loginPage() {
 		return "standard/login";
 	}
+
 	
 }//end class
