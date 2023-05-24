@@ -62,7 +62,7 @@
 		<button id="reset-btn">초기화</button>
 	</div>
 	
-	ipi
+	
 	<div>제품 등록<br>
 		<span id="item-code">제품 코드</span><input>
 		<span id="item-name">품명</span><input>
