@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -33,9 +35,14 @@ public class SecurityConfig{
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
 		
+					
+		httpSecurity.httpBasic().disable()
+					.csrf().disable()
+					.cors()
+					.and()
 					//인증 허용 범위 설정
-		httpSecurity.authorizeHttpRequests()
-					.antMatchers("/v1/standard/login").permitAll() //로그인페이지 인증 제외
+					.authorizeHttpRequests()
+					.antMatchers("/v1/standard/login", "/v1/standard/loginTest").permitAll() //로그인페이지 인증 제외
 					.anyRequest()
 					.authenticated()
 					.and()
@@ -44,8 +51,8 @@ public class SecurityConfig{
 					.usernameParameter("memberId")
 					.passwordParameter("password")
 					.loginPage("/v1/standard/login") //custom 로그인 페이지 설정, GET 로그인 요청
-					.loginProcessingUrl("/v1/standard/auth") //POST 로그인 요청
-					.defaultSuccessUrl("/v1/") //로그인 성공시 url
+					.loginProcessingUrl("/v1/standard/login") //POST 로그인 요청
+					.defaultSuccessUrl("/v1/standard/loginTest") //로그인 성공시 url
 					.and()
 					//로그아웃설정
 					.logout()
@@ -53,5 +60,12 @@ public class SecurityConfig{
 		
 		return httpSecurity.build();
 	}
-
+	
+	/**
+	 * PasswordEncoder Bean 등록
+	 */
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 }//end class

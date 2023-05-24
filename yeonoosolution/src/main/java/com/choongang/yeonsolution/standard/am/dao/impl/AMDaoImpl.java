@@ -21,10 +21,10 @@ public class AMDaoImpl implements AMDao{
 	}
 
 	@Override
-	public AMDto selectUserByMemberId(String memberId) {
-		log.info("[selectUserByUserId] memberId : {}", memberId);
-		AMDto amDto = sqlSession.selectOne("selectUserByUserId", memberId);
-		log.info("[selectUserByUserId] amDto : {}", amDto);
+	public AMDto selectMemberByMemberId(String memberId) {
+		log.info("[selectMemberByMemberId] memberId : {}", memberId);
+		AMDto amDto = sqlSession.selectOne("selectMemberByMemberId", memberId);
+		log.info("[selectMemberByMemberId] amDto : {}", amDto);
 		return amDto;
 	}
 
