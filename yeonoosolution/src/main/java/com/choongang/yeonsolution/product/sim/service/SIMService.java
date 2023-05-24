@@ -1,6 +1,6 @@
 package com.choongang.yeonsolution.product.sim.service;
 
-public class Test {
+public interface SIMService {
 	/*
 	 * Test File 
 	 */

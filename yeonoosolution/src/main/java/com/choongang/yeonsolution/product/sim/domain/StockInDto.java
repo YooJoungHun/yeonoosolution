@@ -1,6 +1,9 @@
 package com.choongang.yeonsolution.product.sim.domain;
 
-public class Test {
+import lombok.Data;
+
+@Data
+public class StockInDto {
 	/*
 	 * Test File 
 	 */

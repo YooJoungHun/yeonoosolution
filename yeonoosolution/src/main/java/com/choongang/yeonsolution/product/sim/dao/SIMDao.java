@@ -1,6 +1,6 @@
 package com.choongang.yeonsolution.product.sim.dao;
 
-public class Test {
+public interface SIMDao {
 	/*
 	 * Test File 
 	 */
