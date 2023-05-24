@@ -3,8 +3,7 @@ package com.choongang.yeonsolution.standard.am.domain;
 import lombok.Data;
 
 @Data
-public class AMDto {
-	//member
+public class MemberDto {
 	public String memberUid;
 	public String deptCode;
 	public String jobCode;

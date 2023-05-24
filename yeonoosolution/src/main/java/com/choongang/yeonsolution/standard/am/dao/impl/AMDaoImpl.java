@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.choongang.yeonsolution.standard.am.dao.AMDao;
-import com.choongang.yeonsolution.standard.am.domain.AMDto;
+import com.choongang.yeonsolution.standard.am.domain.MemberDto;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,11 +21,19 @@ public class AMDaoImpl implements AMDao{
 	}
 
 	@Override
-	public AMDto selectMemberByMemberId(String memberId) {
+	public MemberDto selectMemberByMemberId(String memberId) {
 		log.info("[selectMemberByMemberId] memberId : {}", memberId);
-		AMDto amDto = sqlSession.selectOne("selectMemberByMemberId", memberId);
-		log.info("[selectMemberByMemberId] amDto : {}", amDto);
-		return amDto;
+		MemberDto memberDto = sqlSession.selectOne("selectMemberByMemberId", memberId);
+		log.info("[selectMemberByMemberId] amDto : {}", memberDto);
+		return memberDto;
+	}
+
+	@Override
+	public int insertMember(MemberDto memberDto) {
+		log.info("[insertMember] memberDto : {}", memberDto);
+		int result = sqlSession.insert("insertMember", memberDto);
+		log.info("[insertMember] result : {}", result);
+		return result;
 	}
 
 }

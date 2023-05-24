@@ -1,13 +1,12 @@
 package com.choongang.yeonsolution.standard.am.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.choongang.yeonsolution.standard.am.domain.AMDto;
+import com.choongang.yeonsolution.standard.am.domain.MemberDto;
 import com.choongang.yeonsolution.standard.am.service.AMService;
 
 /**
@@ -36,24 +35,37 @@ public class AMController {
 	}
 
 	/**
-	 * 로그인 테스트 페이지 호출
-	 * @return 로그인 테스트 페이지 url
+	 * 임시 회원가입 페이지 호출
+	 * @return 임시 회원가입 페이지 url
 	 */
-	@GetMapping("/loginTest")
-	public String loginTestPage() {
-		return "standard/loginTest";
+	@GetMapping("/sign-up")
+	public String signUpPage() {
+		return "standard/temp-sign-up";
 	}
 	
 	/**
-	 * 로그인
-	 * @return jwt
+	 * 로그인 테스트 페이지 호출
+	 * @return 로그인 테스트 페이지 url
 	 */
-	@PostMapping("/login")
-	public ResponseEntity<Object> login(AMDto amDto){
+	@GetMapping("/login-test")
+	public String loginTestPage() {
+		return "standard/login-test";
+	}
+	
+	/**
+	 * 회원가입
+	 * @return 로그인 페이지
+	 */
+	@PostMapping("/member")
+	public String memberAdd(MemberDto memberDto){
 		
-		String token = amService.login(amDto);
+		int result = amService.addMember(memberDto);
 		
-		return ResponseEntity.ok(token); 
+		if (result > 0) {
+			return "redirect:/login";
+		}
+		
+		throw new IllegalArgumentException();
 	}
 	
 }//end class

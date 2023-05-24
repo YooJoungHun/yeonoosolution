@@ -3,6 +3,7 @@ package com.choongang.yeonsolution.standard.am.security;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -42,17 +43,18 @@ public class SecurityConfig{
 					.and()
 					//인증 허용 범위 설정
 					.authorizeHttpRequests()
-					.antMatchers("/v1/standard/login", "/v1/standard/loginTest").permitAll() //로그인페이지 인증 제외
+					.antMatchers("/v1/standard/login", "/v1/standard/sign-up").permitAll() //로그인 페이지, 회원가입 페이지 인증 제외
+					.antMatchers(HttpMethod.POST, "/v1/standard/member").permitAll() //회원가입 인증 제외
 					.anyRequest()
 					.authenticated()
 					.and()
 					//로그인 설정
 					.formLogin()
-					.usernameParameter("memberId")
-					.passwordParameter("password")
 					.loginPage("/v1/standard/login") //custom 로그인 페이지 설정, GET 로그인 요청
 					.loginProcessingUrl("/v1/standard/login") //POST 로그인 요청
-					.defaultSuccessUrl("/v1/standard/loginTest") //로그인 성공시 url
+					.usernameParameter("memberId")
+					.passwordParameter("password")
+					.defaultSuccessUrl("/v1/standard/login-test") //로그인 성공시 url
 					.and()
 					//로그아웃설정
 					.logout()
