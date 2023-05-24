@@ -11,7 +11,7 @@
 	span	 {
 		border: 1px solid #E8EBF0;
 		border-radius: 5px;
-		padding: 5px 30px;
+		padding: 5px 10px;
 		font-weight: bold;
 		text-align: center;
 	}
@@ -29,14 +29,21 @@
 		height: 1.9rem;
 	}
 	
+	.side-bar {
+		border: 1px solid #ddd;
+		padding: 20px;
+		float: left;
+		height: 100vh;
+	}
+	
 </style>
 <title>Insert title here</title>
 </head>
 <body>
 	<div class="side-bar">
-		<a href="#">품목별 재고 현황</a><p>
-		<a href="#">BOM별 재고 현황</a><p>
-		<a href="#">창고별 재고 현황</a><p>
+		<a href="/product/is/item">품목별 재고 현황</a><p>
+		<a href="/product/is/bom">BOM별 재고 현황</a><p>
+		<a href="/product/is/wh">창고별 재고 현황</a><p>
 	</div>
 	
 	<div class="content">
@@ -69,10 +76,17 @@
 			</tr>
 		</table>
 	</div>
+	<br>
 	
 	<div>
+		<h2>창고별 재고 현황</h2>
 		<table>
-			<tr></tr>
+			<tr>
+				<th>창고 코드</th>
+				<th>제품 코드</th>
+				<th>양품 수량</th>
+				<th>불량 수량</th>
+			</tr>
 		</table>
 	</div>
 	

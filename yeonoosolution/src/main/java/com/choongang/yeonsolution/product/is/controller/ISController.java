@@ -14,10 +14,22 @@ import lombok.extern.slf4j.Slf4j;
 public class ISController {
 	private final ISService isService;
 	
-	@GetMapping(value = "/product/is")
-	public String isList() {
+	@GetMapping(value = "/product/is/item")
+	public String isItemList() {
 		
-		return "/product/inventory-status";
+		return "/product/inventory-status-item";
+	}
+	
+	@GetMapping(value = "/product/is/bom")
+	public String isBomList() {
+		
+		return "/product/inventory-status-bom";
+	}
+	
+	@GetMapping(value = "/product/is/wh")
+	public String isWhList() {
+		
+		return "/product/inventory-status-wh";
 	}
 	
 }
