@@ -1,0 +1,63 @@
+@charset "UTF-8";
+
+section {
+	margin: 60px;
+	font-size: 13px;
+}
+section > div:first-child {
+	margin: 20px 0px;
+}
+.stock-in-list {
+	display: flex;
+	flex: 1;
+}
+.content-btn  button{
+	border-radius: 10px;
+	border: none;
+	padding: 8px 15px;
+	margin-right: 10px;
+	background: transparent;
+	border: 1px solid rgba(0,0,0, 0.1);
+}
+.content-btn  button:hover {
+	background-color: rgba(0,0,0, 0.1);
+}
+.stock-in-item {
+	background-color: rgba(0,0,0, 0.05);
+	display: flex;
+	padding: 20px 30px;
+	height: auto;
+}
+
+.item-content input, select {
+	border-radius: 10px;
+	border: none;
+	width: 130px;
+	height: 30px;
+	margin-left: 5px;
+}
+.stock-in-detail-list {
+	display: flex;
+	flex: 1;
+}
+.stock-in-list .item-title {
+	background-color: rgba(0,0,0, 0.1);
+	border-radius: 10px;
+	width: 100px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.stock-in-detail-list .item-title {
+	background-color: rgba(0,0,0, 0.05);
+	width: 100%;
+}
+.table-rownum {
+	width: 30px;
+}
+.table-content {
+	flex: 1;
+}
+.table-content table {
+	width: 100%;
+}

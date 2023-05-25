@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.choongang.yeonsolution.product.sim.domain.StInDtoMapper">
+
+<!-- 	<resultMap type="StInDto" id="stInDtoMap">
+		<id 	property="inCode" 				column="in_code"/>
+		<result property="orderCode" 			column="order_code"/>
+		<result property="companyCode" 			column="company_code"/>
+		<result property="customerCode" 		column="customer_code"/>
+		<result property="beginEndInventory" 	column="begin_end_inventory"/>
+		<result property="inDate" 				column="in_date"/>
+		<result property="regDate" 				column="reg_date"/>
+		<result property="regUser" 				column="reg_user"/>
+		<result property="updateDate" 			column="update_date"/>
+		<result property="updateUser" 			column="update_user"/>
+		<result property="inType" 				column="in_type"/>
+		<result property="deleteStatus" 		column="delete_status"/>
+		<result property="memo" 				column="memo"/>
+	</resultMap> -->
+	
+	<select id="test1" resultType="StInDto">
+		select * from st_in
+	</select>
+</mapper>
