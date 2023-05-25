@@ -6,5 +6,7 @@
     	<setting name="mapUnderscoreToCamelCase" value="true"/>
   	</settings>
   	
-  	
+  	<typeAliases>
+  		<typeAlias type="com.choongang.yeonsolution.product.wo.domain.Wo" alias="Wo"/>
+  	</typeAliases>
 </configuration>
