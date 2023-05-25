@@ -6,5 +6,8 @@
     	<setting name="mapUnderscoreToCamelCase" value="true"/>
   	</settings>
   	
+  	<typeAliases>
+  		<typeAlias alias="ItemDto" type="com.choongang.yeonsolution.standard.imi.domain.ItemDto"/>
+  	</typeAliases>
   	
 </configuration>
