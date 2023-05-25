@@ -29,6 +29,7 @@ public class AMServiceImpl implements AMService{
 
 	@Override
 	public int addMember(MemberDto memberDto) {
+		//비밀번호 암호화
 		memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
 		return amDao.insertMember(memberDto);
 	}

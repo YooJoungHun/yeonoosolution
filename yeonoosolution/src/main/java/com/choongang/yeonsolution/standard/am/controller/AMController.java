@@ -62,7 +62,7 @@ public class AMController {
 		int result = amService.addMember(memberDto);
 		
 		if (result > 0) {
-			return "redirect:/login";
+			return "redirect:/v1/standard/login";
 		}
 		
 		throw new IllegalArgumentException();

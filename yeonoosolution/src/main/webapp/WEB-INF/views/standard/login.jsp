@@ -64,7 +64,7 @@
 <body class="text-center">
 	<main class="form-signin">
 		<form action="/v1/standard/login" method="POST">
-			<img class="mb-4" src="${pageContext.request.contextPath}/images/img.jpg" alt="" width="500" height="500">
+			<img class="mb-4" src="${pageContext.request.contextPath}/images/logo.png" alt="" width="120" height="60">
 			<h1 class="h3 mb-3 fw-normal">로그인</h1>
 
 			<div class="form-floating">
