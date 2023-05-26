@@ -7,4 +7,11 @@
   	</settings>
   	
   	
+  	<typeAliases>
+  		<!-- 김영광 -->
+  		<typeAlias alias="OrdersDto" type="com.choongang.yeonsolution.sales.om.domain.OrdersDto"/>
+  		<typeAlias alias="OrdersDetailDto" type="com.choongang.yeonsolution.sales.om.domain.OrdersDetailDto"/>
+  		
+  	</typeAliases>
+  	
 </configuration>

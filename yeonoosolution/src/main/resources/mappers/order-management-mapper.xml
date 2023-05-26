@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="order-management-mapper">
+
+	<select id="selectPlaceOrderListByCompanyCode" resultType="OrdersDto">
+		
+		SELECT   
+		        o.order_status,
+		        o.order_code,
+		        o.customer_code,
+		        o.receive_order_type,
+		        c.company_name,
+		        o.order_date,
+		        o.order_empid,
+		        o.delivery_plan,
+		        o.due_date,
+		        o.reg_date,
+		        o.reg_user,
+		        o.update_date,
+		        o.update_user
+        
+		FROM    orders o
+		INNER JOIN  company c 
+		ON 		o.customer_code = c.company_code
+		WHERE	receive_or_place = '수주'
+		ORDER BY	o.order_code
+		
+	</select>
+	
+	<update id="updateStatusToConfirmByorderCode" parameterType="String">
+		UPDATE	orders
+		SET		order_status = '확정'
+		WHERE	order_code = #{orderCode}
+	</update>
+	
+	<update id="updateStatusToCancelByorderCode" parameterType="String">
+		UPDATE	orders
+		SET		order_status = '저장'
+		WHERE	order_code = #{orderCode}
+	</update>
+	
+	<update id="updateOrderTypeByorderCode" parameterType="Map">
+		UPDATE	orders
+		SET		receive_order_type = #{ordersDto.receiveOrderType}
+		WHERE	order_code = #{orderCode}
+	</update>
+	
+	
+	<insert id="insertReceiveOrder" parameterType="ordersDto">
+		INESRT INTO	orders(
+			order_code,
+			company_code,
+			customer_code,
+			receive_or_place,
+			receive_order_type,
+			order_date,
+			order_empid,
+			delivery_plan,
+			order_status,
+			due_date,
+			memo,
+			reg_date,
+			reg_user,
+			update_date,
+			update_user
+		
+		)
+		VALUES(
+		
+		
+		
+		)
+	
+	</insert>
+	
+	
+	
+	
+	
+	
+	<!-- detail -->
+	<select id="selectPlaceOrderDetailListByCompanyCode" parameterType="String" resultType="OrdersDetailDto">
+		
+		SELECT   
+		        od.item_code,
+		        i.item_name,
+		        od.quantity,
+		        od.price,
+		        od.amount,
+		        od.memo,
+		        od.item_stock_unit,
+		        od.end_yn
+        
+		FROM    orders_detail od
+		INNER JOIN  item i 
+		ON 		od.item_code = i.item_code
+		WHERE	od.order_detail_code = #{orderCode, jdbcType=VARCHAR}
+		
+	</select>
+
+</mapper>
