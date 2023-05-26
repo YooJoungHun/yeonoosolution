@@ -6,5 +6,8 @@
     	<setting name="mapUnderscoreToCamelCase" value="true"/>
   	</settings>
   	
-  	
+  	<typeAliases>
+  		<typeAlias alias="OrdersDto" type="com.choongang.yeonsolution.sales.pm.domain.OrdersDto"/>
+  		<typeAlias alias="OrdersDetailDto" type="com.choongang.yeonsolution.sales.pm.domain.OrdersDetailDto"/>
+  	</typeAliases>
 </configuration>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="orders">
+	<select id="selectOrders" resultType="OrdersDto">
+		SELECT	od.*, com.company_name AS customerName
+		FROM	orders od INNER JOIN company com ON od.customer_code = com.company_code
+		WHERE 	od.receive_or_place = '발주'
+	</select>
+	<select id="selectOrdersDetailByOrderCode" resultType="OrdersDetailDto" parameterType="String">
+		SELECT 	oddt.*, it.item_name AS item_name
+		FROM	orders_detail oddt INNER JOIN item it ON oddt.item_code = it.item_code
+		WHERE	oddt.order_detail_code = #{orderCode}
+	</select>
+</mapper>
