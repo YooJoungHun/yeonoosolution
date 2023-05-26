@@ -8,7 +8,9 @@ import org.springframework.stereotype.Repository;
 import com.choongang.yeonsolution.standard.imi.domain.ItemDto;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class IMIDaoImpl implements IMIDao {
@@ -18,6 +20,17 @@ public class IMIDaoImpl implements IMIDao {
 	@Override
 	public List<ItemDto> selectItemList() {
 		return sqlSession.selectList("selectItemList");
+	}
+
+	@Override
+	public int insertItem(ItemDto itemInfo) {
+		return sqlSession.insert("insertItem", itemInfo);
+	}
+
+	@Override
+	public List<ItemDto> selectWhList() {
+		log.info("dao whList -> " );
+		return sqlSession.selectList("selectWhList");
 	}
 
 }

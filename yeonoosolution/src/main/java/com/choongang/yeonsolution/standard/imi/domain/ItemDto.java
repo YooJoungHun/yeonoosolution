@@ -29,4 +29,8 @@ public class ItemDto {
 	private String updateDate;	// 수정일자
 	private String updateUser;	// 수정자
 	
+	
+	// 창고 목록 조회용
+	private String whName; 
+	private String whCode2;
 }
