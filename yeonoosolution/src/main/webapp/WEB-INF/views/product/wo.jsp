@@ -9,6 +9,8 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/product/wo/wo.css"/>
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/product/wo/wo.js"></script>
 </head>
 <body>
 	<div class="side-bar">
@@ -17,49 +19,72 @@
 	<div class="container">
 		<div class="wo-header">
 			<div class="wo-header-actions">
-				<button type="button">조회</button>
-				<button type="button">저장</button>
-				<button type="button">삭제</button>
-				<button type="button">초기화</button>
-				<button type="button">작업지시 확정</button>
-				<button type="button">확정 취소</button>
+				<button type="button" class="select-item">조회</button>
+				<button type="button" class="update-item">저장</button>
+				<button type="button" class="delete-item">삭제</button>
+				<button type="button" class="reset-search">초기화</button>
+				<button type="button" class="confirm-item">작업지시 확정</button>
+				<button type="button" class="cancel-item">확정 취소</button>
 			</div>
-			<div class="wo-header-value">
-				<div class="wo-header-item-group">
-					<label for="workOrderType">유형</label>
-					<select name="workOrderType">
-						<option>--</option>
-						<option>일반</option>
-						<option>재작업</option>
-						<option>개발품(시제품)</option>
-					</select>
+			<div class="wo-values-container">
+				<div class="wo-header-value">
+					<div class="wo-header-item-group">
+						<label for="workType">유형</label>
+						<select name="workType">
+							<option value="">--</option>
+							<option value="일반">일반</option>
+							<option value="재작업">재작업</option>
+							<option value="개발품(시제품)">개발품(시제품)</option>
+						</select>
+					</div>
+					<div class="wo-header-item-group">
+						<label for="workOrderDate">
+							지시일
+							<button class="reset-input" type="button">
+								<svg viewBox="0 0 512 512">
+									<path/>
+								</svg>
+							</button>
+						</label>
+						<input type="date" name="workOrderDate">
+					</div>
 				</div>
-				<div class="wo-header-item-group">
-					<label for="workOrderDate">지시일</label>
-					<input type="date" name="workOrderDate">
-				</div>
-			</div>
-			<hr/>
-			<div class="wo-header-search">
-				<div class="wo-header-item-group">
-					<label for="startDate">조회시작일</label>
-					<input type="date" name="startDate">
-				</div>
-				<div class="wo-header-item-group">
-					<label for="endDate">조회종료일</label>
-					<input type="date" name="endDate">
-				</div>
-				<div class="wo-header-item-group">
-					<label for="workOrderCode">작업지시번호조회</label>
-					<input type="text" name="workOrderCode">
-				</div>
-				<div class="wo-header-item-group">
-					<label for="whCode">창고</label>
-					<input type="text" name="whCode">
-				</div>
-				<div class="wo-header-item-group">
-					<label for="whName">창고명</label>
-					<input type="text" name="whName">
+				<hr/>
+				<div class="wo-header-search">
+					<div class="wo-header-item-group">
+						<label for="startDate">
+							조회시작일
+							<button class="reset-input" type="button">
+								<svg viewBox="0 0 512 512">
+									<path/>
+								</svg>
+							</button>
+						</label>
+						<input type="date" name="startDate">
+					</div>
+					<div class="wo-header-item-group">
+						<label for="endDate">
+							조회종료일
+							<button class="reset-input" type="button">
+								<svg viewBox="0 0 512 512">
+									<path/>
+								</svg>
+							</button>
+						</label>
+						<input type="date" name="endDate">
+					</div>
+					<div class="wo-header-item-group">
+						<label for="workOrderCode">작업지시번호조회</label>
+						<input type="text" name="workOrderCode">
+					</div>
+					<div class="wo-header-item-group">
+						<label for="whCode">창고</label>
+						<input type="text" name="whCode">
+					</div>
+					<div class="wo-header-item-group">
+						<label for="whName">창고명</label>
+						<input type="text" name="whName">
+					</div>
 				</div>
 			</div>
 		</div>
@@ -69,14 +94,14 @@
 					작업지시목록
 				</div>
 				<div class="wo-list-header-right">
-					<input type="number">
-					<button type="button">추가</button>
-					<button type="button">제거</button>
-					<button type="button">설정</button>
+					<input type="number" class="add-quantity" value="1" min="1">
+					<button type="button" class="add-item">추가</button>
+					<button type="button" class="remove-item">제거</button>
+					<button type="button" class="setting">설정</button>
 				</div>
 			</div>
 			<div class="wo-list-content">
-				<table>
+				<table class="data-table">
 					<colgroup>
 						<col style="width: 50px;">
 						<col style="width: 50px;">
@@ -93,50 +118,63 @@
 						<col style="width: 91.77778px;">
 						<col style="width: 110.77778px;">
 					</colgroup>
-					<thead>
-						<tr>
-							<th></th>
-							<th><input type="checkbox"></th>
-							<td>지시번호</td>
-							<td>상태</td>
-							<td>유형</td>
-							<td>지시일</td>
-							<td>완료일</td>
-							<td>ITEM코드</td>
-							<td>품목유형</td>
-							<td>품명</td>
-							<td>수량</td>
-							<td>창고</td>
-							<td>창고명</td>
-							<td>작업지시유형</td>
-						</tr>
-					</thead>
 					<tbody>
 					<c:forEach var="wo" items="${woList }" varStatus="status">
 						<tr>
-							<th>${status.count }</th>
-							<th><input type="checkbox"></th>
-							<td>${wo.workOrderCode }</td>
-							<td>${wo.workOrderStatus }</td>
-							<td>
-								<select style="width: 60px;">
-									<option>일반</option>
-									<option>재작업</option>
-									<option>개발품(시제품)</option>
+							<th class="numbering">
+								<div>
+									${status.count }
+								</div>
+							</th>
+							<th>
+								<div>
+									<input type="checkbox">
+								</div>
+							</th>
+							<td class="readonly">${wo.workOrderCode }</td>
+							<td class="readonly">${wo.workOrderStatus }</td>
+							<td class="required">
+								<select name="workType" style="width: 60px;">
+									<option value="">--</option>
+									<option value="일반">일반</option>
+									<option value="재작업">재작업</option>
+									<option value="개발품(시제품)">개발품(시제품)</option>
 								</select>
 							</td>
-							<td><fmt:formatDate value="${wo.workOrderDate }" pattern="yyyy-MM-dd"/></td>
-							<td><fmt:formatDate value="${wo.finishDate }" pattern="yyyy-MM-dd"/></td>
-							<td>${wo.itemCode }</td>
-							<td><!-- itemType --></td>
-							<td><!-- itemName --></td>
-							<td>${wo.itemQuantity }</td>
-							<td>${wo.whCode }</td>
-							<td><!-- whName --></td>
-							<td>${wo.workOrderType }</td>
+							<td class="editable"><input type="date" name="workOrderDate" value="<fmt:formatDate value="${wo.workOrderDate }" pattern="yyyy-MM-dd"/>"></td>
+							<td class="editable"><input type="date" value="<fmt:formatDate value="${wo.finishDate }" pattern="yyyy-MM-dd"/>"></td>
+							<td class="editable"><input type="text" value="${wo.itemCode }"></td>
+							<td class="readonly"><!-- itemType --></td>
+							<td class="readonly"><!-- itemName --></td>
+							<td class="required"><input type="number" value="${wo.itemQuantity }" min="1"></td>
+							<td class="editable"><input type="text" value="${wo.whCode }"></td>
+							<td class="readonly"><!-- whName --></td>
+							<td class="readonly">${wo.workOrderType }</td>
 						</tr>
 					</c:forEach>
 					</tbody>
+					<thead>
+						<tr>
+							<th><div></div></th>
+							<th>
+								<div>
+									<input type="checkbox">
+								</div>
+							</th>
+							<td><div>지시번호</div></td>
+							<td><div>상태</div></td>
+							<td><div>유형</div></td>
+							<td><div>지시일</div></td>
+							<td><div>완료일</div></td>
+							<td><div>ITEM코드</div></td>
+							<td><div>품목유형</div></td>
+							<td><div>품명</div></td>
+							<td><div>수량</div></td>
+							<td><div>창고</div></td>
+							<td><div>창고명</div></td>
+							<td><div>작업지시유형</div></td>
+						</tr>
+					</thead>
 				</table>
 			</div>
 		</div>

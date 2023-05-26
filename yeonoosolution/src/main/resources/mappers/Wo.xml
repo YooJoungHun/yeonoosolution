@@ -3,6 +3,8 @@
 
 <mapper namespace="com.choongang.yeonsolution.product.wo.domain.WoMapper">
 	<select id="selectWo" resultType="Wo">
-		SELECT * FROM WO
+		SELECT *
+		FROM WO
+		ORDER BY TO_NUMBER(REPLACE(WORK_ORDER_CODE, 'WORK', '')) DESC
 	</select>
 </mapper>
