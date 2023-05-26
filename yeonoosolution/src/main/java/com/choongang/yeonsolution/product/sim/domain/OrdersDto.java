@@ -1,6 +1,7 @@
 package com.choongang.yeonsolution.product.sim.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -21,4 +22,7 @@ public class OrdersDto {
 	private String	regUser;
 	private Date	updateDate;
 	private String 	updateUser;
+	
+	
+	private List<OrdersDetailDto> ordersDetailDto;
 }

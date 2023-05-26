@@ -15,4 +15,7 @@ public class WhStockDetailDto {
 	private String 	updateUser;
 	private Date	updateDate;
 	private String 	memo;
+	
+	private ItemDto itemDto;
+	
 }

@@ -15,9 +15,10 @@ public class SIMDaoImpl implements SIMDao {
 	private final SqlSession session;
 
 	@Override
-	public void st() {
-		List<StInDto> inDtos = session.selectList("test1");
-		System.out.println(inDtos);
+	public List<StInDto> findStIn() {
+		List<StInDto> findStIn = null;
+		findStIn = session.selectList("selectStIn");
+		return findStIn;
 	}
 
 }

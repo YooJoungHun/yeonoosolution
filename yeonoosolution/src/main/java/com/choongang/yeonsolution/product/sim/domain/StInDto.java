@@ -1,6 +1,7 @@
 package com.choongang.yeonsolution.product.sim.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -19,4 +20,9 @@ public class StInDto {
 	private String	inType;
 	private String	deleteStatus;
 	private String 	memo;
+	
+	
+	private List<StInDetailDto> stInDetailDto;
+	private OrdersDto ordersDto;
+	private CompanyDto companyDto;
 }

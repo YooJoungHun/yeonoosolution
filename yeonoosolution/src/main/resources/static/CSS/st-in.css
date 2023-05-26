@@ -49,8 +49,9 @@ section > div:first-child {
 	justify-content: center;
 }
 .stock-in-detail-list .item-title {
-	background-color: rgba(0,0,0, 0.05);
-	width: 100%;
+	width: auto;
+	height: auto;
+	padding: 10px;
 }
 .table-rownum {
 	width: 30px;
@@ -58,6 +59,17 @@ section > div:first-child {
 .table-content {
 	flex: 1;
 }
-.table-content table {
-	width: 100%;
+.table-detail {
+	width: auto;
+	font-size: 14px;
+}
+.stock-in-detail-list tr {
+	height: 30px;
+	text-align: center;
+}
+.stock-in-detail-list tr:first-child {
+	font-weight: 700;
+	background-color: rgba(0,0,0, 0.05);
+	width: auto;
+	height: auto;
 }

@@ -7,7 +7,7 @@ import com.choongang.yeonsolution.product.is.dao.ISDao;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Service
+//@Service
 @Slf4j
 @RequiredArgsConstructor
 public class ISServiceImpl implements ISService {

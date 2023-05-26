@@ -8,12 +8,13 @@
   	
    	<typeAliases>
   		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.StInDto"				alias="StInDto"/>
-  		<!-- <typeAlias type="com.choongang.yeonsolution.product.sim.domain.CompantyDto"			alias="CompantyDto"/>
+  		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.StInDetailDto"		alias="StInDetailDto"/>
+  		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.CompanyDto"			alias="CompanyDto"/>
   		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.ItemDto"				alias="ItemDto"/>
   		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.OrdersDto"			alias="OrdersDto"/>
-  		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.StInDetailDto"		alias="StInDetailDto"/>
+  		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.OrdersDetailDto"		alias="OrdersDetailDto"/>
   		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.WhDto"				alias="WhDto"/>
-  		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.WhStockDetailDto"	alias="WhStockDetailDto"/> -->
+  		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.WhStockDetailDto"	alias="WhStockDetailDto"/>
   	</typeAliases>
   	
   	

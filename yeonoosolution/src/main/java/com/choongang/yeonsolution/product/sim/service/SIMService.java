@@ -1,6 +1,10 @@
 package com.choongang.yeonsolution.product.sim.service;
 
+import java.util.List;
+
+import com.choongang.yeonsolution.product.sim.domain.StInDto;
+
 public interface SIMService {
 
-	void st();
+	List<StInDto> stInList();
 }

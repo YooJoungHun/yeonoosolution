@@ -1,5 +1,7 @@
 package com.choongang.yeonsolution.product.sim.domain;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -11,4 +13,8 @@ public class StInDetailDto {
 	private Long 	inQuantity;
 	private Long 	inPrice;
 	private String 	memo;
+	
+	
+	private WhDto 	whDto;
+	private List<WhStockDetailDto> whStockDetailDto;
 }
