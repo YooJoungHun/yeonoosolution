@@ -3,10 +3,24 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="orders">
-	<select id="selectOrders" resultType="OrdersDto">
+	<select id="selectOrders" resultType="OrdersDto" parameterType="OrderSearch">
 		SELECT	od.*, com.company_name AS customerName
 		FROM	orders od INNER JOIN company com ON od.customer_code = com.company_code
 		WHERE 	od.receive_or_place = '발주'
+		<if test="startDate != '' and startDate != null">
+			AND (od.ORDER_DATE >= #{startDate} OR od.DUE_DATE >= #{startDate} 
+				 OR od.REG_DATE >= #{startDate} OR od.UPDATE_DATE >= #{startDate})
+		</if>
+		<if test="endDate != '' and endDate != null">
+		<![CDATA[
+			AND (od.ORDER_DATE <= #{endDate} OR od.DUE_DATE <= #{endDate} 
+				 OR od.REG_DATE <= #{endDate} OR od.UPDATE_DATE <= #{endDate})
+		]]>
+		</if>
+		AND (#{orderDate} IS NULL OR od.ORDER_DATE = #{orderDate})
+		AND (#{customerCode} IS NULL OR od.CUSTOMER_CODE = #{customerCode})
+		AND (#{orderEmpid} IS NULL OR od.ORDER_EMPID = #{orderEmpid})
+		
 	</select>
 	<select id="selectOrdersDetailByOrderCode" resultType="OrdersDetailDto" parameterType="String">
 		SELECT 	oddt.*, it.item_name AS item_name

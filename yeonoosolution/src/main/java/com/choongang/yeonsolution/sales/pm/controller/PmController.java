@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDetailDto;
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDto;
+import com.choongang.yeonsolution.sales.pm.domain.OrderSearch;
 import com.choongang.yeonsolution.sales.pm.service.PmService;
 
 import lombok.RequiredArgsConstructor;
@@ -29,8 +30,9 @@ public class PmController {
 	
 	@GetMapping("/order-list")
 	@ResponseBody
-	public List<OrdersDto> findOrders(){
-		List<OrdersDto> orderList = pmService.findOrders();
+	public List<OrdersDto> findOrders(OrderSearch search){
+		log.info("search Data -> {}", search);
+		List<OrdersDto> orderList = pmService.findOrders(search);
 		return orderList;
 		
 	}
