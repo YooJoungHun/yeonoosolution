@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Data
-public class OrderSearch {
+public class Search {
 	private String startDate;
 	private String endDate;
 	private String orderDate;

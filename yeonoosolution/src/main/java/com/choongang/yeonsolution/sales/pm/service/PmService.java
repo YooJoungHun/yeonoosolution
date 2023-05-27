@@ -4,11 +4,11 @@ import java.util.List;
 
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDetailDto;
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDto;
-import com.choongang.yeonsolution.sales.pm.domain.OrderSearch;
+import com.choongang.yeonsolution.sales.pm.domain.Search;
 
 public interface PmService {
 
-	List<OrdersDto> findOrders(OrderSearch search);
+	List<OrdersDto> findOrdersBySearch(Search search);
 	List<OrdersDetailDto> findOrdersDetailByOrderCode(String orderCode);
 
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDetailDto;
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDto;
-import com.choongang.yeonsolution.sales.pm.domain.OrderSearch;
+import com.choongang.yeonsolution.sales.pm.domain.Search;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +19,9 @@ public class PmDaoImpl implements PmDao{
 	private final SqlSession session;
 
 	@Override
-	public List<OrdersDto> selectOrders(OrderSearch search) {
+	public List<OrdersDto> selectOrdersBySearch(Search search) {
 		
-		List<OrdersDto> orderList = session.selectList("selectOrders", search);
+		List<OrdersDto> orderList = session.selectList("selectOrdersBySearch", search);
 		log.info("orderList.size() -> {}",orderList.size());
 		return orderList;
 	}

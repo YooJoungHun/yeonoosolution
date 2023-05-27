@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.choongang.yeonsolution.sales.pm.dao.PmDao;
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDetailDto;
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDto;
-import com.choongang.yeonsolution.sales.pm.domain.OrderSearch;
+import com.choongang.yeonsolution.sales.pm.domain.Search;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +19,13 @@ public class PmServiceImpl implements PmService{
 	private final PmDao pmDao;
 
 	@Override
-	public List<OrdersDto> findOrders(OrderSearch search) {
-		return pmDao.selectOrders(search);
+	public List<OrdersDto> findOrdersBySearch(Search search) {
+		List<OrdersDto> orderList = pmDao.selectOrdersBySearch(search);
+		for(int i = 0; i < orderList.size(); i++) {
+			orderList.get(i).setOrderDate(orderList.get(i).getOrderDate().substring(0, 10));
+			orderList.get(i).setDueDate(orderList.get(i).getDueDate().substring(0, 10));
+		}
+		return orderList;
 	}
 
 	@Override

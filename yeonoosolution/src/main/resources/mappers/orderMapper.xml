@@ -3,7 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="orders">
-	<select id="selectOrders" resultType="OrdersDto" parameterType="OrderSearch">
+	<select id="selectOrdersBySearch" resultType="OrdersDto" parameterType="Search">
 		SELECT	od.*, com.company_name AS customerName
 		FROM	orders od INNER JOIN company com ON od.customer_code = com.company_code
 		WHERE 	od.receive_or_place = '발주'

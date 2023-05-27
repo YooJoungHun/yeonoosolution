@@ -9,6 +9,6 @@
   	<typeAliases>
   		<typeAlias alias="OrdersDto" type="com.choongang.yeonsolution.sales.pm.domain.OrdersDto"/>
   		<typeAlias alias="OrdersDetailDto" type="com.choongang.yeonsolution.sales.pm.domain.OrdersDetailDto"/>
-  		<typeAlias alias="OrderSearch" type="com.choongang.yeonsolution.sales.pm.domain.OrderSearch"/>
+  		<typeAlias alias="Search" type="com.choongang.yeonsolution.sales.pm.domain.Search"/>
   	</typeAliases>
 </configuration>

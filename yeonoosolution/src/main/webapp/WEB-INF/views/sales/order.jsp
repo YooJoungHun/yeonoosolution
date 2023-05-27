@@ -286,6 +286,7 @@
 	<!-- contain -->
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script>
+	// 초기화 버튼
 	$('#init').click(function(){
 		 $('#search-div input').val('');
 	});
@@ -296,6 +297,7 @@
 	
 	// 클릭한 발주 라디오 값 저장
 	let radioCheck = null;
+	// 발주서 세부항목 불러오기
 	function orderDetailList(orderCode){
 		if(orderCode == radioCheck){
 			return;
@@ -328,15 +330,15 @@
 	}
 	function orderAdd(order, index){
 		let orderRow = $('<tr>').addClass('order-table-tr-area');
-		let orderNumber = $('<td>').addClass('order-number').text(index + 1);
+		let orderNumber = $('<td>').addClass('order-number').text(index);
 		let orderRadio = $('<td>').addClass('order-radio').append($("<input type='radio' class='order-radio-select' value='" + order.orderCode +"' name='chk_info'>"));
 		let orderStatus = $('<td>').addClass('order-status').text(order.orderStatus);
 		let orderCode = $('<td>').addClass('order-code').text(order.orderCode);
 		let receiveOrderType = $('<td>').addClass('receive-order-type change-td').text(order.receiveOrderType);
-		let orderDate = $('<td>').addClass('order-date change-td').text(order.orderDate.substring(0, 10));
+		let orderDate = $('<td>').addClass('order-date change-td').text(order.orderDate);
 		let customerCode = $('<td>').addClass('customer-code').text(order.customerCode);
 		let customerName = $('<td>').addClass('customer-name').text(order.customerName);
-		let dueDate = $('<td>').addClass('due-date change-td').text(order.dueDate.substring(0, 10));
+		let dueDate = $('<td>').addClass('due-date change-td').text(order.dueDate);
 		let orderEmpid = $('<td>').addClass('order-empid').text(order.orderEmpid);
 		let deliveryPlan = $('<td>').addClass('delivery-plan change-td').text(order.deliveryPlan);
 		let regDate = $('<td>').addClass('reg-date').text(order.regDate);
@@ -350,13 +352,76 @@
 		$('#order-list-table tbody').append(orderRow);
 	};
 	$('.table-btn').click(function(){
-		let btnId = $(this).attr('class');
+		let btnId = $(this).attr('id');
+		// 발주서 추가버튼
 		if(btnId == 'order-add') {
 			let rowCount = $("#order-list-table tbody tr").length;
-			let order;
-			orderAdd(order, rowCount);
+			 orderAdd({}, rowCount + 1);
 		}
 	});
+	// 라디오 버튼이 변경되면 발주번호에 맞는 세부항목 ajax로 불러오기
+	$(document).on('change', '.order-radio-select', function(){
+			orderDetailList($(this).val());
+		});
+	// 테이블 행 클릭 시 라디오 버튼 체크표시
+	$(document).on('click', 'td', function(){
+			let radioInput = $(this).siblings('.order-radio').find('input[type="radio"]');
+			radioInput.prop('checked', true);
+			let orderTableTr = $(this).parent();
+			$('#search-order-day').val(orderTableTr.find('.order-date').text());
+			$('#search-customer-code').val(orderTableTr.find('.customer-code').text());
+			$('#search-customer-name').removeAttr('readonly');
+			$('#search-customer-name').val(orderTableTr.find('.customer-name').text());
+			$('#search-customer-name').attr('readonly', 'readonly');
+			$('#order-empid').val(orderTableTr.find('.order-empid').text());
+			orderDetailList(radioInput.val());
+			$('#all-check').prop('checked', false);
+			
+	});
+	// 더블 클릭 시 input태그로 변환
+	$(document).on('dblclick', '.change-td', function() {
+			let elementClass = $(this).attr('class');
+			console.log(elementClass);
+			let dbclickTd = $(this);
+			let value = $(this).text();
+			let tdWidth = $(this).width() - 10;
+			dbclickTd.empty();
+			if(elementClass.includes('date')){
+				dbclickTd.append($('<input type="date">').addClass('change-text-input-td').val(value).css('width', tdWidth+'px'));
+				$('.change-text-input-td').focus();
+			} else if(elementClass.includes('receive-order-type')) {
+				dbclickTd.append($('<select>').addClass('change-text-input-td').val(value).css('width', tdWidth+'px')
+						.append($("<option>").val('일반구매').text('일반구매'))
+						.append($("<option>").val('특별구매').text('특별구매'))
+						.append($("<option>").val('외주구매').text('외주구매'))
+				);
+					
+				$('.change-text-input-td').focus();
+			} else {
+				dbclickTd.append($('<input>').addClass('change-text-input-td').val(value).css('width', tdWidth+'px'));
+				$('.change-text-input-td').focus();
+			}
+			// input태그 작성 중 엔터 시 작성된 값을 text로 변환하여 출력
+			$(document).on("keydown", '.change-text-input-td', function(event) {
+				if (event.keyCode === 13) {
+					let dbEnterTd = $(this).parent();
+					let value1 = $(this).val();
+					dbEnterTd.empty();
+					dbEnterTd.text(value1);
+			    }
+			});
+			// input태그 작성 중 다른 곳 클릭시 작성된 값을 text로 변환하여 출력
+			$(document).on("click", function(event) {
+				let target = $(event.target);
+				if (!target.closest(".change-text-input-td").length) {
+					let dbEnterTd = $('.change-text-input-td').parent();
+					let value1 = $('.change-text-input-td').val();
+					dbEnterTd.empty();
+					dbEnterTd.text(value1);
+				  }
+			});
+	});
+	// 발주서 검색기능
 	function orderList(){
 		let startDate = $('#search-start-day').val();
 		let endDate = $('#search-end-day').val();
@@ -379,69 +444,10 @@
 				orderList.forEach(function(order, index){
 					orderAdd(order, index + 1)
 				});
-				$('.order-radio-select').change(function(){
-					orderDetailList($(this).val());
-					
-				});
-				$('td').click(function(){
-					let radioInput = $(this).siblings('.order-radio').find('input[type="radio"]');
-					radioInput.prop('checked', true);
-					let orderTableTr = $(this).parent();
-					$('#search-order-day').val(orderTableTr.find('.order-date').text());
-					$('#search-customer-code').val(orderTableTr.find('.customer-code').text());
-					$('#search-customer-name').removeAttr('readonly');
-					$('#search-customer-name').val(orderTableTr.find('.customer-name').text());
-					$('#search-customer-name').attr('readonly', 'readonly');
-					$('#order-empid').val(orderTableTr.find('.order-empid').text());
-					orderDetailList(radioInput.val());
-					$('#all-check').prop('checked', false);
-					
-				});
-				$('.change-td').dblclick(function() {
-					let elementClass = $(this).attr('class');
-					console.log(elementClass);
-					let dbclickTd = $(this);
-					let value = $(this).text();
-					let tdWidth = $(this).width() - 10;
-					dbclickTd.empty();
-					if(elementClass.includes('date')){
-						dbclickTd.append($('<input type="date">').addClass('change-text-input-td').val(value).css('width', tdWidth+'px'));
-						$('.change-text-input-td').focus();
-					} else if(elementClass.includes('receive-order-type')) {
-						dbclickTd.append($('<select>').addClass('change-text-input-td').val(value).css('width', tdWidth+'px')
-								.append($("<option>").val('일반구매').text('일반구매'))
-								.append($("<option>").val('특별구매').text('특별구매'))
-								.append($("<option>").val('외주구매').text('외주구매'))
-						);
-							
-						$('.change-text-input-td').focus();
-					} else {
-						dbclickTd.append($('<input>').addClass('change-text-input-td').val(value).css('width', tdWidth+'px'));
-						$('.change-text-input-td').focus();
-					}
-					
-						
-					$('.change-text-input-td').on("keydown", function(event) {
-						if (event.keyCode === 13) {
-							let dbEnterTd = $(this).parent();
-							let value1 = $(this).val();
-							dbEnterTd.empty();
-							dbEnterTd.text(value1);
-					    }
-					});
-					$(document).on("click", function(event) {
-						let target = $(event.target);
-						if (!target.closest(".change-text-input-td").length) {
-							let dbEnterTd = $('.change-text-input-td').parent();
-							let value1 = $('.change-text-input-td').val();
-							dbEnterTd.empty();
-							dbEnterTd.text(value1);
-						  }
-					});
-				});
 			}
 		});
 	}
+	// 세부항목 전체체크
 	$('#all-check').change(function(){
 		if($(this).is(':checked')){
 			$('.order-detail-checkbox').prop('checked', true);
@@ -449,10 +455,12 @@
 			$('.order-detail-checkbox').prop('checked', false);
 		}
 	});
+	// 검색 클릭 시 검색어를 가져와서 ajax 실행
 	$('#search').click(function(){
 		orderList();
 	});
 	
+	// 페이지 로드 시 전체 발주서 불러오기
 	$(function() {
 		orderList();
 	});
