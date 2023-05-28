@@ -34,4 +34,11 @@ public class PmDaoImpl implements PmDao{
 		return ordersDetailList;
 	}
 
+	@Override
+	public int updateOrdersByOrderCode(String orderCode) {
+		log.info("updateOrdersByOrderCode orderCode -> {}", orderCode);
+		int result = session.update("updateOrdersByOrderCode", orderCode);
+		return result;
+	}
+
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,7 +31,7 @@ public class PmController {
 	
 	@GetMapping("/order-list")
 	@ResponseBody
-	public List<OrdersDto> findOrdersBySearch(Search search){
+	public List<OrdersDto> OrdersListBySearch(Search search){
 		log.info("search Data -> {}", search);
 		List<OrdersDto> orderList = pmService.findOrdersBySearch(search);
 		return orderList;
@@ -39,10 +40,18 @@ public class PmController {
 	
 	@GetMapping("/order/{orderCode}/details")
 	@ResponseBody
-	public List<OrdersDetailDto> findordersDetailByOrderCode(@PathVariable String orderCode){
+	public List<OrdersDetailDto> ordersDetailListByOrderCode(@PathVariable String orderCode){
 		
 		List<OrdersDetailDto> ordersDetailList = pmService.findOrdersDetailByOrderCode(orderCode);
 		return ordersDetailList;
 	}
-
+	
+	@PatchMapping ("/order/{orderCode}")
+	@ResponseBody
+	public String ordersModifyByorderCode(@PathVariable String orderCode){
+		
+		String msg = pmService.modifyOrdersByorderCode(orderCode);
+		log.info("msg -> {}", msg);
+		return msg;
+	}
 }

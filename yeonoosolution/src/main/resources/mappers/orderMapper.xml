@@ -7,19 +7,20 @@
 		SELECT	od.*, com.company_name AS customerName
 		FROM	orders od INNER JOIN company com ON od.customer_code = com.company_code
 		WHERE 	od.receive_or_place = '발주'
+		AND		delete_status = 'N'
 		<if test="startDate != '' and startDate != null">
-			AND (od.ORDER_DATE >= #{startDate} OR od.DUE_DATE >= #{startDate} 
-				 OR od.REG_DATE >= #{startDate} OR od.UPDATE_DATE >= #{startDate})
+			AND (od.order_date >= #{startDate} OR od.due_date >= #{startDate} 
+				 OR od.reg_date >= #{startDate} OR od.update_date >= #{startDate})
 		</if>
 		<if test="endDate != '' and endDate != null">
 		<![CDATA[
-			AND (od.ORDER_DATE <= #{endDate} OR od.DUE_DATE <= #{endDate} 
-				 OR od.REG_DATE <= #{endDate} OR od.UPDATE_DATE <= #{endDate})
+			AND (od.order_date <= #{endDate} OR od.due_date <= #{endDate} 
+				 OR od.reg_date <= #{endDate} OR od.update_date <= #{endDate})
 		]]>
 		</if>
-		AND (#{orderDate} IS NULL OR od.ORDER_DATE = #{orderDate})
-		AND (#{customerCode} IS NULL OR od.CUSTOMER_CODE = #{customerCode})
-		AND (#{orderEmpid} IS NULL OR od.ORDER_EMPID = #{orderEmpid})
+		AND (#{orderDate} IS NULL OR od.order_date = #{orderDate})
+		AND (#{customerCode} IS NULL OR od.customer_code = #{customerCode})
+		AND (#{orderEmpid} IS NULL OR od.order_empid = #{orderEmpid})
 		
 	</select>
 	<select id="selectOrdersDetailByOrderCode" resultType="OrdersDetailDto" parameterType="String">
@@ -27,4 +28,9 @@
 		FROM	orders_detail oddt INNER JOIN item it ON oddt.item_code = it.item_code
 		WHERE	oddt.order_detail_code = #{orderCode}
 	</select>
+	<update id="updateOrdersByOrderCode" parameterType="String">
+		UPDATE	orders
+		SET		delete_status = 'Y'
+		WHERE	order_code = #{orderCode}
+	</update>
 </mapper>

@@ -183,14 +183,14 @@
 			type="button" value="구매 내역초회" onclick="">
 		<div id="content">
 			<div id="btn-div">
-				<button id="search">조회</button>
-				<button id="save">저장</button>
-				<button id="delete">삭제</button>
-				<button id="init">초기화</button>
-				<button id="order-confirm">발주 확정</button>
-				<button id="order-cancel">확정 취소</button>
-				<button id="stock_in">입고</button>
-				<button id="order-close">발주 마감</button>
+				<button id="search-btn">조회</button>
+				<button id="save-btn">저장</button>
+				<button id="delete-btn">삭제</button>
+				<button id="init-btn">초기화</button>
+				<button id="order-confirm-btn">발주 확정</button>
+				<button id="order-cancel-btn">확정 취소</button>
+				<button id="stock_in-btn">입고</button>
+				<button id="order-close-btn">발주 마감</button>
 			</div>
 			<div id="search-div">
 				<div>
@@ -287,7 +287,7 @@
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script>
 	// 초기화 버튼
-	$('#init').click(function(){
+	$('#init-btn').click(function(){
 		 $('#search-div input').val('');
 	});
 	// 거래처 코드 검색 시 모달창 나오도록 대기
@@ -353,10 +353,20 @@
 	};
 	$('.table-btn').click(function(){
 		let btnId = $(this).attr('id');
-		// 발주서 추가버튼
+		// 발주서 추가 버튼
 		if(btnId == 'order-add') {
 			let rowCount = $("#order-list-table tbody tr").length;
 			 orderAdd({}, rowCount + 1);
+		// 발주서 삭제 버튼
+		}else if(btnId == 'order-del'){
+			let orderCode = $('input[type="radio"]:checked').val();
+			// 발주서 번호가 없는 발주서의 경우 확인창 없이 바로 삭제
+			if(orderCode == 'undefined'){
+				console.log('radioCheck undefined');
+				$('input[type="radio"]:checked').closest('tr').remove();
+			}else{
+				$('#delete-btn').click();
+			}
 		}
 	});
 	// 라디오 버튼이 변경되면 발주번호에 맞는 세부항목 ajax로 불러오기
@@ -456,10 +466,24 @@
 		}
 	});
 	// 검색 클릭 시 검색어를 가져와서 ajax 실행
-	$('#search').click(function(){
+	$('#search-btn').click(function(){
 		orderList();
 	});
-	
+	// 삭제 기능 추가
+	$('#delete-btn').click(function(){
+		let orderCode = $('input[type="radio"]:checked').val();
+		console.log("orderCode -> " + orderCode);
+		$.ajax({
+			url: "pm/order/" + orderCode,
+			type : "PATCH",
+			dataType : "TEXT",
+			success : function(msg){
+				console.log(msg);
+				$('#search-div input').val('');
+				orderList();
+			}
+		});
+	});
 	// 페이지 로드 시 전체 발주서 불러오기
 	$(function() {
 		orderList();

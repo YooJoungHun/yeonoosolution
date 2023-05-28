@@ -10,5 +10,6 @@ public interface PmDao {
 
 	List<OrdersDto> selectOrdersBySearch(Search search);
 	List<OrdersDetailDto> selectOrdersDetailByOrderCode(String orderCode);
+	int updateOrdersByOrderCode(String orderCode);
 
 }

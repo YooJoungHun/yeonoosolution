@@ -34,4 +34,15 @@ public class PmServiceImpl implements PmService{
 		return pmDao.selectOrdersDetailByOrderCode(orderCode);
 	}
 
+	@Override
+	public String modifyOrdersByorderCode(String orderCode) {
+		int result = pmDao.updateOrdersByOrderCode(orderCode);
+		log.info("result -> {}",result);
+		if(result > 0) {
+			return "삭제 성공";
+		}else {
+			return "삭제 실패";
+		}
+	}
+
 }

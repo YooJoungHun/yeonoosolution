@@ -25,6 +25,7 @@ public class OrdersDto {
 	private String regUser;
 	private String updateDate;
 	private String updateUser;
+	private String deleteStatus;
 	
 	// 거래처명
 	private String customerName;
