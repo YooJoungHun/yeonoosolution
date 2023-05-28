@@ -220,6 +220,7 @@
 								<td>${stIn.updateUser}</td>
 								<td><fmt:formatDate value="${stIn.updateDate}" pattern="yyyy/MM/dd"/></td>
 								<td>${stIn.memo}</td>
+								
 								<c:forEach var="sid" items="${stIn.stInDetailDto}">
 									<tr style="display: none;">
 										<td>${sid.sorder}</td>
