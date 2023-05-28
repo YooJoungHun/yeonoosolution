@@ -126,29 +126,29 @@
 									${status.count }
 								</div>
 							</th>
-							<th>
+							<th class="checkbox">
 								<div>
 									<input type="checkbox">
 								</div>
 							</th>
 							<td class="readonly">${wo.workOrderCode }</td>
-							<td class="readonly">${wo.workOrderStatus }</td>
+							<td class="readonly">${wo.workStatus }</td>
 							<td class="required">
 								<select name="workType" style="width: 60px;">
-									<option value="">--</option>
-									<option value="일반">일반</option>
-									<option value="재작업">재작업</option>
-									<option value="개발품(시제품)">개발품(시제품)</option>
+									<option value="" ${wo.productType == null ? 'selected' : '' }>--</option>
+									<option value="일반" ${wo.productType == '일반' ? 'selected' : '' }>일반</option>
+									<option value="재작업" ${wo.productType == '재작업' ? 'selected' : '' }>재작업</option>
+									<option value="개발품(시제품)" ${wo.productType == '개발품(시제품)' ? 'selected' : '' }>개발품(시제품)</option>
 								</select>
 							</td>
 							<td class="editable"><input type="date" name="workOrderDate" value="<fmt:formatDate value="${wo.workOrderDate }" pattern="yyyy-MM-dd"/>"></td>
 							<td class="editable"><input type="date" value="<fmt:formatDate value="${wo.finishDate }" pattern="yyyy-MM-dd"/>"></td>
-							<td class="editable"><input type="text" value="${wo.itemCode }"></td>
-							<td class="readonly"><!-- itemType --></td>
-							<td class="readonly"><!-- itemName --></td>
+							<td class="editable"><input type="text" value="${wo.item.itemCode }"></td>
+							<td class="readonly">${wo.item.itemType }</td>
+							<td class="readonly">${wo.item.itemName }</td>
 							<td class="required"><input type="number" value="${wo.itemQuantity }" min="1"></td>
-							<td class="editable"><input type="text" value="${wo.whCode }"></td>
-							<td class="readonly"><!-- whName --></td>
+							<td class="editable"><input type="text" value="${wo.wh.whCode }"></td>
+							<td class="readonly">${wo.wh.whName }</td>
 							<td class="readonly">${wo.workOrderType }</td>
 						</tr>
 					</c:forEach>

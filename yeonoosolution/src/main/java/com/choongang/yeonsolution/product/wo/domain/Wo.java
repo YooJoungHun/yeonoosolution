@@ -6,11 +6,13 @@ import lombok.Data;
 
 @Data
 public class Wo {
-	private String workOrderCode;
-	private String whCode;
-	private String orderCode;
-	private String itemCode;
+	private String workOrderCode; // PK
+	private Wh wh; // FK
+	private Orders orders; // FK
+	private Item item; // FK
 	private Integer itemQuantity;
+	private String workStatus;
+	private String productType;
 	private String workOrderType;
 	private Date workOrderDate;
 	private String workOrderStatus;

@@ -2,9 +2,93 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.choongang.yeonsolution.product.wo.domain.WoMapper">
-	<select id="selectWo" resultType="Wo">
-		SELECT *
-		FROM WO
-		ORDER BY TO_NUMBER(REPLACE(WORK_ORDER_CODE, 'WORK', '')) DESC
+	<resultMap type="Company" id="CompanyResultMap">
+		<id			property="companyCode"	column="company_code"/>
+		<result		property="businessType"		column="business_type"/>
+		<result		property="orderType"			column="order_type"/>
+		<result		property="companyName"	column="company_name"/>
+		<result		property="businessCode"		column="business_code"/>
+		<result		property="ownerName"		column="owner_name"/>
+		<result		property="tel"					column="tel"/>
+		<result		property="address"			column="address"/>
+		<result		property="companyLogo"	column="company_logo"/>
+		<result		property="regUser"			column="reg_user"/>
+		<result		property="regDate"			column="reg_date"/>
+		<result		property="updateUser"		column="update_user"/>
+		<result		property="updateDate"		column="update_date"/>
+	</resultMap>
+	<resultMap type="Wh" id="WhResultMap">
+		<id			property="whCode"			column="wh_code"/>
+		<result		property="whName"			column="wh_name"/>
+		<result		property="regUser"			column="reg_user"/>
+		<result		property="regDate"			column="reg_date"/>
+		<result		property="updateUser"		column="update_user"/>
+		<result		property="updateDate"		column="update_date"/>
+		<result		property="useYn"				column="use_yn"/>
+		<result		property="memo"				column="memo"/>
+		<collection	property="company"			resultMap="CompanyResultMap"/>
+	</resultMap>
+	<resultMap type="Item" id="ItemResultMap">
+		<id			property="itemCode"			column="item_code"/>
+		<result		property="itemName"			column="item_name"/>
+		<result		property="itemType"			column="item_type"/>
+		<result		property="stockUnit"			column="stock_unit"/>
+		<result		property="purchasePrice"		column="purchase_price"/>
+		<result		property="salesPrice"			column="sales_price"/>
+		<result		property="memo"				column="memo"/>
+		<result		property="startDate"			column="start_date"/>
+		<result		property="endDate"			column="end_date"/>
+		<result		property="regUser"			column="reg_user"/>
+		<result		property="regDate"			column="reg_date"/>
+		<result		property="updateUser"		column="update_user"/>
+		<result		property="updateDate"		column="update_date"/>
+		<collection	property="wh"					resultMap="WhResultMap"/>
+		<collection	property="company"			resultMap="CompanyResultMap"/>
+	</resultMap>
+	<resultMap type="Orders" id="OrdersResultMap">
+		<id			property="orderCode"			column="order_code"/>
+		<result		property="receiveOrPlace"		column="receive_or_place"/>
+		<result		property="receiveOrderType"	column="receive_order_type"/>
+		<result		property="orderDate"				column="order_date"/>
+		<result		property="orderEmpid"			column="order_empid"/>
+		<result		property="deliveryPlan"			column="delivery_plan"/>
+		<result		property="orderStatus"			column="order_status"/>
+		<result		property="dueDate"				column="due_date"/>
+		<result		property="memo"					column="memo"/>
+		<result		property="regUser"				column="reg_user"/>
+		<result		property="regDate"				column="reg_date"/>
+		<result		property="updateUser"			column="update_user"/>
+		<result		property="updateDate"			column="update_date"/>
+		<collection	property="company"				columnPrefix="CO" resultMap="CompanyResultMap"/>
+		<collection	property="customer"				columnPrefix="CU" resultMap="CompanyResultMap"/>
+	</resultMap>
+	<resultMap type="Wo" id="WoResultMap">
+		<id			property="workOrderCode"	column="work_order_code"/>
+		<result		property="itemQuantity"		column="item_quantity"/>
+		<result		property="workStatus"		column="work_status"/>
+		<result		property="productType"		column="product_type"/>
+		<result		property="workOrderType"	column="work_order_type"/>
+		<result		property="workOrderDate"	column="work_order_date"/>
+		<result		property="workOrderStatus"	column="work_order_status"/>
+		<result		property="startDate"			column="start_date"/>
+		<result		property="endDate"			column="end_date"/>
+		<result		property="finishDate"			column="finish_date"/>
+		<result		property="deleteStatus"		column="delete_status"/>
+		<result		property="memo"				column="memo"/>
+		<result		property="regUser"			column="reg_user"/>
+		<result		property="regDate"			column="reg_date"/>
+		<result		property="updateUser"		column="update_user"/>
+		<result		property="updateDate"		column="update_date"/>
+		<collection	property="wh"					resultMap="WhResultMap"/>
+		<collection	property="orders"				resultMap="OrdersResultMap"/>
+		<collection	property="item"				resultMap="ItemResultMap"/>
+	</resultMap>
+	<select id="selectWo" resultMap="WoResultMap">
+		SELECT wo.*, wh.*, orders.*, item.*
+		FROM WO wo LEFT OUTER JOIN WH wh ON (wo.WH_CODE = wh.WH_CODE)
+						   LEFT OUTER JOIN ORDERS orders ON (wo.ORDER_CODE = orders.ORDER_CODE)
+						   LEFT OUTER JOIN ITEM item ON (wo.ITEM_CODE = item.ITEM_CODE)
+		WHERE wo.DELETE_STATUS = 'N'
+		ORDER BY TO_NUMBER(REPLACE(wo.WORK_ORDER_CODE, 'WORK', '')) DESC
 	</select>
 </mapper>

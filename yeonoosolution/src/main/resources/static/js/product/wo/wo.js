@@ -184,7 +184,7 @@ $(document).on('click', 'button.setting', e => {
 });
 
 // 데이터 ROW 선택
-$(document).on('click', 'table.data-table tbody tr', e => {
+$(document).on('click', 'table.data-table tbody tr th:not([class="checkbox"]), table.data-table tbody tr td', e => {
 	let elem = $(e.target).closest('table.data-table tbody tr');
 	$(elem).closest('tbody').find('th input[type="checkbox"]').closest(':checked').not($(elem).find('input[type="checkbox"]')).prop('checked', false);
 	$(elem).find('input[type="checkbox"]').prop('checked', true);
