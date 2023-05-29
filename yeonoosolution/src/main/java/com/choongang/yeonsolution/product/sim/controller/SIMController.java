@@ -28,6 +28,8 @@ public class SIMController {
 		List<StInDto> stInList = simService.stInList();
 		model.addAttribute("stInList", stInList);
 		
+		
+		// 변경
 //		for(StInDto sd : stInList) {
 //			System.out.println(sd);
 //			for(StInDetailDto sid : sd.getStInDetailDto()) {
