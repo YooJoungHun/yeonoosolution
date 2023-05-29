@@ -15,5 +15,6 @@ public class OrdersDetailDto {
 	private	String	memo;
 	private	String	itemStockUnit;
 	private	String	endYn;
+	private String	orderCodeHidden;
 	
 }

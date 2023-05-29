@@ -22,4 +22,27 @@ public interface OMDao {
 
 	void insertReceiveOrder(OrdersDto ordersDto);
 
+	int deleteReceiveOrderByOrderCode(String orderCode);
+
+	int deleteReceiveOrderDetailByOrderCode(String orderCode);
+	
+	void insertReceiveOrderDetail(OrdersDetailDto ordersDetailDto);
+
+	int updateOrderDateByorderCode(OrdersDto ordersDto);
+
+	int updateDueDateByorderCode(OrdersDto ordersDto);
+
+	int updateAmountByordersDetailDto(OrdersDetailDto ordersDetailDto);
+
+	int updateItemStockUnitByorderCode(OrdersDetailDto ordersDetailDto);
+
+	int updateEndYnByOrderDetailCode(OrdersDetailDto ordersDetailDto);
+
+	int insertOdersToStOutByOrderCod(String orderCode);
+
+	int insertOdersDetailToStOutDetailByOrderCod(String orderCode);
+
+	int insertOdersToWOByOrderCode(String orderCode);
+
+
 }

@@ -60,13 +60,41 @@ public class OMServiceImpl implements OMService {
 	}
 	
 	@Override
+	public int modifyOrderDateByorderCode(OrdersDto ordersDto) {
+
+		int updatedOrderDate = omdao.updateOrderDateByorderCode(ordersDto);
+		
+		return updatedOrderDate;
+	}
+	
+
+	@Override
+	public int modifyDueDateByorderCode(OrdersDto ordersDto) {
+		int updatedDueDate = omdao.updateDueDateByorderCode(ordersDto);
+		
+		return updatedDueDate;
+	}
+	
+	@Override
 	public void addReceiveOrder(OrdersDto ordersDto) {
-		// TODO Auto-generated method stub
 		
 		omdao.insertReceiveOrder(ordersDto);
 	}
 	
-	
+	@Override
+	public int removeReceiveOrderByOrderCode(String orderCode) {
+		int receiveOrderDelete = 0;
+		int receiveOrderDetailDelete = 0;
+		
+		receiveOrderDelete = omdao.deleteReceiveOrderDetailByOrderCode(orderCode);
+		
+		receiveOrderDelete = omdao.deleteReceiveOrderByOrderCode(orderCode);
+		
+		receiveOrderDelete += receiveOrderDetailDelete;
+		
+		return receiveOrderDelete;
+	}
+
 	
 	
 	
@@ -83,10 +111,66 @@ public class OMServiceImpl implements OMService {
 	}
 
 
-	
+	@Override
+	public void addReceiveOrderDetail(OrdersDetailDto ordersDetailDto) {
+
+		omdao.insertReceiveOrderDetail(ordersDetailDto);
+		
+	}
+
+
+	@Override
+	public int modifyAmountByordersDetailDto(OrdersDetailDto ordersDetailDto) {
+		int updatedAmount = omdao.updateAmountByordersDetailDto(ordersDetailDto);
+		
+		return updatedAmount;
+	}
+
+
+	@Override
+	public int modifyItemStockUnitByorderDetailCode(OrdersDetailDto ordersDetailDto) {
+		int modifiedUnit = omdao.updateItemStockUnitByorderCode(ordersDetailDto);
+		
+		return modifiedUnit;
+	}
+
+
+	@Override
+	public int modifyEndYnByOrderDetailCode(OrdersDetailDto ordersDetailDto) {
+		int modifiedEndYn = omdao.updateEndYnByOrderDetailCode(ordersDetailDto);
+		
+		return modifiedEndYn;
+	}
+
+
+	@Override
+	public int addOrdersToStOutByOrderCode(String orderCode) {
+		
+		int stockOutReg = 0;
+		int stockOutDetailReg = 0;
+		stockOutReg = omdao.insertOdersToStOutByOrderCod(orderCode);
+		log.info("[addOrdersToStOutByOrderCode] stockOutReg -> {}", stockOutReg);
+		
+		if(stockOutReg > 0) {
+			stockOutDetailReg = omdao.insertOdersDetailToStOutDetailByOrderCod(orderCode);
+		}
+		return stockOutReg;
+	}
+
+
+	@Override
+	public int addOrdersToWOByOrderCode(String orderCode) {
+		int WOReg = 0;
+		WOReg = omdao.insertOdersToWOByOrderCode(orderCode);
+		
+		return WOReg;
+	}
+
+
 
 
 	
-	
+
+
 
 }

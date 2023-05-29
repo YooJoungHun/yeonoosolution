@@ -81,8 +81,39 @@ public class OMDaoImpl implements OMDao {
 	}
 	
 	@Override
+	public int updateOrderDateByorderCode(OrdersDto ordersDto) {
+		log.info("[updateOrderDateByorderCode] ordersDto.getOrderDate() -> {}", ordersDto.getOrderDate());
+		log.info("[updateOrderDateByorderCode] ordersDto.getOrderDate() -> {}", ordersDto.getOrderCode());
+
+		int updatedOrderDate = 0;
+		
+		try {
+			updatedOrderDate = sqlSession.update("updateOrderDateByOrderCode", ordersDto);
+		} catch (Exception e) {
+			log.info("[updateOrderDateByorderCode] updatedOrderDate Exception -> {}", e.getMessage());
+		}
+		return updatedOrderDate;
+	}
+	
+	@Override
+	public int updateDueDateByorderCode(OrdersDto ordersDto) {
+		log.info("[updateDueDateByorderCode] ordersDto.getDueDate() -> {}", ordersDto.getDueDate());
+		log.info("[updateDueDateByorderCode] ordersDto.getOrderCode() -> {}", ordersDto.getOrderCode());
+
+		int updatedDueDate = 0;
+		
+		try {
+			updatedDueDate = sqlSession.update("updateDueDateByOrderCode", ordersDto);
+		} catch (Exception e) {
+			log.info("[updateDueDateByorderCode] updatedDueDate Exception -> {}", e.getMessage());
+		}
+		return updatedDueDate;
+	}
+
+	
+	@Override
 	public void insertReceiveOrder(OrdersDto ordersDto) {
-		// TODO Auto-generated method stub
+		log.info("[insertReceiveOrder] ordersDto.toString() -> {}", ordersDto.toString());
 		try {
 			sqlSession.insert("insertReceiveOrder", ordersDto);
 		} catch (Exception e) {
@@ -91,9 +122,34 @@ public class OMDaoImpl implements OMDao {
 	}
 	
 	
+	@Override
+	public int deleteReceiveOrderByOrderCode(String orderCode) {
+		log.info("[deleteReceiveOrderByOrderCode] ordersDto.toString() -> {}", orderCode);
+		int receiveOrderDelete = 0;
+		
+		try {
+			receiveOrderDelete = sqlSession.delete("deleteReceiveOrderByOrderCode", orderCode);
+			log.info("[deleteReceiveOrderByOrderCode] receiveOrderDelete -> {}", receiveOrderDelete);
+		} catch (Exception e) {
+			log.info("[deleteReceiveOrderByOrderCode] receiveOrderDelete Exception -> {}", e.getMessage());
+		}
+		
+		return receiveOrderDelete;
+	}
 	
-	
-	
+	@Override
+	public int deleteReceiveOrderDetailByOrderCode(String orderCode) {
+		int receiveOrderDetailDelete = 0;
+		
+		try {
+			receiveOrderDetailDelete = sqlSession.delete("deleteReceiveOrderDetailByOrderCode", orderCode);
+			log.info("[deleteReceiveOrderByOrderCode] receiveOrderDelete -> {}", receiveOrderDetailDelete);
+		} catch (Exception e) {
+			log.info("[deleteReceiveOrderDetailByOrderCode] receiveOrderDelete Exception -> {}", e.getMessage());
+		}
+		
+		return receiveOrderDetailDelete;
+	}
 	
 	
 	////
@@ -114,8 +170,103 @@ public class OMDaoImpl implements OMDao {
 		return placeOrderDetailList;
 	}
 
-	
+	@Override
+	public void insertReceiveOrderDetail(OrdersDetailDto ordersDetailDto) {
+		log.info("[insertReceiveOrderDetail] ordersDto.toString() -> {}", ordersDetailDto.toString());
+		try {
+			sqlSession.insert("insertReceiveOrderDetail", ordersDetailDto);
+		} catch (Exception e) {
+			log.info("[insertReceiveOrderDetail] void Exception -> {}", e.getMessage());
+		}
+		
+	}
 
-	
+	@Override
+	public int updateAmountByordersDetailDto(OrdersDetailDto ordersDetailDto) {
+		log.info("[updateAmountByordersDetailDto] ordersDetailDto.toString() -> {}", ordersDetailDto.toString());
+
+		int updatedAmount = 0;
+		
+		try {
+			updatedAmount = sqlSession.update("updateAmountByordersDetailDto", ordersDetailDto);
+		} catch (Exception e) {
+			log.info("[updateAmountByordersDetailDto] updatedDueDate Exception -> {}", e.getMessage());
+		}
+		return updatedAmount;
+	}
+
+	@Override
+	public int updateItemStockUnitByorderCode(OrdersDetailDto ordersDetailDto) {
+		log.info("[updateItemStockUnitByorderCode] ordersDetailDto.toString() -> {}", ordersDetailDto.toString());
+
+		int modifiedUnit = 0;
+		
+		try {
+			modifiedUnit = sqlSession.update("updateItemStockUnitByorderCode", ordersDetailDto);
+		} catch (Exception e) {
+			log.info("[updateItemStockUnitByorderCode] modifiedUnit Exception -> {}", e.getMessage());
+		}
+		return modifiedUnit;
+	}
+
+	@Override
+	public int updateEndYnByOrderDetailCode(OrdersDetailDto ordersDetailDto) {
+		log.info("[updateEndYnByOrderDetailCode] ordersDetailDto.toString() -> {}", ordersDetailDto.toString());
+
+		int modifiedEndYn = 0;
+		
+		try {
+			modifiedEndYn = sqlSession.update("updateEndYnByOrderDetailCode", ordersDetailDto);
+		} catch (Exception e) {
+			log.info("[updateEndYnByOrderDetailCode] modifiedEndYn Exception -> {}", e.getMessage());
+		}
+		return modifiedEndYn;
+	}
+
+	@Override
+	public int insertOdersToStOutByOrderCod(String orderCode) {
+		log.info("[insertOdersToStOutByOrderCod] orderCode -> {}", orderCode);
+		int stockOutReg = 0;
+		try {
+			stockOutReg = sqlSession.insert("insertOdersToStOutByOrderCod", orderCode);
+		} catch (Exception e) {
+			log.info("[insertOdersToStOutByOrderCod] void Exception -> {}", e.getMessage());
+		}
+		log.info("[insertOdersToStOutByOrderCod] stockOutReg -> {}", stockOutReg);
+		
+		return stockOutReg;
+	}
+
+	@Override
+	public int insertOdersDetailToStOutDetailByOrderCod(String orderCode) {
+		log.info("[insertOdersDetailToStOutDetailByOrderCod] orderCode -> {}", orderCode);
+		int stockOutDetailReg = 0;
+		try {
+			stockOutDetailReg = sqlSession.insert("insertOdersDetailToStOutDetailByOrderCod", orderCode);
+		} catch (Exception e) {
+			log.info("[insertOdersDetailToStOutDetailByOrderCod] void Exception -> {}", e.getMessage());
+		}
+		
+		log.info("[insertOdersDetailToStOutDetailByOrderCod] stockOutReg -> {}", stockOutDetailReg);
+		
+		return stockOutDetailReg;
+	}
+
+	@Override
+	public int insertOdersToWOByOrderCode(String orderCode) {
+		log.info("[insertOdersToWOByOrderCode] orderCode -> {}", orderCode);
+		int WOReg = 0;
+		try {
+			WOReg = sqlSession.insert("insertOdersToWOByOrderCode", orderCode);
+			
+		} catch (Exception e) {
+			log.info("[insertOdersToWOByOrderCode] void Exception -> {}", e.getMessage());
+		}
+		
+		log.info("[insertOdersToWOByOrderCode] WOReg -> {}", WOReg);
+		
+		return WOReg;
+	}
+
 
 }

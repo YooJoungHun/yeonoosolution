@@ -24,31 +24,48 @@
 		INNER JOIN  company c 
 		ON 		o.customer_code = c.company_code
 		WHERE	receive_or_place = '수주'
-		ORDER BY	o.order_code
+		ORDER BY	o.reg_date
 		
 	</select>
 	
 	<update id="updateStatusToConfirmByorderCode" parameterType="String">
 		UPDATE	orders
-		SET		order_status = '확정'
+		SET		order_status = '확정',
+				update_date  = SYSDATE
 		WHERE	order_code = #{orderCode}
 	</update>
 	
 	<update id="updateStatusToCancelByorderCode" parameterType="String">
 		UPDATE	orders
-		SET		order_status = '저장'
+		SET		order_status = '저장',
+				update_date  = SYSDATE
 		WHERE	order_code = #{orderCode}
 	</update>
 	
 	<update id="updateOrderTypeByorderCode" parameterType="Map">
 		UPDATE	orders
-		SET		receive_order_type = #{ordersDto.receiveOrderType}
+		SET		receive_order_type = #{ordersDto.receiveOrderType},
+				update_date  = SYSDATE
+		WHERE	order_code = #{orderCode}
+	</update>
+	
+	<update id="updateOrderDateByOrderCode" parameterType="ordersDto">
+		UPDATE	orders
+		SET		order_date = #{orderDate},
+				update_date  = SYSDATE
+		WHERE	order_code = #{orderCode}
+	</update>
+	
+	<update id="updateDueDateByOrderCode" parameterType="ordersDto">
+		UPDATE	orders
+		SET		due_date = #{dueDate},
+				update_date  = SYSDATE
 		WHERE	order_code = #{orderCode}
 	</update>
 	
 	
 	<insert id="insertReceiveOrder" parameterType="ordersDto">
-		INESRT INTO	orders(
+		INSERT INTO	orders(
 			order_code,
 			company_code,
 			customer_code,
@@ -68,13 +85,41 @@
 		)
 		VALUES(
 		
-		
+			'ORDER' || order_code_SEQ.NEXTVAL,
+			'COMPANY1',
+			#{customerCode, jdbcType=VARCHAR},
+			'수주',
+			#{receiveOrderType, jdbcType=VARCHAR},
+			#{orderDate, jdbcType=VARCHAR},
+			#{orderEmpid, jdbcType=VARCHAR},
+			#{deliveryPlan, jdbcType=VARCHAR},
+			'저장',
+			#{dueDate, jdbcType=VARCHAR},
+			#{memo, jdbcType=VARCHAR},
+			<!-- #{regDate, jdbcType=VARCHAR}, -->
+			SYSDATE,
+			#{regUser, jdbcType=VARCHAR},
+			<!-- #{updateDate, jdbcType=VARCHAR}, -->
+			SYSDATE,
+			#{updateUser, jdbcType=VARCHAR}
 		
 		)
 	
 	</insert>
 	
+	<delete id="deleteReceiveOrderDetailByOrderCode" parameterType="String">
+		
+			DELETE FROM orders_detail
+    		WHERE order_detail_code = #{orderCode}
+			
+	</delete>
 	
+	<delete id="deleteReceiveOrderByOrderCode" parameterType="String">
+		
+			DELETE FROM orders 
+			WHERE order_code = #{orderCode}
+			
+	</delete>
 	
 	
 	
@@ -98,5 +143,133 @@
 		WHERE	od.order_detail_code = #{orderCode, jdbcType=VARCHAR}
 		
 	</select>
+	
+	<insert id="insertReceiveOrderDetail" parameterType="ordersDetailDto">
+		INSERT INTO orders_detail (
+									order_detail_code, 
+									sorder, 
+									item_code, 
+									quantity, 
+									price, 
+									amount, 
+									memo, 
+									item_stock_unit, 
+									end_yn
+								  )
+		VALUES					  ( 
+									#{orderDetailCode, jdbcType=VARCHAR}, 
+									orders_detail_sorder_SEQ.NEXTVAL,
+									#{itemCode, jdbcType=VARCHAR}, 
+									#{quantity, jdbcType=NUMERIC}, 
+									#{price, jdbcType=NUMERIC},
+									#{amount, jdbcType=NUMERIC},
+									#{memo, jdbcType=VARCHAR}, 
+									#{itemStockUnit, jdbcType=VARCHAR},
+									#{endYn, jdbcType=VARCHAR}
+								  )
+	
+	</insert>
+	
+	<update id="updateAmountByordersDetailDto" parameterType="ordersDetailDto">
+		UPDATE	orders_detail
+		SET		quantity = #{quantity},
+				price = #{quantity},
+				amount = #{amount}
+		WHERE	order_detail_code = #{orderDetailCode}
+	</update>
+	
+	<update id="updateItemStockUnitByorderCode" parameterType="ordersDetailDto">
+		UPDATE	orders_detail
+		SET		item_stock_unit = #{itemStockUnit}
+		WHERE	order_detail_code = #{orderDetailCode}
+	</update>
+	
+	<update id="updateEndYnByOrderDetailCode" parameterType="ordersDetailDto">
+		UPDATE	orders_detail
+		SET		end_yn = #{endYn}
+		WHERE	order_detail_code = #{orderDetailCode}
+	</update>
+	
+	<insert id="insertOdersToStOutByOrderCod" parameterType="String">
+		
+		INSERT INTO st_out
+		    (
+		        out_code,
+		        order_code,
+		        company_code,
+		        customer_code,
+		        reg_date,
+		        update_date,
+		        out_type
+		    )
+		SELECT
+		    'OUT' || ST_OUT_OUT_CODE_SEQ.NEXTVAL,
+		    o.order_code,
+		    o.company_code,
+		    o.customer_code,
+		    SYSDATE,
+		    SYSDATE,
+		    '저장'
+		FROM
+		    orders o
+		    INNER JOIN orders_detail od
+		    ON o.order_code = od.order_detail_code
+		WHERE o.order_code = #{orderCode}
 
+	</insert>
+
+	<insert id="insertOdersDetailToStOutDetailByOrderCod" parameterType="String">
+	
+		INSERT INTO st_out_detail
+		    (
+		        out_code,
+		        sorder,
+		        item_code
+		    )
+		SELECT
+		    (SELECT out_code FROM st_out WHERE order_code = #{orderCode}),
+		    <!-- 10, -->
+		    (SELECT COALESCE(MAX(sorder), 0) + 1 FROM st_out_detail),
+		    o.item_code
+		FROM
+		    orders_detail o
+		    INNER JOIN st_out so
+		    ON o.order_detail_code = so.order_code
+			WHERE o.order_detail_code = #{orderCode}
+	
+	</insert>
+	
+	<insert id="insertOdersToWOByOrderCode" parameterType="String">
+	
+		INSERT INTO WO
+		    (
+		        work_order_code,
+		       	order_code,
+		        item_code,
+		        item_quantity,
+		        work_status,
+		        product_type,
+		        delete_status,
+		        reg_date,
+		        update_date
+		    )
+		SELECT
+            'WORK' || (SELECT COALESCE(MAX(TO_NUMBER(SUBSTR(work_order_code, 5))), 0) + 1 FROM wo),
+ 			o.order_code,
+		    od.item_code,
+		    od.quantity,
+		    '저장',
+		    '일반',
+		    'N',
+		    SYSDATE,
+		    SYSDATE
+		    
+		FROM
+		    orders o
+		    INNER JOIN orders_detail od
+		    ON o.order_code = od.order_detail_code
+			WHERE o.order_code = #{orderCode}
+	
+	</insert>
+	
 </mapper>

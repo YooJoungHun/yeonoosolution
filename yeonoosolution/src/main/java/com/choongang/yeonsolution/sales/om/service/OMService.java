@@ -19,4 +19,22 @@ public interface OMService {
 
 	void addReceiveOrder(OrdersDto ordersDto);
 
+	int removeReceiveOrderByOrderCode(String orderCode);
+
+	void addReceiveOrderDetail(OrdersDetailDto ordersDetailDto);
+
+	int modifyOrderDateByorderCode(OrdersDto ordersDto);
+
+	int modifyDueDateByorderCode(OrdersDto ordersDto);
+
+	int modifyAmountByordersDetailDto(OrdersDetailDto ordersDetailDto);
+
+	int modifyItemStockUnitByorderDetailCode(OrdersDetailDto ordersDetailDto);
+
+	int modifyEndYnByOrderDetailCode(OrdersDetailDto ordersDetailDto);
+
+	int addOrdersToStOutByOrderCode(String orderCode);
+
+	int addOrdersToWOByOrderCode(String orderCode);
+
 }
