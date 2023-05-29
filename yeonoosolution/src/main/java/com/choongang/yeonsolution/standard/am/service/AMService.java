@@ -7,4 +7,6 @@ public interface AMService {
 
 	public int addMember(MemberDto memberDto);
 	
+	public boolean isAuthenticated();
+	
 }

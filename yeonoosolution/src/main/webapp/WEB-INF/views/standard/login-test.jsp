@@ -14,6 +14,9 @@
 	<h3>회사코드 : ${member.companyCode}</h3>
 	<h3>이름 : ${member.memberName}</h3>
 	<h3>권한 : ${member.memberRole}</h3>
+	<form action="/v1/standard/logout" method="POST">
+		<button type="submit">로그아웃</button>
+	</form>
 	
 </body>
 </html>

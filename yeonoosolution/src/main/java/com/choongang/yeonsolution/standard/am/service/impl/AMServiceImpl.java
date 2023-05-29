@@ -1,6 +1,9 @@
 package com.choongang.yeonsolution.standard.am.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,9 +32,21 @@ public class AMServiceImpl implements AMService{
 
 	@Override
 	public int addMember(MemberDto memberDto) {
+		String defaultRole = "USER";
 		//비밀번호 암호화
 		memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+		//defaultRole 세팅
+		memberDto.setMemberRole(defaultRole);
 		return amDao.insertMember(memberDto);
+	}
+
+	@Override
+	public boolean isAuthenticated() {
+	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || AnonymousAuthenticationToken.class.isAssignableFrom(authentication.getClass())) {
+				return false;
+			}
+		return authentication.isAuthenticated();
 	}
 
 }

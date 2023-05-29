@@ -8,7 +8,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 /**
  * Security설정파일
@@ -20,7 +24,13 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig{
 	
 	@Autowired
-	private UserLoginSuccessHandler userLoginSuccessHandler;
+	private AuthenticationSuccessHandler userLoginSuccessHandler;
+	@Autowired
+	private AuthenticationEntryPoint customAuthenticationEntryPoint;
+	@Autowired
+	private AuthenticationFailureHandler userLoginFailureHandler;
+	@Autowired
+	private AccessDeniedHandler customAccessDeniedHandler;
 	
 	/**
 	 * SecurityFilterChain 설정
@@ -38,18 +48,22 @@ public class SecurityConfig{
 					//인증 허용 범위 설정
 					.authorizeHttpRequests()
 						.antMatchers("/images/**").permitAll() //static resources 인증 제외
-						.antMatchers("/v1/standard/login", "/v1/standard/sign-up").permitAll() //로그인 페이지, 회원가입 페이지 인증 제외
+						.antMatchers("/v1/standard/login", "/v1/standard/sign-up", "/v1/standard/not-authorized").permitAll() //로그인 페이지, 회원가입 페이지 인증 제외
 						.antMatchers(HttpMethod.POST, "/v1/standard/member").permitAll() //회원가입 인증 제외
-						.antMatchers("/v1/standard/**").hasRole("STANDARD")
-						.antMatchers("/v1/product/**").hasRole("PRODUCT")
-						.antMatchers("/v1/sales/**").hasRole("SALES")
-						.antMatchers("/v1/**").hasRole("ADMIN")
-						.antMatchers(HttpMethod.POST, "/v1/**").hasRole("MANAGER")
-						.antMatchers(HttpMethod.PUT, "/v1/**").hasRole("MANAGER")
-						.antMatchers(HttpMethod.DELETE, "/v1/**").hasRole("MANAGER")
-						.antMatchers(HttpMethod.PATCH, "/v1/**").hasRole("MANAGER")
+						.antMatchers("/v1/standard/**").hasAnyRole("STANDARD", "ADMIN")
+						.antMatchers("/v1/product/**").hasAnyRole("PRODUCT", "ADMIN")
+						.antMatchers("/v1/sales/**").hasAnyRole("SALES", "ADMIN")
+					    .antMatchers(HttpMethod.POST, "/v1/**").hasAnyRole("ADMIN", "MANAGER") // POST 요청은 ADMIN과 MANAGER 역할을 가진 사용자 모두 접근 가능
+					    .antMatchers(HttpMethod.PUT, "/v1/**").hasAnyRole("ADMIN", "MANAGER") // PUT 요청은 ADMIN과 MANAGER 역할을 가진 사용자 모두 접근 가능
+					    .antMatchers(HttpMethod.DELETE, "/v1/**").hasAnyRole("ADMIN", "MANAGER") // DELETE 요청은 ADMIN과 MANAGER 역할을 가진 사용자 모두 접근 가능
+					    .antMatchers(HttpMethod.PATCH, "/v1/**").hasAnyRole("ADMIN", "MANAGER") // PATCH 요청은 ADMIN과 MANAGER 역할을 가진 사용자 모두 접근 가능
 						.anyRequest()
 						.authenticated()
+						.and()
+					//exceptionHandling 설정
+					.exceptionHandling()
+						.authenticationEntryPoint(customAuthenticationEntryPoint)
+						.accessDeniedHandler(customAccessDeniedHandler)
 						.and()
 					//로그인 설정
 					.formLogin()
@@ -57,7 +71,13 @@ public class SecurityConfig{
 						.loginProcessingUrl("/v1/standard/login") //POST 로그인 요청
 						.usernameParameter("memberId")
 						.passwordParameter("password")
-						.successHandler(userLoginSuccessHandler);
+						.successHandler(userLoginSuccessHandler)
+						.failureHandler(userLoginFailureHandler)
+						.and()
+					//로그아웃 설정	
+					.logout()
+						.logoutUrl("/v1/standard/logout")
+						.logoutSuccessUrl("/v1/standard/login");
 		
 		return httpSecurity.build();
 	}

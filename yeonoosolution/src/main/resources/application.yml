@@ -21,11 +21,7 @@ spring:
   devtools:
     restart:
       enabled: false
-
-#jwt secure values      
-jwt:
-  secret: sfow.yeonoosolution.secure
-  duration: 3600000 # 1 hour
+      
 #Mybatis     
 mybatis :
   config-location: classpath:configuration.xml

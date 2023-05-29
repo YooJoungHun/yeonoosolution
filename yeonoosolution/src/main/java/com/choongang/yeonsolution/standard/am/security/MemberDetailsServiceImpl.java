@@ -1,4 +1,4 @@
-package com.choongang.yeonsolution.standard.am.service.impl;
+package com.choongang.yeonsolution.standard.am.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.choongang.yeonsolution.standard.am.domain.MemberDto;
-import com.choongang.yeonsolution.standard.am.security.UserDetailsDto;
 import com.choongang.yeonsolution.standard.am.service.AMService;
 
 import lombok.AllArgsConstructor;

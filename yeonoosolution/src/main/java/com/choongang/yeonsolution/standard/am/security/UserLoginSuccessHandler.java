@@ -11,11 +11,19 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Service
+/**
+ * 로그인 성공 Handler
+ * login 페이지 직접 접속 후 인증 성공시 redirectUrl로 이동
+ * 이전 접속정보가 있을경우 이전 접속한 url로 이동
+ * 인증성공한 member의 정보를 세션에 저장
+ * @author 장성태
+ * @since 2023/05/30
+ */
+@Component
 @Slf4j
 public class UserLoginSuccessHandler implements AuthenticationSuccessHandler{
 
@@ -40,7 +48,7 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler{
 		}
 		//인증성공한 member의 정보를 세션에 저장
 		request.getSession().setAttribute("member", memberInfo.getMemberDto());
-		log.info("[onAuthenticationSuccess] memberInfo : {}", memberInfo.getMemberDto());
+		log.info("[onAuthenticationSuccess] member : {}", memberInfo.getMemberDto());
 		response.sendRedirect(redirectUrl);
 		
 	}

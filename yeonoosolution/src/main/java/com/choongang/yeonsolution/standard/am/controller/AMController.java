@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.choongang.yeonsolution.standard.am.domain.MemberDto;
 import com.choongang.yeonsolution.standard.am.service.AMService;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 권한관리 컨트롤러
  * @author 장성태
@@ -16,6 +18,7 @@ import com.choongang.yeonsolution.standard.am.service.AMService;
  */
 @Controller
 @RequestMapping("v1/standard")
+@Slf4j
 public class AMController {
 	
 	private final AMService amService;
@@ -31,6 +34,10 @@ public class AMController {
 	 */
 	@GetMapping("/login")
 	public String loginPage() {
+		if (amService.isAuthenticated()) {
+			log.info("[loginPage] isAuthenticated() : true");
+			return "redirect:/";
+		} 
 		return "standard/login";
 	}
 
@@ -50,6 +57,15 @@ public class AMController {
 	@GetMapping("/login-test")
 	public String loginTestPage() {
 		return "standard/login-test";
+	}
+	
+	/**
+	 * 403 error 처리 페이지
+	 * @return 403 error 처리 페이지 url 
+	 */
+	@GetMapping("/not-authorized")
+	public String notAuthorizedPage() {
+		return "standard/not-authorized";
 	}
 	
 	/**

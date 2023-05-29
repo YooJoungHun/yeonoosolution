@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html>
 <head>
@@ -66,22 +66,50 @@
 		<form action="/v1/standard/login" method="POST">
 			<img class="mb-4" src="${pageContext.request.contextPath}/images/logo.png" alt="" width="120" height="60">
 			<h1 class="h3 mb-3 fw-normal">로그인</h1>
-
+	
 			<div class="form-floating">
 				<input type="email" class="form-control" id="memberId" name="memberId"> <label for="memberId">아이디</label>
 			</div>
 			<div class="form-floating">
 				<input type="password" class="form-control" id="password" name="password"> <label for="password">비밀번호</label>
 			</div>
-
+	
+			<!-- 로그인 실패 메세지 출력 -->
+			<c:if test="${param.error != null}">
+				<div class="mb-3" style="color: red;" id="error-message"></div>
+			</c:if>
+			
 			<div class="checkbox mb-3">
 				<label>
 					<input type="checkbox" value="remember-me">자동 로그인
 				</label>
 			</div>
+			
 			<button class="w-100 btn btn-lg btn-primary" type="submit">로그인</button>
 			<p class="mt-5 mb-3 text-muted">&copy; 2023</p>
 		</form>
 	</main>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script type="text/javascript">
+	$(function() {
+	    let errorCode= "${param.error}";
+	    let errorMessage = "";
+	    console.log("errorCode : " + errorCode);
+	    switch(errorCode){
+	    	case '400':
+	    		errorMessage = '아이디 혹은 비밀번호를 확인해주세요';
+	    		break;
+	    	case '401':
+	    		errorMessage = '로그인이 필요한 페이지입니다';
+	    		break;
+	    	default:
+	    		errorMessage = '잠시 후 다시 시도해주세요';
+	    		break;
+	    }
+	    
+	    $('#error-message').text(errorMessage);
+	    	
+	});
+</script>
 </body>
 </html>
