@@ -2,4 +2,39 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="InventoryStatusMapper"></mapper>
+<mapper namespace="InventoryStatusMapper">
+
+	<select id="selectIsItemListByItemCode" parameterType="WhStockDetailDto" resultType="WhStockDetailDto">
+		select		i.item_name, i.item_code, i.item_type, wd.wh_code, wd.good_quantity, 
+			  		wd.bad_quantity, wd.update_user, i.stock_unit
+		from		wh_stock_detail wd, item i
+		where		wd.item_code = i.item_code
+		and			i.item_code = #{itemCode}
+		and			i.item_name = #{itemName}
+		and			i.item_type = #{itemType}
+	</select>
+	
+	<select id="selectIsWhDtoWhList" resultType="WhDto">
+		select		wh_code, wh_name
+		from		wh
+	</select>
+	
+	<select id="selectWhTotalCount" resultType="int">
+		select		count(i.item_code)
+		from 		item i
+		join 		wh_stock_detail wd on i.item_code = wd.item_code
+	</select>
+	
+	<select id="selectWhListByPagination" parameterType="PaginationDto" resultType="WhDto">
+		select		*
+		from		(select		rownum rn, n.*
+      				 from		(select		i.item_code, i.item_name, wd.wh_code as wdCode, w.wh_name,
+      				 						w.company_code, m.member_name, w.update_date
+            					 from		item i
+            					 join		wh_stock_detail wd on i.item_code = wd.item_code
+            					 join		wh w on wd.wh_code = w.wh_code
+            					 join		member m on w.update_user = m.member_uid) n
+     				)
+		where rn between #{startRow} and #{endRow}
+	</select>
+</mapper>

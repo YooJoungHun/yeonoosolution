@@ -7,6 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <style type="text/css">
 	span	 {
 		border: 1px solid #E8EBF0;
@@ -50,25 +51,13 @@
 		<table>
 			<tr>
 				<td>
-					<span>품목 구분</span> 
+					<span>창고 구분</span> 
 					<select>
-						<option selected disabled>---- 품목을 선택하세요 ----</option>
-						<option>완제품</option>
-						<option>반제품</option>
-						<option>원자재</option>
+						<option selected disabled>---- 창고를 선택하세요 ----</option>
+					<c:forEach var="wh" items="${whDtoWhList}">
+						<option value="${wh.whCode}">${wh.whName}</option>
+					</c:forEach>
 					</select> 
-				</td>
-				<td>
-					<span>ITEM 코드</span>
-					<input type="text">
-				</td>
-				<td>
-					<span>품명</span>
-				 	<input type="text">
-				</td>
-				<td>
-					<span>품목 코드</span>
-					<input type="text">
 				</td>
 				<td>
 					<input type="button" value="조회">
@@ -83,12 +72,32 @@
 		<table>
 			<tr>
 				<th>창고 코드</th>
+				<th>창고 명</th>
+				<th>회사 명</th>
 				<th>제품 코드</th>
-				<th>양품 수량</th>
-				<th>불량 수량</th>
+				<th>제품 명</th>
+				<th>입고 근무자</th>
+				<th>입고 일자</th>
 			</tr>
+			
+			<c:forEach var="whMap" items="${whDtoMap.whDtoList}">
+			<tr>
+				<td>${whMap.wdCode}</td>
+				<td>${whMap.whName}</td>
+				<td>${whMap.companyCode}</td>
+				<td>${whMap.itemCode}</td>
+				<td>${whMap.itemName}</td>
+				<td>${whMap.memberName}</td>
+				<td>${whMap.updateDate}</td>
+			</tr>
+			</c:forEach>
 		</table>
+		<c:if test=""></c:if>
+		<c:forEach var="i" begin="${whDtoMap.pagination.startNum}" end="${whDtoMap.pagination.lastNum}">
+			<a class="pagination" href="#">${i}</a>
+		</c:forEach>
 	</div>
-	
 </body>
+<script type="text/javascript">
+</script>
 </html>

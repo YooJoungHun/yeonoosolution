@@ -6,5 +6,10 @@
     	<setting name="mapUnderscoreToCamelCase" value="true"/>
   	</settings>
   	
+  	<typeAliases>
+  		<typeAlias alias="WhStockDetailDto" type="com.choongang.yeonsolution.product.is.domain.WhStockDetailDto"/>
+  		<typeAlias alias="WhDto" type="com.choongang.yeonsolution.product.is.domain.WhDto"/>
+  		<typeAlias alias="PaginationDto" type="com.choongang.yeonsolution.product.is.domain.PaginationDto"/>
+  	</typeAliases>
   	
 </configuration>
