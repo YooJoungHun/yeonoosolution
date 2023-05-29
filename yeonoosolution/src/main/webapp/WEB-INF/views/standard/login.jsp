@@ -81,7 +81,7 @@
 			
 			<div class="checkbox mb-3">
 				<label>
-					<input type="checkbox" value="remember-me">자동 로그인
+					<input type="checkbox" name="remember"> 자동 로그인
 				</label>
 			</div>
 			

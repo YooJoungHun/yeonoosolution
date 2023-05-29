@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -31,6 +32,8 @@ public class SecurityConfig{
 	private AuthenticationFailureHandler userLoginFailureHandler;
 	@Autowired
 	private AccessDeniedHandler customAccessDeniedHandler;
+	@Autowired
+	private UserDetailsService memberDetailsServiceImpl;
 	
 	/**
 	 * SecurityFilterChain 설정
@@ -77,16 +80,16 @@ public class SecurityConfig{
 					//로그아웃 설정	
 					.logout()
 						.logoutUrl("/v1/standard/logout")
-						.logoutSuccessUrl("/v1/standard/login");
+						.logoutSuccessUrl("/v1/standard/login")
+						.and()
+					.rememberMe()
+						.key("secret")
+						.rememberMeParameter("remember")
+						.tokenValiditySeconds(600)
+						.alwaysRemember(false)
+						.userDetailsService(memberDetailsServiceImpl);
 		
 		return httpSecurity.build();
 	}
-	
-	/**
-	 * PasswordEncoder Bean 등록
-	 */
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+
 }//end class
