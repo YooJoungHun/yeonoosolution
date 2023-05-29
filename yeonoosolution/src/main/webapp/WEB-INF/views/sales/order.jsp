@@ -88,7 +88,7 @@
 }
 
 .receive-order-type {
-	min-width: 80px;
+	min-width: 110px;
 }
 
 .order-date {
@@ -175,22 +175,23 @@
 	min-width: 60px;
 }
 </style>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
 </head>
 <body>
 	<div id="contain">
-		<input type="button" value="구매 발주" onclick=""> <input
-			type="button" value="구매 입고 등록" onclick=""> <input
-			type="button" value="구매 내역초회" onclick="">
+			<input type="button" value="구매 발주">
+			<input type="button" value="구매 입고 등록">
+			<input type="button" value="구매 내역조회">
 		<div id="content">
 			<div id="btn-div">
-				<button id="search-btn">조회</button>
-				<button id="save-btn">저장</button>
-				<button id="delete-btn">삭제</button>
-				<button id="init-btn">초기화</button>
-				<button id="order-confirm-btn">발주 확정</button>
-				<button id="order-cancel-btn">확정 취소</button>
-				<button id="stock_in-btn">입고</button>
-				<button id="order-close-btn">발주 마감</button>
+				<button id="order-search-btn">조회</button>
+				<button id="order-save-btn">저장</button>
+				<button class="order-delete-btn order-status-update-btn">삭제</button>
+				<button id="order-init-btn">초기화</button>
+				<button id="order-confirm-btn" class="order-status-update-btn">발주 확정</button>
+				<button id="order-cancel-btn" class="order-status-update-btn">확정 취소</button>
+				<button id="order-stock_in-btn">입고</button>
+				<button id="order-close-btn" class="order-status-update-btn">발주 마감</button>
 			</div>
 			<div id="search-div">
 				<div>
@@ -220,8 +221,8 @@
 			</div>
 			<div class="tuigrid-header">
 				<span>구매발주</span>
-				<button type="button" class="table-btn" id="order-add">+</button>
-				<button type="button" class="table-btn" id="order-del">-</button>
+				<button type="button" id="order-add">+</button>
+				<button type="button" class="order-delete-btn order-status-update-btn">-</button>
 			</div>
 			<div id="order-list">
 				<table id="order-list-table-heder"
@@ -283,23 +284,76 @@
 			</div>
 		</div>
 	</div>
+	<!-- <div class="modal" id="modal-order-delete-status-update">
+		<div id="order-delete-content">
+		 <h3>삭제하시겠습니까?</h3>
+		 <div class="modal-btn-div">
+		 <input type="button" class="modal-confirm-btn" value="확인">
+		 <input type="button" class="modal-close-btn" value="취소">
+		 </div>
+		</div>
+	</div>  -->
+	<!-- Modal -->
+	<div class="modal fade" id="modal-order-delete-status-update">
+    	<div class="modal-dialog">
+      		<div class="modal-content" id="order-delete-status-update-content">
+        		<div class="modal-header">
+          			<h5 class="modal-title" >삭제하시겠습니까?</h5>
+          			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        		</div>
+        		<div class="modal-body">
+          			<span>저장하지 않은 발주서는 사라집니다.</span>
+        		</div>
+        		<div class="modal-footer modal-btn-div">
+          			<button type="button" class="btn btn-primary modal-confirm-btn" data-bs-dismiss="modal">확인</button>
+          			<button type="button" class="btn btn-secondary modal-close-btn" data-bs-dismiss="modal">취소</button>
+        		</div>
+      		</div>
+    	</div>
+  	</div>
+	<div class="modal fade" id="modal-order-status-update">
+    	<div class="modal-dialog">
+      		<div class="modal-content" id="order-status-update-content">
+        		<div class="modal-header">
+          			<h5 class="modal-title" id="modal-order-status-update-title"></h5>
+          			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        		</div>
+        		<div class="modal-body"><p></p></div>
+        		<div class="modal-footer modal-btn-div">
+          			<button type="button" class="btn btn-primary modal-confirm-btn" data-bs-dismiss="modal">확인</button>
+          			<button type="button" class="btn btn-secondary modal-close-btn" data-bs-dismiss="modal">취소</button>
+        		</div>
+      		</div>
+    	</div>
+  	</div>
+	<div class="modal fade" id="modal-order-status-update-msg">
+    	<div class="modal-dialog">
+      		<div class="modal-content" id="order-delete-content">
+        		<div class="modal-header">
+          			<h5 class="modal-title" id="modal-order-status-update-title-msg"></h5>
+          			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        		</div>
+        		<div class="modal-body"><p></p></div>
+        		<div class="modal-footer modal-btn-div">
+          			<button type="button" class="btn btn-primary modal-confirm-btn" data-bs-dismiss="modal">확인</button>
+        		</div>
+      		</div>
+    	</div>
+  	</div>
 	<!-- contain -->
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	<script>
+	// 클릭한 발주서 라디오 값 저장
+	let radioOrderCode = null;
 	// 초기화 버튼
-	$('#init-btn').click(function(){
+	$('#order-init-btn').click(function(){
 		 $('#search-div input').val('');
 	});
-	// 거래처 코드 검색 시 모달창 나오도록 대기
-	/* $('#search-customer-code').on('input', function(){
-		console.log($('.order-radio-select:checked').parent().siblings('.customer-code').text($(this).val()));
-	}); */
-	
-	// 클릭한 발주 라디오 값 저장
-	let radioCheck = null;
 	// 발주서 세부항목 불러오기
 	function orderDetailList(orderCode){
-		if(orderCode == radioCheck){
+		if(orderCode == radioOrderCode || orderCode == 'undefined'){
+			radioOrderCode = null;
 			return;
 		}
 		$.ajax({
@@ -323,7 +377,7 @@
 							.append(price).append(amount).append(memo);
 					$('#order-detail-list-table tbody').append(orderDetailRow);
 					
-					radioCheck = orderCode;
+					radioOrderCode = orderCode;
 				});
 			}
 		})
@@ -350,40 +404,36 @@
 				.append(customerCode).append(customerName).append(dueDate).append(orderEmpid).append(deliveryPlan).append(regDate)
 				.append(regUser).append(updateDate).append(updateUser).append(memo);
 		$('#order-list-table tbody').append(orderRow);
+		// 발주서 추가시 포커스 이동
+		if(order.orderCode == null){
+			$('.order-number').filter(function() {
+				return $(this).text().trim() == index;
+			}).closest('tr').find('.order-radio-select').prop('checked', true).focus();
+		}
 	};
-	$('.table-btn').click(function(){
+	$('#order-add').click(function(){
 		let btnId = $(this).attr('id');
 		// 발주서 추가 버튼
 		if(btnId == 'order-add') {
 			let rowCount = $("#order-list-table tbody tr").length;
-			 orderAdd({}, rowCount + 1);
-		// 발주서 삭제 버튼
-		}else if(btnId == 'order-del'){
-			let orderCode = $('input[type="radio"]:checked').val();
-			// 발주서 번호가 없는 발주서의 경우 확인창 없이 바로 삭제
-			if(orderCode == 'undefined'){
-				console.log('radioCheck undefined');
-				$('input[type="radio"]:checked').closest('tr').remove();
-			}else{
-				$('#delete-btn').click();
-			}
+			orderAdd({}, rowCount + 1);
 		}
 	});
 	// 라디오 버튼이 변경되면 발주번호에 맞는 세부항목 ajax로 불러오기
 	$(document).on('change', '.order-radio-select', function(){
 			orderDetailList($(this).val());
 		});
-	// 테이블 행 클릭 시 라디오 버튼 체크표시
-	$(document).on('click', 'td', function(){
-			let radioInput = $(this).siblings('.order-radio').find('input[type="radio"]');
+	// 테이블 행 클릭 시 라디오 버튼 체크표시 및 검색어 추가
+	$(document).on('click', '.order-table-tr-area', function(){
+			let radioInput = $(this).find('.order-radio input[type="radio"]');
+			console.log(radioInput.val());
 			radioInput.prop('checked', true);
-			let orderTableTr = $(this).parent();
-			$('#search-order-day').val(orderTableTr.find('.order-date').text());
-			$('#search-customer-code').val(orderTableTr.find('.customer-code').text());
+			$('#search-order-day').val($(this).find('.order-date').text());
+			$('#search-customer-code').val($(this).find('.customer-code').text());
 			$('#search-customer-name').removeAttr('readonly');
-			$('#search-customer-name').val(orderTableTr.find('.customer-name').text());
+			$('#search-customer-name').val($(this).find('.customer-name').text());
 			$('#search-customer-name').attr('readonly', 'readonly');
-			$('#order-empid').val(orderTableTr.find('.order-empid').text());
+			$('#order-empid').val($(this).find('.order-empid').text());
 			orderDetailList(radioInput.val());
 			$('#all-check').prop('checked', false);
 			
@@ -466,23 +516,85 @@
 		}
 	});
 	// 검색 클릭 시 검색어를 가져와서 ajax 실행
-	$('#search-btn').click(function(){
+	$('#order-search-btn').click(function(){
 		orderList();
 	});
-	// 삭제 기능 추가
-	$('#delete-btn').click(function(){
-		let orderCode = $('input[type="radio"]:checked').val();
-		console.log("orderCode -> " + orderCode);
+	// 발주서 patch ajax사용 버튼 통합
+	$('.order-status-update-btn').click(function(){
+		let orderCode = radioOrderCode;
+		// 버튼의 아이디 추출
+		let btnId = $(this).attr('id');
+		let btnClass = $(this).attr('class');
+		// 발주서 상태 확인
+		let orderStatus = $('input[type="radio"]:checked').closest('tr').find('.order-status').text();
+		
+		if(btnClass.includes('order-delete-btn')){
+			console.log("btnClass.includes('order-delete-btn') -> " + btnClass);
+			// 발주서 번호가 없는 발주서 삭제
+			if(orderCode == null){
+				let deleteTr = $('input[type="radio"]:checked').closest('tr');
+				let deleteTrNumber = deleteTr.find('.order-number').text();
+				console.log("deleteTrNumber -> " + deleteTrNumber);
+				let deleteTrNext = deleteTr.nextAll('tr');
+				deleteTrNext.each(function(index) {
+					  let currentTr = $(this);
+					  let currentOrder = parseInt(deleteTrNumber) + parseInt(index);
+					  currentTr.find('.order-number').text(currentOrder);
+					});
+				deleteTr.remove();
+			}else{
+				$('#modal-order-delete-status-update').modal('show');
+			}
+		}else if($('input[type="radio"]:checked').val() == 'undefined'){
+			alert("발주서번호가 없는 발주서는 먼저 저장을 해주셔야 합니다.");
+		}else {
+			if(btnId == 'order-confirm-btn' && orderStatus == '저장'){
+				$('#modal-order-status-update').find('h5').text('발주 확정 하시겠습니까?');
+			}else if(btnId == 'order-cancel-btn'&& orderStatus == '확정'){
+				$('#modal-order-status-update').find('h5').text('확정 취소 하시겠습니까?');
+			}else if(btnId == 'order-close-btn'){
+				$('#modal-order-status-update').find('h5').text('발주 마감 하시겠습니까?');
+			}else {
+				alert("발주서상태를 확인해주세요.");
+				return;
+			}
+			$('#modal-order-status-update').modal('show');
+		}
+	});
+	function orderUpdate(column, data){
+		let orderCode = radioOrderCode;
 		$.ajax({
 			url: "pm/order/" + orderCode,
 			type : "PATCH",
+			data : {column : column,
+					data : data},
 			dataType : "TEXT",
 			success : function(msg){
 				console.log(msg);
-				$('#search-div input').val('');
+				// 상태 변경 후 발주서 전체 출력
+				if(msg.includes('마감')){
+					$('#search-div input').val('');
+				}
 				orderList();
+				$('#modal-order-status-update-msg').find('h5').text(msg);
+				$('#modal-order-status-update-msg').modal('show');
+				
 			}
 		});
+	}// 모달 확인 버튼 클릭
+	$('.modal-confirm-btn').click(function(){
+		let modalId = $(this).closest('.modal').attr('id');
+		if(modalId.includes("modal-order-delete-status-update")){
+			orderUpdate('deleteStatus', 'Y');
+		}else if(modalId == ("modal-order-status-update")){
+			if($('#modal-order-status-update').find('h5').text().includes('취소')){
+				orderUpdate('orderStatus', '저장');
+			}else if($('#modal-order-status-update').find('h5').text().includes('마감')){
+				orderUpdate('orderStatus', '마감');
+			}else{
+				orderUpdate('orderStatus', '확정');
+			}
+		}
 	});
 	// 페이지 로드 시 전체 발주서 불러오기
 	$(function() {

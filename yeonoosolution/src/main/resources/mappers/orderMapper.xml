@@ -8,6 +8,7 @@
 		FROM	orders od INNER JOIN company com ON od.customer_code = com.company_code
 		WHERE 	od.receive_or_place = '발주'
 		AND		delete_status = 'N'
+		AND		order_status IN ('저장', '확정')
 		<if test="startDate != '' and startDate != null">
 			AND (od.order_date >= #{startDate} OR od.due_date >= #{startDate} 
 				 OR od.reg_date >= #{startDate} OR od.update_date >= #{startDate})
@@ -28,9 +29,16 @@
 		FROM	orders_detail oddt INNER JOIN item it ON oddt.item_code = it.item_code
 		WHERE	oddt.order_detail_code = #{orderCode}
 	</select>
-	<update id="updateOrdersByOrderCode" parameterType="String">
+	<update id="updateOrdersByOrderCode" parameterType="Map">
 		UPDATE	orders
-		SET		delete_status = 'Y'
+	<choose>
+	<when test="column == 'deleteStatus'">
+		SET		delete_status = #{data}
+	</when>
+	<when test="column == 'orderStatus'">
+		SET		order_status = #{data}
+	</when>
+	</choose>
 		WHERE	order_code = #{orderCode}
 	</update>
 </mapper>

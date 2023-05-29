@@ -1,6 +1,7 @@
 package com.choongang.yeonsolution.sales.pm.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
@@ -35,9 +36,9 @@ public class PmDaoImpl implements PmDao{
 	}
 
 	@Override
-	public int updateOrdersByOrderCode(String orderCode) {
-		log.info("updateOrdersByOrderCode orderCode -> {}", orderCode);
-		int result = session.update("updateOrdersByOrderCode", orderCode);
+	public int updateOrdersByOrderCode(Map<String, String> map) {
+		log.info("updateOrdersByOrderCode map -> {}", map);
+		int result = session.update("updateOrdersByOrderCode", map);
 		return result;
 	}
 

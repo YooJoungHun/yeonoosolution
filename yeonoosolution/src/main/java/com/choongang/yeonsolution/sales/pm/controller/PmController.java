@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDetailDto;
@@ -48,9 +49,8 @@ public class PmController {
 	
 	@PatchMapping ("/order/{orderCode}")
 	@ResponseBody
-	public String ordersModifyByorderCode(@PathVariable String orderCode){
-		
-		String msg = pmService.modifyOrdersByorderCode(orderCode);
+	public String ordersModifyByorderCode(@PathVariable String orderCode, @RequestParam String column, @RequestParam String data){
+		String msg = pmService.modifyOrdersByOrderCode(orderCode, column, data);
 		log.info("msg -> {}", msg);
 		return msg;
 	}

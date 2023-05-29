@@ -10,6 +10,6 @@ public interface PmService {
 
 	List<OrdersDto> findOrdersBySearch(Search search);
 	List<OrdersDetailDto> findOrdersDetailByOrderCode(String orderCode);
-	String modifyOrdersByorderCode(String orderCode);
+	String modifyOrdersByOrderCode(String orderCode, String column, String data);
 
 }

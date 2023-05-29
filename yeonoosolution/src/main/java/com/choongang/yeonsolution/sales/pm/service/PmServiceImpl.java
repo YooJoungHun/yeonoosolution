@@ -1,6 +1,8 @@
 package com.choongang.yeonsolution.sales.pm.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -35,14 +37,31 @@ public class PmServiceImpl implements PmService{
 	}
 
 	@Override
-	public String modifyOrdersByorderCode(String orderCode) {
-		int result = pmDao.updateOrdersByOrderCode(orderCode);
+	public String modifyOrdersByOrderCode(String orderCode, String column, String data) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("orderCode", orderCode);
+		map.put("column", column);
+		map.put("data", data);
+		int result = pmDao.updateOrdersByOrderCode(map);
+		String msg = "";
 		log.info("result -> {}",result);
-		if(result > 0) {
-			return "삭제 성공";
-		}else {
-			return "삭제 실패";
+		if(column.equals("deleteStatus")) {
+			msg += "삭제 ";
+		}else if(column.equals("orderStatus")) {
+			if(data.equals("확정")) {
+				msg += "발주확정 ";
+			}else if(data.equals("저장")) {
+				msg += "확정취소 ";
+			}else {
+				msg += "발주마감 ";
+			}
 		}
+		if(result > 0 ) {
+			msg += "되었습니다.";
+		}else {
+			msg = "되지 못했습니다. 잠시후 다시 시도해 주세요.";
+		}
+		return msg;
 	}
 
 }
