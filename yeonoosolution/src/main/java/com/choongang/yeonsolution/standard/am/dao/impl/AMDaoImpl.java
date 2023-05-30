@@ -42,9 +42,30 @@ public class AMDaoImpl implements AMDao{
 	@Override
 	public List<AMDto> selectMemberListByCompanyCode(String companyCode) {
 		log.info("[selectMemberListByCompanyCode] companyCode : {}", companyCode);
-		List<AMDto> amDtoList = sqlSession.selectList("selectMemberListByCompanyCode", companyCode);
-		log.info("[selectMemberListByCompanyCode] amDtoList : {}", amDtoList);
-		return amDtoList;
+		List<AMDto> memberList = sqlSession.selectList("selectMemberListByCompanyCode", companyCode);
+		log.info("[selectMemberListByCompanyCode] amDtoList : {}", memberList);
+		return memberList;
+	}
+
+	@Override
+	public List<AMDto> selectCompanyList() {
+		List<AMDto> companyList = sqlSession.selectList("selectCompanyList");
+		log.info("[selectCompanyList] companyList : {}", companyList);
+		return companyList;
+	}
+
+	@Override
+	public List<AMDto> selectDepartmentList() {
+		List<AMDto> departmentList = sqlSession.selectList("selectDepartmentList");
+		log.info("[selectDepartmentList] departmentList : {}", departmentList);
+		return departmentList;
+	}
+
+	@Override
+	public List<AMDto> selectJobList() {
+		List<AMDto> jobList = sqlSession.selectList("selectJobList");
+		log.info("[selectJobList] jobList : {}", jobList);
+		return jobList;
 	}
 
 }

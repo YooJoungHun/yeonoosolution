@@ -25,7 +25,7 @@ public class AMDto {
 	public String jobUpdateDate;
 	public String jobUpdateUser;
 	
-	//dept
+	//department
 	public String deptName;
 	public String deptYn;
 	public String deptRegDate;
@@ -34,6 +34,18 @@ public class AMDto {
 	public String deptUpdateUser;
 	
 	//company
+	public String businessType;
+	public String orderType;
 	public String companyName;
+	public String businessCode;
+	public String ownerName;
+	public String companyTel;
+	public String companyAddress;
+	public String companyLogo;
+	public String companyRegDate;
+	public String companyRegUser;
+	public String companyUpdateUser;
+	public String companyUpdateDate;
+	public String useYn;
 	
 }   

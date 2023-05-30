@@ -99,15 +99,49 @@ public class AMController {
 	
 	/**
 	 * user-admin페이지 로드시, member의 companyCode에 해당하는 memeberList조회
+	 * @return memberList
 	 */
 	@GetMapping("/members/{companyCode}")
 	@ResponseBody
 	public List<AMDto> memberListByCompanyCode(@PathVariable String companyCode){
 		log.info("[memberListByCompanyCode] companyCode : {}", companyCode);
 		
-		List<AMDto> amDtoList = amService.findMemberListByCompanyCode(companyCode);
+		List<AMDto> memberList = amService.findMemberListByCompanyCode(companyCode);
 		
-		return amDtoList;
+		return memberList;
+	}
+	
+	/**
+	 * 전체 회사목록 조회
+	 */
+	@GetMapping("/companies")
+	@ResponseBody
+	public List<AMDto> companyList(){
+		List<AMDto> companyList = amService.findCompanyList();
+		
+		return companyList;
+	}
+	
+	/**
+	 * 전체 부서목록 조회
+	 */
+	@GetMapping("/departments")
+	@ResponseBody
+	public List<AMDto> departmentList(){
+		List<AMDto> departmentList = amService.findDepartmentList();
+		
+		return departmentList;
+	}
+	
+	/**
+	 * 전체 직책목록 조회
+	 */
+	@GetMapping("/jobs")
+	@ResponseBody
+	public List<AMDto> jobList(){
+		List<AMDto> jobList = amService.findJobList();
+		
+		return jobList;
 	}
 	
 }//end class

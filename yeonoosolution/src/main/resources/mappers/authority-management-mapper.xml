@@ -4,7 +4,7 @@
 	<select id="selectMemberByMemberId" parameterType="String" resultType="MemberDto">
 		SELECT *
 		FROM member
-		WHERE member_id = UPPER(#{memberId})
+		WHERE member_id = #{memberId}
 	</select>
 	
 	<insert id="insertMember" parameterType="MemberDto">
@@ -19,7 +19,8 @@
 			address,
 			tel,
 			member_image,
-			member_role
+			member_role,
+			member_yn
 		) values (
 			UPPER(#{companyCode}) || '.' || #{memberId},
 			#{deptCode, jdbcType=VARCHAR},
@@ -31,7 +32,8 @@
 			#{address, jdbcType=VARCHAR},
 			#{tel, jdbcType=VARCHAR},
 			#{memberImage, jdbcType=VARCHAR},
-			#{memberRole, jdbcType=VARCHAR}
+			#{memberRole, jdbcType=VARCHAR},
+			'Y'
 		)
 	</insert>
 	
@@ -54,7 +56,51 @@
 		INNER JOIN department d ON m.dept_code = d.dept_code
 		INNER JOIN job j ON m.job_code = j.job_code
         INNER JOIN company c ON m.company_code = c.company_code
-		WHERE m.company_code = UPPER(#{companyCode}) 
+		WHERE m.company_code = UPPER(#{companyCode})
+		AND m.member_yn = 'Y' 
  		ORDER BY m.job_code
+	</select>
+	
+	<select id="selectCompanyList" resultType="AMDto">
+		SELECT
+			company_code,
+			business_type,
+			order_type,
+			company_name,
+			business_code,
+			owner_name,
+			tel as company_tel,
+			address as company_address,
+			company_logo,
+			reg_date as company_reg_date,
+			reg_user as company_reg_user,
+			update_user as company_update_user,
+			update_date as company_update_date,
+			use_yn
+		FROM company
+	</select>
+	
+	<select id="selectDepartmentList" resultType="AMDto">
+		SELECT
+			dept_code,
+			dept_name,
+			dept_yn,
+			reg_date as dept_reg_date,
+			reg_user as dept_reg_user,
+			update_date as dept_update_date,
+			update_user as dept_update_user
+		FROM department
+	</select>
+	
+	<select id="selectJobList" resultType="AMDto">
+		SELECT
+			job_code,
+			job_name,
+			job_yn,
+			reg_date as job_reg_date,
+			reg_user as job_reg_user,
+			update_date as job_update_date,
+			update_user as job_update_user
+		FROM job
 	</select>
 </mapper>

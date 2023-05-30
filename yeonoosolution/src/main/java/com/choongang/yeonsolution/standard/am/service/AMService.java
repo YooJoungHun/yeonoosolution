@@ -13,5 +13,11 @@ public interface AMService {
 	public boolean isAuthenticated();
 
 	public List<AMDto> findMemberListByCompanyCode(String companyCode);
+
+	public List<AMDto> findCompanyList();
+
+	public List<AMDto> findDepartmentList();
+
+	public List<AMDto> findJobList();
 	
 }

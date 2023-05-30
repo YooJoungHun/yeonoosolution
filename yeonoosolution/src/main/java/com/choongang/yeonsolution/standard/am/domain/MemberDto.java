@@ -15,4 +15,5 @@ public class MemberDto {
 	public String tel;
 	public String memberImage;
 	public String memberRole;
+	public String memeberYn;
 }    

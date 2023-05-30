@@ -11,4 +11,10 @@ public interface AMDao {
 	public int insertMember(MemberDto memberDto);
 
 	public List<AMDto> selectMemberListByCompanyCode(String companyCode);
+
+	public List<AMDto> selectCompanyList();
+
+	public List<AMDto> selectDepartmentList();
+
+	public List<AMDto> selectJobList();
 }

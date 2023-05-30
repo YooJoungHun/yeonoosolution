@@ -54,8 +54,26 @@ public class AMServiceImpl implements AMService{
 
 	@Override
 	public List<AMDto> findMemberListByCompanyCode(String companyCode) {
-		List<AMDto> adDtoList = amDao.selectMemberListByCompanyCode(companyCode);
-		return adDtoList;
+		List<AMDto> memberList = amDao.selectMemberListByCompanyCode(companyCode);
+		return memberList;
+	}
+
+	@Override
+	public List<AMDto> findCompanyList() {
+		List<AMDto> companyList = amDao.selectCompanyList();
+		return companyList;
+	}
+
+	@Override
+	public List<AMDto> findDepartmentList() {
+		List<AMDto> departmentList = amDao.selectDepartmentList();
+		return departmentList;
+	}
+
+	@Override
+	public List<AMDto> findJobList() {
+		List<AMDto> jobList = amDao.selectJobList();
+		return jobList;
 	}
 
 }
