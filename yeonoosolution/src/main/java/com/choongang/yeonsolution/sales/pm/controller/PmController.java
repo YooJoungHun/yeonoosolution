@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.choongang.yeonsolution.sales.pm.domain.CompanyDto;
+import com.choongang.yeonsolution.sales.pm.domain.ItemDto;
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDetailDto;
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDto;
 import com.choongang.yeonsolution.sales.pm.domain.Search;
@@ -53,5 +55,20 @@ public class PmController {
 		String msg = pmService.modifyOrdersByOrderCode(orderCode, column, data);
 		log.info("msg -> {}", msg);
 		return msg;
+	}
+	
+	@GetMapping("/customer-list")
+	@ResponseBody
+	public List<CompanyDto> companyListBySearch(@RequestParam String search){
+		log.info("search -> {}", search);
+		List<CompanyDto> companyList = pmService.findCompanyBySearch(search);
+		return companyList;
+	}
+	@GetMapping("/item-list")
+	@ResponseBody
+	public List<ItemDto> itemListBySearch(@RequestParam String search){
+		log.info("search -> {}", search);
+		List<ItemDto> itemList = pmService.findItemBySearch(search);
+		return itemList;
 	}
 }

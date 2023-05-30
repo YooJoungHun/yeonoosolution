@@ -25,9 +25,10 @@
 		
 	</select>
 	<select id="selectOrdersDetailByOrderCode" resultType="OrdersDetailDto" parameterType="String">
-		SELECT 	oddt.*, it.item_name AS item_name
-		FROM	orders_detail oddt INNER JOIN item it ON oddt.item_code = it.item_code
-		WHERE	oddt.order_detail_code = #{orderCode}
+		SELECT 	 oddt.*, it.item_name AS item_name
+		FROM	 orders_detail oddt INNER JOIN item it ON oddt.item_code = it.item_code
+		WHERE	 oddt.order_detail_code = #{orderCode}
+		ORDER BY oddt.sorder
 	</select>
 	<update id="updateOrdersByOrderCode" parameterType="Map">
 		UPDATE	orders
@@ -41,4 +42,20 @@
 	</choose>
 		WHERE	order_code = #{orderCode}
 	</update>
+	<select id="selectCompanyBySearch" parameterType="String" resultType="CompanyDto">
+		SELECT 	*
+		FROM	company
+		<if test="search != 'null'">
+		WHERE	company_code LIKE '%' || #{search} || '%'
+		OR		company_name LIKE '%' || #{search} || '%'
+		</if>
+	</select>
+	<select id="selectItemBySearch" parameterType="String" resultType="ItemDto">
+		SELECT 	*
+		FROM	item
+		<if test="search != 'null'">
+		WHERE	item_code LIKE '%' || #{search} || '%'
+		OR		item_name LIKE '%' || #{search} || '%'
+		</if>
+	</select>
 </mapper>

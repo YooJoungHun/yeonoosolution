@@ -6,6 +6,8 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.choongang.yeonsolution.sales.pm.domain.CompanyDto;
+import com.choongang.yeonsolution.sales.pm.domain.ItemDto;
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDetailDto;
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDto;
 import com.choongang.yeonsolution.sales.pm.domain.Search;
@@ -40,6 +42,19 @@ public class PmDaoImpl implements PmDao{
 		log.info("updateOrdersByOrderCode map -> {}", map);
 		int result = session.update("updateOrdersByOrderCode", map);
 		return result;
+	}
+
+	@Override
+	public List<CompanyDto> selectCompanyBySearch(String search) {
+		List<CompanyDto> companyList = session.selectList("selectCompanyBySearch", search);
+		return companyList;
+	}
+
+	@Override
+	public List<ItemDto> selectItemyBySearch(String search) {
+		List<ItemDto> itemList = session.selectList("selectItemBySearch", search);
+		System.out.println("itemList -> " + itemList);
+		return itemList;
 	}
 
 }

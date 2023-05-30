@@ -7,6 +7,8 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.choongang.yeonsolution.sales.pm.dao.PmDao;
+import com.choongang.yeonsolution.sales.pm.domain.CompanyDto;
+import com.choongang.yeonsolution.sales.pm.domain.ItemDto;
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDetailDto;
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDto;
 import com.choongang.yeonsolution.sales.pm.domain.Search;
@@ -32,7 +34,6 @@ public class PmServiceImpl implements PmService{
 
 	@Override
 	public List<OrdersDetailDto> findOrdersDetailByOrderCode(String orderCode) {
-		// TODO Auto-generated method stub
 		return pmDao.selectOrdersDetailByOrderCode(orderCode);
 	}
 
@@ -62,6 +63,16 @@ public class PmServiceImpl implements PmService{
 			msg = "되지 못했습니다. 잠시후 다시 시도해 주세요.";
 		}
 		return msg;
+	}
+
+	@Override
+	public List<CompanyDto> findCompanyBySearch(String search) {
+		return pmDao.selectCompanyBySearch(search);
+	}
+
+	@Override
+	public List<ItemDto> findItemBySearch(String search) {
+		return pmDao.selectItemyBySearch(search);
 	}
 
 }

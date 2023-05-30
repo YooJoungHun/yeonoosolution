@@ -174,6 +174,13 @@
 .order-number {
 	min-width: 60px;
 }
+#customer-list-table{
+	board : 1px solid;
+	border-collapse: collapse;
+}
+.td-hidden {
+	visibility: hidden;
+}
 </style>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
 </head>
@@ -208,7 +215,7 @@
 				</div>
 				<div>
 					<p>거래처 코드(검색)</p>
-					<input type="text" id="search-customer-code">
+					<input type="text" id="search-customer-code" autocomplete="off">
 				</div>
 				<div>
 					<p>거래처명</p>
@@ -255,8 +262,8 @@
 			</div>
 			<div class="tuigrid-header">
 				<span>세부항목</span>
-				<button type="button">+</button>
-				<button type="button">-</button>
+				<button type="button" class="odrer-detail-btn" id="odrer-detail-add-btn">+</button>
+				<button type="button" class="odrer-detail-btn" id="odrer-detail-del-btn">-</button>
 			</div>
 			<div id="order-detail">
 				<table id="order-detail-list-table-heder"
@@ -264,8 +271,7 @@
 					<thead>
 						<tr>
 							<th class="item-sorder"></th>
-							<th class="item-checkbox"><input type="checkbox"
-								id="all-check"></th>
+							<th class="item-checkbox"><input type="checkbox" id="all-check"></th>
 							<th class="item-code">ITEM코드</th>
 							<th class="item-name">품명</th>
 							<th class="item-stock-unit">재고단위</th>
@@ -284,15 +290,6 @@
 			</div>
 		</div>
 	</div>
-	<!-- <div class="modal" id="modal-order-delete-status-update">
-		<div id="order-delete-content">
-		 <h3>삭제하시겠습니까?</h3>
-		 <div class="modal-btn-div">
-		 <input type="button" class="modal-confirm-btn" value="확인">
-		 <input type="button" class="modal-close-btn" value="취소">
-		 </div>
-		</div>
-	</div>  -->
 	<!-- Modal -->
 	<div class="modal fade" id="modal-order-delete-status-update">
     	<div class="modal-dialog">
@@ -340,6 +337,56 @@
       		</div>
     	</div>
   	</div>
+  	<!-- 회사 검색 모달 -->
+	<div class="modal fade" id="modal-select-customer-code">
+    	<div class="modal-dialog">
+      		<div class="modal-content" id="select-customer-code-content">
+        		<div class="modal-header">
+          			<h5 class="modal-title" id="modal-select-customer-code-title-msg"></h5>
+          			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        		</div>
+        		<div class="modal-body">
+        		<table id="customer-list-table">
+        			<thead>
+        				<tr>
+        					<th>회사코드</th>
+        					<th>회사명</th>
+        				</tr>
+					</thead>
+        			<tbody></tbody>
+        		</table>
+        		</div>
+        		<div class="modal-footer modal-btn-div">
+          			<button type="button" class="btn btn-primary modal-confirm-btn" data-bs-dismiss="modal">확인</button>
+        		</div>
+      		</div>
+    	</div>
+  	</div>
+  	<!-- 세부항목 추가 모달 -->
+	<div class="modal fade" id="modal-select-item-code">
+    	<div class="modal-dialog">
+      		<div class="modal-content" id="select-item-code-content">
+        		<div class="modal-header">
+          			<h5 class="modal-title" id="modal-select-item-code-title-msg"></h5>
+          			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        		</div>
+        		<div class="modal-body">
+        		<table id="item-list-table">
+        			<thead>
+        				<tr>
+        					<th>제품코드</th>
+        					<th>제품명</th>
+        				</tr>
+					</thead>
+        			<tbody></tbody>
+        		</table>
+        		</div>
+        		<div class="modal-footer modal-btn-div">
+          			<button type="button" class="btn btn-primary modal-confirm-btn" data-bs-dismiss="modal">확인</button>
+        		</div>
+      		</div>
+    	</div>
+  	</div>
 	<!-- contain -->
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -350,38 +397,122 @@
 	$('#order-init-btn').click(function(){
 		 $('#search-div input').val('');
 	});
+	// 제품 검색 데이터 받기
+	function itemSearch(search){
+		$.ajax({
+			url : "pm/item-list",
+			type : "GET",
+			dataType : "JSON",
+			data : {search :search.toUpperCase()},
+			success : function(itemList){
+				let itemListTable = $('#item-list-table tbody');
+				itemListTable.empty();
+				itemList.forEach(function(item){
+					let itemListRow = $('<tr>').addClass('item-list-tr');
+					let checkBox = $('<td>').addClass('item-radio').append($("<input type='radio' class='item-radio' name='customer-radio'>"));
+					let itemCode = $('<td>').addClass('item-code').text(item.itemCode);
+					let itemName = $('<td>').addClass('item-name').text(item.itemName);
+					let stockUnit = $('<td>').addClass('item-stock-unit td-hidden').text(item.stockUnit);
+					let purchasePrice = $('<td>').addClass('item-price td-hidden').text(item.purchasePrice);
+					
+					itemListRow.append(checkBox).append(itemCode).append(itemName).append(stockUnit).append(purchasePrice);
+					itemListTable.append(itemListRow);
+				});
+				$('#modal-select-item-code').modal('show');
+			}
+		});
+	}
+	// 회사 검색 데이터 받기
+	function companySearch(search){
+		$.ajax({
+			url : "pm/customer-list",
+			type : "GET",
+			dataType : "JSON",
+			data : {search :search.toUpperCase()},
+			success : function(customerList){
+				let customerListTable = $('#customer-list-table tbody');
+				customerListTable.empty();
+				customerList.forEach(function(customer){
+					console.log("customer -> " + customer.companyCode + "   " + customer.companyName);
+					let customerListRow = $('<tr>').addClass('customer-list-tr');
+					let radio = $('<td>').addClass('customer-radio').append($("<input type='radio' class='customer-radio' name='customer-radio'>"));
+					let customerCode = $('<td>').addClass('customer-code').text(customer.companyCode);
+					let customerName = $('<td>').addClass('customer-name').text(customer.companyName);
+					
+					customerListRow.append(radio).append(customerCode).append(customerName);
+					customerListTable.append(customerListRow);
+				});
+				$('#modal-select-customer-code').modal('show');
+			}
+		});
+	}
+	$('#search-customer-code').keydown(function(event){
+		let search = $(this).val();
+		console.log("search -> " + search);
+		if (event.keyCode === 13) {
+			companySearch(search);
+		};
+	});
+	
+	function orderDetailAdd(orderDetail, rowNumber){
+		if(orderDetail.sorder != null){
+			rowNumber = orderDetail.sorder;
+		}
+		let orderDetailRow = $('<tr>').addClass('order-detail-table-tr-area');
+		let Sorder = $('<td>').addClass('item-sorder').text(rowNumber);
+		let Checkbox = $('<td>').addClass('item-checkbox').append($("<input type='checkbox' class='order-detail-checkbox'>"));
+		let itemCode = $('<td>').addClass('item-code change-td').text(orderDetail.itemCode);
+		let itemName = $('<td>').addClass('item-name').text(orderDetail.itemName);
+		let itemStockUnit = $('<td>').addClass('item-stock-unit').text(orderDetail.itemStockUnit);
+		let quantity = $('<td>').addClass('quantity change-td').text(orderDetail.quantity);
+		let price = $('<td>').addClass('item-price change-td').text(orderDetail.price);
+		let amount = $('<td>').addClass('amount').text(orderDetail.amount);
+		let memo = $('<td>').addClass('order-detail-memo change-td').text(orderDetail.memo);
+		orderDetailRow.append(Sorder).append(Checkbox).append(itemCode).append(itemName).append(itemStockUnit).append(quantity)
+				.append(price).append(amount).append(memo);
+		$('#order-detail-list-table tbody').append(orderDetailRow);
+	}
 	// 발주서 세부항목 불러오기
 	function orderDetailList(orderCode){
-		if(orderCode == radioOrderCode || orderCode == 'undefined'){
+		console.log("function orderDetailList(orderCode){ -> " + orderCode);
+		if(orderCode == radioOrderCode){
 			radioOrderCode = null;
+			return;
+		}else if(orderCode == 'undefined'){
+			$('#order-detail-list-table tbody').empty();
 			return;
 		}
 		$.ajax({
 			url: "/pm/order/" + orderCode +"/details",
 			type : "GET",
 			dataType : "JSON",
-			success : function(OrdersDetailList){
+			success : function(orderDetailList){
 				$('#order-detail-list-table tbody').empty();
-				OrdersDetailList.forEach(function(OrdersDetail){
-					let orderDetailRow = $('<tr>');
-					let Sorder = $('<td>').addClass('item-sorder').text(OrdersDetail.sorder);
-					let Checkbox = $('<td>').addClass('item-checkbox').append($("<input type='checkbox' class='order-detail-checkbox'>"));
-					let itemCode = $('<td>').addClass('item-code').text(OrdersDetail.itemCode);
-					let itemName = $('<td>').addClass('item-name').text(OrdersDetail.itemName);
-					let itemStockUnit = $('<td>').addClass('item-stock-unit').text(OrdersDetail.itemStockUnit);
-					let quantity = $('<td>').addClass('quantity').text(OrdersDetail.quantity);
-					let price = $('<td>').addClass('item-price').text(OrdersDetail.price);
-					let amount = $('<td>').addClass('amount').text(OrdersDetail.amount);
-					let memo = $('<td>').addClass('order-detail-memo').text(OrdersDetail.memo);
-					orderDetailRow.append(Sorder).append(Checkbox).append(itemCode).append(itemName).append(itemStockUnit).append(quantity)
-							.append(price).append(amount).append(memo);
-					$('#order-detail-list-table tbody').append(orderDetailRow);
-					
-					radioOrderCode = orderCode;
+				orderDetailList.forEach(function(orderDetail){
+					orderDetailAdd(orderDetail);
 				});
+				radioOrderCode = orderCode;
 			}
 		})
 	}
+	$('.odrer-detail-btn').click(function(){
+		let btnId = $(this).attr('id');
+		// 상세 항목추가 버튼
+		if(btnId == 'odrer-detail-add-btn') {
+			let rowCount = $("#order-detail-list-table tbody tr").length;
+			orderDetailAdd({}, rowCount + 1);
+			$('#all-check').prop('checked', false);
+		// 삭제 버튼
+		}else if(btnId == 'odrer-detail-del-btn'){
+			let checkedOrderDetails = $('.order-detail-checkbox:checked').closest('tr').remove();
+			let nonCheckedOrderDetails = $('.order-detail-checkbox').closest('tr');
+			console.log("nonCheckedOrderDetails -> " + nonCheckedOrderDetails);
+			nonCheckedOrderDetails.each(function(index) {
+				$(this).find('.item-sorder').text(index + 1);
+			});
+		}
+	});
+	
 	function orderAdd(order, index){
 		let orderRow = $('<tr>').addClass('order-table-tr-area');
 		let orderNumber = $('<td>').addClass('order-number').text(index);
@@ -390,7 +521,7 @@
 		let orderCode = $('<td>').addClass('order-code').text(order.orderCode);
 		let receiveOrderType = $('<td>').addClass('receive-order-type change-td').text(order.receiveOrderType);
 		let orderDate = $('<td>').addClass('order-date change-td').text(order.orderDate);
-		let customerCode = $('<td>').addClass('customer-code').text(order.customerCode);
+		let customerCode = $('<td>').addClass('customer-code change-td').text(order.customerCode);
 		let customerName = $('<td>').addClass('customer-name').text(order.customerName);
 		let dueDate = $('<td>').addClass('due-date change-td').text(order.dueDate);
 		let orderEmpid = $('<td>').addClass('order-empid').text(order.orderEmpid);
@@ -409,6 +540,7 @@
 			$('.order-number').filter(function() {
 				return $(this).text().trim() == index;
 			}).closest('tr').find('.order-radio-select').prop('checked', true).focus();
+			$('#order-detail-list-table tbody').empty();
 		}
 	};
 	$('#order-add').click(function(){
@@ -423,63 +555,95 @@
 	$(document).on('change', '.order-radio-select', function(){
 			orderDetailList($(this).val());
 		});
-	// 테이블 행 클릭 시 라디오 버튼 체크표시 및 검색어 추가
+	// 발주서 행 클릭 시 라디오 버튼 체크표시 및 검색어 추가
 	$(document).on('click', '.order-table-tr-area', function(){
-			let radioInput = $(this).find('.order-radio input[type="radio"]');
-			console.log(radioInput.val());
-			radioInput.prop('checked', true);
-			$('#search-order-day').val($(this).find('.order-date').text());
-			$('#search-customer-code').val($(this).find('.customer-code').text());
-			$('#search-customer-name').removeAttr('readonly');
-			$('#search-customer-name').val($(this).find('.customer-name').text());
-			$('#search-customer-name').attr('readonly', 'readonly');
-			$('#order-empid').val($(this).find('.order-empid').text());
-			orderDetailList(radioInput.val());
-			$('#all-check').prop('checked', false);
+		let radioInput = $(this).find('.order-radio input[type="radio"]');
+		console.log(radioInput.val());
+		radioInput.prop('checked', true);
+		$('#search-order-day').val($(this).find('.order-date').text());
+		$('#search-customer-code').val($(this).find('.customer-code').text());
+		$('#search-customer-name').removeAttr('readonly');
+		$('#search-customer-name').val($(this).find('.customer-name').text());
+		$('#search-customer-name').attr('readonly', 'readonly');
+		$('#order-empid').val($(this).find('.order-empid').text());
+		orderDetailList(radioInput.val());
+		$('#all-check').prop('checked', false);
 			
 	});
+	// 세부항목 행 클릭 시 체크박스 체크표시
+	$(document).on('click', '.order-detail-table-tr-area', function(){
+		let checkboxInput = $(this).find('.order-detail-checkbox');
+		if(checkboxInput.is(':checked')){
+			checkboxInput.prop('checked', false);
+		}else {
+			checkboxInput.prop('checked', true);
+		}
+		
+		let allChecked = true;
+		$('.order-detail-checkbox').each(function() {
+	    	if (!$(this).is(':checked')) {
+	    		console.log("allChecked -> " + allChecked);
+	      		allChecked = false;
+	      		return false;
+	    	}
+	  	});
+		if(allChecked) {
+			$('#all-check').prop('checked', true);
+		}else{
+			$('#all-check').prop('checked', false);
+		}
+	});
+	let changeItemRow = null;
 	// 더블 클릭 시 input태그로 변환
 	$(document).on('dblclick', '.change-td', function() {
-			let elementClass = $(this).attr('class');
-			console.log(elementClass);
-			let dbclickTd = $(this);
-			let value = $(this).text();
-			let tdWidth = $(this).width() - 10;
-			dbclickTd.empty();
-			if(elementClass.includes('date')){
-				dbclickTd.append($('<input type="date">').addClass('change-text-input-td').val(value).css('width', tdWidth+'px'));
-				$('.change-text-input-td').focus();
-			} else if(elementClass.includes('receive-order-type')) {
-				dbclickTd.append($('<select>').addClass('change-text-input-td').val(value).css('width', tdWidth+'px')
-						.append($("<option>").val('일반구매').text('일반구매'))
-						.append($("<option>").val('특별구매').text('특별구매'))
-						.append($("<option>").val('외주구매').text('외주구매'))
-				);
-					
-				$('.change-text-input-td').focus();
-			} else {
-				dbclickTd.append($('<input>').addClass('change-text-input-td').val(value).css('width', tdWidth+'px'));
-				$('.change-text-input-td').focus();
+		let elementClass = $(this).attr('class');
+		console.log(elementClass);
+		let dbclickTd = $(this);
+		let value = $(this).text();
+		let tdWidth = $(this).width() - 10;
+		dbclickTd.empty();
+		if(elementClass.includes('date')){
+			dbclickTd.append($('<input type="date">').addClass('change-text-input-td').val(value).css('width', tdWidth+'px'));
+			$('.change-text-input-td').focus();
+		} else if(elementClass.includes('receive-order-type')) {
+			dbclickTd.append($('<select>').addClass('change-text-input-td').val(value).css('width', tdWidth+'px')
+					 .append($("<option>").val('일반구매').text('일반구매'))
+					 .append($("<option>").val('특별구매').text('특별구매'))
+					 .append($("<option>").val('외주구매').text('외주구매'))
+			);
+				
+			$('.change-text-input-td').focus();
+		} else {
+			if(elementClass.includes('item-code')){
+				changeItemRow = dbclickTd.closest('tr').find('.item-sorder').text();
 			}
-			// input태그 작성 중 엔터 시 작성된 값을 text로 변환하여 출력
-			$(document).on("keydown", '.change-text-input-td', function(event) {
-				if (event.keyCode === 13) {
-					let dbEnterTd = $(this).parent();
-					let value1 = $(this).val();
-					dbEnterTd.empty();
-					dbEnterTd.text(value1);
-			    }
-			});
-			// input태그 작성 중 다른 곳 클릭시 작성된 값을 text로 변환하여 출력
-			$(document).on("click", function(event) {
-				let target = $(event.target);
-				if (!target.closest(".change-text-input-td").length) {
-					let dbEnterTd = $('.change-text-input-td').parent();
-					let value1 = $('.change-text-input-td').val();
-					dbEnterTd.empty();
-					dbEnterTd.text(value1);
-				  }
-			});
+			dbclickTd.append($('<input>').addClass('change-text-input-td').val(value).css('width', tdWidth+'px'));
+			$('.change-text-input-td').focus();
+		}
+	});
+	// input태그 작성 중 엔터 시 작성된 값을 text로 변환하여 출력
+	$(document).on("keydown", '.change-text-input-td', function(event) {
+		if (event.keyCode === 13) {
+			if($(this).parent().attr('class').includes('customer-code')){
+				companySearch($(this).val());		
+			}else if($(this).parent().attr('class').includes('item-code')){
+				itemSearch($(this).val());		
+			}
+			let dbEnterTd = $(this).parent();
+			let value1 = $(this).val();
+			dbEnterTd.empty();
+			dbEnterTd.text(value1);
+	    }
+	});
+	// input태그 작성 중 다른 곳 클릭시 작성된 값을 text로 변환하여 출력
+	$(document).on("click", function(event) {
+		let target = $(event.target);
+		if (!target.closest(".change-text-input-td").length) {
+			let dbEnterTd = $('.change-text-input-td').parent();
+			let value1 = $('.change-text-input-td').val();
+			dbEnterTd.empty();
+			dbEnterTd.text(value1);
+		  }
 	});
 	// 발주서 검색기능
 	function orderList(){
@@ -529,7 +693,6 @@
 		let orderStatus = $('input[type="radio"]:checked').closest('tr').find('.order-status').text();
 		
 		if(btnClass.includes('order-delete-btn')){
-			console.log("btnClass.includes('order-delete-btn') -> " + btnClass);
 			// 발주서 번호가 없는 발주서 삭제
 			if(orderCode == null){
 				let deleteTr = $('input[type="radio"]:checked').closest('tr');
@@ -537,10 +700,10 @@
 				console.log("deleteTrNumber -> " + deleteTrNumber);
 				let deleteTrNext = deleteTr.nextAll('tr');
 				deleteTrNext.each(function(index) {
-					  let currentTr = $(this);
-					  let currentOrder = parseInt(deleteTrNumber) + parseInt(index);
-					  currentTr.find('.order-number').text(currentOrder);
-					});
+					let currentTr = $(this);
+					let currentOrder = parseInt(deleteTrNumber) + parseInt(index);
+					currentTr.find('.order-number').text(currentOrder);
+				});
 				deleteTr.remove();
 			}else{
 				$('#modal-order-delete-status-update').modal('show');
@@ -583,7 +746,9 @@
 		});
 	}// 모달 확인 버튼 클릭
 	$('.modal-confirm-btn').click(function(){
-		let modalId = $(this).closest('.modal').attr('id');
+		
+		let modal = $(this).closest('.modal');
+		let modalId = modal.attr('id');
 		if(modalId.includes("modal-order-delete-status-update")){
 			orderUpdate('deleteStatus', 'Y');
 		}else if(modalId == ("modal-order-status-update")){
@@ -594,6 +759,42 @@
 			}else{
 				orderUpdate('orderStatus', '확정');
 			}
+		}else if(modalId.includes('modal-select-customer-code')){
+			let customer = modal.find('input[type="radio"]:checked');
+			console.log("customer" + customer.attr('class'));
+			let customerCode = customer.parent().siblings().filter('.customer-code').text();
+			let customerName = customer.parent().siblings().filter('.customer-name').text();
+			console.log("customerCode -> " + customerCode + " customerName -> " + customerName);
+			$('#search-customer-code').val(customerCode);
+			$('#search-customer-name').removeAttr('readonly');
+			$('#search-customer-name').val(customerName);
+			$('#search-customer-name').attr('readonly', 'readonly');
+			
+			let radioChecked = $('.order-radio input[type="radio"]:checked').val();
+			if(radioChecked != 'undefined'){
+				$('.order-radio input[type="radio"]:checked').closest('tr').find('.customer-code').text(customerCode);
+				$('.order-radio input[type="radio"]:checked').closest('tr').find('.customer-name').removeAttr('readonly');
+				$('.order-radio input[type="radio"]:checked').closest('tr').find('.customer-name').text(customerName);
+				$('.order-radio input[type="radio"]:checked').closest('tr').find('.customer-name').attr('readonly', 'readonly');
+			}
+		}else if(modalId.includes('modal-select-item-code')){
+			let item = modal.find('input[type="radio"]:checked');
+			let changeTr = $('.item-sorder').filter(function() {
+				return parseInt($(this).text()) == changeItemRow;
+			}).closest('tr');
+			changeTr.find('.item-code').text(item.parent().siblings().filter('.item-code').text());
+			changeTr.find('.item-name').removeAttr('readonly');
+			changeTr.find('.item-name').text(item.parent().siblings().filter('.item-name').text());
+			changeTr.find('.item-name').attr('readonly', 'readonly');
+			changeTr.find('.item-stock-unit').removeAttr('readonly');
+			changeTr.find('.item-stock-unit').text(item.parent().siblings().filter('.item-stock-unit').text());
+			changeTr.find('.item-stock-unit').attr('readonly', 'readonly');
+			changeTr.find('.quantity').text('');
+			changeTr.find('.item-price').text(item.parent().siblings().filter('.item-price').text());
+			changeTr.find('.amount').text('');
+			
+			console.log("item.parent().siblings().filter('.item-stock-unit td-hidden').text() -> " + item.parent().siblings().filter('.item-stock-unit').text());
+			console.log("item.parent().siblings().filter('.item-price td-hidden').text() -> " + item.parent().siblings().filter('.item-price').text());
 		}
 	});
 	// 페이지 로드 시 전체 발주서 불러오기
