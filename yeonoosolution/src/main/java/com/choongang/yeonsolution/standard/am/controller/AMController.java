@@ -51,6 +51,14 @@ public class AMController {
 	}
 	
 	/**
+	 * 사용자 계정관리 페이지 호출
+	 * @return 사용자 계정관리 페이지 호출 url
+	 */
+	@GetMapping("/user-admin")
+	public String userAdminPage() {
+		return "standard/user-admin";
+	}
+	/**
 	 * 로그인 테스트 페이지 호출
 	 * @return 로그인 테스트 페이지 url
 	 */
