@@ -106,6 +106,14 @@
   background-color: #f5f5f5; /* 호버 상태 배경색 변경 */
 }
 
+#company-list li {
+  cursor: pointer; /* 마우스 커서를 포인터로 변경 */
+  padding: 5px;
+}
+
+#company-list li:hover {
+  background-color: #f5f5f5; /* 호버 상태 배경색 변경 */
+}
 
 @media (max-width: 480px) {
   /* 작은 화면에서 모달 창의 너비 조정 */
@@ -128,8 +136,8 @@
 		        </a>
 		        <ul class="categories">
 		            <li><a href="#">사용자 관리</a></li>
-		            <li><a href="#">품목 관리 및 등록</a></li>
-		            <li><a href="#">품목 단가 관리</a></li>
+		            <li><a href="/standard/imi">품목 관리 및 등록</a></li>
+		            <li><a href="/standard/ipi">품목 단가 관리</a></li>
 		            <li><a href="#">창고 관리 정보</a></li>
 		            <li><a href="#">생산 관리 BOM 등록</a></li>
 		        </ul>
@@ -142,14 +150,14 @@
 		<div class="btn-group1">
 			<input><button id="search-btn">검색</button><br>
 			<button id="item-insert">제품 등록</button>
-			<button id="item-update">저장</button>
-			<button id="delete-btn">삭제</button> 
+			<button id="item-update" data-action="update">수정 완료</button>
+			<button id="item-delete" data-action="delete">삭제</button> 
 			<button id="reset-btn">초기화</button>
 		</div>
 		
 		제품 정보 입력<br>
-		<span>*창고</span><input id="wh-code" placeholder="더블 클릭하여 창고 선택" readonly>
-		<span style="display: none;">회사 코드</span><input id="company-code" value="company1" style="display: none;">
+		<span>창고</span><input id="wh-code" placeholder="더블 클릭하여 창고 선택" readonly>
+		<span>*거래처 코드</span><input id="company-code" placeholder="더블 클릭하여 거래처 선택" readonly>
 		<span>*제품 코드</span><input placeholder="자동 생성" id="item-code" readonly>
 		<span>품명</span><input id="item-name">
 		<span>구분</span><select id="item-type" class="item-type-select">
@@ -157,11 +165,11 @@
 											<option value="반제품">반제품</option>
 											<option value="원자재">원자재</option>
 										</select>
-		<span>재고 단위</span><input id="stock-unit"><br>
+		<span>단위</span><input id="stock-unit"><br>
 		<span>비고</span><input id="memo">
 		<span>*시작일</span><input id="start-date" type="date">
 		<span>*종료일</span><input id="end-date" type="date">
-		<span>등록/수정자</span><input id="reg-user">
+		<span>*등록/수정자</span><input id="reg-user" placeholder="필수 입력 정보">
 		<span>등록/수정일자</span><input id="reg-date" readonly>
 	</div>
 	
@@ -172,7 +180,7 @@
 				<th> </th>
 				<th> </th>
 				<th>창고</th>
-				<th>회사코드</th>
+				<th>거래처코드</th>
 				<th>제품코드</th>
 				<th>품명</th>
 				<th>구분</th>
@@ -188,7 +196,7 @@
 		</table>
 	</div>
 	
-	<!-- 모달 창 -->
+	<!-- 창고 모달 창 -->
 	<div id="wh-modal" class="modal">
 	  <div class="modal-content">
 	    <span class="close">&times;</span>
@@ -196,19 +204,29 @@
 	    <ul id="wh-list"></ul>
 	  </div>
 	</div>
+	
+	
+	<!-- 거래처 모달 창 -->
+	<div id="company-modal" class="modal">
+	  <div class="modal-content">
+	    <span class="close">&times;</span>
+	    <h2>거래처 선택</h2>
+	    <ul id="company-list"></ul>
+	  </div>
+	</div>
 
 
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script>
-
+	
 	$(document).ready(function () {
 		defaultItemList();
 		getNow();
 	});
 	
 	
-	// 현재 날짜를 가져오기
+	// 현재 날짜 가져오기
 	function getNow() {
 		let today = new Date();
 		// 날짜를 yyyy/mm/dd 형식으로 변환
@@ -220,7 +238,7 @@
 	};
 	
 	
-	// 모달 창 
+	// 창고 모달 창 
 	$(document).on('dblclick', '#wh-code', function() {
 	  	$('#wh-modal').show();
 	  	
@@ -254,9 +272,44 @@
 	});
 	
 	
+	// 거래처 모달 창 
+	$(document).on('dblclick', '#company-code', function() {
+	  	$('#company-modal').show();
+	  	
+	  	$.ajax({
+	  		url : '/standard/imi/companys',
+	  		type : 'GET',
+	  		dataType : 'json',
+	  		success : function(companyList) {
+	  			let ul = $('#company-list');
+	  			$('#company-list').empty();
+	  			for (var i = 0; i < companyList.length; i++) {
+	                let company = companyList[i];
+	                let li = $('<li>' + company.companyCode + ' - ' + company.orderType + ' - ' + company.companyName + '</li>');
+	                li.on('click', function() {
+	                    $('#company-code').val(company.companyCode);
+	                    $('#company-modal').hide();
+	                });
+	                ul.append(li);
+	  			}
+	  		},
+	  		error: function(xhr, status, error) {
+			      console.log('Error:', error);
+			}
+	  	});
+	});
+
+	
+	// 모달 창 닫기
+	$(document).on('click', '#company-modal .close', function() {
+	  	$('#company-modal').hide();
+	});
+	
+	
+	// 제품 등록
 	$(document).on('click', '#item-insert', function(){
-		if  ($('#wh-code').val() === null || $('#start-date').val() === "" || $('#end-date').val() === "") {
-			alert("필수 정보를 입력 해주세요.");
+		if  ($('#reg-user').val() === "" || $('#company-code').val() === "" || $('#start-date').val() === "" || $('#end-date').val() === "") {
+			alert("필수 정보를 입력해주세요.");
 		} else {
 			$.ajax({
 				url : '/standard/imi/item',
@@ -277,14 +330,13 @@
 					updateUser  : $('#reg-user').val(),
 					updateDate  : $('#reg-date').val()
 				}),
-				success : function(insertResult){
-					if(insertResult == 1){
+				success : function(itemInsert){
+					if(itemInsert == 1){
 						alert("제품 등록 완료.");
 					} else {
 						alert("제품 등록 실패.");
 					}
-					$('#content-table td').html();
-					defaultItemList();
+					location.reload();
 				},
 				error: function(xhr, status, error) {
 				      console.log('Error:', error);
@@ -294,6 +346,69 @@
 	});
 	
 	
+	// 열 클릭시 라디오 박스 체크
+	$(document).on('click', '#content-table tbody tr', function() {
+		$(this).toggleClass('checked-row');
+	});
+
+	
+	// 제품 삭제 및 수정(업데이트)
+	$(document).on('click', '#item-delete, #item-update', function() {
+		let itemCode = $('#item-code').val();
+		let action = $(this).data('action');
+		
+		if(itemCode === "") {
+			alert("제품을 먼저 선택 해주세요.");
+		} else {
+			console.log(action);
+			console.log(itemCode);
+			
+			$.ajax({
+				url : '/standard/imi/' + itemCode,
+				type : 'PUT',
+				dataType : 'json',
+				contentType : 'application/json',
+				headers: {
+				    'action': action
+				},
+				data : JSON.stringify({
+					whCode 		: $('#wh-code').val(),
+					companyCode : $('#company-code').val(),
+					itemCode    : itemCode,
+					itemName 	: $('#item-name').val(),
+					itemType 	: $('#item-type').val(),
+					stockUnit 	: $('#stock-unit').val(),
+					memo 		: $('#memo').val(),
+					startDate 	: $('#start-date').val(),
+					endDate 	: $('#end-date').val(),
+					updateUser  : $('#reg-user').val(),
+					updateDate  : $('#reg-date').val(),
+				}),
+				success : function(resultMap){
+					if (action === 'delete') {
+						if (resultMap.itemRemove === 1) {
+							alert("삭제가 완료되었습니다.");
+						} else {
+							alert("에러가 발생하였습니다. 잠시 후 다시 시도해주세요.");
+						}
+					} else if (action === 'update') {
+						if (resultMap.itemUpdate === 1) {
+							alert("수정이 완료되었습니다.");
+						} else {
+							alert("에러가 발생하였습니다. 잠시 후 다시 시도해주세요.");
+						}
+					}
+					location.reload();
+				},
+				error: function(xhr, status, error) {
+				      console.log('Error:', error);
+				}
+			});
+		}
+	});
+
+	
+	// 제품 디폴트 리스트
 	function defaultItemList() {
 		$.ajax({
 		    url : '/standard/imi/items',
@@ -331,8 +446,12 @@
 	}
 	
 	
+	
+	
+	// 체크 된 아이템 정보 가져오기
 	function updateInputFields(selectedRow) {
 		let whCode = selectedRow.find('td:eq(2)').text();
+		let companyCode = selectedRow.find('td:eq(3)').text();
 		let itemCode = selectedRow.find('td:eq(4)').text();
 		let itemName = selectedRow.find('td:eq(5)').text();
 		let itemType = selectedRow.find('td:eq(6) select').val();
@@ -343,6 +462,7 @@
 		let regUser = selectedRow.find('td:eq(11)').text();
 		
 		$('#wh-code').val(whCode);
+		$('#company-code').val(companyCode);
 		$('#item-code').val(itemCode);
 		$('#item-name').val(itemName);
 		$('#item-type-select').val(itemType).trigger('change');
@@ -367,6 +487,11 @@
 	$(document).on('input', '#wh-code', function () {
 	  	let selectedRow = $('#content-table tr input[type="radio"]:checked').closest('tr');
 	  	selectedRow.find('td:eq(2)').text($(this).val());
+	});
+	
+	$(document).on('input', '#company-code', function () {
+	  	let selectedRow = $('#content-table tr input[type="radio"]:checked').closest('tr');
+	  	selectedRow.find('td:eq(3)').text($(this).val());
 	});
 	
 	$(document).on('input', '#item-code', function () {
@@ -410,6 +535,8 @@
 	  	let selectedRow = $('#content-table tr input[type="radio"]:checked').closest('tr');
 	  	selectedRow.find('td:eq(11)').text($(this).val());
 	});
+	
+	
 
 	
 	$(document).on('click', '#content-table tr', function () {
@@ -420,8 +547,26 @@
 	});
 
 	
+	// 초기화 버튼
+	$(document).on('click', '#reset-btn', function(){
+		$('#wh-code').val('').attr('placeholder', '더블 클릭하여 창고 선택').prop('readonly', true);
+		$('#company-code').val('').attr('placeholder', '더블 클릭하여 거래처 선택').prop('readonly', true);
+		$('#item-code').val('').attr('placeholder', '자동 생성').prop('readonly', true);
+		$('#item-name').val('');
+		$('#item-type').val('완제품');
+		$('#stock-unit').val('');
+		$('#memo').val('');
+		$('#start-date').val('').prop('required', true);
+		$('#end-date').val('').prop('required', true);
+		$('#reg-user').val('');
+		$('#content-table tr input[type="radio"]:checked').prop('checked', false);
+		$('#content-table tr.checked-row').removeClass('checked-row');
+	});
+
+	
+	
 	$(document).on('click', '#search-btn', function(){
-			
+		
 	});
 	
 	

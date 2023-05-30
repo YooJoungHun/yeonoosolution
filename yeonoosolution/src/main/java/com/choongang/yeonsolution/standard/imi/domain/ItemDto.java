@@ -28,6 +28,7 @@ public class ItemDto {
 	private String regUser;		// 등록자
 	private String updateDate;	// 수정일자
 	private String updateUser;	// 수정자
+	private String useYn;		// 사용여부
 	
 	
 	// 창고 목록 조회용

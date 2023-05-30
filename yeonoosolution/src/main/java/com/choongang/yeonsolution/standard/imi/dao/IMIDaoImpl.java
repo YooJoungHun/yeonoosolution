@@ -6,11 +6,10 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.choongang.yeonsolution.standard.imi.domain.ItemDto;
+import com.choongang.yeonsolution.standard.imi.domain.CompanyDto;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class IMIDaoImpl implements IMIDao {
@@ -29,8 +28,22 @@ public class IMIDaoImpl implements IMIDao {
 
 	@Override
 	public List<ItemDto> selectWhList() {
-		log.info("dao whList -> " );
 		return sqlSession.selectList("selectWhList");
+	}
+
+	@Override
+	public int updateItemByItemCode(String itemCode) {
+		return sqlSession.update("updateItemByItemCode", itemCode);
+	}
+
+	@Override
+	public int updateItemByItemDto(ItemDto itemDto) {
+		return sqlSession.update("updateItemByItemDto", itemDto);
+	}
+
+	@Override
+	public List<CompanyDto> selectCompanyList() {
+		return sqlSession.selectList("selectCompanyList");
 	}
 
 }

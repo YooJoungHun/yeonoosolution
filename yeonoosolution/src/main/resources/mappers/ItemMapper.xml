@@ -7,18 +7,47 @@
 	<select id="selectItemList" resultType="ItemDto">
 		SELECT *
 		FROM item
+		WHERE use_yn = 'Y'
 	</select>
+	
 	<!-- 제품 등록  -->
 	<insert id="insertItem" parameterType="ItemDto">
 		INSERT INTO item (item_code, wh_code, company_code, item_name, item_type, 
-								stock_unit, memo, start_date, end_date, reg_user, reg_date, update_user, update_date)
+								stock_unit, memo, start_date, end_date, reg_user, reg_date, update_user, update_date, use_yn)
 		VALUES ('ITEM' || ITEM_CODE_SEQ.nextval, #{whCode}, #{companyCode}, #{itemName}, #{itemType}, 
-				#{stockUnit}, #{memo}, #{startDate}, #{endDate}, #{regUser}, #{regDate}, #{updateUser}, #{updateDate})
+				#{stockUnit}, #{memo}, #{startDate}, #{endDate}, #{regUser}, #{regDate}, #{updateUser}, #{updateDate}, 'Y')
 	</insert>
+	
 	<!-- 창고 리스트  -->
 	<select id="selectWhList" resultType="ItemDto">
 		SELECT wh_code as whCode2, wh_name
 		FROM wh
 	</select>
+	
+	<!-- 제품 삭제 시 업데이트  -->
+	<update id="updateItemByItemCode" parameterType="String">
+		UPDATE item SET use_yn = 'N'
+		WHERE item_code = #{itemCode}
+	</update>
+	
+	<!-- 제품 수정 시 업데이트 -->
+	<update id="updateItemByItemDto" parameterType="ItemDto">
+		UPDATE item SET wh_code = #{whCode}, company_code = #{companyCode}, item_name = #{itemName}, item_type = #{itemType}, stock_unit = #{stockUnit},
+						memo = #{memo}, start_date = #{startDate}, end_date = #{endDate}, update_user = #{updateUser}, update_date = #{updateDate}
+		WHERE item_code = #{itemCode}							
+	</update>
+	
+	<!-- 거래처 목록 리스트 -->
+	<select id="selectCompanyList" resultType="CompanyDto">
+		SELECT *
+		FROM company
+	</select>
+	
+	<!-- 단가 정보 등록/업데이트  -->
+	<update id="updateIpiByItemDto" parameterType="ItemDto">
+		UPDATE item SET purchase_price = #{purchasePrice}, sales_price = #{salesPrice}, memo = #{memo}, start_date = #{startDate}, end_date = #{endDate},
+						update_user = #{updateUser}, update_date = #{updateDate}
+		WHERE item_code = #{itemCode}
+	</update>
 
 </mapper>
