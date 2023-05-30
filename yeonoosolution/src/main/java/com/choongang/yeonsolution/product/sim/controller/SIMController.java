@@ -78,6 +78,8 @@ public class SIMController {
 		
 		List<StInDto> stInList = simService.stInList(sid);
 		model.addAttribute("stInList", stInList);
+		
+		System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaa");
 		return "product/st-in";
 	}
 }

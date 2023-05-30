@@ -11,6 +11,7 @@ function tableRowClick(e){
 	stIn = $(e.target).closest('tr');
 	let date1 = new Date(stIn.find('.inDate').text());
 	console.log(date1);
+	formatDate(date1);
 	
 	$('#inCode').val(stIn.find('.inCode').text());
 	$('#inType').val(stIn.find('.inType').text());
@@ -49,10 +50,6 @@ function inTypeEvent(select){
 }
 
 
-function btnEvent(btn, event){
-	const action = btnMap[event];
-}
-
 const btnMap = {
     find: '.content-write',
     save: '.content-receiver',
@@ -60,6 +57,17 @@ const btnMap = {
     fix: '.content-storage',
     cancel: '.content-recycle'
 };
+
+function btnEvent(event){
+	const btn = btnMap[event];
+}
+
+function formatDate(date) {
+	let year = date.getFullYear();
+	let month = String(date.getMonth()+1).padStart(2,'0');
+	let day = String(date.getDate()).padStart(2,'0');
+	console.log(`${year}/${month}/${day}`);
+}
 
 $(()=>{
 	

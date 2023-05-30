@@ -15,11 +15,11 @@
 	<main>
 		<section class="content-header">
 			<div class="content-btn">
-				<button onclick="btnEvent(this, 'find')">조회</button>
-				<button onclick="btnEvent(this, 'save')">저장</button>
-				<button onclick="btnEvent(this, 'delete')">삭제</button>
-				<button onclick="btnEvent(this, 'fix')">확정</button>
-				<button onclick="btnEvent(this, 'cancel')">확정 취소</button>
+				<button onclick="btnEvent('find')">조회</button>
+				<button onclick="btnEvent('save')">저장</button>
+				<button onclick="btnEvent('delete')">삭제</button>
+				<button onclick="btnEvent('fix')">확정</button>
+				<button onclick="btnEvent('cancel')">확정 취소</button>
 			</div>
 			
 			<form action="${pageContext.request.contextPath}/find">
