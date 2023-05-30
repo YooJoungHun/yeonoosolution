@@ -91,4 +91,46 @@
 		WHERE wo.DELETE_STATUS = 'N'
 		ORDER BY TO_NUMBER(REPLACE(wo.WORK_ORDER_CODE, 'WORK', '')) DESC
 	</select>
+	<select id="selectWoSearch" parameterType="Wo" resultMap="WoResultMap">
+		SELECT wo.*, wh.*, orders.*, item.*
+		FROM WO wo LEFT OUTER JOIN WH wh ON (wo.WH_CODE = wh.WH_CODE)
+						   LEFT OUTER JOIN ORDERS orders ON (wo.ORDER_CODE = orders.ORDER_CODE)
+						   LEFT OUTER JOIN ITEM item ON (wo.ITEM_CODE = item.ITEM_CODE)
+		WHERE wo.DELETE_STATUS = 'N'
+			  <if test="startDate != null">
+			  	<![CDATA[
+			  		AND wo.WORK_ORDER_DATE >= #{startDate}
+			  	]]>
+			  </if>
+			  <if test="endDate != null">
+			  	<![CDATA[
+			  		AND wo.WORK_ORDER_DATE <= #{endDate}
+			  	]]>
+			  </if>
+			  <if test="workOrderCode != null">
+			  	<![CDATA[
+			  		AND wo.WORK_ORDER_CODE LIKE '%' || #{workOrderCode} || '%'
+			  	]]>
+			  </if>
+			  <if test="wh != null and wh.whCode != null">
+			  	<![CDATA[
+			  		AND wh.WH_CODE LIKE '%' || #{wh.whCode} || '%'
+			  	]]>
+			  </if>
+			  <if test="wh != null and wh.whName != null">
+			  	<![CDATA[
+			  		AND wh.WH_NAME LIKE '%' || #{wh.whName} || '%'
+			  	]]>
+			  </if>
+		ORDER BY TO_NUMBER(REPLACE(wo.WORK_ORDER_CODE, 'WORK', '')) DESC
+	</select>
+	<update id="updateWoDelete" parameterType="java.lang.String">
+		UPDATE WO SET DELETE_STATUS = 'Y' WHERE WORK_ORDER_CODE = #{workOrderCode}
+	</update>
+	<update id="updateWoConfirm" parameterType="java.lang.String">
+		UPDATE WO SET WORK_STATUS = '확정' WHERE WORK_ORDER_CODE = #{workOrderCode}
+	</update>
+	<update id="updateWoCancel" parameterType="java.lang.String">
+		UPDATE WO SET WORK_STATUS = '저장' WHERE WORK_ORDER_CODE = #{workOrderCode}
+	</update>
 </mapper>

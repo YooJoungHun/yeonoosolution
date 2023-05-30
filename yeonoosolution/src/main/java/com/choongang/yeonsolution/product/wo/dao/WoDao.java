@@ -6,5 +6,9 @@ import com.choongang.yeonsolution.product.wo.domain.Wo;
 
 public interface WoDao {
 	public List<Wo> selectWo();
+	public List<Wo> selectWoSearch(Wo searcher);
+	public int updateWoDelete(String workOrderCode);
+	public int updateWoConfirm(String workOrderCode);
+	public int updateWoCancel(String workOrderCode);
 	
 }

@@ -10,6 +10,9 @@
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/product/wo/wo.css"/>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript">
+	var tableData = ${jsonWoList};
+</script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/product/wo/wo.js"></script>
 </head>
 <body>
@@ -21,7 +24,7 @@
 			<div class="wo-header-actions">
 				<button type="button" class="select-item">조회</button>
 				<button type="button" class="update-item">저장</button>
-				<button type="button" class="delete-item">삭제</button>
+				<button type="button" class="remove-item">삭제</button>
 				<button type="button" class="reset-search">초기화</button>
 				<button type="button" class="confirm-item">작업지시 확정</button>
 				<button type="button" class="cancel-item">확정 취소</button>
@@ -29,8 +32,8 @@
 			<div class="wo-values-container">
 				<div class="wo-header-value">
 					<div class="wo-header-item-group">
-						<label for="workType">유형</label>
-						<select name="workType">
+						<label for="productType">유형</label>
+						<select name="productType">
 							<option value="">--</option>
 							<option value="일반">일반</option>
 							<option value="재작업">재작업</option>
@@ -78,12 +81,12 @@
 						<input type="text" name="workOrderCode">
 					</div>
 					<div class="wo-header-item-group">
-						<label for="whCode">창고</label>
-						<input type="text" name="whCode">
+						<label for="wh.whCode">창고</label>
+						<input type="text" name="wh.whCode">
 					</div>
 					<div class="wo-header-item-group">
 						<label for="whName">창고명</label>
-						<input type="text" name="whName">
+						<input type="text" name="wh.whName">
 					</div>
 				</div>
 			</div>
@@ -131,25 +134,25 @@
 									<input type="checkbox">
 								</div>
 							</th>
-							<td class="readonly">${wo.workOrderCode }</td>
-							<td class="readonly">${wo.workStatus }</td>
-							<td class="required">
-								<select name="workType" style="width: 60px;">
+							<td class="readonly" role="workOrderCode">${wo.workOrderCode }</td>
+							<td class="readonly" role="workStatus">${wo.workStatus }</td>
+							<td class="required" role="productType">
+								<select name="productType" style="width: 60px;">
 									<option value="" ${wo.productType == null ? 'selected' : '' }>--</option>
 									<option value="일반" ${wo.productType == '일반' ? 'selected' : '' }>일반</option>
 									<option value="재작업" ${wo.productType == '재작업' ? 'selected' : '' }>재작업</option>
 									<option value="개발품(시제품)" ${wo.productType == '개발품(시제품)' ? 'selected' : '' }>개발품(시제품)</option>
 								</select>
 							</td>
-							<td class="editable"><input type="date" name="workOrderDate" value="<fmt:formatDate value="${wo.workOrderDate }" pattern="yyyy-MM-dd"/>"></td>
-							<td class="editable"><input type="date" value="<fmt:formatDate value="${wo.finishDate }" pattern="yyyy-MM-dd"/>"></td>
-							<td class="editable"><input type="text" value="${wo.item.itemCode }"></td>
-							<td class="readonly">${wo.item.itemType }</td>
-							<td class="readonly">${wo.item.itemName }</td>
-							<td class="required"><input type="number" value="${wo.itemQuantity }" min="1"></td>
-							<td class="editable"><input type="text" value="${wo.wh.whCode }"></td>
-							<td class="readonly">${wo.wh.whName }</td>
-							<td class="readonly">${wo.workOrderType }</td>
+							<td class="editable" role="workOrderDate"><input type="date" name="workOrderDate" value="<fmt:formatDate value="${wo.workOrderDate }" pattern="yyyy-MM-dd"/>"></td>
+							<td class="editable" role="finishDate"><input type="date" name="finishDate" value="<fmt:formatDate value="${wo.finishDate }" pattern="yyyy-MM-dd"/>"></td>
+							<td class="editable" role="item.itemCode"><input type="text" name="item.itemCode" value="${wo.item.itemCode }"></td>
+							<td class="readonly" role="item.itemType">${wo.item.itemType }</td>
+							<td class="readonly" role="item.itemName">${wo.item.itemName }</td>
+							<td class="required" role="itemQuantity"><input type="number" name="itemQuantity" value="${wo.itemQuantity }" min="1"></td>
+							<td class="editable" role="wh.whCode"><input type="text" name="wh.whCode" value="${wo.wh.whCode }"></td>
+							<td class="readonly" role="wh.whName">${wo.wh.whName }</td>
+							<td class="readonly" role="workOrderType">${wo.workOrderType }</td>
 						</tr>
 					</c:forEach>
 					</tbody>

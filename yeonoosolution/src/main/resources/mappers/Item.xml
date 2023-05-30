@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.choongang.yeonsolution.product.wo.domain.ItemMapper">
+	<resultMap type="Company" id="CompanyResultMap">
+		<id			property="companyCode"	column="company_code"/>
+		<result		property="businessType"		column="business_type"/>
+		<result		property="orderType"			column="order_type"/>
+		<result		property="companyName"	column="company_name"/>
+		<result		property="businessCode"		column="business_code"/>
+		<result		property="ownerName"		column="owner_name"/>
+		<result		property="tel"					column="tel"/>
+		<result		property="address"			column="address"/>
+		<result		property="companyLogo"	column="company_logo"/>
+		<result		property="regUser"			column="reg_user"/>
+		<result		property="regDate"			column="reg_date"/>
+		<result		property="updateUser"		column="update_user"/>
+		<result		property="updateDate"		column="update_date"/>
+	</resultMap>
+	<resultMap type="Wh" id="WhResultMap">
+		<id			property="whCode"			column="wh_code"/>
+		<result		property="whName"			column="wh_name"/>
+		<result		property="regUser"			column="reg_user"/>
+		<result		property="regDate"			column="reg_date"/>
+		<result		property="updateUser"		column="update_user"/>
+		<result		property="updateDate"		column="update_date"/>
+		<result		property="useYn"				column="use_yn"/>
+		<result		property="memo"				column="memo"/>
+		<collection	property="company"			resultMap="CompanyResultMap"/>
+	</resultMap>
+	<resultMap type="Item" id="ItemResultMap">
+		<id			property="itemCode"			column="item_code"/>
+		<result		property="itemName"			column="item_name"/>
+		<result		property="itemType"			column="item_type"/>
+		<result		property="stockUnit"			column="stock_unit"/>
+		<result		property="purchasePrice"		column="purchase_price"/>
+		<result		property="salesPrice"			column="sales_price"/>
+		<result		property="memo"				column="memo"/>
+		<result		property="startDate"			column="start_date"/>
+		<result		property="endDate"			column="end_date"/>
+		<result		property="regUser"			column="reg_user"/>
+		<result		property="regDate"			column="reg_date"/>
+		<result		property="updateUser"		column="update_user"/>
+		<result		property="updateDate"		column="update_date"/>
+		<collection	property="wh"					resultMap="WhResultMap"/>
+		<collection	property="company"			resultMap="CompanyResultMap"/>
+	</resultMap>
+	<select id="selectItem" parameterType="java.lang.String" resultMap="ItemResultMap">
+		SELECT * FROM ITEM WHERE ITEM_CODE = #{itemCode}
+	</select>
+</mapper>
