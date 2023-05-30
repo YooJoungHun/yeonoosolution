@@ -127,9 +127,10 @@
 	
 	
 	
-	<select id="selectStIn" resultMap="stInDtoMap">
+	<select id="selectStIn" resultMap="stInDtoMap" parameterType="StInDto">
 		SELECT
 		SI.*,
+		C.COMPANY_NAME COMPANY_NAME,
 		SID.IN_CODE, SID.IN_CODE SID_IN_CODE, SID.WH_CODE SID_WH_CODE, SID.ITEM_CODE SID_ITEM_CODE, SID.SORDER SID_SORDER, SID.IN_QUANTITY SID_IN_QUANTITY, SID.IN_PRICE SID_IN_PRICE, SID.MEMO SID_MEMO,
 		W.WH_CODE SID_W_WH_CODE, W.WH_NAME SID_W_WH_NAME, W.REG_USER SID_W_REG_USER, W.REG_DATE SID_W_REG_DATE, W.UPDATE_USER SID_W_UPDATE_USER, W.UPDATE_DATE SID_W_UPDATE_DATE, W.USE_YN SID_W_USE_YN, W.MEMO SID_W_MEMO,
 		WSD.WH_CODE SID_WSD_WH_CODE, WSD.ITEM_CODE SID_WSD_ITEM_CODE, WSD.WH_CODE SID_WSD_WH_CODE, WSD.ITEM_CODE SID_WSD_ITEM_CODE, WSD.UPDATE_USER SID_WSD_UPDATE_USER, WSD.UPDATE_DATE SID_WSD_UPDATE_DATE, I.ITEM_NAME SID_WSD_I_ITEM_NAME, I.ITEM_TYPE SID_WSD_I_ITEM_TYPE, I.STOCK_UNIT SID_WSD_I_STOCK_UNIT, I.PURCHASE_PRICE SID_WSD_I_PURCHASE_PRICE, I.SALES_PRICE SID_WSD_I_SALES_PRICE, I.START_DATE SID_WSD_I_START_DATE, I.END_DATE SID_WSD_I_END_DATE, I.REG_USER SID_WSD_I_REG_USER, I.REG_DATE SID_WSD_I_REG_DATE, I.UPDATE_USER SID_WSD_I_UPDATE_USER, I.UPDATE_DATE SID_WSD_I_UPDATE_DATE, I.MEMO SID_WSD_I_MEMO,
@@ -143,6 +144,31 @@
 		LEFT OUTER JOIN WH W                ON SID.WH_CODE = W.WH_CODE
 		LEFT OUTER JOIN WH_STOCK_DETAIL WSD ON SID.ITEM_CODE = WSD.ITEM_CODE
 		LEFT OUTER JOIN ITEM I              ON WSD.ITEM_CODE = I.ITEM_CODE
+		WHERE SI.DELETE_STATUS LIKE 'N'
+		<choose>
+			<when test="inCode != null and inCode != ''">
+				AND SI.IN_CODE = #{inCode}
+			</when>
+			<when test="orderCode != null and orderCode != ''">
+				AND SI.ORDER_CODE = #{orderCode}
+			</when>
+			<when test="customerCode != null and customerCode != ''">
+				AND SI.CUSTOMER_CODE = #{customerCode}
+			</when>
+			<when test="inDate != null and inDate != ''">
+				AND SI.IN_DATE = #{inDate}
+			</when>
+			<when test="regDate != null and regDate != ''">
+				AND SI.REG_DATE = #{regDate, jdbcType=DATE}
+			</when>
+			<when test="regUser != null and regUser != ''">
+				AND SI.REG_USER = #{regUser}
+			</when>
+			<when test="inType != null and inType != ''">
+				AND SI.IN_TYPE = #{inType}
+			</when>
+			<otherwise></otherwise>
+		</choose>
 		ORDER BY TO_NUMBER(REPLACE(SI.IN_CODE, 'IN_CODE', ''))ASC, SID.SORDER ASC
 	</select>
 <!-- 	<select id="selectStIn" resultMap="stInDtoMap">

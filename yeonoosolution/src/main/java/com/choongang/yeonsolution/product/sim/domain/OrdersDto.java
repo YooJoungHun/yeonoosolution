@@ -1,6 +1,6 @@
 package com.choongang.yeonsolution.product.sim.domain;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import lombok.Data;

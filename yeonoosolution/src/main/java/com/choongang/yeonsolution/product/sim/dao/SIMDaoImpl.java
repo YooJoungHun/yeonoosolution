@@ -21,4 +21,11 @@ public class SIMDaoImpl implements SIMDao {
 		return findStIn;
 	}
 
+	@Override
+	public List<StInDto> findStIn(StInDto stInDto) {
+		List<StInDto> findStIn = null;
+		findStIn = session.selectList("selectStIn", stInDto);
+		return findStIn;
+	}
+
 }

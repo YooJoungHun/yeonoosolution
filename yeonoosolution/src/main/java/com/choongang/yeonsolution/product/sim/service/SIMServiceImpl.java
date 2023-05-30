@@ -13,7 +13,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SIMServiceImpl implements SIMService {
 	private final SIMDao simDao;
+	
 	@Override
 	public List<StInDto> stInList() {return simDao.findStIn(); }
+	@Override
+	public List<StInDto> stInList(StInDto stInDto) {return simDao.findStIn(stInDto); }
 
 }

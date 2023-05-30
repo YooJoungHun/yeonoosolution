@@ -1,5 +1,4 @@
 @charset "UTF-8";
-
 section {
 	margin: 60px;
 	font-size: 13px;
@@ -38,7 +37,17 @@ section > div:first-child {
 }
 .stock-in-detail-list {
 	display: flex;
-	flex: 1;
+	width: 1000px;
+}
+.list-right {
+	overflow-x: scroll;
+	table-layout: auto;
+}
+.table-row {
+	table-layout: auto;
+}
+.stock-in-detail-list td {
+	border: 1px solid rgba(0,0,0,0.5);
 }
 .stock-in-list .item-title {
 	background-color: rgba(0,0,0, 0.1);
@@ -48,28 +57,25 @@ section > div:first-child {
 	align-items: center;
 	justify-content: center;
 }
-.stock-in-detail-list .item-title {
-	width: auto;
-	height: auto;
-	padding: 10px;
+.table-right-content {
+	overflow-y: scroll;
+}
+.stock-in-detail-list th, td {
+	width: 80px;
+	height: 30px;
+	text-align: center;
 }
 .table-rownum {
 	width: 30px;
 }
 .table-content {
 	flex: 1;
+	width: 100%
 }
-.table-detail {
-	width: auto;
-	font-size: 14px;
-}
-.stock-in-detail-list tr {
-	height: 30px;
-	text-align: center;
-}
-.stock-in-detail-list tr:first-child {
+.stock-in-detail-list th {
 	font-weight: 700;
 	background-color: rgba(0,0,0, 0.05);
-	width: auto;
-	height: auto;
+}
+.stock-in-detail-list tr:hover {
+	background-color: red;
 }
