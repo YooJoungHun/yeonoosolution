@@ -1,10 +1,13 @@
 package com.choongang.yeonsolution.standard.am.dao.impl;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.choongang.yeonsolution.standard.am.dao.AMDao;
+import com.choongang.yeonsolution.standard.am.domain.AMDto;
 import com.choongang.yeonsolution.standard.am.domain.MemberDto;
 
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +37,14 @@ public class AMDaoImpl implements AMDao{
 		int result = sqlSession.insert("insertMember", memberDto);
 		log.info("[insertMember] result : {}", result);
 		return result;
+	}
+
+	@Override
+	public List<AMDto> selectMemberListByCompanyCode(String companyCode) {
+		log.info("[selectMemberListByCompanyCode] companyCode : {}", companyCode);
+		List<AMDto> amDtoList = sqlSession.selectList("selectMemberListByCompanyCode", companyCode);
+		log.info("[selectMemberListByCompanyCode] amDtoList : {}", amDtoList);
+		return amDtoList;
 	}
 
 }

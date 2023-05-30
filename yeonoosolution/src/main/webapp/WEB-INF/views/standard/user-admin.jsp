@@ -24,16 +24,13 @@
 	margin-left: auto;
 }
 
-#btn-div, #search-div, #order-list, #order-detail {
+#btn-div, #search-div, #member-list {
 	border: 1px solid;
 	margin: 10px;
 }
 
-#member-list, #member-detail {
-	height: 300px;
-}
-
-#member-list, #member-detail {
+#member-list{
+	height : 80%;
 	overflow: auto;
 	white-space: nowrap;
 }
@@ -51,9 +48,9 @@
 	border: 1px solid;
 	padding: 5px;
 	text-align: center;
-	white-space: nowrap; /* 셀 내용이 넘칠 경우 줄바꿈 방지 */
-	overflow: hidden; /* 셀 내용이 넘칠 경우 가리기 */
-	text-overflow: ellipsis; /* 셀 내용이 넘칠 경우 말줄임표(...) 표시 */
+	white-space: nowrap !important; /* 셀 내용이 넘칠 경우 줄바꿈 방지 */
+	overflow: hidden !important; /* 셀 내용이 넘칠 경우 가리기 */
+	text-overflow: ellipsis !important; /* 셀 내용이 넘칠 경우 말줄임표(...) 표시 */
 }
 
 .member-tables tr, .member-tables td {
@@ -74,65 +71,27 @@
 .member-tables tr{
 	height: 24px;
 }
-#member-list-table {
-	max-height: 280px;
-}
 
 .tuigrid-header>* {	
 	margin: 5px 5px;
 }
 
-.member-radio {
+.member-checkbox {
 	min-width: 50px;
 }
 
-.member-number {
-	min-width: 60px;
+.dept-code, .dept-name, .job-code, 
+.job-name, .company-code, .company-name,
+.member-name, .member-tel, .member-role {
+	min-width: 150px;
+	max-width: 150px;
 }
 
-.dept-code {
-	min-width: 70px;
-}
+.member-id, .member-address{
+	min-width: 250px;
+	max-width: 250px;
+} 
 
-.dept-name {
-	min-width: 100px;
-}
-
-.job-code {
-	min-width: 110px;
-}
-
-.job-name {
-	min-width: 120px;
-}
-
-.company-code {
-	min-width: 130px;
-}
-
-.company-name {
-	min-width: 220px;
-}
-
-.member-id {
-	min-width: 120px;
-}
-
-.member-name {
-	min-width: 80px;
-}
-
-.member-address {
-	min-width: 100px;
-}
-
-.member-tel {
-	min-width: 170px;
-}
-
-.member-role {
-	min-width: 80px;
-}
 
 </style>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
@@ -164,12 +123,10 @@
 				</div>
 			</div>
 			<div id="member-list">
-				<table id="member-list-table-heder"
-					class="member-list-table member-tables member-tables-hearder">
+				<table id="member-list-table" class="member-list-table member-tables member-tables-hearder">
 					<thead>
 						<tr>
-							<th class="member-number"></th>
-							<th class="member-radio"></th>
+							<th class="member-checkbox"></th>
 							<th class="dept-code">부서 코드</th>
 							<th class="dept-name">부서</th>
 							<th class="job-code">직책 코드</th>
@@ -185,14 +142,58 @@
 					</thead>
 				</table>
 				<table id="member-list-table" class="member-list-table member-tables">
-					<tbody>
+					<tbody id="member-list-table-body">
 					</tbody>
 				</table>
 			</div>
 		</div>
-	</div>
+	</div><!-- contain -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript">
+	const memberId = '<%= session.getAttribute("memberId") %>';
+	const memberCompanyCode = '<%= session.getAttribute("memberCompanyCode") %>';
+	console.log("memberID : " + memberId);
+	console.log("memberCompanyCode : " + memberCompanyCode);
+	
+	function printMember(member){
+		let memberRow = $('<tr>').append($('<td>').addClass('member-checkbox').append($('<input>').attr({'name': 'member-checkbox', 'type': 'checkbox', 'value': member.memberId})))
+								 .append($('<td>').addClass('dept-code').text(member.deptCode))
+								 .append($('<td>').addClass('dept-name').text(member.deptName))
+								 .append($('<td>').addClass('job-code').text(member.jobCode))
+								 .append($('<td>').addClass('job-name').text(member.jobName))
+								 .append($('<td>').addClass('company-code').text(member.companyCode))
+								 .append($('<td>').addClass('company-name').text(member.companyName))
+								 .append($('<td>').addClass('member-id').text(member.memberId))
+								 .append($('<td>').addClass('member-name').text(member.memberName))
+								 .append($('<td>').addClass('member-address').text(member.address))
+								 .append($('<td>').addClass('member-tel').text(member.tel))
+								 .append($('<td>').addClass('member-role').text(member.memberRole));
+		
+		$('#member-list-table-body').append(memberRow);
+	}
+	
+	$(function(){
+		$.ajax({
+			type : "GET",
+			url : "/v1/standard/members/" + memberCompanyCode,
+			contentType: 'application/json',
+			dataType : 'json',
+			success : function(memberList, textStatus, xhr){
+				if(xhr.status === 200){
+					$.each(memberList, function(index, member){
+						printMember(member);
+					});
+				} else if (xhr.status === 204) {
+				    
+				}
+
+			},
+			error : function(xhr){
+				console.log("error");
+			}
+		});
+	});
+</script>
 </body>
-	<!-- contain -->
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </html>

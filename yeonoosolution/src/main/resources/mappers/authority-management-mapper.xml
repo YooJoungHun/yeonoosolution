@@ -4,7 +4,7 @@
 	<select id="selectMemberByMemberId" parameterType="String" resultType="MemberDto">
 		SELECT *
 		FROM member
-		WHERE member_id = #{memberId}
+		WHERE member_id = UPPER(#{memberId})
 	</select>
 	
 	<insert id="insertMember" parameterType="MemberDto">
@@ -21,10 +21,10 @@
 			member_image,
 			member_role
 		) values (
-			#{companyCode} || '.' || #{memberId},
+			UPPER(#{companyCode}) || '.' || #{memberId},
 			#{deptCode, jdbcType=VARCHAR},
 			#{jobCode, jdbcType=VARCHAR},
-			#{companyCode, jdbcType=VARCHAR},
+			UPPER(#{companyCode, jdbcType=VARCHAR}),
 			#{memberId, jdbcType=VARCHAR},
 			#{password, jdbcType=VARCHAR},
 			#{memberName, jdbcType=VARCHAR},
@@ -34,4 +34,27 @@
 			#{memberRole, jdbcType=VARCHAR}
 		)
 	</insert>
+	
+	<select id="selectMemberListByCompanyCode" parameterType="String" resultType="AMDto">
+		SELECT
+			m.member_uid,
+			m.dept_code,
+			d.dept_name,
+			m.job_code,
+			j.job_name,
+			m.company_code,
+			c.company_name,
+			m.member_id,
+			m.member_name,
+			m.address,
+			m.tel,
+			m.member_image,
+			m.member_role
+		FROM member m
+		INNER JOIN department d ON m.dept_code = d.dept_code
+		INNER JOIN job j ON m.job_code = j.job_code
+        INNER JOIN company c ON m.company_code = c.company_code
+		WHERE m.company_code = UPPER(#{companyCode}) 
+ 		ORDER BY m.job_code
+	</select>
 </mapper>

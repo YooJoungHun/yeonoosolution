@@ -1,5 +1,7 @@
 package com.choongang.yeonsolution.standard.am.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.choongang.yeonsolution.standard.am.dao.AMDao;
+import com.choongang.yeonsolution.standard.am.domain.AMDto;
 import com.choongang.yeonsolution.standard.am.domain.MemberDto;
 import com.choongang.yeonsolution.standard.am.service.AMService;
 
@@ -47,6 +50,12 @@ public class AMServiceImpl implements AMService{
 				return false;
 			}
 		return authentication.isAuthenticated();
+	}
+
+	@Override
+	public List<AMDto> findMemberListByCompanyCode(String companyCode) {
+		List<AMDto> adDtoList = amDao.selectMemberListByCompanyCode(companyCode);
+		return adDtoList;
 	}
 
 }

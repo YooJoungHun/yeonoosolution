@@ -1,11 +1,16 @@
 package com.choongang.yeonsolution.standard.am.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.choongang.yeonsolution.standard.am.domain.AMDto;
 import com.choongang.yeonsolution.standard.am.domain.MemberDto;
 import com.choongang.yeonsolution.standard.am.service.AMService;
 
@@ -90,6 +95,19 @@ public class AMController {
 		}
 		
 		throw new IllegalArgumentException();
+	}
+	
+	/**
+	 * user-admin페이지 로드시, member의 companyCode에 해당하는 memeberList조회
+	 */
+	@GetMapping("/members/{companyCode}")
+	@ResponseBody
+	public List<AMDto> memberListByCompanyCode(@PathVariable String companyCode){
+		log.info("[memberListByCompanyCode] companyCode : {}", companyCode);
+		
+		List<AMDto> amDtoList = amService.findMemberListByCompanyCode(companyCode);
+		
+		return amDtoList;
 	}
 	
 }//end class

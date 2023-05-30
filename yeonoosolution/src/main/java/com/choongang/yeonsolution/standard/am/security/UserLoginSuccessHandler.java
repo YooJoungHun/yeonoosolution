@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -47,7 +48,10 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler{
 			requestCache.removeRequest(request, response);
 		}
 		//인증성공한 member의 정보를 세션에 저장
-		request.getSession().setAttribute("member", memberInfo.getMemberDto());
+		HttpSession session = request.getSession();
+		session.setAttribute("member", memberInfo.getMemberDto());
+		session.setAttribute("memberId", memberInfo.getMemberDto().getMemberId());
+		session.setAttribute("memberCompanyCode", memberInfo.getMemberDto().getCompanyCode());
 		log.info("[onAuthenticationSuccess] member : {}", memberInfo.getMemberDto());
 		response.sendRedirect(redirectUrl);
 		
