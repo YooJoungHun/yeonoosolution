@@ -6,12 +6,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.choongang.yeonsolution.sales.pm.domain.CompanyDto;
 import com.choongang.yeonsolution.sales.pm.domain.ItemDto;
+import com.choongang.yeonsolution.sales.pm.domain.OrdersDataDto;
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDetailDto;
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDto;
 import com.choongang.yeonsolution.sales.pm.domain.Search;
@@ -71,4 +74,13 @@ public class PmController {
 		List<ItemDto> itemList = pmService.findItemBySearch(search);
 		return itemList;
 	}
+	@PostMapping("/order-add")
+	@ResponseBody
+    public String addOrder(@RequestBody OrdersDataDto orderData) {
+        OrdersDto order = orderData.getOrder();
+        List<OrdersDetailDto> orderDetails = orderData.getOrderDetails();
+        System.out.println(order);
+        System.out.println(orderDetails);
+        return "success"; // 성공적으로 처리된 경우 응답 데이터 반환
+    }
 }

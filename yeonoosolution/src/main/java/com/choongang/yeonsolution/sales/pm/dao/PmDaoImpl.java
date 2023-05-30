@@ -53,7 +53,6 @@ public class PmDaoImpl implements PmDao{
 	@Override
 	public List<ItemDto> selectItemyBySearch(String search) {
 		List<ItemDto> itemList = session.selectList("selectItemBySearch", search);
-		System.out.println("itemList -> " + itemList);
 		return itemList;
 	}
 
