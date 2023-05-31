@@ -7,11 +7,18 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
 <style type="text/css">
 	.table-content {
 		overflow: auto;
 		white-space: nowrap;
 	}
+	
+
+	
+	
 </style>
 </head>
 <body>
@@ -21,14 +28,12 @@
 	<div class="receive-order-btn">
 		
 		<button type="button" id="search-btn" value="조회">조회</button>
-		<button type="button" id="save-btn" value="저장">저장</button>
 		<button type="button" id="delete-btn" value="삭제">삭제</button>
-		<button type="button" id="reset-btn" value="초기화">초기화</button>
 		<button type="button" id="order-confirmation-btn" value="수주 확정">수주 확정</button>
 		<button type="button" id="confirmation-cancel-btn" value="확정 취소">확정 취소</button>
 		<button type="button" id="stock-out-reg-btn" value="출하 등록">출하 등록</button>
 		<button type="button" id="work-order-reg-btn" value="작업 지시 등록">작업 지시 등록</button>
-		<button type="button" id="analysis-bom-btn" value="작업 지시 등록">자재 요소 분석</button>
+		<button type="button" id="analysis-bom-btn" value="작업 지시 등록" onclick="location.href='/sales/analysis-of-materials'">자재 요소 분석</button>
 		
 	</div>
 
@@ -36,22 +41,19 @@
 	
 		<div >
 		
-			<span>수주번호</span>
-			<input type="text" id="order-code" name="orderCode">
+			<!-- <span>수주번호</span>
+			<input type="text" id="order-code" name="orderCode"> -->
 			<span>수주유형</span>
 			<select id="receive-order-type" name="receiveOrderType">
 				<option value="자체생산">자체생산</option>
 				<option value="OEM">OEM</option>
 				<option value="ODM">ODM</option>
 			</select>
-			<span>거래처 코드</span>
-			<input type="text" id="customer-code" name="customerCode">
-			<span>거래처명</span>
-			<input type="text" id="company-name" name="companyName">
 			<span>수주일</span>
 			<input type="date" id="order-date" name="orderDate"> 
 			<span>수주담당자</span>
 			<input type="text" id="order-empid" name="orderEmpid">
+			<button type="button" id="modify-order-empid-btn" value="수정">수정</button>
 			<span>납기일</span>
 			<input type="date" id="due-date" name="dueDate">
 			
@@ -91,7 +93,10 @@
 			<table id="table-insert-receive">
 				<tr>
 					<th>거래처코드</th>
-					<td><input type="text" name="customerCode" required="required"></td>
+					<td>
+						<input type="text" id="customer-code" name="customerCode" required="required" readonly="readonly">
+						<button id="customer-code-modal-btn" data-bs-toggle="modal" data-bs-target="#customer-code-modal" value="조회">조회</button>
+					</td>
 				</tr>
 				<tr>
 					<th>수주유형</th>
@@ -105,7 +110,8 @@
 				</tr>
 				<tr>
 					<th>거래처명</th>
-					<td><input type="text" name="companyName">
+					<td>
+						<input type="text" id="company-name-modal" name="companyName" required="required" readonly="readonly">
 					</td>
 				</tr>
 				<tr>
@@ -143,7 +149,26 @@
 				</tr>
 			</table>
 		</form>	<!-- /action="/sales/om/insert-receive-order" -->
-			
+		
+		<!-- 회사코드 모달 창 -->
+		<div class="modal fade" id="customer-code-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">거래처 선택</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div id="customer-code-list"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				</div>
+				</div>
+			</div>
+		</div>
+					
 	
 	</div>	<!-- /class="receive-order-table-content" -->
 	
@@ -153,15 +178,21 @@
 		<div >
 		
 			<span>제품코드</span>
-			<input type="text" id="item-code" name="itemCode">
+			<!-- <td> -->
+				<input type="text" id="modify-item-code" name="itemCode" required="required" readonly="readonly">
+			<!-- </td> -->
 			<span>품명</span>
-			<input type="text" id="item-name" name="itemName">
+			<!-- <td> -->
+				<input type="text" id="modify-item-name" name="itemName" required="required" readonly="readonly">
+				<button type="button" id="modify-item-code-modal-btn" data-bs-toggle="modal" data-bs-target="#modify-item-code-modal" value="제품조회">제품조회</button>
+				<button type="button" id="modify-item-btn" value="제품수정">제품수정</button>
+			<!-- </td> -->
 			<span>수량</span>
 			<input type="number" id="modify-quantity" name="modifyQuantity" value="0">
 			<span>단가</span>
 			<input type="number" id="modify-price" name="modifyPrice" value="0"> 
 			<span>금액</span>
-			<input type="number" id="modify-amount" name="modifyPrice" value="0" readonly="readonly"> 
+			<input type="number" id="modify-amount" name="modifyAmount" value="0" readonly="readonly"> 
 			<button type="button" id="modify-amount-btn" value="금액수정">금액수정</button>
 			<span>재고단위</span>
 			<select id="item-stock-unit" name="itemStockUnit">
@@ -169,14 +200,34 @@
 				<option value="KG">KG</option>
 			</select>
 			<span>비고</span>
-			<input type="text" id="memo" name="dueDate">
+			<input type="text" id="modify-memo" name="modifyMemo">
+			<button type="button" id="modify-memo-btn" value="수정">수정</button>
 			<span>마감여부</span>
 			<select id="end-yn" name="endYn">
 				<option value="N">N</option>
 				<option value="Y">Y</option>
 			</select>
 		</div>
-	
+		
+		<!-- 제품코드 수정 모달 창 -->
+		<div class="modal fade" id="modify-item-code-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">제품 선택</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div id="modify-item-code-list"></div>
+				</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
 	</div>	<!-- /class="receive-order-detail-top-content" -->
 	
 	<div class="receive-order-detail-content">
@@ -209,13 +260,14 @@
 				<tr>
 					<th>제품코드</th>
 					<td>
-						<input type="text" name="itemCode" required="required">
+						<input type="text" id="item-code" name="itemCode" required="required" readonly="readonly">
+						<button type="button" id="item-code-modal-btn" data-bs-toggle="modal" data-bs-target="#item-code-modal" value="제품조회">제품조회</button>
 					</td>
 				</tr>
 				<tr>
 					<th>품명</th>
 					<td>
-						<input type="text" name="itemName">
+						<input type="text" id="item-name-modal" name="itemName" required="required" readonly="readonly">
 					</td>
 				</tr>
 				<tr>
@@ -264,6 +316,25 @@
 			
 		</form>	<!-- /action="/sales/om/insert-receive-order-detail" -->
 		
+		<!-- 제품코드 모달 창 -->
+		<div class="modal fade" id="item-code-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">제품 선택</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div id="item-code-list"></div>
+				</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		
 	</div>	<!-- /class="receive-order-detail-content" -->
 
 </div>	<!-- /class="receive-order-container" -->
@@ -307,7 +378,8 @@
 					row.append('<td>' + order.regDate.substring(0, 10) + '</td>');
 					row.append('<td>' + order.regUser + '</td>');
 					row.append('<td>' + order.updateDate.substring(0, 10) + '</td>');
-					row.append('<td>' + order.updateUser + '</td>');
+					//row.append('<td>' + order.updateUser + '</td>');
+					row.append('<td>' + (order.updateUser ? order.updateUser : '') + '</td>');
 					
 					table.append(row);
 					 
@@ -476,13 +548,91 @@
 			
 		});
 		
+		// 수주담당자 변경
+		$('#modify-order-empid-btn').click(function(){
+			let orderCode = $("input[name='selectRow']:checked").val();
+			let orderEmpid = $("#order-empid").val();
+			
+			if (!orderCode) {
+				alert("항목을 선택해주세요."); 
+				return; 
+			}
+			
+			if (orderEmpid == '') {
+				alert("이름을 작성해주세요."); 
+				return; 
+			}
+			
+			console.log("수주담당자 수정 orderCode -> " + orderCode);
+			console.log("수주담당자 수정 orderCode -> " + orderEmpid);
+			
+			$.ajax({
+				url: "/sales/receive-order/" + orderCode + "/modify-empid",
+				type: "PATCH",
+				data: JSON.stringify({
+					orderEmpid : orderEmpid
+				}),
+				contentType: 'application/JSON',						
+				dataType: "json",
+				success: function(data){
+					console.log("담당자 수정 성공" + data);
+					loadPlaceOrderList();
+				},
+				error: function(){
+					console.log("modify-empid Error");
+				}
+			});
+			
+		});
 		
 	});	//receive-order CRUD
 	
 	
+	// 회사코드 모달 창 
+	$(function() {
+	  	console.log('모달 콘솔')
+	  	
+	  	$.ajax({
+	  		url : '/sales/receive-order/customer-code-list',
+	  		type : 'GET',
+	  		dataType : 'json',
+	  		success : function(data) {
+	  			let ul = $('#customer-code-list');
+	  			ul.empty();
+	  			for (var i = 0; i < data.length; i++) {
+	  				let item = data[i];
+	                let radio = $('<input type="radio" name="customer" value="' + item.companyCode + '">');
+	                let label = $('<label>' + item.companyCode + ' - ' + item.companyName + '</label>');
+					let span = $('<span></span></br>').append(radio).append(label);
+	                ul.append(span);
+	                
+	  			}
+	  		},
+	  		error: function(xhr, status, error) {
+			      console.log('Error:', error);
+			}
+	  	});
+	  	
+	  	$('#customer-code-modal .btn-primary').click(function(){
+	  		let selectedCustomer = $('input[name="customer"]:checked');
+	  		
+	  		if(selectedCustomer.length > 0){
+	  			let companyCode = selectedCustomer.val();
+	  			let companyName = selectedCustomer.next('label').text().split(' - ')[1];
+	  			$('#customer-code').val(companyCode);
+	  			$('#company-name-modal').val(companyName);
+	  			console.log('selectedCustomer -> ' + companyCode);
+		  		console.log('selectedCustomer -> ' + companyName);
+	  		}
+	  		
+	  		$('#customer-code-modal').modal('hide');
+	  		
+	  	});
+	});
 	
 	
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -515,7 +665,8 @@
 						row.append('<td>' + order.price + '</td>');
 						row.append('<td>' + order.amount + '</td>');
 						row.append('<td>' + order.itemStockUnit + '</td>');
-						row.append('<td>' + order.memo + '</td>');
+						//row.append('<td>' + order.memo + '</td>'); 
+						row.append('<td>' + (order.memo ? order.memo : '') + '</td>');
 						row.append('<td>' + order.endYn + '</td>');
 						
 						table.append(row);
@@ -542,7 +693,7 @@
 					placeOrderDetailList.forEach(function(order){ 
 						
 						const row =$("<tr>");
-						const radio = $('<input type="radio" name="selectDetailRow">').val(order.orderDetailCode);
+						const radio = $('<input type="radio" name="selectDetailRow">').val(order.sorder);
 						
 						if(order.orderDetailCode === checkedRowId){
 							radio.prop("checked", true); // 이전에 체크된 radio 선택
@@ -559,7 +710,7 @@
 						row.append('<td>' + order.endYn + '</td>');
 						
 						table.append(row);
-						console.log('radio -> '+ radio) ;
+						console.log('detail radio -> '+ order.sorder) ;
 					});
 				},
 				error: function(){
@@ -567,7 +718,6 @@
 				}
 			});
 			*/
-			
 			//
 			
 		} else {
@@ -576,9 +726,6 @@
 		}
 		
 	}
-	
-	
-	
 	
 	//receive-order-detail CRUD 변경 , 삭제
 	$(function(){
@@ -659,9 +806,159 @@
 			
 		});
 		
+		// 제품 update
+		$('#modify-item-btn').click(function(){
+			let orderDetailCode = $("#order-detail-code").val();
+			let itemCode = $('#modify-item-code').val();
+			let itemName = $('#modify-item-name').val();
+			
+			console.log("제품수정 orderDetailCode -> " + orderDetailCode);
+			console.log("제품수정 itemCode -> " + itemCode);
+			console.log("제품수정 itemName -> " + itemName);
+			
+			$.ajax({
+				url: "/sales/receive-order/" + orderDetailCode + "/modify-item",
+				type: "PATCH",
+				data: JSON.stringify({
+					//orderDetailCode	  : orderDetailCode,
+					itemCode : itemCode,
+					itemName : itemName
+				}),
+				contentType: 'application/JSON',						
+				dataType: "json",
+				success: function(data){
+					console.log("제품수정성공" + data);
+					loadPlaceOrderDetailList();
+				},
+				error: function(){
+					console.log("modify-item Error");
+				}
+			});
+			
+		});
+		
+		// 비고 변경
+		$('#modify-memo-btn').click(function(){
+			let orderDetailCode = $("#order-detail-code").val();
+			let modifyMemo = $("#modify-memo").val();
+			
+			if (!orderDetailCode) {
+				alert("항목을 선택해주세요."); 
+				return; 
+			}
+			
+			if (modifyMemo == '') {
+				alert("내용을 작성해주세요."); 
+				return; 
+			}
+			
+			console.log("비고 수정 orderDetailCode -> " + orderDetailCode);
+			console.log("비고 수정 modifyMemo -> " + modifyMemo);
+			
+			$.ajax({
+				url: "/sales/receive-order/" + orderDetailCode + "/modify-memo",
+				type: "PATCH",
+				data: JSON.stringify({
+					memo : modifyMemo
+				}),
+				contentType: 'application/JSON',						
+				dataType: "json",
+				success: function(data){
+					console.log("담당자 수정 성공" + data);
+					loadPlaceOrderDetailList();
+				},
+				error: function(){
+					console.log("modify-memo Error");
+				}
+			});
+			
+		});
+		
 	});	// receive-order-detail CRUD
 	
+	// 제품코드 수정 모달 창 
+	$(function() {
+	  	console.log('모달 콘솔')
+	  	
+	  	$.ajax({
+	  		url : '/sales/receive-order/item-code-list',
+	  		type : 'GET',
+	  		dataType : 'json',
+	  		success : function(data) {
+	  			let ul = $('#modify-item-code-list');
+	  			ul.empty();
+	  			for (var i = 0; i < data.length; i++) {
+	  				let item = data[i];
+	                let radio = $('<input type="radio" name="item" value="' + item.itemCode + '">');
+	                let label = $('<label>' + item.itemCode + ' - ' + item.itemName + '</label>');
+					let span = $('<span></span></br>').append(radio).append(label);
+	                ul.append(span);
+	                
+	  			}
+	  		},
+	  		error: function(xhr, status, error) {
+			      console.log('Error:', error);
+			}
+	  	});
+	  	
+	  	$('#modify-item-code-modal .btn-primary').click(function(){
+	  		let selectedItem = $('input[name="item"]:checked');
+	  		
+	  		if(selectedItem.length > 0){
+	  			let itemCode = selectedItem.val();
+	  			let itemName = selectedItem.next('label').text().split(' - ')[1];
+	  			$('#modify-item-code').val(itemCode);
+	  			$('#modify-item-name').val(itemName);
+	  			console.log('selectedItemCode -> ' + itemCode);
+		  		console.log('selectedItemName -> ' + itemName);
+	  		}
+	  		
+	  		$('#modify-item-code-modal').modal('hide');
+	  		
+	  	});
+	});
 	
+	// 제품코드 삽입 모달 창 
+	$(function() {
+	  	console.log('모달 콘솔')
+	  	
+	  	$.ajax({
+	  		url : '/sales/receive-order/item-code-list',
+	  		type : 'GET',
+	  		dataType : 'json',
+	  		success : function(data) {
+	  			let ul = $('#item-code-list');
+	  			ul.empty();
+	  			for (var i = 0; i < data.length; i++) {
+	  				let item = data[i];
+	                let radio = $('<input type="radio" name="item" value="' + item.itemCode + '">');
+	                let label = $('<label>' + item.itemCode + ' - ' + item.itemName + '</label>');
+					let span = $('<span></span></br>').append(radio).append(label);
+	                ul.append(span);
+	                
+	  			}
+	  		},
+	  		error: function(xhr, status, error) {
+			      console.log('Error:', error);
+			}
+	  	});
+	  	
+	  	$('#item-code-modal .btn-primary').click(function(){
+	  		let selectedItem = $('input[name="item"]:checked');
+	  		
+	  		if(selectedItem.length > 0){
+	  			let itemCode = selectedItem.val();
+	  			let itemName = selectedItem.next('label').text().split(' - ')[1];
+	  			$('#item-code').val(itemCode);
+	  			$('#item-name-modal').val(itemName);
+	  			console.log('selectedItemCode -> ' + itemCode);
+		  		console.log('selectedItemName -> ' + itemName);
+	  		}
+	  		
+	  		$('#item-code-modal').modal('hide');
+	  		
+	  	});
+	});
 	
 	
 	// receive-order에서 선택된 radio의 orderCode를 detail의 hidden에 저장하는 함수 실행
@@ -681,78 +978,103 @@
 	}
 	
 	function calculateAmount() {
-		//let quantity = parseFloat(document.getElementsByName('quantity')[0].value);
 		let quantity = $('#quantity').val();
-		//let price = parseFloat(document.getElementsByName('price')[0].value);
 		let price = $('#price').val();
 		let amount = quantity * price;
 		
 		$('#amount').val(amount);
-		//document.getElementsByName('amount')[0].value = amount;
 	}
 	
 	function calculateModifyAmount() {
-		//let quantity = parseFloat(document.getElementsByName('quantity')[0].value);
 		let quantity = $('#modify-quantity').val();
-		//let price = parseFloat(document.getElementsByName('price')[0].value);
 		let price = $('#modify-price').val();
 		let amount = quantity * price;
 		
 		$('#modify-amount').val(amount);
-		//document.getElementsByName('amount')[0].value = amount;
 	}
 	
 	
 	// 출하등록 작업지시등록
 	$(function(){
 		
-		// 출하등록
+		
 		$('#stock-out-reg-btn').click(function(){
-			let orderCode = $("input[name='selectRow']:checked").val();
-			console.log('stock-out-reg-btn orderCode -> ' + orderCode);
-			
-			$.ajax({
-				url: "/sales/receive-order/" + orderCode + "/stock-out-reg",
-				type: "POST",
-				dataType: "text",
-				success: function(data){
-					console.log("출하등록 성공" + data);
-					loadPlaceOrderDetailList();
-				},
-				error: function(){
-					console.log("출하등록 변경 Error");
-				}
-			});
-			
+		    let orderCode = $("input[name='selectRow']:checked").val();
+		    console.log('stock-out-reg-btn orderCode -> ' + orderCode);
+		    
+		    // 주문 상태 확인 Ajax 호출
+		    $.ajax({
+		        url: "/sales/receive-order/" + orderCode + "/order-status",
+		        type: "GET",
+		        dataType: "text",
+		        success: function(orderStatus){
+		            console.log('in success orderStatus' + orderStatus);
+		            
+		            // '확정'인 경우에만 insert Ajax 호출
+		            if (orderStatus === '확정') {
+		            	console.log('in if orderStatus' + orderStatus);
+		                $.ajax({
+		                    url: "/sales/receive-order/" + orderCode + "/stock-out-reg",
+		                    type: "POST",
+		                    dataType: "text",
+		                    success: function(data){
+		                        console.log("출하등록 성공" + data);
+		                        loadPlaceOrderDetailList();
+		                    },
+		                    error: function(){
+		                        console.log("출하등록 변경 Error");
+		                    }
+		                });
+		            } else {
+		                alert("주문 상태가 '확정'이 아닙니다.");
+		            }
+		        },
+		        error: function(){
+		            console.log("주문 상태 조회 Error");
+		        }
+		    });
 		});
 		
 		// 작업지시등록
 		$('#work-order-reg-btn').click(function(){
-			let orderCode = $("input[name='selectRow']:checked").val();
-			console.log('work-order-reg-btn orderCode -> ' + orderCode);
-			
-			$.ajax({
-				url: "/sales/receive-order/" + orderCode + "/work-order-reg",
-				type: "POST",
-				dataType: "text",
-				success: function(data){
-					console.log("작업지시등록 성공" + data);
-					loadPlaceOrderDetailList();
-				},
-				error: function(){
-					console.log("작업지시등록 변경 Error");
-				}
-			});
-			
+		    let orderCode = $("input[name='selectRow']:checked").val();
+		    console.log('work-order-reg-btn orderCode -> ' + orderCode);
+		    
+		    // 주문 상태 확인 Ajax 호출
+		    $.ajax({
+		        url: "/sales/receive-order/" + orderCode + "/order-status",
+		        type: "GET",
+		        dataType: "text",
+		        success: function(orderStatus){
+		            console.log('in success orderStatus' + orderStatus);
+		            
+		            // '확정'인 경우에만 insert Ajax 호출
+		            if (orderStatus === '확정') {
+		            	console.log('in if orderStatus' + orderStatus);
+		            	$.ajax({
+		    				url: "/sales/receive-order/" + orderCode + "/work-order-reg",
+		    				type: "POST",
+		    				dataType: "text",
+		    				success: function(data){
+		    					console.log("작업지시등록 성공" + data);
+		    					loadPlaceOrderDetailList();
+		    				},
+		    				error: function(){
+		    					console.log("작업지시등록 변경 Error");
+		    				}
+		    			});
+		            } else {
+		                alert("주문 상태가 '확정'이 아닙니다.");
+		            }
+		        },
+		        error: function(){
+		            console.log("주문 상태 조회 Error");
+		        }
+		    });
 		});
 		
 	});
 		
-		
-		
-	
-	
-	
 	///////////////////////////////////////////////
 	///////////////////////////////////////////////
 	

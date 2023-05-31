@@ -63,6 +63,12 @@
 		WHERE	order_code = #{orderCode}
 	</update>
 	
+	<update id="updateEmpidByOrderCode" parameterType="ordersDto">
+		UPDATE	orders
+		SET		order_empid = #{orderEmpid},
+				update_date  = SYSDATE
+		WHERE	order_code = #{orderCode}
+	</update>
 	
 	<insert id="insertReceiveOrder" parameterType="ordersDto">
 		INSERT INTO	orders(
@@ -121,9 +127,6 @@
 			
 	</delete>
 	
-	
-	
-	
 	<!-- detail -->
 	<select id="selectPlaceOrderDetailListByCompanyCode" parameterType="String" resultType="OrdersDetailDto">
 		
@@ -158,6 +161,7 @@
 								  )
 		VALUES					  ( 
 									#{orderDetailCode, jdbcType=VARCHAR}, 
+									<!-- 'ORDER' || order_code_seq.currval,  -->
 									orders_detail_sorder_SEQ.NEXTVAL,
 									#{itemCode, jdbcType=VARCHAR}, 
 									#{quantity, jdbcType=NUMERIC}, 
@@ -173,7 +177,7 @@
 	<update id="updateAmountByordersDetailDto" parameterType="ordersDetailDto">
 		UPDATE	orders_detail
 		SET		quantity = #{quantity},
-				price = #{quantity},
+				price = #{price},
 				amount = #{amount}
 		WHERE	order_detail_code = #{orderDetailCode}
 	</update>
@@ -184,11 +188,25 @@
 		WHERE	order_detail_code = #{orderDetailCode}
 	</update>
 	
+	<update id="updateMemoByOrdersDetailDto" parameterType="ordersDetailDto">
+		UPDATE	orders_detail
+		SET		memo = #{memo}
+		WHERE	order_detail_code = #{orderDetailCode}
+	</update>
+	
 	<update id="updateEndYnByOrderDetailCode" parameterType="ordersDetailDto">
 		UPDATE	orders_detail
 		SET		end_yn = #{endYn}
 		WHERE	order_detail_code = #{orderDetailCode}
 	</update>
+
+	<select id="selectOrderStatusByOrderCode" parameterType="String" resultType="String">
+	
+		SELECT	order_status
+		FROM	orders
+		WHERE	order_code = #{orderCode}
+	
+	</select>
 	
 	<insert id="insertOdersToStOutByOrderCod" parameterType="String">
 		
@@ -200,19 +218,21 @@
 		        customer_code,
 		        reg_date,
 		        update_date,
-		        out_type
+		        out_type,
+		        delete_status
 		    )
 		SELECT
-		    'OUT' || ST_OUT_OUT_CODE_SEQ.NEXTVAL,
+		    'OUT_CODE' || ST_OUT_OUT_CODE_SEQ.NEXTVAL,
 		    o.order_code,
 		    o.company_code,
 		    o.customer_code,
 		    SYSDATE,
 		    SYSDATE,
-		    '저장'
+		    '저장',
+		    'N'
 		FROM
 		    orders o
-		    INNER JOIN orders_detail od
+		    LEFT OUTER JOIN orders_detail od
 		    ON o.order_code = od.order_detail_code
 		WHERE o.order_code = #{orderCode}
 
@@ -271,5 +291,99 @@
 			WHERE o.order_code = #{orderCode}
 	
 	</insert>
+	
+	<select id="selectCustomerList" resultType="OrdersCompanyDto">
+		SELECT   
+		        company_code,
+		        company_name
+		FROM    company
+	</select>
+	
+	<select id="selectItemList" resultType="OrdersItemDto">
+		SELECT   
+		        item_code,
+		        item_name
+        
+		FROM    item
+		WHERE	item_type = '완제품'	
+	</select>
+	
+	<update id="updateItemByordersDetailDto" parameterType="ordersItemDto">
+		UPDATE	orders_detail
+		SET		item_code = #{itemCode}
+		WHERE	order_detail_code = #{orderDetailCode}
+	</update>
+	
+	<select id="selectReceiveOrderListByCompanyCode" resultType="OrdersAOMDto">
+	
+		SELECT
+			    o.order_code,
+			    od.item_code,
+			    i.item_name,
+			    i.item_type,
+			    od.quantity,
+			    o.receive_order_type,
+			    o.order_date,
+			    o.order_empid,
+			    o.order_status
+			    
+		FROM    orders o
+		
+		JOIN    orders_detail od 
+		ON      o.order_code = od.order_detail_code
+		JOIN    item i 
+		ON      od.item_code = i.item_code
+		WHERE   o.receive_or_place = '수주'
+		AND     o.order_status = '확정'
+		AND     o.company_code = 'COMPANY1'
+	
+	</select>
+	
+	<select id="selectSemiManufacturesListByCompanyCode" parameterType="String" resultType="OrdersAOMDto">
+	
+		SELECT
+		        <!-- bom.low_item_code AS item_code, -->
+		        bom.low_item_code,
+		        i.item_name,
+		        i.item_type,
+		        i.stock_unit,
+		        wsd.good_quantity,
+		        wo.work_order_code,
+		        wd.work_order_quantity
+        
+		FROM    orders o
+			JOIN    orders_detail od    ON  o.order_code = od.order_detail_code
+			JOIN    bom                 ON  od.item_code = bom.high_item_code
+			JOIN    item i              ON  bom.low_item_code = i.item_code 
+			JOIN    wh_stock_detail wsd ON  bom.low_item_code = wsd.item_code
+			JOIN    wo                  ON  o.order_code = wo.order_code
+			JOIN    wo_detail wd        ON  wo.work_order_code = wd.work_order_code  
+		
+		WHERE   o.order_code = #{orderCode}
+	
+	<!-- 
+		SELECT
+		    od.item_code,
+		    i.item_name,
+		    i.item_type,
+		    i.stock_unit,
+		    wsd.good_quantity,
+		    wod.work_order_quantity
+		
+		FROM    orders o
+		JOIN    orders_detail od 
+		ON      o.order_code = od.order_detail_code
+		JOIN    item i 
+		ON      od.item_code = i.item_code
+		JOIN    wh_stock_detail wsd
+		ON      i.item_code = wsd.item_code
+		JOIN    wo w
+		ON      o.order_code = w.order_code
+		JOIN    wo_detail wod
+		ON      w.work_order_code = wod.work_order_code
+		
+		WHERE   o.order_code = #{orderCode}
+		 -->
+	</select>
 	
 </mapper>

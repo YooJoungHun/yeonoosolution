@@ -2,8 +2,10 @@ package com.choongang.yeonsolution.sales.om.service;
 
 import java.util.List;
 
+import com.choongang.yeonsolution.sales.om.domain.OrdersCompanyDto;
 import com.choongang.yeonsolution.sales.om.domain.OrdersDetailDto;
 import com.choongang.yeonsolution.sales.om.domain.OrdersDto;
+import com.choongang.yeonsolution.sales.om.domain.OrdersItemDto;
 
 public interface OMService {
 
@@ -36,5 +38,17 @@ public interface OMService {
 	int addOrdersToStOutByOrderCode(String orderCode);
 
 	int addOrdersToWOByOrderCode(String orderCode);
+
+	String findOrderStatusByOrderCode(String orderCode);
+
+	List<OrdersCompanyDto> findCustomerList();
+
+	List<OrdersItemDto> finditemList();
+
+	int modifyItemByordersDetailDto(OrdersItemDto ordersItemDto);
+
+	int modifyEmpidByOrderCode(OrdersDto ordersDto);
+
+	int modifyMemoByOrdersDetailDto(OrdersDetailDto ordersDetailDto);
 
 }

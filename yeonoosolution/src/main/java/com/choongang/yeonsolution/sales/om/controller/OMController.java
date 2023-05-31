@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.choongang.yeonsolution.sales.om.domain.OrdersCompanyDto;
 import com.choongang.yeonsolution.sales.om.domain.OrdersDetailDto;
 import com.choongang.yeonsolution.sales.om.domain.OrdersDto;
+import com.choongang.yeonsolution.sales.om.domain.OrdersItemDto;
 import com.choongang.yeonsolution.sales.om.service.OMService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +50,6 @@ public class OMController {
 	
 	/*
 	 * 수주 content List
-	 * 
 	 */
 	@GetMapping("/sales/receive-order/place-order-list")
 	@ResponseBody
@@ -165,6 +166,29 @@ public class OMController {
 		return modifiedDueDate;
 	}
 	
+	/*
+	 * 수주담당자 변경 
+	 */
+	@PatchMapping("/sales/receive-order/{orderCode}/modify-empid")
+	@ResponseBody
+	public int modifyEmpidByOrderCode(@PathVariable String orderCode, 
+									  @RequestBody OrdersDto ordersDto){
+										    
+		ordersDto.setOrderCode(orderCode);
+		
+		log.info("[modifyEmpidByOrderCode] orderCode -> {}", ordersDto.getOrderCode());
+		log.info("[modifyEmpidByOrderCode] ordersDto.getOrderEmpid() -> {}", ordersDto.getOrderEmpid());
+		
+		log.info("[modifyEmpidByOrderCode] ordersDto.toString -> {}", ordersDto.toString());
+		int modifiedEmpid = omService.modifyEmpidByOrderCode(ordersDto);
+		//String orderTypeStr =  Integer.toString(orderType);
+		
+		log.info("[modifyEmpidByOrderCode] modifiedEmpid -> {}", modifiedEmpid);
+		log.info("[modifyEmpidByOrderCode] ordersDto.getOrderEmpid() -> {}", ordersDto.getOrderEmpid());
+		
+		return modifiedEmpid;
+	}
+	
 	
 	
 	/*
@@ -196,7 +220,18 @@ public class OMController {
 		}
 	}
 	
-	
+	/*
+	 * modal customer List
+	 */
+	@GetMapping("/sales/receive-order/customer-code-list")
+	@ResponseBody
+	public List<OrdersCompanyDto> customerList() {
+		
+		List<OrdersCompanyDto> customerList = omService.findCustomerList();
+		log.info("[customerList] customerList.toString() -> {}", customerList.toString());
+		
+		return customerList;
+	}
 	
 	
 	//
@@ -230,6 +265,24 @@ public class OMController {
 		return "redirect:/sales/receive-order";
 	}
 	
+	/*
+	 * 제품 변경 
+	 */
+	@ResponseBody
+	@PatchMapping("/sales/receive-order/{orderDetailCode}/modify-item")
+	public int modifyItemByOrderDetailCode(@PathVariable String orderDetailCode, 
+										   @RequestBody  OrdersItemDto ordersItemDto){
+										    
+		log.info("[modifyItemByOrderDetailCode] orderDetailCode -> {}", orderDetailCode);
+		ordersItemDto.setOrderDetailCode(orderDetailCode);
+		log.info("[modifyItemByOrderDetailCode] ordersItemDto.toString() -> {}", ordersItemDto.toString());
+		
+		int modifiedItem = omService.modifyItemByordersDetailDto(ordersItemDto);
+		
+		log.info("[modifyItemByOrderDetailCode] modifiedItmm -> {}", modifiedItem);
+		
+		return modifiedItem;
+	}
 
 	/*
 	 * 금액 변경 
@@ -290,6 +343,58 @@ public class OMController {
 		log.info("[modifyItemStockUnitByOrderDetailCode] ordersDetailDto.toString() -> {}", ordersDetailDto.toString());
 		
 		return modifiedEndYn;
+	}
+	
+	
+	/*
+	 * 저장 확인 검증
+	 */
+	@ResponseBody
+	@GetMapping("/sales/receive-order/{orderCode}/order-status")
+	public String getOrderStatusByOrderCode(@PathVariable String orderCode) {
+		log.info("[getOrderStatusByOrderCode] orderCode -> {}", orderCode);
+		
+		String orderStatus = omService.findOrderStatusByOrderCode(orderCode);
+		
+		log.info("[getOrderStatusByOrderCode] OrderStatus -> {}", orderStatus);
+		
+		return orderStatus;
+	}
+	
+	/*
+	 * 비고 변경 
+	 */
+	@PatchMapping("/sales/receive-order/{orderDetailCode}/modify-memo")
+	@ResponseBody
+	public int modifyMemoByOrdersDetailDto(@PathVariable String orderDetailCode, 
+									       @RequestBody OrdersDetailDto ordersDetailDto){
+										    
+		ordersDetailDto.setOrderDetailCode(orderDetailCode);
+		
+		log.info("[modifyMemoByOrderCode] ordersDetailDto.getOrderDetailCode() -> {}", ordersDetailDto.getOrderDetailCode());
+		log.info("[modifyMemoByOrderCode] ordersDetailDto.getOrderEmpid() -> {}", ordersDetailDto.getMemo());
+		
+		log.info("[modifyMemoByOrderCode] ordersDetailDto.toString -> {}", ordersDetailDto.toString());
+		int modifiedMemo = omService.modifyMemoByOrdersDetailDto(ordersDetailDto);
+		
+		log.info("[modifyMemoByOrderCode] modifiedMemo -> {}", modifiedMemo);
+		log.info("[modifyMemoByOrderCode] ordersDetailDto.getMemo() -> {}", ordersDetailDto.getMemo());
+		
+		return modifiedMemo;
+	}
+	
+	
+	/*
+	 * item List
+	 */
+	@GetMapping("/sales/receive-order/item-code-list")
+	@ResponseBody
+	public List<OrdersItemDto> itemList() {
+		
+		List<OrdersItemDto> itemList = omService.finditemList();
+		log.info("[itemList] itemList.size() -> {}", itemList.size());
+		
+		return itemList;
 	}
 	
 	

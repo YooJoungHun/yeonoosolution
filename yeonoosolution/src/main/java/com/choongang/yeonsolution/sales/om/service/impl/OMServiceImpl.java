@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.choongang.yeonsolution.sales.om.dao.OMDao;
+import com.choongang.yeonsolution.sales.om.domain.OrdersCompanyDto;
 import com.choongang.yeonsolution.sales.om.domain.OrdersDetailDto;
 import com.choongang.yeonsolution.sales.om.domain.OrdersDto;
+import com.choongang.yeonsolution.sales.om.domain.OrdersItemDto;
 import com.choongang.yeonsolution.sales.om.service.OMService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -15,10 +17,10 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class OMServiceImpl implements OMService {
 
-	private final OMDao omdao;
+	private final OMDao omDao;
 	
-	public OMServiceImpl(OMDao omdao) {
-		this.omdao = omdao;
+	public OMServiceImpl(OMDao omDao) {
+		this.omDao = omDao;
 	}
 	
 	
@@ -27,7 +29,7 @@ public class OMServiceImpl implements OMService {
 		
 		List<OrdersDto> placeOrderList = null;
 		
-		placeOrderList = omdao.selectPlaceOrderListByCompanyCode();
+		placeOrderList = omDao.selectPlaceOrderListByCompanyCode();
 		log.info("[findPlaceOrderListByCompanyCode] placeOrderList.size() -> {}", placeOrderList.size());
 		
 		return placeOrderList;
@@ -37,7 +39,7 @@ public class OMServiceImpl implements OMService {
 	@Override
 	public int modifyStatusToConfirmByorderCode(String orderCode) {
 		
-		int orderStatus = omdao.updateStatusToConfirmByorderCode(orderCode);
+		int orderStatus = omDao.updateStatusToConfirmByorderCode(orderCode);
 		
 		return orderStatus;
 	}
@@ -46,7 +48,7 @@ public class OMServiceImpl implements OMService {
 	@Override
 	public int modifyStatusToCancelByorderCode(String orderCode) {
 		
-		int orderStatus = omdao.updateStatusToCancelByorderCode(orderCode);
+		int orderStatus = omDao.updateStatusToCancelByorderCode(orderCode);
 
 		return orderStatus;
 	}
@@ -54,7 +56,7 @@ public class OMServiceImpl implements OMService {
 	@Override
 	public int modifyOrderTypeByorderCode(String orderCode, OrdersDto ordersDto) {
 		
-		int orderType = omdao.updateOrderTypeByorderCode(orderCode, ordersDto);
+		int orderType = omDao.updateOrderTypeByorderCode(orderCode, ordersDto);
 		
 		return orderType;
 	}
@@ -62,7 +64,7 @@ public class OMServiceImpl implements OMService {
 	@Override
 	public int modifyOrderDateByorderCode(OrdersDto ordersDto) {
 
-		int updatedOrderDate = omdao.updateOrderDateByorderCode(ordersDto);
+		int updatedOrderDate = omDao.updateOrderDateByorderCode(ordersDto);
 		
 		return updatedOrderDate;
 	}
@@ -70,15 +72,22 @@ public class OMServiceImpl implements OMService {
 
 	@Override
 	public int modifyDueDateByorderCode(OrdersDto ordersDto) {
-		int updatedDueDate = omdao.updateDueDateByorderCode(ordersDto);
+		int updatedDueDate = omDao.updateDueDateByorderCode(ordersDto);
 		
 		return updatedDueDate;
 	}
 	
 	@Override
+	public int modifyEmpidByOrderCode(OrdersDto ordersDto) {
+		int updatedEmpid = omDao.updateEmpidByOrderCode(ordersDto);
+		
+		return updatedEmpid;
+	}
+	
+	@Override
 	public void addReceiveOrder(OrdersDto ordersDto) {
 		
-		omdao.insertReceiveOrder(ordersDto);
+		omDao.insertReceiveOrder(ordersDto);
 	}
 	
 	@Override
@@ -86,9 +95,9 @@ public class OMServiceImpl implements OMService {
 		int receiveOrderDelete = 0;
 		int receiveOrderDetailDelete = 0;
 		
-		receiveOrderDelete = omdao.deleteReceiveOrderDetailByOrderCode(orderCode);
+		receiveOrderDelete = omDao.deleteReceiveOrderDetailByOrderCode(orderCode);
 		
-		receiveOrderDelete = omdao.deleteReceiveOrderByOrderCode(orderCode);
+		receiveOrderDelete = omDao.deleteReceiveOrderByOrderCode(orderCode);
 		
 		receiveOrderDelete += receiveOrderDetailDelete;
 		
@@ -104,7 +113,7 @@ public class OMServiceImpl implements OMService {
 		
 		List<OrdersDetailDto> placeOrderDetailList = null;
 		
-		placeOrderDetailList = omdao.selectPlaceOrderDetailListByCompanyCode(orderCode);
+		placeOrderDetailList = omDao.selectPlaceOrderDetailListByCompanyCode(orderCode);
 		log.info("[findPlaceOrderDetailListByCompanyCode] placeOrderList.size() -> {}", placeOrderDetailList.size());
 		
 		return placeOrderDetailList;
@@ -114,14 +123,14 @@ public class OMServiceImpl implements OMService {
 	@Override
 	public void addReceiveOrderDetail(OrdersDetailDto ordersDetailDto) {
 
-		omdao.insertReceiveOrderDetail(ordersDetailDto);
+		omDao.insertReceiveOrderDetail(ordersDetailDto);
 		
 	}
 
 
 	@Override
 	public int modifyAmountByordersDetailDto(OrdersDetailDto ordersDetailDto) {
-		int updatedAmount = omdao.updateAmountByordersDetailDto(ordersDetailDto);
+		int updatedAmount = omDao.updateAmountByordersDetailDto(ordersDetailDto);
 		
 		return updatedAmount;
 	}
@@ -129,30 +138,46 @@ public class OMServiceImpl implements OMService {
 
 	@Override
 	public int modifyItemStockUnitByorderDetailCode(OrdersDetailDto ordersDetailDto) {
-		int modifiedUnit = omdao.updateItemStockUnitByorderCode(ordersDetailDto);
+		int modifiedUnit = omDao.updateItemStockUnitByorderCode(ordersDetailDto);
 		
 		return modifiedUnit;
+	}
+	
+	@Override
+	public int modifyMemoByOrdersDetailDto(OrdersDetailDto ordersDetailDto) {
+		int modifiedMemo = omDao.updateMemoByOrdersDetailDto(ordersDetailDto);
+		
+		return modifiedMemo;
 	}
 
 
 	@Override
 	public int modifyEndYnByOrderDetailCode(OrdersDetailDto ordersDetailDto) {
-		int modifiedEndYn = omdao.updateEndYnByOrderDetailCode(ordersDetailDto);
+		int modifiedEndYn = omDao.updateEndYnByOrderDetailCode(ordersDetailDto);
 		
 		return modifiedEndYn;
 	}
 
+	@Override
+	public String findOrderStatusByOrderCode(String orderCode) {
+		String OrderStatus = null;
+				
+		OrderStatus = omDao.selectOrderStatusByOrderCode(orderCode);
+		
+		return OrderStatus;
+	}
 
 	@Override
 	public int addOrdersToStOutByOrderCode(String orderCode) {
 		
 		int stockOutReg = 0;
-		int stockOutDetailReg = 0;
-		stockOutReg = omdao.insertOdersToStOutByOrderCod(orderCode);
+//		int stockOutDetailReg = 0;
+		stockOutReg = omDao.insertOdersToStOutByOrderCod(orderCode);
 		log.info("[addOrdersToStOutByOrderCode] stockOutReg -> {}", stockOutReg);
 		
 		if(stockOutReg > 0) {
-			stockOutDetailReg = omdao.insertOdersDetailToStOutDetailByOrderCod(orderCode);
+			omDao.insertOdersDetailToStOutDetailByOrderCod(orderCode);
+			log.info("[addOrdersToStOutByOrderCode] stockOutDetailReg -> {}", stockOutReg);
 		}
 		return stockOutReg;
 	}
@@ -161,16 +186,45 @@ public class OMServiceImpl implements OMService {
 	@Override
 	public int addOrdersToWOByOrderCode(String orderCode) {
 		int WOReg = 0;
-		WOReg = omdao.insertOdersToWOByOrderCode(orderCode);
+		WOReg = omDao.insertOdersToWOByOrderCode(orderCode);
 		
 		return WOReg;
 	}
 
 
+	@Override
+	public List<OrdersCompanyDto> findCustomerList() {
+		List<OrdersCompanyDto> customerList = null;
+		
+		customerList = omDao.selectCustomerList();
+		log.info("[findCustomerList] customerList.size() -> {}", customerList.size());
+		
+		return customerList;
+	}
+
+
+	@Override
+	public List<OrdersItemDto> finditemList() {
+		List<OrdersItemDto> itemList = null;
+		
+		itemList = omDao.selectItemList();
+		log.info("[findCustomerList] itemList.size() -> {}", itemList.size());
+		
+		return itemList;
+	}
+
+
+	@Override
+	public int modifyItemByordersDetailDto(OrdersItemDto ordersItemDto) {
+		int updatedItem = omDao.updateItemByordersDetailDto(ordersItemDto);
+		
+		return updatedItem;
+	}
 
 
 	
 
 
+	
 
 }

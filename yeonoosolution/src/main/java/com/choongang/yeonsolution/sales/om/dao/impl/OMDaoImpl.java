@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.choongang.yeonsolution.sales.om.dao.OMDao;
+import com.choongang.yeonsolution.sales.om.domain.OrdersCompanyDto;
 import com.choongang.yeonsolution.sales.om.domain.OrdersDetailDto;
 import com.choongang.yeonsolution.sales.om.domain.OrdersDto;
+import com.choongang.yeonsolution.sales.om.domain.OrdersItemDto;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -109,7 +111,21 @@ public class OMDaoImpl implements OMDao {
 		}
 		return updatedDueDate;
 	}
+	
+	@Override
+	public int updateEmpidByOrderCode(OrdersDto ordersDto) {
+		log.info("[updateEmpidByOrderCode] ordersDto.getOrderCode() -> {}", ordersDto.getOrderCode());
+		log.info("[updateEmpidByOrderCode] ordersDto.getOrderEmpid() -> {}", ordersDto.getOrderEmpid());
 
+		int updatedEmpid = 0;
+		
+		try {
+			updatedEmpid = sqlSession.update("updateEmpidByOrderCode", ordersDto);
+		} catch (Exception e) {
+			log.info("[updateEmpidByOrderCode] updatedEmpid Exception -> {}", e.getMessage());
+		}
+		return updatedEmpid;
+	}
 	
 	@Override
 	public void insertReceiveOrder(OrdersDto ordersDto) {
@@ -120,7 +136,6 @@ public class OMDaoImpl implements OMDao {
 			log.info("[insertReceiveOrder] void Exception -> {}", e.getMessage());
 		}
 	}
-	
 	
 	@Override
 	public int deleteReceiveOrderByOrderCode(String orderCode) {
@@ -222,6 +237,20 @@ public class OMDaoImpl implements OMDao {
 		}
 		return modifiedEndYn;
 	}
+	
+	@Override
+	public String selectOrderStatusByOrderCode(String orderCode) {
+
+		String OrderStatus = null;
+		
+		try {
+			OrderStatus = sqlSession.selectOne("selectOrderStatusByOrderCode", orderCode);
+		} catch (Exception e) {
+			log.info("[selectOrderStatusByOrderCode] OrderStatus Exception -> {}", e.getMessage());
+		}
+		
+		return OrderStatus;
+	}
 
 	@Override
 	public int insertOdersToStOutByOrderCod(String orderCode) {
@@ -267,6 +296,63 @@ public class OMDaoImpl implements OMDao {
 		
 		return WOReg;
 	}
+
+	@Override
+	public List<OrdersCompanyDto> selectCustomerList() {
+		List<OrdersCompanyDto> customerList = null;
+		
+		try {
+			customerList = sqlSession.selectList("selectCustomerList");
+		} catch (Exception e) {
+			log.info("[selectCustomerList] customerList Exception -> {}", e.getMessage());
+		}
+		
+		return customerList;
+	}
+
+	@Override
+	public List<OrdersItemDto> selectItemList() {
+		List<OrdersItemDto> itemList = null;
+		
+		try {
+			itemList = sqlSession.selectList("selectItemList");
+			log.info("[selectItemList] itemList.size() -> {}", itemList.size());
+		} catch (Exception e) {
+			log.info("[selectItemList] customerList Exception -> {}", e.getMessage());
+		}
+		
+		return itemList;
+	}
+
+	@Override
+	public int updateItemByordersDetailDto(OrdersItemDto ordersItemDto) {
+		log.info("[updateItemByordersDetailDto] ordersItemDto.toString() -> {}", ordersItemDto.toString());
+
+		int updatedItem = 0;
+		
+		try {
+			updatedItem = sqlSession.update("updateItemByordersDetailDto", ordersItemDto);
+		} catch (Exception e) {
+			log.info("[updateAmountByordersDetailDto] updatedDueDate Exception -> {}", e.getMessage());
+		}
+		return updatedItem;
+	}
+
+	@Override
+	public int updateMemoByOrdersDetailDto(OrdersDetailDto ordersDetailDto) {
+		log.info("[updateMemoByOrdersDetailDto] ordersItemDto.toString() -> {}", ordersDetailDto.toString());
+
+		int updatedMemo = 0;
+		
+		try {
+			updatedMemo = sqlSession.update("updateMemoByOrdersDetailDto", ordersDetailDto);
+		} catch (Exception e) {
+			log.info("[updateMemoByOrdersDetailDto] updatedMemo Exception -> {}", e.getMessage());
+		}
+		return updatedMemo;
+	}
+
+	
 
 
 }

@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.choongang.yeonsolution.sales.om.domain.OrdersCompanyDto;
 import com.choongang.yeonsolution.sales.om.domain.OrdersDetailDto;
 import com.choongang.yeonsolution.sales.om.domain.OrdersDto;
+import com.choongang.yeonsolution.sales.om.domain.OrdersItemDto;
 
 @Repository
 public interface OMDao {
@@ -43,6 +45,18 @@ public interface OMDao {
 	int insertOdersDetailToStOutDetailByOrderCod(String orderCode);
 
 	int insertOdersToWOByOrderCode(String orderCode);
+
+	String selectOrderStatusByOrderCode(String orderCode);
+
+	List<OrdersCompanyDto> selectCustomerList();
+
+	List<OrdersItemDto> selectItemList();
+
+	int updateItemByordersDetailDto(OrdersItemDto ordersItemDto);
+
+	int updateEmpidByOrderCode(OrdersDto ordersDto);
+
+	int updateMemoByOrdersDetailDto(OrdersDetailDto ordersDetailDto);
 
 
 }

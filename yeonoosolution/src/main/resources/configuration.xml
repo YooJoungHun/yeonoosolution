@@ -11,6 +11,9 @@
   		<!-- 김영광 -->
   		<typeAlias alias="OrdersDto" type="com.choongang.yeonsolution.sales.om.domain.OrdersDto"/>
   		<typeAlias alias="OrdersDetailDto" type="com.choongang.yeonsolution.sales.om.domain.OrdersDetailDto"/>
+  		<typeAlias alias="OrdersCompanyDto" type="com.choongang.yeonsolution.sales.om.domain.OrdersCompanyDto"/>
+  		<typeAlias alias="OrdersItemDto" type="com.choongang.yeonsolution.sales.om.domain.OrdersItemDto"/>
+  		<typeAlias alias="OrdersAOMDto" type="com.choongang.yeonsolution.sales.om.domain.OrdersAOMDto"/>
   		
   	</typeAliases>
   	
