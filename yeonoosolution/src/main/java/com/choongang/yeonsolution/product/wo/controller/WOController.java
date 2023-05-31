@@ -189,7 +189,7 @@ public class WOController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/wo/comparison")
-	public synchronized String woComparison(@RequestBody Map<String, Object> data) {
+	public String woComparison(@RequestBody Map<String, Object> data) {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -208,6 +208,8 @@ public class WOController {
 			wo.setItem(it);
 			wo.setWh(wh);
 			wo.setOrders(orders);
+			wo.setStartDate(null);
+			wo.setEndDate(null);
 			wo.setRegDate(null);
 			wo.setRegUser(null);
 			wo.setUpdateDate(null);

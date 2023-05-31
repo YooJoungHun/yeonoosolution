@@ -245,17 +245,7 @@ $(document).on('click', 'button.select-item', e => {
 	});
 });
 
-const compare = (obj1, obj2) => {
-	if (typeof obj1 !== 'object' || typeof obj2 !== 'object') return obj1 == obj2;
-	let objKeys1 = Object.keys(obj1).sort();
-	let objKeys2 = Object.keys(obj2).sort();
-	//if (objKeys1.length != objKeys2) return false;
-	return objKeys1.every((key, index) => {
-		let field1 = obj1[key];
-		let field2 = obj2[objKeys2[index]];
-		return compare(field1, field2);
-	});
-};
+// 데이터 테이블 값 비교
 const comparison = (obj1, obj2) => {
 	let dataObj1 = {};
 	let dataObj2 = {};
@@ -304,7 +294,9 @@ const rowToData = (elem) => {
 	let rawData = {};
 	for (let item of serializedArray) rawData[item.name] = item.value == null ? null : item.value;
 	let workOrderCode = !$(cloneElem).find('td[role="workOrderCode"]').text() ? null : $(cloneElem).find('td[role="workOrderCode"]').text();
+	let workStatus = !$(cloneElem).find('td[role="workStatus"]').text() ? null : $(cloneElem).find('td[role="workStatus"]').text();
 	if (workOrderCode != null) rawData['workOrderCode'] = workOrderCode;
+	if (workStatus != null) rawData['workStatus'] = workStatus;
 	return nestedToObject(rawData);
 };
 
@@ -323,17 +315,17 @@ $(document).on('click', 'button.update-item', e => {
 	tableData = replacer;
 	// 변경 사항 체크
 	let diff = tableData.filter(data => {
-		let aggregation = false;
-		for (let comp of compareData) {
-			//aggregation |= !compare(data, comp);
-			aggregation |= !comparison(data, comp);
-			if (aggregation) break;
-		}
-		console.log(aggregation);
+		if (!data.workOrderCode) return true;
+		let compData = compareData.filter(cd => cd.workOrderData == data.workOrderData)[0];
+		let aggregation = !comparison(data, compData) && (data.workStatus == '저장');
+		//console.log(data.workOrderCode + ' => ' + data.workStatus);
+		//console.log(typeof aggregation + ' aggregation:' + (aggregation ? 'true' : 'false'));
 		return aggregation;
 	});
 	let news = diff.filter(data => data.workOrderCode == null);
 	let olds = diff.filter(data => data.workOrderCode != null);
+	console.log(news);
+	console.log(olds);
 	// 신규아이템 추가
 	let newData = { 'data' : news };
 	let newCount = 0;
