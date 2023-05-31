@@ -24,7 +24,7 @@
 
 </script>
 </head>
-<body>
+<body >
 <form name="form2" method="get" action="${pageContext.request.contextPath }/new">
 
 			<select name="customerCode"  id="customerCode" onchange="showSelect()">
@@ -32,7 +32,7 @@
 				<c:forEach var="C" items="${companyCodeList}">
 					<option value="${C.companyCode}">${C.companyCode}</option>
 				</c:forEach>
-			</select>
+			</select>  
 					<input type="submit" value="검색">
 					<button type="button" onclick="location.href='/new'">초기화</button><p>
 
