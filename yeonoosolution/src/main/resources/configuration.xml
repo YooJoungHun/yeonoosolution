@@ -12,5 +12,8 @@
   		<typeAlias alias="Search" type="com.choongang.yeonsolution.sales.pm.domain.Search"/>
   		<typeAlias alias="CompanyDto" type="com.choongang.yeonsolution.sales.pm.domain.CompanyDto"/>
   		<typeAlias alias="ItemDto" type="com.choongang.yeonsolution.sales.pm.domain.ItemDto"/>
+  		<typeAlias alias="StockInDto" type="com.choongang.yeonsolution.sales.pm.domain.StockInDto"/>
+  		<typeAlias alias="StInDetailDto" type="com.choongang.yeonsolution.sales.pm.domain.StInDetailDto"/>
+  		<typeAlias alias="WhDto" type="com.choongang.yeonsolution.sales.pm.domain.WhDto"/>
   	</typeAliases>
 </configuration>

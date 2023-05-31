@@ -14,7 +14,7 @@ public class OrdersDetailDto {
 	private String itemCode;
 	private Long quantity;
 	private Long price;
-	private String amount;
+	private Long amount;
 	private String memo;
 	private String itemStockUnit;
 	private String endYn;

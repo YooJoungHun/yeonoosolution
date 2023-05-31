@@ -11,7 +11,7 @@ public class WhDto {
 	
 	private String whCode;
 	private String companyCode;
-	private String wh_Name;
+	private String whName;
 	private String regUser;
 	private String regDate;
 	private String updateUser;

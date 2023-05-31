@@ -8,6 +8,9 @@ import com.choongang.yeonsolution.sales.pm.domain.ItemDto;
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDetailDto;
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDto;
 import com.choongang.yeonsolution.sales.pm.domain.Search;
+import com.choongang.yeonsolution.sales.pm.domain.StInDetailDto;
+import com.choongang.yeonsolution.sales.pm.domain.StockInDto;
+import com.choongang.yeonsolution.sales.pm.domain.WhDto;
 
 public interface PmDao {
 
@@ -16,5 +19,14 @@ public interface PmDao {
 	int updateOrdersByOrderCode(Map<String, String> map);
 	List<CompanyDto> selectCompanyBySearch(String search);
 	List<ItemDto> selectItemyBySearch(String search);
+	String insertOrder(OrdersDto order);
+	int insertOrdersDetail(OrdersDetailDto orderDetail);
+	int updateOrder(OrdersDto order);
+	int deleteOrderDetailByOrderCode(String orderCode);
+	
+	List<StockInDto> selectStockInListBySearch(Search search);
+	List<StInDetailDto> selectStockInDetailByInCode(String inCode);
+	int updateStockInByInCode(Map<String, String> map);
+	List<WhDto> selectWh();
 
 }

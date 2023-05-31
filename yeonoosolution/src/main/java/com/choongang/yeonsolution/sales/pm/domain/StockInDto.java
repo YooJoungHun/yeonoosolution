@@ -13,7 +13,7 @@ public class StockInDto {
 	private String orderCode;
 	private String companyCode;
 	private String customerCode;
-	private Long begin_endInventory;
+	private Long beginEndInventory;
 	private String inDate;
 	private String regDate;
 	private String regUser;
@@ -22,5 +22,6 @@ public class StockInDto {
 	private String inType;
 	private String deleteStatus;
 	private String memo;
-
+	
+	private String customerName;
 }

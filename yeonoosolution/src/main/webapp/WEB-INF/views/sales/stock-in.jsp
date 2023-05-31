@@ -83,7 +83,7 @@
 	min-width: 70px;
 }
 
-.stoci-in-code {
+.stock-in-code {
 	min-width: 110px;
 }
 .order-code {
@@ -178,7 +178,7 @@
 	min-width: 60px;
 }
 .wh-code {
-	min-width: 70px;
+	min-width: 90px;
 }
 .wh-name {
 	min-width: 110px;
@@ -206,7 +206,6 @@
 				<button id="order-init-btn">초기화</button>
 				<button id="order-confirm-btn" class="order-status-update-btn">입고 확정</button>
 				<button id="order-cancel-btn" class="order-status-update-btn">확정 취소</button>
-				<button id="order-stock_in-btn">입고</button>
 			</div>
 			<div id="search-div">
 				<div>
@@ -220,10 +219,6 @@
 				<div>
 					<p>거래처명</p>
 					<input type="text" id="search-customer-name" readonly>
-				</div>
-				<div>
-					<p>담당자명</p>
-					<input type="text" id="order-empid">
 				</div>
 			</div>
 			<div class="tuigrid-header">
@@ -239,7 +234,7 @@
 							<th class="order-number"></th>
 							<th class="order-radio"></th>
 							<th class="order-status">상태</th>
-							<th class="stoci-in-code">입고 번호</th><!--  -->
+							<th class="stock-in-code">입고 번호</th><!--  -->
 							<th class="order-date">입고일자</th>
 							<th class="order-code">발주 번호</th>
 							<th class="customer-code">거래처코드</th>
@@ -272,7 +267,7 @@
 							<th class="item-code">ITEM코드</th>
 							<th class="item-name">품명</th>
 							<th class="wh-code">창고 코드</th><!--  -->
-							<th class="wh-name">재고단위</th><!--  -->
+							<th class="wh-name">창고명</th><!--  -->
 							<th class="item-stock-unit">재고단위</th>
 							<th class="quantity">수량</th>
 							<th class="item-price">단가</th>
@@ -375,6 +370,31 @@
         				<tr>
         					<th>제품코드</th>
         					<th>제품명</th>
+        				</tr>
+					</thead>
+        			<tbody></tbody>
+        		</table>
+        		</div>
+        		<div class="modal-footer modal-btn-div">
+          			<button type="button" class="btn btn-primary modal-confirm-btn" data-bs-dismiss="modal">확인</button>
+        		</div>
+      		</div>
+    	</div>
+  	</div>
+  	<!-- 창고 출력모달 -->
+	<div class="modal fade" id="modal-select-wh-code">
+    	<div class="modal-dialog">
+      		<div class="modal-content" id="select-wh-code-content">
+        		<div class="modal-header">
+          			<h5 class="modal-title" id="modal-select-wh-code-title-msg"></h5>
+          			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        		</div>
+        		<div class="modal-body">
+        		<table id="wh-list-table">
+        			<thead>
+        				<tr>
+        					<th>창고코드</th>
+        					<th>창고명</th>
         				</tr>
 					</thead>
         			<tbody></tbody>
@@ -551,7 +571,7 @@
 	// 제품 검색 데이터 받기
 	function itemSearch(search){
 		$.ajax({
-			url : "pm/item-list",
+			url : "/pm/item-list",
 			type : "GET",
 			dataType : "JSON",
 			data : {search :search.toUpperCase()},
@@ -573,10 +593,37 @@
 			}
 		});
 	}
+	// 창고 검색 데이터 받기
+	function whSearch(){
+		$.ajax({
+			url : "/pm/wh-list",
+			type : "GET",
+			dataType : "JSON",
+			success : function(whList){
+				let whListTable = $('#wh-list-table tbody');
+				whListTable.empty();
+				whList.forEach(function(wh){
+					let whListRow = $('<tr>').addClass('wh-list-tr');
+					let checkBox = $('<td>').addClass('wh-radio').append($("<input type='radio' class='wh-radio' name='wh-radio'>"));
+					let whCode = $('<td>').addClass('wh-code').text(wh.whCode);
+					let whName = $('<td>').addClass('wh-name').text(wh.whName);
+					
+					whListRow.append(checkBox).append(whCode).append(whName);
+					whListTable.append(whListRow);
+				});
+				$('#modal-select-wh-code').modal('show');
+			},
+			error: function(xhr, status, error) {
+			    console.log(xhr);
+			    console.log(status);
+			    console.log(error);
+			}
+		});
+	}
 	// 회사 검색 데이터 받기
 	function companySearch(search){
 		$.ajax({
-			url : "pm/customer-list",
+			url : "/pm/customer-list",
 			type : "GET",
 			dataType : "JSON",
 			data : {search :search.toUpperCase()},
@@ -614,9 +661,9 @@
 		let Checkbox = $('<td>').addClass('item-checkbox').append($("<input type='checkbox' class='order-detail-checkbox'>"));
 		let itemCode = $('<td>').addClass('item-code change-td').text(orderDetail.itemCode);
 		let itemName = $('<td>').addClass('item-name').text(orderDetail.itemName);
-		let whCode = $('<td>').addClass('wh-code').text(orderDetail.whCode);/*  */
+		let whCode = $('<td>').addClass('wh-code change-td').text(orderDetail.whCode);/*  */
 		let whName = $('<td>').addClass('wh-name').text(orderDetail.whName);/*  */
-		let itemStockUnit = $('<td>').addClass('item-stock-unit').text(orderDetail.itemStockUnit);
+		let itemStockUnit = $('<td>').addClass('item-stock-unit').text(orderDetail.stockUnit);
 		let quantity = $('<td>').addClass('quantity change-td').text(orderDetail.inQuantity);
 		let price = $('<td>').addClass('item-price change-td').text(orderDetail.inPrice);
 		let amount = $('<td>').addClass('amount').text(parseInt(orderDetail.inQuantity)*parseInt(orderDetail.inPrice));
@@ -627,7 +674,6 @@
 	}
 	// 발주서 세부항목 불러오기
 	function orderDetailList(orderCode){
-		console.log("function orderDetailList(orderCode){ -> " + orderCode);
 		if(orderCode == radioOrderCode){
 			radioOrderCode = null;
 			return;
@@ -671,7 +717,7 @@
 		let orderNumber = $('<td>').addClass('order-number').text(index);
 		let orderRadio = $('<td>').addClass('order-radio').append($("<input type='radio' class='order-radio-select' value='" + order.inCode +"' name='chk_info'>"));
 		let orderStatus = $('<td>').addClass('order-status').text(order.inType);
-		let inCode = $('<td>').addClass('order-code').text(order.inCode);/*  */
+		let inCode = $('<td>').addClass('stock-in-code').text(order.inCode);/*  */
 		let orderDate = $('<td>').addClass('order-date change-td').text(order.inDate);
 		let orderCode = $('<td>').addClass('order-code').text(order.orderCode);/*  */
 		let customerCode = $('<td>').addClass('customer-code change-td').text(order.customerCode);
@@ -685,7 +731,7 @@
 				.append(customerCode).append(customerName).append(regDate).append(regUser).append(updateDate).append(updateUser).append(memo);
 		$('#order-list-table tbody').append(orderRow);
 		// 발주서 추가시 포커스 이동
-		if(order.orderCode == null){
+		if(order.inCode == null){
 			$('.order-number').filter(function() {
 				return $(this).text().trim() == index;
 			}).closest('tr').find('.order-radio-select').prop('checked', true).focus();
@@ -707,7 +753,6 @@
 	// 발주서 행 클릭 시 라디오 버튼 체크표시 및 검색어 추가
 	$(document).on('click', '.order-table-tr-area', function(){
 		let radioInput = $(this).find('.order-radio input[type="radio"]');
-		console.log(radioInput.val());
 		radioInput.prop('checked', true);
 		$('#search-order-day').val($(this).find('.order-date').text());
 		$('#search-customer-code').val($(this).find('.customer-code').text());
@@ -756,6 +801,9 @@
 		if(elementClass.includes('date')){
 			dbclickTd.append($('<input type="date">').addClass('change-text-input-td').val(value).css('width', tdWidth+'px'));
 			$('.change-text-input-td').focus();
+		}else if(elementClass.includes('wh-code')){
+			changeItemRow = dbclickTd.closest('tr').find('.item-sorder').text();
+			whSearch();
 		} else {
 			if(elementClass.includes('item-code')){
 				changeItemRow = dbclickTd.closest('tr').find('.item-sorder').text();
@@ -801,7 +849,7 @@
 		let customerCode = $('#search-customer-code').val();
 		let orderEmpid = $('#order-empid').val();
 		$.ajax({
-			url: "/pm/order-list",
+			url: "/pm/stock-in-list",
 			type : "GET",
 			dataType : "JSON",
 			data : { 
@@ -870,9 +918,9 @@
 		}
 	});
 	function orderUpdate(column, data){
-		let orderCode = radioOrderCode;
+		let inCode = radioOrderCode;
 		$.ajax({
-			url: "pm/order/" + orderCode,
+			url: "/pm/st-in/" + inCode,
 			type : "PATCH",
 			data : {column : column,
 					data : data},
@@ -921,6 +969,18 @@
 			$('.order-radio input[type="radio"]:checked').closest('tr').find('.customer-name').removeAttr('readonly');
 			$('.order-radio input[type="radio"]:checked').closest('tr').find('.customer-name').text(customerName);
 			$('.order-radio input[type="radio"]:checked').closest('tr').find('.customer-name').attr('readonly', 'readonly');
+		}else if(modalId.includes('modal-select-wh-code')){
+			let wh = modal.find('input[type="radio"]:checked');
+			let changeTr = $('.item-sorder').filter(function() {
+				return parseInt($(this).text()) == changeItemRow;
+			}).closest('tr');
+			console.log(changeTr.find('.item-sorder').text());
+			console.log(wh.parent().siblings().filter('.wh-name').text());
+			changeTr.find('.wh-code').text(wh.parent().siblings().filter('.wh-code').text());
+			changeTr.find('.wh-name').removeAttr('readonly');
+			changeTr.find('.wh-name').text(wh.parent().siblings().filter('.wh-name').text());
+			changeTr.find('.wh-name').attr('readonly', 'readonly');
+			
 		}else if(modalId.includes('modal-select-item-code')){
 			let item = modal.find('input[type="radio"]:checked');
 			let changeTr = $('.item-sorder').filter(function() {

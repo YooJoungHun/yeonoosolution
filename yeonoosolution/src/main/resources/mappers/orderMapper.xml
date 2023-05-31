@@ -58,4 +58,69 @@
 		OR		item_name LIKE '%' || #{search} || '%'
 		</if>
 	</select>
+	<select id="insertOrder" statementType="CALLABLE">
+		{ CALL 
+			ORDER_INSERT(
+				#{companyCode,		mode=IN, jdbcType=VARCHAR}, 
+				#{customerCode,		mode=IN, jdbcType=VARCHAR}, 
+				#{receiveOrderType,			mode=IN, jdbcType=VARCHAR}, 
+				#{orderDate, 	mode=IN, jdbcType=DATE}, 
+				#{orderEmpid,			mode=IN, jdbcType=VARCHAR}, 
+				#{deliveryPlan,			mode=IN, jdbcType=VARCHAR}, 
+				#{dueDate,	mode=IN, jdbcType=DATE}, 
+				#{memo,	mode=IN, jdbcType=VARCHAR}, 
+				#{regUser,		mode=IN, jdbcType=VARCHAR},
+				#{updateUser,		mode=IN, jdbcType=VARCHAR},
+				#{orderCode,		mode=OUT, jdbcType=VARCHAR}
+			) 
+		}
+	</select>
+	<insert id="insertOrdersDetail" parameterType="OrdersDetailDto">
+		INSERT INTO orders_detail
+		VALUES(#{orderDetailCode}, #{sorder}, #{itemCode}, #{quantity}, #{price}, #{amount}, #{memo}, #{itemStockUnit}, 'Y')
+	</insert>
+	<update id="updateOrder" parameterType="OrdersDto">
+		UPDATE 	orders
+		SET		customer_code = #{customerCode}, receive_order_type = #{receiveOrderType}, order_date = #{orderDate}, order_empid = #{orderEmpid},
+				delivery_plan = #{deliveryPlan}, due_date = #{dueDate}, memo = #{memo}, update_date = SYSDATE, update_user = #{updateUser}
+		WHERE	order_code = #{orderCode}
+	</update>
+	<delete id="deleteOrderDetailByOrderCode" parameterType="String">
+		DELETE 
+		FROM	orders_detail
+		WHERE	order_detail_code = #{orderCode}
+	</delete>
+	
+	<!-- 입고 -->
+	<select id="selectStockInListBySearch" parameterType="String" resultType="StockInDto">
+		SELECT	st_in.*, com.company_name AS customerName
+		FROM	st_in INNER JOIN company com ON st_in.customer_code = com.company_code
+		WHERE	delete_status = 'N'
+		AND		st_in.in_type IN ('저장', '확정')
+		AND (#{orderDate} IS NULL OR st_in.in_date = #{orderDate})
+		AND (#{customerCode} IS NULL OR st_in.customer_code = #{customerCode})
+	</select>
+	<select id="selectStockInDetailByInCode" parameterType="String" resultType="StInDetailDto">
+		SELECT 	 sidt.*, it.item_name AS item_name, it.STOCK_UNIT AS  stockUnit, wh.wh_name AS whName
+		FROM	 st_in_detail sidt INNER JOIN item it ON sidt.item_code = it.item_code
+							  LEFT OUTER JOIN wh ON sidt.wh_code = wh.wh_code
+		WHERE	 sidt.in_code = #{inCode}
+		ORDER BY sidt.sorder
+	</select>
+	<update id="updateStockInByInCode" parameterType="Map">
+		UPDATE	st_in
+	<choose>
+	<when test="column == 'deleteStatus'">
+		SET		delete_status = #{data}
+	</when>
+	<when test="column == 'orderStatus'">
+		SET		in_type = #{data}
+	</when>
+	</choose>
+		WHERE	in_code = #{inCode}
+	</update>
+	<select id="selectWh" resultType="WhDto">
+		SELECT	*
+		FROM	wh
+	</select>
 </mapper>

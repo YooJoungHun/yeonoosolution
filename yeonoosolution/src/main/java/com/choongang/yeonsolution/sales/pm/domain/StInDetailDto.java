@@ -13,8 +13,13 @@ public class StInDetailDto {
 	private Long sorder;
 	private String whCode;
 	private String itemCode;
-	private String inQuantity;
+	private Long inQuantity;
 	private Long inPrice;
 	private String memo;
+	
+	private String itemName;
+	private String whName;
+	private String stockUnit;
+	
 	
 }

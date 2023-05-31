@@ -186,8 +186,8 @@
 </head>
 <body>
 	<div id="contain">
-			<input type="button" value="구매 발주">
-			<input type="button" value="구매 입고 등록">
+			<input type="button" value="구매 발주" onclick="location.href='/pm/order'">
+			<input type="button" value="구매 입고 등록" onclick="location.href='/pm/stock-in'">
 			<input type="button" value="구매 내역조회">
 		<div id="content">
 			<div id="btn-div">
@@ -439,7 +439,7 @@
 						itemCode : $(this).find('.item-code').text(),
 						quantity : $(this).find('.quantity').text(),
 						price : $(this).find('.item-price').text(),
-						amount : $(this).find('.item-code').text(),
+						amount : $(this).find('.amount').text(),
 						memo : $(this).find('.memo').text(),
 						itemStockUnit : $(this).find('.item-stock-unit').text()
 				};
@@ -456,7 +456,7 @@
 				  	return;
 				}
 				orderDetails.push(orderDetail);
-			})
+			});
 			console.log(orderDetails);
 			
 			$.ajax({
@@ -470,17 +470,89 @@
 			    }),
 				success : function(mag){
 					alert(mag);
+					orderList();
 				}
 			});
-		}else {
+		}else if(saveOrderTr.find('.order-code').text() != '' && confirm("발주서를 수정하시겠습니까?")){
+			let orderCode = saveOrderTr.find('.order-code').text();
+			let ordernullCheck = true;
+			saveOrderTr.find('.change-td').each(function() {
+			  	let text = $(this).text().trim();
+				let hasMemoClass = $(this).hasClass('order-memo');
+			  	if (text === '' && !hasMemoClass) {
+			  		ordernullCheck = false;
+			    	return false;
+		  		}
+			});
+			if (!ordernullCheck) {
+			  	alert("선택하신 발주서에 필수 작성 항목이 작성되지 않았습니다. 다시 확인해주세요.");
+			  	return;
+			}
+			let order = {
+				orderCode : saveOrderTr.find('.order-code').text(),
+				companyCode : "COMPANY1",
+				customerCode : saveOrderTr.find('.customer-code').text(),
+				receiveOrderType : saveOrderTr.find('.receive-order-type').text(),
+				orderDate : saveOrderTr.find('.order-date').text(),
+				orderEmpid : "bsm",
+				deliveryPlan : saveOrderTr.find('.delivery-plan').text(),
+				dueDate : saveOrderTr.find('.due-date').text(),
+				memo : saveOrderTr.find('.memo').text(),
+				regUser : "bsm",
+				updateUser : "bsm"
+			};
+			console.log(order);
 			
+			let orderDetails = [];
+			$('.order-detail-table-tr-area').each(function(){
+				let orderDetailTr = $(this);
+				let orderDetail = { 
+					orderDetailCode : orderCode,
+					sorder : $(this).find('.item-sorder').text(),
+					itemCode : $(this).find('.item-code').text(),
+					quantity : $(this).find('.quantity').text(),
+					price : $(this).find('.item-price').text(),
+					amount : $(this).find('.amount').text(),
+					memo : $(this).find('.memo').text(),
+					itemStockUnit : $(this).find('.item-stock-unit').text()
+				};
+				orderDetailTr.find('.change-td').each(function() {
+				  	let text = $(this).text().trim();
+					let hasMemoClass = $(this).hasClass('order-detail-memo');
+				  	if (text === '' && !hasMemoClass) {
+				  		ordernullCheck = false;
+				    	return false;
+			  		}
+				});
+				if (!ordernullCheck) {
+				  	alert("선택하신 발주서 세부항목 필수 작성 항목이 작성되지 않았습니다. 다시 확인해주세요.");
+				  	return;
+				}
+				orderDetails.push(orderDetail);
+			});	
+			console.log(orderDetails);
+			
+			$.ajax({
+				url : "/pm/order-modify",
+				type : "POST",
+				dataType : "TEXT",
+				contentType: "application/json",
+				data: JSON.stringify({
+			        order: order,
+			        orderDetails: orderDetails
+			    }),
+				success : function(mag){
+					alert(mag);
+					orderList();
+				}
+			});
 		}
 	});
 	
 	// 제품 검색 데이터 받기
 	function itemSearch(search){
 		$.ajax({
-			url : "pm/item-list",
+			url : "/pm/item-list",
 			type : "GET",
 			dataType : "JSON",
 			data : {search :search.toUpperCase()},
@@ -505,7 +577,7 @@
 	// 회사 검색 데이터 받기
 	function companySearch(search){
 		$.ajax({
-			url : "pm/customer-list",
+			url : "/pm/customer-list",
 			type : "GET",
 			dataType : "JSON",
 			data : {search :search.toUpperCase()},
@@ -757,7 +829,7 @@
 				$('#order-list-table tbody').empty();
 				$('#order-detail-list-table tbody').empty();
 				orderList.forEach(function(order, index){
-					orderAdd(order, index + 1)
+					orderAdd(order, index + 1);
 				});
 			}
 		});
@@ -818,7 +890,7 @@
 	function orderUpdate(column, data){
 		let orderCode = radioOrderCode;
 		$.ajax({
-			url: "pm/order/" + orderCode,
+			url: "/pm/order/" + orderCode,
 			type : "PATCH",
 			data : {column : column,
 					data : data},

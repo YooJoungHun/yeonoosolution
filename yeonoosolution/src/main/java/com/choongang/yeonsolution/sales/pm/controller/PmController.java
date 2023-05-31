@@ -18,6 +18,9 @@ import com.choongang.yeonsolution.sales.pm.domain.OrdersDataDto;
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDetailDto;
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDto;
 import com.choongang.yeonsolution.sales.pm.domain.Search;
+import com.choongang.yeonsolution.sales.pm.domain.StInDetailDto;
+import com.choongang.yeonsolution.sales.pm.domain.StockInDto;
+import com.choongang.yeonsolution.sales.pm.domain.WhDto;
 import com.choongang.yeonsolution.sales.pm.service.PmService;
 
 import lombok.RequiredArgsConstructor;
@@ -30,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PmController {
 	private final PmService pmService;
 	
-	@GetMapping("")
+	@GetMapping("/order")
 	public String orderForm() {
 		return "sales/order";
 	}
@@ -40,6 +43,7 @@ public class PmController {
 	public List<OrdersDto> OrdersListBySearch(Search search){
 		log.info("search Data -> {}", search);
 		List<OrdersDto> orderList = pmService.findOrdersBySearch(search);
+		log.info("orderList -> {}", orderList.size());
 		return orderList;
 		
 	}
@@ -76,11 +80,50 @@ public class PmController {
 	}
 	@PostMapping("/order-add")
 	@ResponseBody
-    public String addOrder(@RequestBody OrdersDataDto orderData) {
-        OrdersDto order = orderData.getOrder();
-        List<OrdersDetailDto> orderDetails = orderData.getOrderDetails();
-        System.out.println(order);
-        System.out.println(orderDetails);
-        return "success"; // 성공적으로 처리된 경우 응답 데이터 반환
+    public String orderAdd(@RequestBody OrdersDataDto orderData) {
+        String resultMsg = pmService.addOrder(orderData);
+        return resultMsg;
+    }
+    @PostMapping("/order-modify")
+    @ResponseBody
+    public String OrderSave(@RequestBody OrdersDataDto orderData) {
+    	String resultMsg = pmService.modifyOrder(orderData);
+    	return resultMsg;
+    }
+    
+    
+    @GetMapping("/stock-in")
+    String stockInForm() {
+    	return "sales/stock-in";
+    }
+    @GetMapping("/stock-in-list")
+    @ResponseBody
+    public List<StockInDto> stockInListBySearch(Search search){
+    	log.info("search Data -> {}", search);
+    	List<StockInDto> stockinList = pmService.findStockInListBySearch(search);
+    	return stockinList;
+    	
+    }
+    
+    @GetMapping("/stock-in/{inCode}/details")
+    @ResponseBody
+    public List<StInDetailDto> stockInDetailListByOrderCode(@PathVariable String inCode){
+    	///////////////////////////////
+    	List<StInDetailDto> stockInDetailList = pmService.findStockInDetailByInCode(inCode);
+    	return stockInDetailList;
+    }
+    
+    @PatchMapping ("st-in/{inCode}")
+    @ResponseBody
+    public String stockInModifyByorderCode(@PathVariable String inCode, @RequestParam String column, @RequestParam String data){
+    	String msg = pmService.modifyStockInByInCode(inCode, column, data);
+    	log.info("msg -> {}", msg);
+    	return msg;
+    }
+    @GetMapping("/wh-list")
+    @ResponseBody
+    public List<WhDto> whList() {
+        List<WhDto> whList = pmService.findWhList();
+        return whList;
     }
 }
