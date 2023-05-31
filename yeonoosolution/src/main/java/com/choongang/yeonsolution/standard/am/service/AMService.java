@@ -19,5 +19,7 @@ public interface AMService {
 	public List<AMDto> findDepartmentList();
 
 	public List<AMDto> findJobList();
+
+	public int membersSaveByMemberList(List<MemberDto> memberList);
 	
 }

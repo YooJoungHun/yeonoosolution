@@ -14,6 +14,7 @@
 
 #search-div {
 	display: flex;
+	justify-content: center;
 }
 
 #search-div div {
@@ -25,7 +26,6 @@
 }
 
 #btn-div, #search-div, #member-list {
-	border: 1px solid;
 	margin: 10px;
 }
 
@@ -37,10 +37,12 @@
 
 .tuigrid-header {
 	display: flex;
+	justify-content: center;
 }
 
 .member-btn-group{
-	margin-left: auto !important;
+	display: flex;
+	justify-content: flex-end;
 	margin-right: 10px !important;
 }
 
@@ -58,6 +60,7 @@
 }
 
 .member-tables {
+	margin: 0 auto;
 	border-collapse: collapse;
 	white-space: nowrap;
 	table-layout: fixed !important;
@@ -83,8 +86,8 @@
 .dept-code, .job-code, 
 .company-code, .member-name,
 .member-tel, .member-role {
-	min-width: 150px;
-	max-width: 150px;
+	min-width: 160px;
+	max-width: 160px;
 }
 
 .member-id, .member-address{
@@ -95,6 +98,12 @@
 td > input{
 	border: none;
 	outline: none;
+}
+
+td > select{
+	border: none;
+	outline: none;
+	width: 135px;
 }
 
 .update-row {
@@ -109,26 +118,18 @@ td > input{
 	<div id="contain">
 		<div id="content">
 			<div id="search-div">
-				<div>
-					<span>사용자명</span>
-					<input type="text" class="form-control" id="search-member-name">
-				</div>
-				<div>
-					<span>사용자 ID</span>
-					<input type="text" class="form-control" id="search-member-id">
-				</div>
+				<div>사용자명  <input type="text" class="form-control" id="search-member-name"></div>
+				<div>사용자 ID  <input type="text" class="form-control" id="search-member-id"></div>
 				<div id="btn-div">
 					<button id="member-search-btn">조회</button>
 					<button id="member-save-btn">저장</button>
 					<button id="member-init-btn">초기화</button>
+					<button type="button" id="member-add">+</button>
+					<button type="button" id="member-delete">-</button>
 				</div>
 			</div>
 			<div class="tuigrid-header">
 				<div>사용자목록</div>
-				<div class="member-btn-group">
-					<button type="button" id="member-add">+</button>
-					<button type="button" id="member-delete">-</button>
-				</div>
 			</div>
 			<div id="member-list">
 				<table id="member-list-table" class="member-list-table member-tables member-tables-hearder">
@@ -156,17 +157,20 @@ td > input{
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript">
-	const memberId = '<%= session.getAttribute("memberId") %>';
-	const memberCompanyCode = '<%= session.getAttribute("memberCompanyCode") %>';
-	console.log("memberID : " + memberId);
-	console.log("memberCompanyCode : " + memberCompanyCode);
+	const loginMemberId = '<%= session.getAttribute("memberId") %>';
+	const loginMemberCompanyCode = '<%= session.getAttribute("memberCompanyCode") %>';
+	console.log("memberID : " + loginMemberId);
+	console.log("memberCompanyCode : " + loginMemberCompanyCode);
 	
 	
 	/**
 	* 페이지 로드완료시 member의 company에 속한 memberList 출력
 	*/
+	
 	function printMember(member, printLocation){
-		let memberRow = $('<tr>').append($('<td>').addClass('member-checkbox').append($('<input>').attr({'name': 'editing', 'type': 'checkbox', 'value': member.memberUid})))
+		console.log('yn : ' + member.memberYn);
+		let memberRow = $('<tr>').append($('<input>').addClass('member-yn').attr({'type': 'hidden', 'value': member.memberYn}))
+								 .append($('<td>').addClass('member-checkbox').append($('<input>').attr({'name': 'editing', 'type': 'checkbox', 'value': member.memberUid})))
 								 .append($('<td>').addClass('dept-code').append($('<select>').attr('disabled', 'disabled').append($('<option>').attr({'value': member.deptCode, 'selected': 'selected'}).text(member.deptName))))
 								 .append($('<td>').addClass('job-code').append($('<select>').attr('disabled', 'disabled').append($('<option>').attr({'value': member.jobCode, 'selected': 'selected'}).text(member.jobName))))
 								 .append($('<td>').addClass('company-code').append($('<select>').attr('disabled', 'disabled').append($('<option>').attr({'value': member.companyCode, 'selected': 'selected'}).text(member.companyName))))
@@ -174,7 +178,7 @@ td > input{
 								 .append($('<td>').addClass('member-name').append($('<input>').attr({'name': 'memberName', 'type': 'text', 'value': member.memberName, 'readonly': 'readonly'})))
 								 .append($('<td>').addClass('member-address').append($('<input>').attr({'name': 'address', 'type': 'text', 'value': member.address, 'readonly': 'readonly'})))
 								 .append($('<td>').addClass('member-tel').append($('<input>').attr({'name': 'tel', 'type': 'text', 'value': member.tel, 'readonly': 'readonly'})))
-								 .append($('<td>').addClass('member-role').append($('<input>').attr({'name': 'memberRole', 'type': 'text', 'value': member.memberRole, 'readonly': 'readonly'})));
+								 .append($('<td>').addClass('member-role').append($('<select>').attr('disabled', 'disabled').append($('<option>').attr({'value': member.memberRole, 'selected': 'selected'}).text(member.memberRole))));
 		
 		printLocation.append(memberRow);
 	}
@@ -182,7 +186,7 @@ td > input{
 	function getMemberList(printLocation){
 		$.ajax({
 			type : "GET",
-			url : "/v1/standard/members/" + memberCompanyCode,
+			url : "/v1/standard/members/" + loginMemberCompanyCode,
 			contentType: 'application/json',
 			dataType : 'json',
 			success : function(memberList, textStatus, xhr){
@@ -312,6 +316,31 @@ td > input{
 	});
 	
 	/**
+	* 수정 체크박스 클릭시 role selectbox에 전체 role 추가
+	*/
+	function getRoleList(printLocation){
+		let myRoleCode = printLocation.closest('tr').find('.member-role select option:selected').val();
+		let roleList= ["ADMIN", "MANAGER", "USER"];
+		printLocation.empty();
+		$.each(roleList, function(index, role){
+			if(myRoleCode === role){
+				printLocation.append($('<option>').attr({'value': role, 'selected': 'selected'}).text(role));	
+			} else {
+				printLocation.append($('<option>').attr('value', role).text(role));
+			}
+		});
+	}
+	
+	$(document).on('change', '.member-checkbox input[name="editing"]', function(){
+		let $this = $(this);
+		let $tr = $this.closest('tr');
+		let printLocation = $tr.find('.member-role select');
+		if($this.is(':checked')){
+			getRoleList(printLocation);	
+		}
+	});
+	
+	/**
 	* 체크박스 체크시, 수정가능으로 변경
 	*/
 	function handleCheckboxChange() {
@@ -347,6 +376,14 @@ td > input{
 	});
 	
 	/**
+	* null or space validation
+	* 
+	*/
+	function isNullOrWhitespace(value) {
+		return value === null || value.trim() === '';
+	}
+	
+	/**
 	* +(member-add) 버튼
 	* 
 	*/
@@ -355,12 +392,98 @@ td > input{
 		let printLocation = $('#member-list-table-body');
 		printMember(member, printLocation);
 		let $newRow = $('#member-list-table-body tr:last');
-		$newRow.find('td input').attr('required', 'required');
-		$newRow.find('td select').attr('required', 'required');
-		$newRow.find('td:first-child input, td:first-child select').focus();
+		$newRow.find('.member-checkbox input').focus();
 		$newRow.find('.member-checkbox input').click();
 	});
 	
+	/**
+	* 저장 버튼
+	* 
+	*/
+	$(document).on('click', "#member-save-btn", function(){
+		if(confirm('저장하시겠습니까?')){
+			let checkedRows = $('.member-checkbox input[type="checkbox"]:checked').closest('tr');
+			let memberList = [];
+
+			checkedRows.each(function() {
+				let memberYn = $(this).find('input[type="hidden"]').val();
+				let memberUid = $(this).find('.member-checkbox input[type="checkbox"]').val();
+				let deptCode = $(this).find('.dept-code select').val();
+				let jobCode = $(this).find('.job-code select').val();
+				let companyCode = $(this).find('.company-code select').val();
+				let memberId = $(this).find('.member-id input[type="text"]').val();
+				let memberName = $(this).find('.member-name input[type="text"]').val();
+				let address = $(this).find('.member-address input[type="text"]').val();
+				let tel = $(this).find('.member-tel input[type="text"]').val();
+				let memberRole = $(this).find('.member-role select').val();
+				
+				if(memberUid === 'on'){
+					memberUid = null;
+				}
+				
+			    if (isNullOrWhitespace(deptCode) || isNullOrWhitespace(jobCode) || isNullOrWhitespace(companyCode) ||  
+			    	isNullOrWhitespace(memberId) || isNullOrWhitespace(memberName) || isNullOrWhitespace(address) || isNullOrWhitespace(tel)) {
+					alert('입력되지 않은 값이 있습니다');
+					return;
+			    }
+				
+				let member = {
+					memberUid: memberUid,
+					deptCode: deptCode,
+					jobCode: jobCode,
+					companyCode: companyCode,
+					memberId: memberId,
+					memberName: memberName,
+					address: address,
+					tel: tel,
+					updateUser: loginMemberId,
+					memberRole: memberRole,
+					memberYn: memberYn
+				};
+				
+				memberList.push(member);
+				
+			});
+			
+			console.log('memberList : ' + JSON.stringify(memberList));
+			
+			$.ajax({
+				type : "PATCH",
+				url : "/v1/standard/members",
+				dataType : 'json',
+				contentType: 'application/json',
+				data: JSON.stringify(memberList),
+				success : function(textStatus, xhr){
+					let $printLocation = $('#member-list-table-body');
+					alert('저장이 완료되었습니다');
+					$printLocation.empty();
+					getMemberList($printLocation);
+				},
+				error : function(xhr){
+					console.log("error");
+				}
+			});
+		}
+		
+	});
+	
+	/**
+	* -(member-delete) 버튼
+	* 
+	*/
+	$(document).on('click', '#member-delete', function(){
+		let $checkedRows = $('.member-checkbox input[type="checkbox"]:checked').closest('tr');
+		$checkedRows.each(function(){
+			//+버튼을 눌러서 나온 입력 form인 경우
+			if($(this).find('.member-checkbox input[type="checkbox"]').val() === 'on'){
+				$(this).remove();
+			} else{
+				$(this).find('input[type="hidden"]').val('N');
+				$(this).css('display', 'none');
+			} 
+		});
+		
+	});
 </script>
 </body>
 </html>

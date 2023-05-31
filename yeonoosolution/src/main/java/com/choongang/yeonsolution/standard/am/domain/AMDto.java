@@ -16,7 +16,11 @@ public class AMDto {
 	public String tel;
 	public String memberImage;
 	public String memberRole;
-	
+	public String memberRegUser;
+	public String memberRegDate;
+	public String memberUpdateUser;
+	public String memberUpdateDate;
+	public String memberYn;
 	//job
 	public String jobName;
 	public String jobYn;

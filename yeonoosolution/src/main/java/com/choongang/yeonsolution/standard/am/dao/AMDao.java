@@ -7,6 +7,8 @@ import com.choongang.yeonsolution.standard.am.domain.MemberDto;
 
 public interface AMDao {
 	public MemberDto selectMemberByMemberId(String memberId);
+	
+	public MemberDto selectMember(String memberUid);
 
 	public int insertMember(MemberDto memberDto);
 
@@ -17,4 +19,7 @@ public interface AMDao {
 	public List<AMDto> selectDepartmentList();
 
 	public List<AMDto> selectJobList();
+
+	public int updateMember(MemberDto memberDto);
+	
 }

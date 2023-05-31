@@ -51,6 +51,7 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler{
 		HttpSession session = request.getSession();
 		session.setAttribute("member", memberInfo.getMemberDto());
 		session.setAttribute("memberId", memberInfo.getMemberDto().getMemberId());
+		session.setAttribute("memberUid", memberInfo.getMemberDto().getMemberUid());
 		session.setAttribute("memberCompanyCode", memberInfo.getMemberDto().getCompanyCode());
 		log.info("[onAuthenticationSuccess] member : {}", memberInfo.getMemberDto());
 		response.sendRedirect(redirectUrl);

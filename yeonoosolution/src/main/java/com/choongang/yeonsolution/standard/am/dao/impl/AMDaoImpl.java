@@ -30,6 +30,16 @@ public class AMDaoImpl implements AMDao{
 		log.info("[selectMemberByMemberId] amDto : {}", memberDto);
 		return memberDto;
 	}
+	
+
+	@Override
+	public MemberDto selectMember(String memberUid) {
+		log.info("[selectMember] memberUid : {}", memberUid);
+		MemberDto memberDto = sqlSession.selectOne("selectMember", memberUid);
+		log.info("[selectMember] memberDto : {}", memberDto);
+		return memberDto;
+	}
+
 
 	@Override
 	public int insertMember(MemberDto memberDto) {
@@ -66,6 +76,15 @@ public class AMDaoImpl implements AMDao{
 		List<AMDto> jobList = sqlSession.selectList("selectJobList");
 		log.info("[selectJobList] jobList : {}", jobList);
 		return jobList;
+	}
+
+	@Override
+	public int updateMember(MemberDto memberDto) {
+		int result = 0;
+		log.info("[updateMemberByMemberUid] memberUid : {}", memberDto);
+		result = sqlSession.update("updateMember", memberDto);
+		log.info("[updateMemberByMemberUid] result : {}", result);
+		return result;
 	}
 
 }

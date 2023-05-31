@@ -5,6 +5,14 @@
 		SELECT *
 		FROM member
 		WHERE member_id = #{memberId}
+		AND member_yn = 'Y'
+	</select>
+	
+	<select id="selectMember" parameterType="String" resultType="MemberDto">
+		SELECT *
+		FROM member
+		WHERE member_uid = #{memberUid}
+		AND member_yn = 'Y'
 	</select>
 	
 	<insert id="insertMember" parameterType="MemberDto">
@@ -20,6 +28,8 @@
 			tel,
 			member_image,
 			member_role,
+			reg_user,
+			reg_date,
 			member_yn
 		) values (
 			UPPER(#{companyCode}) || '.' || #{memberId},
@@ -33,6 +43,8 @@
 			#{tel, jdbcType=VARCHAR},
 			#{memberImage, jdbcType=VARCHAR},
 			#{memberRole, jdbcType=VARCHAR},
+			#{regUser, jdbcType=VARCHAR},
+			sysdate,
 			'Y'
 		)
 	</insert>
@@ -51,7 +63,12 @@
 			m.address,
 			m.tel,
 			m.member_image,
-			m.member_role
+			m.member_role,
+			m.reg_user as member_reg_user,
+			m.reg_date as member_reg_date,
+			m.update_user as member_update_user,
+			m.update_date as member_update_date,
+			m.member_yn
 		FROM member m
 		INNER JOIN department d ON m.dept_code = d.dept_code
 		INNER JOIN job j ON m.job_code = j.job_code
@@ -78,6 +95,7 @@
 			update_date as company_update_date,
 			use_yn
 		FROM company
+		WHERE use_yn = 'Y'
 	</select>
 	
 	<select id="selectDepartmentList" resultType="AMDto">
@@ -90,6 +108,7 @@
 			update_date as dept_update_date,
 			update_user as dept_update_user
 		FROM department
+		WHERE dept_yn = 'Y'
 	</select>
 	
 	<select id="selectJobList" resultType="AMDto">
@@ -102,5 +121,25 @@
 			update_date as job_update_date,
 			update_user as job_update_user
 		FROM job
+		WHERE job_yn = 'Y'
 	</select>
+	
+	<update id="updateMember" parameterType="MemberDto">
+		UPDATE member
+		SET
+			dept_code = #{deptCode},
+			job_code = #{jobCode},
+			company_code = #{companyCode},
+			member_id = #{memberId},
+			password = #{password},
+			member_name = #{memberName},
+			address = #{address},
+			tel = #{tel},
+			member_image = #{memberImage, jdbcType=VARCHAR},
+			member_role = #{memberRole},
+			update_user = #{updateUser},
+			update_date = sysdate,
+			member_yn = #{memberYn}
+		WHERE member_uid = #{memberUid}
+	</update>
 </mapper>

@@ -15,5 +15,9 @@ public class MemberDto {
 	public String tel;
 	public String memberImage;
 	public String memberRole;
-	public String memeberYn;
+	public String regUser;
+	public String regDate;
+	public String updateUser;
+	public String updateDate;
+	public String memberYn;
 }    
