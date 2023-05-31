@@ -7,8 +7,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <style type="text/css">
-	span	 {
+	span {
 		border: 1px solid #E8EBF0;
 		border-radius: 5px;
 		padding: 5px 10px;
@@ -50,45 +51,100 @@
 		<table>
 			<tr>
 				<td>
-					<span>품목 구분</span> 
-					<select>
-						<option selected disabled>---- 품목을 선택하세요 ----</option>
-						<option>완제품</option>
+					<span>상위 품목명</span>
+					<input type="text" class="item-name">
+				</td>
+				<td>
+					<span>하위 품목 구분</span> 
+					<select class="item-type">
+						<option selected disabled>---- 하위 품목의 타입을 선택하세요 ----</option>
 						<option>반제품</option>
 						<option>원자재</option>
 					</select> 
 				</td>
 				<td>
-					<span>ITEM 코드</span>
-					<input type="text">
-				</td>
-				<td>
-					<span>품명</span>
-				 	<input type="text">
-				</td>
-				<td>
-					<span>품목 코드</span>
-					<input type="text">
-				</td>
-				<td>
-					<input type="button" value="조회">
+					<input class="btn search-btn" type="button" value="조회">
 				</td>
 			</tr>
 		</table>
 	</div>
-	<br>
-	
+	<br>	
 	<div>
 		<h2>BOM별 재고 현황</h2>
-		<table>
+		<table class="bom-table">
 			<tr>
+				<th>하위 품목 코드</th>
+				<th>하위 품목 명</th>
 				<th>창고 코드</th>
-				<th>제품 코드</th>
+				<th>창고 명</th>
 				<th>양품 수량</th>
 				<th>불량 수량</th>
 			</tr>
 		</table>
 	</div>
-	
 </body>
+<script type="text/javascript">
+	$(".search-btn").on("click", function(){
+		let itemName = $(".item-name").val();
+		let itemType = $(".item-type").val();
+		
+		console.log("itemName : " + itemName + ", itemType : " + itemType);
+		
+		if(itemName === null || itemName == "") {
+			alert("상위 품목명을 입력 해주세요");
+			$(".item-name").focus();
+			return false;
+		} else if(itemType === null) {
+			alert("하위 품목 구분을 선택 해주세요");
+			$(".item-type").focus();
+			return false;
+		}
+		
+		$.ajax({
+			url : "/product/is/bom/" + itemName,
+			method : "GET",
+			data : {itemName : itemName, itemType : itemType},
+			dataType : "json",
+			success : function(bomList) {
+				console.log(bomList);
+				
+				if(bomList.length == 0) {
+					alert("검색하신 내용의 데이터가 없습니다.");
+					return;
+				} else {
+					let table = $(".bom-table");
+					table.empty();
+					
+					let headTr = $("<tr>");
+					let headLowItemCode = $("<th>").text("하위 품목 코드");
+					let headLowItemName = $("<th>").text("하위 품목 명");
+					let headWhCode = $("<th>").text("창고 코드");
+					let headWhName = $("<th>").text("창고 명");
+					let headGoodQuantity = $("<th>").text("양품 수량");
+					let headBadQuantity = $("<th>").text("불량 수량");
+					
+					headTr.append(headLowItemCode).append(headLowItemName).append(headWhCode)
+						  .append(headWhName).append(headGoodQuantity).append(headBadQuantity);
+					
+					table.append(headTr);
+					
+					bomList.forEach(function(bom){
+						let tr = $("<tr>").addClass("bom-data");
+						let lowItemCode = $("<td>").text(bom.lowItemCode);
+						let lowItemName = $("<td>").text(bom.itemName);
+						let whCode = $("<td>").text(bom.whCode);
+						let whName = $("<td>").text(bom.whName);
+						let goodQuantity = $("<td>").text(bom.goodQuantity);
+						let badQuantity = $("<td>").text(bom.badQuantity);
+						
+						tr.append(lowItemCode).append(lowItemName).append(whCode).append(whName)
+						  .append(goodQuantity).append(badQuantity);
+						
+						table.append(tr);
+					});
+				}
+			}
+		});
+	});
+</script>
 </html>

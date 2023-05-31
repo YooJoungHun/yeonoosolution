@@ -7,9 +7,10 @@
   	</settings>
   	
   	<typeAliases>
-  		<typeAlias alias="WhStockDetailDto" type="com.choongang.yeonsolution.product.is.domain.WhStockDetailDto"/>
-  		<typeAlias alias="WhDto" type="com.choongang.yeonsolution.product.is.domain.WhDto"/>
-  		<typeAlias alias="PaginationDto" type="com.choongang.yeonsolution.product.is.domain.PaginationDto"/>
+  		<typeAlias alias="IsWhStockDetailDto" type="com.choongang.yeonsolution.product.is.domain.IsWhStockDetailDto"/>
+  		<typeAlias alias="IsWhDto" type="com.choongang.yeonsolution.product.is.domain.IsWhDto"/>
+  		<typeAlias alias="IsPaginationDto" type="com.choongang.yeonsolution.product.is.domain.IsPaginationDto"/>
+  		<typeAlias alias="IsBomDto" type="com.choongang.yeonsolution.product.is.domain.IsBomDto"/>
   	</typeAliases>
   	
 </configuration>

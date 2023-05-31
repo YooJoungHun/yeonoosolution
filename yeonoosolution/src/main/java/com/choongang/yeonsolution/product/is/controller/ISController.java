@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.choongang.yeonsolution.product.is.domain.PaginationDto;
-import com.choongang.yeonsolution.product.is.domain.WhDto;
-import com.choongang.yeonsolution.product.is.domain.WhStockDetailDto;
+import com.choongang.yeonsolution.product.is.domain.IsBomDto;
+import com.choongang.yeonsolution.product.is.domain.IsPaginationDto;
+import com.choongang.yeonsolution.product.is.domain.IsWhDto;
+import com.choongang.yeonsolution.product.is.domain.IsWhStockDetailDto;
 import com.choongang.yeonsolution.product.is.service.ISService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,14 +32,14 @@ public class ISController {
 	
 	@GetMapping(value = "/product/is/item/{itemCode}")
 	@ResponseBody
-	public WhStockDetailDto isItemListByItemCode(@PathVariable String itemCode, WhStockDetailDto whStockDetailDto) {
+	public List<IsWhStockDetailDto> isItemListByItemCode(@PathVariable String itemCode, IsWhStockDetailDto whStockDetailDto) {
 		log.info("is Controller isItemListByItemCode() start");
 		log.info("WhStockDetailDto : " + whStockDetailDto.toString());
 		
-		WhStockDetailDto returnWhStockDetailDto = isService.findIsItemListByItemCode(whStockDetailDto);
-		log.info("returnWhStockDetailDto : " + returnWhStockDetailDto.toString());
+		List<IsWhStockDetailDto> whStockDetailDtoList= isService.findIsItemListByItemCode(whStockDetailDto);
+		log.info("whStockDetailDtoList : " + whStockDetailDtoList.toString());
 		
-		return returnWhStockDetailDto;
+		return whStockDetailDtoList;
 	}
 	
 	
@@ -48,11 +49,23 @@ public class ISController {
 		return "/product/inventory-status-bom";
 	}
 	
+	@GetMapping(value = "/product/is/bom/{itemName}")
+	@ResponseBody
+	public List<IsBomDto> isBomListByItemNameAndItemType(@PathVariable String itemName, IsBomDto isBomDto){
+		log.info("is bom Controller isBomListByItemNameAndItemType() start");
+		log.info("isBomDto parameters : " + isBomDto);
+		
+		List<IsBomDto> isBomDtoList = isService.findIsBomListByItemNameAndItemType(isBomDto);
+		log.info("controller isBomDtoList : " + isBomDtoList.toString());
+		
+		return isBomDtoList;
+	}
+	
 	@GetMapping(value = "/product/is/wh")
-	public String isWhListByPagination(Model model, PaginationDto paginationDto) {
+	public String isWhListByPagination(Model model, IsPaginationDto paginationDto) {
 		log.info("is wh Controller isWhListByPagination() start");
 		//창고 정보 조회용도 변수
-		List<WhDto> whDtoWhList = isService.findIsWhDtoWhList();
+		List<IsWhDto> whDtoWhList = isService.findIsWhDtoWhList();
 		
 		//페이징 처리를 한 창고별 품목 정보 변수
 		Map<String, Object> whDtoMap = isService.findIsWhListByPagination(paginationDto);
@@ -63,13 +76,18 @@ public class ISController {
 		
 		return "/product/inventory-status-wh";
 	}
-	
-	/*
-	 * @GetMapping(value = "/product/is/wh/{whCode}") public List<WhDto>
-	 * isWhListByWhCode(@PathVariable String whCode) { List<WhDto> whDtoList =
-	 * isService.findIsWhListByWhCode(whCode);
-	 * 
-	 * return whDtoList; }
-	 */
-	
+		
+	@GetMapping(value = "/product/is/wh/{whCode}")
+	public String isWhListByWhCode(@PathVariable String whCode, IsPaginationDto paginationDto, Model model) {
+		log.info("is wh Controller isWhListByWhCode() start");
+		List<IsWhDto> whDtoWhList = isService.findIsWhDtoWhList();
+		
+		Map<String, Object> whDtoMap = isService.findIsWhListByWhCode(whCode, paginationDto);
+		log.info("whDtoMap : " + whDtoMap.toString());
+		
+		model.addAttribute("whDtoMap", whDtoMap);
+		model.addAttribute("whDtoWhList", whDtoWhList);
+	  
+		return "/product/inventory-status-wh-detail";
+	}
 }

@@ -9,7 +9,7 @@
 <meta charset="UTF-8">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <style type="text/css">
-	span	 {
+	span {
 		border: 1px solid #E8EBF0;
 		border-radius: 5px;
 		padding: 5px 10px;
@@ -102,12 +102,12 @@
 	</div>
 		
 		<div class="pagination">	
-			<a href="/product/is/wh?currentPage=${whDtoMap.pagination.currentPage > 1 ? whDtoMap.pagination.currentPage - 1 : 1}">&lt;</a>
+			<a href="/product/is/wh/${whCode}?currentPage=${whDtoMap.pagination.currentPage > 1 ? whDtoMap.pagination.currentPage - 1 : 1}">&lt;</a>
 		<c:forEach var="i" begin="${whDtoMap.pagination.startNum}" end="${whDtoMap.pagination.lastNum}">
-			<a href="/product/is/wh?currentPage=${i}">${i}</a>
+			<a href="/product/is/wh/${whCode}?currentPage=${i}">${i}</a>
 		</c:forEach>
-			<a href="/product/is/wh?currentPage=${whDtoMap.pagination.currentPage < whDtoMap.pagination.lastNum ? whDtoMap.pagination.currentPage + 1 : whDtoMap.pagination.lastNum}">&gt;</a>
-		</div>	
+			<a href="/product/is/wh/${whCode}?currentPage=${whDtoMap.pagination.currentPage < whDtoMap.pagination.lastNum ? whDtoMap.pagination.currentPage + 1 : whDtoMap.pagination.lastNum}">&gt;</a>
+		</div>
 
 </body>
 <script type="text/javascript">

@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class PaginationDto {
+public class IsPaginationDto {
 	private int totalCount;
 	private int totalPage;
 	private int amount = 10;

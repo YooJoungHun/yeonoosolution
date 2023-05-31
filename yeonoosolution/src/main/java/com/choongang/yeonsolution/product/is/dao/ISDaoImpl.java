@@ -5,9 +5,10 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.choongang.yeonsolution.product.is.domain.PaginationDto;
-import com.choongang.yeonsolution.product.is.domain.WhDto;
-import com.choongang.yeonsolution.product.is.domain.WhStockDetailDto;
+import com.choongang.yeonsolution.product.is.domain.IsBomDto;
+import com.choongang.yeonsolution.product.is.domain.IsPaginationDto;
+import com.choongang.yeonsolution.product.is.domain.IsWhDto;
+import com.choongang.yeonsolution.product.is.domain.IsWhStockDetailDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,24 +20,41 @@ public class ISDaoImpl implements ISDao {
 	private final SqlSession sqlSession;
 
 	@Override
-	public WhStockDetailDto selectIsItemListByItemCode(WhStockDetailDto whStockDetailDto) {
+	public List<IsWhStockDetailDto> selectIsItemListByItemCode(IsWhStockDetailDto whStockDetailDto) {
 		log.info("is item Dao selectIsItemListByItemCode() start");
-		WhStockDetailDto returnWhStockDetailDto = null;
+		List<IsWhStockDetailDto> whStockDetailDtoList = null;
 		
 		try {
-			returnWhStockDetailDto = sqlSession.selectOne("selectIsItemListByItemCode", whStockDetailDto);
+			whStockDetailDtoList = sqlSession.selectList("selectIsItemListByItemCode", whStockDetailDto);
 			
 		} catch (Exception e) {
 			log.debug("is item Dao selectIsItemListByItemCode() Exception : "+e.getMessage());
 			e.printStackTrace();
 		}
 		
-		return returnWhStockDetailDto;
+		return whStockDetailDtoList;
+	}
+	
+
+	@Override
+	public List<IsBomDto> selectIsBomListByItemNameAndItemType(IsBomDto isBomDto) {
+		log.info("is bom Dao selectIsBomListByItemNameAndItemType() start");
+		List<IsBomDto> isBomDtoList = null;
+		
+		try {
+			isBomDtoList = sqlSession.selectList("selectIsBomListByItemNameAndItemType", isBomDto);
+			
+		} catch(Exception e) {
+			log.debug("is bom selectIsBomListByItemNameAndItemType() Exception : " + e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return isBomDtoList;
 	}
 
 	@Override
-	public List<WhDto> selectIsWhDtoWhList() {
-		List<WhDto> whDtoList = null;
+	public List<IsWhDto> selectIsWhDtoWhList() {
+		List<IsWhDto> whDtoList = null;
 		
 		try {
 			whDtoList = sqlSession.selectList("selectIsWhDtoWhList");
@@ -66,9 +84,9 @@ public class ISDaoImpl implements ISDao {
 	}
 
 	@Override
-	public List<WhDto> selectWhListByPagination(PaginationDto paginationDto) {
+	public List<IsWhDto> selectWhListByPagination(IsPaginationDto paginationDto) {
 		log.info("is wh Dao selectWhListByPagination() start");
-		List<WhDto> whDtoList = null;
+		List<IsWhDto> whDtoList = null;
 		
 		try {
 			whDtoList = sqlSession.selectList("selectWhListByPagination", paginationDto);
@@ -80,5 +98,36 @@ public class ISDaoImpl implements ISDao {
 		
 		return whDtoList;
 	}
+
+	@Override
+	public int selectWhItemTotalCount(String whCode) {
+		log.info("is wh Dao selectWhItemTotalCount() start");
+		int totalCount = 0;
+		
+		try {
+			totalCount = sqlSession.selectOne("selectWhItemTotalCount", whCode);			
+		} catch(Exception e) {
+			log.debug("is wh Dao selectWhItemTotalCount() Exception : " + e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return totalCount;
+	}
+
+	@Override
+	public List<IsWhDto> selectISItemListByWhCode(IsWhDto paramWhDto) {
+		log.info("is wh Dao selectIsItemListByWhCode() start");
+		List<IsWhDto> whDtoList = null;
+		
+		try {
+			whDtoList = sqlSession.selectList("selectISItemListByWhCode", paramWhDto);
+		} catch(Exception e) {
+			log.info("is wh Dao selectIsItemListByWhCode() Exception : " + e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return whDtoList;
+	}
+
 	
 }

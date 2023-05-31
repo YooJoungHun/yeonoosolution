@@ -4,18 +4,17 @@
 
 <mapper namespace="InventoryStatusMapper">
 
-	<select id="selectIsItemListByItemCode" parameterType="WhStockDetailDto" resultType="WhStockDetailDto">
+	<select id="selectIsItemListByItemCode" parameterType="IsWhStockDetailDto" resultType="IsWhStockDetailDto">
 		select		i.item_name, i.item_code, i.item_type, wd.wh_code, wd.good_quantity, 
 			  		wd.bad_quantity, wd.update_user, i.stock_unit
 		from		wh_stock_detail wd, item i
 		where		wd.item_code = i.item_code
-		and			i.item_code = #{itemCode}
-		and			i.item_name = #{itemName}
+		and			i.item_name like '%' || upper(#{itemName}) || '%'
 		and			i.item_type = #{itemType}
 	</select>
 	
-	<select id="selectIsWhDtoWhList" resultType="WhDto">
-		select		wh_code, wh_name
+	<select id="selectIsWhDtoWhList" resultType="IsWhDto">
+		select		wh_code, wh_name, use_yn
 		from		wh
 	</select>
 	
@@ -25,11 +24,11 @@
 		join 		wh_stock_detail wd on i.item_code = wd.item_code
 	</select>
 	
-	<select id="selectWhListByPagination" parameterType="PaginationDto" resultType="WhDto">
+	<select id="selectWhListByPagination" parameterType="IsPaginationDto" resultType="IsWhDto">
 		select		*
 		from		(select		rownum rn, n.*
       				 from		(select		i.item_code, i.item_name, wd.wh_code as wdCode, w.wh_name,
-      				 						w.company_code, m.member_name, w.update_date
+      				 						w.company_code, m.member_name, w.update_date, w.use_yn
             					 from		item i
             					 join		wh_stock_detail wd on i.item_code = wd.item_code
             					 join		wh w on wd.wh_code = w.wh_code
@@ -37,4 +36,37 @@
      				)
 		where rn between #{startRow} and #{endRow}
 	</select>
+	
+	<select id="selectWhItemTotalCount" parameterType="String" resultType="int">
+		select 		count(i.item_code)
+		from 		item i
+		join 		wh_stock_detail wd on i.item_code = wd.item_code
+		where		wd.wh_code = #{whCode}
+	</select>
+	
+	<select id="selectISItemListByWhCode" parameterType="IsWhDto" resultType="IsWhDto">
+		select		*
+		from		(select		rownum rn, n.*
+      				 from		(select		i.item_code, i.item_name, wd.wh_code as wdCode, w.wh_name,
+      				 						w.company_code, m.member_name, w.update_date, w.use_yn
+            					 from		item i
+            					 join		wh_stock_detail wd on i.item_code = wd.item_code
+            					 join		wh w on wd.wh_code = w.wh_code
+            					 join		member m on w.update_user = m.member_uid
+            					 where		wd.wh_Code = #{wdCode}) n
+     				)
+		where rn between #{startRow} and #{endRow}
+	</select>
+	
+	<select id="selectIsBomListByItemNameAndItemType" parameterType="IsBomDto" resultType="IsBomDto">
+		select 		b.low_item_code, i.item_name, wd.wh_code, w.wh_name, wd.good_quantity, wd.bad_quantity
+		from 		bom b
+		join 		item i on b.low_item_code = i.item_code
+		join 		item io on b.high_item_code = io.item_code
+		join 		wh_stock_detail wd on b.low_item_code = wd.item_code
+		join 		wh w on wd.wh_code = w.wh_code
+		where 		io.item_name like '%' || upper(#{itemName}) || '%'
+		and 		i.item_type = #{itemType}
+	</select>
+	
 </mapper>

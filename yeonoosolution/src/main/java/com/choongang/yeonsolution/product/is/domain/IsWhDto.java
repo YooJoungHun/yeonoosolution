@@ -11,19 +11,24 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class WhStockDetailDto {
+public class IsWhDto {
 	private String whCode;
-	private String itemCode;
-	private String checkDate;
-	private Long beginEndInventory;
-	private Long goodQuantity;
-	private Long badQuantity;
+	private String companyCode;
+	private String whName;
+	private String regUser;
+	private String regDate;
 	private String updateUser;
 	private String updateDate;
+	private String useYn;
 	private String memo;
 	
 	//join 데이터
+	private String itemCode;
 	private String itemName;
-	private String itemType;
-	private String stockUnit;
+	private String wdCode;
+	private String memberName;
+	
+	//pagination 용도 데이터
+	private int startRow;
+	private int endRow;
 }

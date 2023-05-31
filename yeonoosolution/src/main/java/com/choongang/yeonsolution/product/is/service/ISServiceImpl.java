@@ -7,9 +7,10 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.choongang.yeonsolution.product.is.dao.ISDao;
-import com.choongang.yeonsolution.product.is.domain.PaginationDto;
-import com.choongang.yeonsolution.product.is.domain.WhDto;
-import com.choongang.yeonsolution.product.is.domain.WhStockDetailDto;
+import com.choongang.yeonsolution.product.is.domain.IsBomDto;
+import com.choongang.yeonsolution.product.is.domain.IsPaginationDto;
+import com.choongang.yeonsolution.product.is.domain.IsWhDto;
+import com.choongang.yeonsolution.product.is.domain.IsWhStockDetailDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,24 +22,33 @@ public class ISServiceImpl implements ISService {
 	private final ISDao isDao;
 
 	@Override
-	public WhStockDetailDto findIsItemListByItemCode(WhStockDetailDto whStockDetailDto) {
+	public List<IsWhStockDetailDto> findIsItemListByItemCode(IsWhStockDetailDto whStockDetailDto) {
 		log.info("is Service findIsItemListByItemCode() start");
-		WhStockDetailDto returnWhStockDetailDto= null;
-		returnWhStockDetailDto = isDao.selectIsItemListByItemCode(whStockDetailDto);
+		List<IsWhStockDetailDto> whStockDetailDtoList= null;
+		whStockDetailDtoList = isDao.selectIsItemListByItemCode(whStockDetailDto);
 		
-		return returnWhStockDetailDto;
+		return whStockDetailDtoList;
+	}
+	
+
+	@Override
+	public List<IsBomDto> findIsBomListByItemNameAndItemType(IsBomDto isBomDto) {
+		log.info("is bom Service findIsBomListByItemNameAndItemType() start");
+		List<IsBomDto> isBomDtoList = isDao.selectIsBomListByItemNameAndItemType(isBomDto);
+		
+		return isBomDtoList;
 	}
 
 	@Override
-	public List<WhDto> findIsWhDtoWhList() {
+	public List<IsWhDto> findIsWhDtoWhList() {
 		log.info("is Service findIsWhDtoWhList() start");
-		List<WhDto> whDtoList = isDao.selectIsWhDtoWhList();
+		List<IsWhDto> whDtoList = isDao.selectIsWhDtoWhList();
 		
 		return whDtoList;
 	}
 
 	@Override
-	public Map<String, Object> findIsWhListByPagination(PaginationDto paginationDto) {
+	public Map<String, Object> findIsWhListByPagination(IsPaginationDto paginationDto) {
 		log.info("is Service findIsWhListByPagination() start");
 		Map<String, Object> returnMap = new HashMap<String, Object>();
 		
@@ -46,7 +56,7 @@ public class ISServiceImpl implements ISService {
 		paginationDto.setTotalCount(totalCount);
 		log.info("paginationDto : " + paginationDto.toString());
 		
-		List<WhDto> whDtoList = isDao.selectWhListByPagination(paginationDto);
+		List<IsWhDto> whDtoList = isDao.selectWhListByPagination(paginationDto);
 		log.info("whDtoList : " + whDtoList.toString());
 		
 		returnMap.put("pagination", paginationDto);
@@ -54,5 +64,29 @@ public class ISServiceImpl implements ISService {
 		
 		return returnMap;
 	}
+
+	@Override
+	public Map<String, Object> findIsWhListByWhCode(String whCode, IsPaginationDto paginationDto) {
+		log.info("is wh Service findIsWhListByWhCode() start");
+		int totalCount = isDao.selectWhItemTotalCount(whCode);
+		
+		log.info("is wh Service findIsWhListByWhCode() totalCount : " + totalCount);
+		paginationDto.setTotalCount(totalCount);
+		log.info("paginationDto : "+paginationDto);
+		
+		IsWhDto paramWhDto = new IsWhDto();
+		paramWhDto.setStartRow(paginationDto.getStartRow());
+		paramWhDto.setEndRow(paginationDto.getEndRow());
+		paramWhDto.setWdCode(whCode);
+		
+		List<IsWhDto> whDtoList = isDao.selectISItemListByWhCode(paramWhDto);
+		
+		Map<String, Object> whDtoMap = new HashMap<String, Object>();
+		whDtoMap.put("pagination", paginationDto);
+		whDtoMap.put("whDtoList", whDtoList);
+		
+		return whDtoMap;
+	}
+
 	
 }

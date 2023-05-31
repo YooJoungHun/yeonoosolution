@@ -73,10 +73,6 @@
 					</select> 
 				</td>
 				<td>
-					<span>ITEM 코드</span>
-					<input class="itemCode" type="text">
-				</td>
-				<td>
 					<span>품명</span>
 				 	<input class="itemName" type="text">
 					<input type="button" class="btn btn-search" value="조회">
@@ -112,43 +108,66 @@ $(document).ready(function() {
 		if(itemType === null) {
 			alert("품목 유형을 선택해주세요");
 			$(".itemType").focus();
-		} else if(itemCode === null || itemCode === "") {
-			alert("품목 Code를 입력해주세요");
-			$(".itemCode").focus();
+			return false;
+			
 		} else if(searchItemName === null || searchItemName === ""){
 			alert("품명을 입력해주세요");
 			$(".itemName").focus();
+			return false;
 		}
 		
-		console.log("itemType : " + itemType + ", itemCode : " + itemCode + ", itemName : " + searchItemName);
+		console.log("itemType : " + itemType + ", itemName : " + searchItemName);
 		
 		$.ajax({
 			url : "/product/is/item/" + itemCode,
 			method : "GET",
 			data : {
-					 itemCode : itemCode,
 					 itemType : itemType,
 					 itemName : searchItemName
 					},
 			dataType : "json",
 			success : function(data) {
-				let whStockDetailDto = data;
-				console.log("Dto : " + whStockDetailDto);
+				console.log(data.length);
 				
-				let table = $(".whStockDetail");
-				let tr = $("<tr></tr>").addClass("stock-list");
-				var itemName = $("<td></td>").text(whStockDetailDto.itemName);
-				var itemCode = $("<td></td>").text(whStockDetailDto.itemCode);
-				var whCode = $("<td></td>").text(whStockDetailDto.whCode);
-				var goodQuantity = $("<td></td>").text(whStockDetailDto.goodQuantity);
-				var badQuantity = $("<td></td>").text(whStockDetailDto.badQuantity);
-				var stockUnit = $("<td></td>").text(whStockDetailDto.stockUnit);
-				var updateUser = $("<td></td>").text(whStockDetailDto.updateUser);
+				if(data.length == 0) {
+					alert("검색하신 내용의 데이터가 없습니다. 품목명과 품목 구분을 정확히 입력해 주세요");
+				} else {
+					let whStockDetailDto = data;
+					console.log("Dto : " + whStockDetailDto);
 					
-				tr.append(itemName).append(itemCode).append(whCode).append(goodQuantity)
-				  .append(badQuantity).append(stockUnit).append(updateUser);
+					let table = $(".whStockDetail");
+					table.empty();
 					
-				table.append(tr);
+					let headTr = $("<tr>");
+					let headItemName = $("<th>").text("품명");
+					let headItemCode = $("<th>").text("제품 코드");
+					let headWhCode = $("<th>").text("창고 코드");
+					let headGoodQuantity = $("<th>").text("양품 수량");
+					let headBadQuantity = $("<th>").text("불량 수량");
+					let headStockUnit = $("<th>").text("저장 단위");
+					let headUpdateUser = $("<th>").text("입고 근무자");
+					
+					headTr.append(headItemName).append(headItemCode).append(headWhCode).append(headGoodQuantity)
+						  .append(headBadQuantity).append(headStockUnit).append(headUpdateUser);
+					
+					table.append(headTr);
+					
+					whStockDetailDto.forEach(function(wh) {
+						let tr = $("<tr></tr>").addClass("stock-list");
+						var itemName = $("<td></td>").text(wh.itemName);
+						var itemCode = $("<td></td>").text(wh.itemCode);
+						var whCode = $("<td></td>").text(wh.whCode);
+						var goodQuantity = $("<td></td>").text(wh.goodQuantity);
+						var badQuantity = $("<td></td>").text(wh.badQuantity);
+						var stockUnit = $("<td></td>").text(wh.stockUnit);
+						var updateUser = $("<td></td>").text(wh.updateUser);
+							
+						tr.append(itemName).append(itemCode).append(whCode).append(goodQuantity)
+						  .append(badQuantity).append(stockUnit).append(updateUser);
+							
+						table.append(tr);
+					});
+				}
 			}
 		});
 	});
