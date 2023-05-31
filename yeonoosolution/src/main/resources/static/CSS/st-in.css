@@ -6,6 +6,32 @@ section {
 section > div:first-child {
 	margin: 20px 0px;
 }
+.list-table {
+	display: block;
+	table-layout: fixed;
+	width: auto;
+}
+thead {
+	display: table;
+}
+tbody {
+	display: block;
+	width: 100%;
+	overflow-x: auto;
+}
+table th {
+	font-weight: 700;
+	background-color: rgba(0,0,0, 0.05);
+	width: 80px;
+}
+
+tbody tr, th, td {
+	word-break: break-all;	
+	width: 80px;
+	height: 40px;
+	text-align: center;
+	box-sizing: border-box;
+}
 .stock-in-list {
 	display: flex;
 	flex: 1;
@@ -35,20 +61,7 @@ section > div:first-child {
 	height: 30px;
 	margin-left: 5px;
 }
-.stock-in-detail-list {
-	display: flex;
-	width: 1000px;
-}
-.list-right {
-	overflow-x: scroll;
-	table-layout: auto;
-}
-.table-row {
-	table-layout: auto;
-}
-.stock-in-detail-list td {
-	border: 1px solid rgba(0,0,0,0.5);
-}
+
 .stock-in-list .item-title {
 	background-color: rgba(0,0,0, 0.1);
 	border-radius: 10px;
@@ -57,25 +70,48 @@ section > div:first-child {
 	align-items: center;
 	justify-content: center;
 }
-.table-right-content {
-	overflow-y: scroll;
-}
-.stock-in-detail-list th, td {
-	width: 80px;
-	height: 30px;
-	text-align: center;
-}
-.table-rownum {
-	width: 30px;
-}
-.table-content {
-	flex: 1;
-	width: 100%
-}
-.stock-in-detail-list th {
-	font-weight: 700;
+
+.stock-in-detail-list tr:hover {
 	background-color: rgba(0,0,0, 0.05);
 }
-.stock-in-detail-list tr:hover {
-	background-color: red;
+
+
+
+
+
+
+
+.myModal {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+.myModal-window {
+	background-color: #fefefe;
+	margin: 15% auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 80%;
+}
+.myModal-window tr:first-child th:nth-child(-n+3) {
+	background-color: #fefefe;
+	font-size: 20px;
+}
+.myModal-window button {
+	font-size: 20px;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 5px;
+	cursor: auto;
+	background-color: transparent;
+}
+.myModal-window button:hover {
+	background-color: rgba(0, 0, 0, 0.1);
 }

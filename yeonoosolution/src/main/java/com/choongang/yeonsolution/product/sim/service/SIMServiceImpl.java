@@ -18,5 +18,13 @@ public class SIMServiceImpl implements SIMService {
 	public List<StInDto> stInList() {return simDao.findStIn(); }
 	@Override
 	public List<StInDto> stInList(StInDto stInDto) {return simDao.findStIn(stInDto); }
+	@Override
+	public void modifyStIn(StInDto stInDto) {simDao.updateStIn(stInDto); }
+	@Override
+	public void removeStIn(StInDto stInDto) {simDao.deleteStIn(stInDto); }
+	@Override
+	public void modifyStInFix(StInDto stInDto) {simDao.updateStInFix(stInDto); }
+	@Override
+	public void modifyStInCancel(StInDto stInDto) {simDao.updateStInCancel(stInDto); }
 
 }

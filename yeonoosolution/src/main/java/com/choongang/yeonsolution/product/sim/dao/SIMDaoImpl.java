@@ -28,4 +28,13 @@ public class SIMDaoImpl implements SIMDao {
 		return findStIn;
 	}
 
+	@Override
+	public void updateStIn(StInDto stInDto) {session.update("updateStIn", stInDto);	}
+	@Override
+	public void deleteStIn(StInDto stInDto) {session.update("deleteStIn", stInDto);	}
+	@Override
+	public void updateStInFix(StInDto stInDto) {session.update("updateStInFix", stInDto);	}
+	@Override
+	public void updateStInCancel(StInDto stInDto) {session.update("updateStInCancel", stInDto);	}
+
 }
