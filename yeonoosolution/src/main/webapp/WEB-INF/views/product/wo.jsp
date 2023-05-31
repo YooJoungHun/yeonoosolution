@@ -12,6 +12,7 @@
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript">
 	var tableData = ${jsonWoList};
+	var compareData = ${jsonWoList};
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/product/wo/wo.js"></script>
 </head>

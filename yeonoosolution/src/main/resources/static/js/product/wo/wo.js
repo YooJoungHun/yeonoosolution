@@ -191,7 +191,6 @@ $(document).on('click', 'button.remove-item', e => {
 		if (confirmed) {
 			let codes = $(realDataList).clone();
 			let codeList = $(codes).find('td[role="workOrderCode"]').toArray().map(td => $(td).text());
-			console.log(codeList);
 			let dataObj = { workOrderCode: codeList };
 			$.ajax({
 				url: location.protocol + '//' + location.host + '/wo/removeWos',
@@ -202,7 +201,7 @@ $(document).on('click', 'button.remove-item', e => {
 				success: data => {
 					if (data.result != 0) {
 						tableData = tableData.filter(row => $.inArray(row.workOrderCode, codeList) == -1);
-						console.log(tableData);
+						compareData = tableData;
 						$('table.data-table').find('tbody').html(createTemplate(tableLayout, tableData));
 						rowNumbering();
 					}
@@ -240,14 +239,129 @@ $(document).on('click', 'button.select-item', e => {
 		success: data => {
 			$('table.data-table').find('tbody').html(createTemplate(tableLayout, data));
 			tableData = data;
+			compareData = data;
 			rowNumbering();
 		}
 	});
 });
 
+const compare = (obj1, obj2) => {
+	if (typeof obj1 !== 'object' || typeof obj2 !== 'object') return obj1 == obj2;
+	let objKeys1 = Object.keys(obj1).sort();
+	let objKeys2 = Object.keys(obj2).sort();
+	//if (objKeys1.length != objKeys2) return false;
+	return objKeys1.every((key, index) => {
+		let field1 = obj1[key];
+		let field2 = obj2[objKeys2[index]];
+		return compare(field1, field2);
+	});
+};
+const comparison = (obj1, obj2) => {
+	let dataObj1 = {};
+	let dataObj2 = {};
+	let keys1 = Object.keys(obj1);
+	for (let key of keys1) dataObj1[key] = obj1[key];
+	let keys2 = Object.keys(obj2);
+	for (let key of keys2) dataObj2[key] = obj2[key];
+	let sendData = JSON.stringify({ 'data': [dataObj1, dataObj2] });
+	let result = false;
+	$.ajax({
+		url: location.protocol + '//' + location.host + '/wo/comparison',
+		type: 'post',
+		data: sendData,
+		dataType: 'json',
+		contentType: 'application/json',
+		success: data => {
+			result = data.result;
+		}
+	});
+	return result;
+};
+
+const nestedToObject = data => {
+	let result = {};
+	let keys = Object.keys(data);
+	for (let key of keys) {
+		if (!key.includes('.')) {
+			result[key] = data[key];
+		} else {
+			let split = key.split('.');
+			let first = split[0];
+			let rest = split.slice(1).join('.');
+			let param = {};
+			param[rest] = data[key];
+			result[first] = nestedToObject(param);
+		}
+	}
+	return result;
+};
+
+const rowToData = (elem) => {
+	let form = $('<form></form>');
+	let cloneElem = $(elem);
+	$(form).append(cloneElem);
+	let serializedArray = $(form).serializeArray();
+	let rawData = {};
+	for (let item of serializedArray) rawData[item.name] = item.value == null ? null : item.value;
+	let workOrderCode = !$(cloneElem).find('td[role="workOrderCode"]').text() ? null : $(cloneElem).find('td[role="workOrderCode"]').text();
+	if (workOrderCode != null) rawData['workOrderCode'] = workOrderCode;
+	return nestedToObject(rawData);
+};
+
 // 저장 버튼
 $(document).on('click', 'button.update-item', e => {
-	alert('아직 안됐지롱~');
+	let table = $('table.data-table');
+	let tbody = $(table).find('tbody');
+	let elem = $(e.target).closest('button.update-item');
+	// 여기에 현재 입력된 데이터들 업데이트해주는 과정
+	let cloneRow = $(tbody).find('tr');
+	let rows = $(cloneRow).toArray();
+	let replacer = [];
+	for (let row of rows) {
+		replacer[replacer.length] = rowToData(row);
+	}
+	tableData = replacer;
+	// 변경 사항 체크
+	let diff = tableData.filter(data => {
+		let aggregation = false;
+		for (let comp of compareData) {
+			//aggregation |= !compare(data, comp);
+			aggregation |= !comparison(data, comp);
+			if (aggregation) break;
+		}
+		console.log(aggregation);
+		return aggregation;
+	});
+	let news = diff.filter(data => data.workOrderCode == null);
+	let olds = diff.filter(data => data.workOrderCode != null);
+	// 신규아이템 추가
+	let newData = { 'data' : news };
+	let newCount = 0;
+	$.ajax({
+		url: location.protocol + '//' + location.host + '/wo/insertWoList',
+		type: 'post',
+		data: JSON.stringify(newData),
+		dataType: 'json',
+		contentType: 'application/json',
+		success: data => {
+			newCount = data.result;
+		}
+	});
+	// 기존아이템 수정
+	let oldData = { 'data' : olds };
+	let oldCount = 0;
+	$.ajax({
+		url: location.protocol + '//' + location.host + '/wo/updateWoList',
+		type: 'post',
+		data: JSON.stringify(oldData),
+		dataType: 'json',
+		contentType: 'application/json',
+		success: data => {
+			oldCount = data.result;
+		}
+	});
+	alert(`저장되었습니다.\r\n신규: ${newCount}\r\n수정: ${oldCount}`);
+	$('button.select-item').click();
 });
 
 // 초기화 버튼
@@ -369,4 +483,8 @@ $(document).on('blur', 'input[name="wh.whCode"]', e => {
 $(document).on('keydown', 'input', e => {
 	let elem = $(e.target).closest('input');
 	if (e.keyCode == 13) $(elem).blur();
+});
+
+$(() => {
+	$('button.select-item').click();
 });

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.choongang.yeonsolution.product.wo.domain.Item;
+import com.choongang.yeonsolution.product.wo.domain.Orders;
 import com.choongang.yeonsolution.product.wo.domain.Wh;
 import com.choongang.yeonsolution.product.wo.domain.Wo;
 import com.choongang.yeonsolution.product.wo.service.ItemService;
@@ -60,7 +61,6 @@ public class WOController {
 		if (data.containsKey("wh.whName")) wh.setWhName((String)data.get("wh.whName"));
 		Wo searcher = mapper.convertValue(data, Wo.class);
 		searcher.setWh(wh);
-		System.out.println(searcher);
 		List<Wo> woSearchList = woService.findWoSearch(searcher);//검색 결과를 내뱉음
 		List<String> woStringList = woSearchList.stream().map(wo -> {
 			try { return mapper.writeValueAsString(wo); }
@@ -127,5 +127,97 @@ public class WOController {
 			result += woService.modifyWoCancel(workOrderCode);
 		}
 		return String.format("{ \"result\": %d }", result);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/wo/insertWoList")
+	public String insertWoList(@RequestBody Map<String, Object> data) {
+		@SuppressWarnings("unchecked")
+		List<Map<String, Object>> items = (List<Map<String, Object>>)data.get("data");
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		List<Wo> woList = items.stream().map(item -> {
+			Wo wo = mapper.convertValue(item, Wo.class);
+			Item it = new Item();
+			String itemCode = (String)((Map<String, Object>)item.get("item")).get("itemCode");
+			it.setItemCode(itemCode);
+			Wh wh = new Wh();
+			String whCode = (String)((Map<String, Object>)item.get("wh")).get("whCode");
+			wh.setWhCode(whCode);
+			Orders orders = new Orders();
+			String orderCode = (Map<String, Object>)item.get("orders") == null ? null : (String)((Map<String, Object>)item.get("wh")).get("orderCode");
+			orders.setOrderCode(orderCode);
+			wo.setItem(it);
+			wo.setWh(wh);
+			wo.setOrders(orders);
+			return wo;
+		}).collect(Collectors.toList());
+		int result = 0;
+		for (Wo wo : woList) result += woService.addWo(wo);
+		return String.format("{ \"result\":%d }", result);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/wo/updateWoList")
+	public String updateWoList(@RequestBody Map<String, Object> data) {
+		@SuppressWarnings("unchecked")
+		List<Map<String, Object>> items = (List<Map<String, Object>>)data.get("data");
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		List<Wo> woList = items.stream().map(item -> {
+			Wo wo = mapper.convertValue(item, Wo.class);
+			Item it = new Item();
+			String itemCode = (String)((Map<String, Object>)item.get("item")).get("itemCode");
+			it.setItemCode(itemCode);
+			Wh wh = new Wh();
+			String whCode = (String)((Map<String, Object>)item.get("wh")).get("whCode");
+			wh.setWhCode(whCode);
+			Orders orders = new Orders();
+			String orderCode = (Map<String, Object>)item.get("orders") == null ? null : (String)((Map<String, Object>)item.get("wh")).get("orderCode");
+			orders.setOrderCode(orderCode);
+			wo.setItem(it);
+			wo.setWh(wh);
+			wo.setOrders(orders);
+			return wo;
+		}).collect(Collectors.toList());
+		int result = 0;
+		for (Wo wo : woList) result += woService.modifyWo(wo);
+		return String.format("{ \"result\":%d }", result);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/wo/comparison")
+	public synchronized String woComparison(@RequestBody Map<String, Object> data) {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		List<Map<String, Object>> items = (List<Map<String, Object>>) data.get("data");
+		List<Wo> woComps = items.stream().map(item -> {
+			Wo wo = mapper.convertValue(item, Wo.class);
+			Item it = new Item();
+			String itemCode = (String)((Map<String, Object>)item.get("item")).get("itemCode");
+			it.setItemCode(itemCode);
+			Wh wh = new Wh();
+			String whCode = (String)((Map<String, Object>)item.get("wh")).get("whCode");
+			wh.setWhCode(whCode);
+			Orders orders = new Orders();
+			String orderCode = (Map<String, Object>)item.get("orders") == null ? null : (String)((Map<String, Object>)item.get("wh")).get("orderCode");
+			orders.setOrderCode(orderCode);
+			wo.setItem(it);
+			wo.setWh(wh);
+			wo.setOrders(orders);
+			wo.setRegDate(null);
+			wo.setRegUser(null);
+			wo.setUpdateDate(null);
+			wo.setUpdateUser(null);
+			wo.setWorkStatus(null);
+			wo.setDeleteStatus(null);
+			System.out.println(wo);
+			return wo;
+		}).collect(Collectors.toList());
+		boolean result = woComps.get(0).equals(woComps.get(1));
+		return String.format("{ \"result\":%s }", Boolean.toString(result));
 	}
 }

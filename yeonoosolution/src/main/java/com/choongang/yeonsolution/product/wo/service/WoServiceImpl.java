@@ -34,4 +34,16 @@ public class WoServiceImpl implements WoService {
 	public int modifyWoCancel(String workOrderCode) {
 		return wod.updateWoCancel(workOrderCode);
 	}
+	@Override
+	public int addWo(Wo wo) {
+		return wod.insertWo(wo);
+	}
+	@Override
+	public int modifyWo(Wo wo) {
+		return wod.updateWo(wo);
+	}
+	@Override
+	public Wo findOneWo(String workOrderCode) {
+		return wod.selectOneWo(workOrderCode);
+	}
 }

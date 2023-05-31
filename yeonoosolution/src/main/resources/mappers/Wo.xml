@@ -133,4 +133,37 @@
 	<update id="updateWoCancel" parameterType="java.lang.String">
 		UPDATE WO SET WORK_STATUS = '저장' WHERE WORK_ORDER_CODE = #{workOrderCode}
 	</update>
+	<insert id="insertWo">
+		INSERT INTO WO
+			(WORK_ORDER_CODE, WH_CODE, ORDER_CODE, ITEM_CODE, ITEM_QUANTITY, WORK_STATUS,
+			 PRODUCT_TYPE, WORK_ORDER_TYPE, WORK_ORDER_DATE, WORK_ORDER_STATUS, FINISH_DATE,
+			 DELETE_STATUS, REG_USER, REG_DATE)
+		VALUES
+			('WORK' || WORK_ORDER_CODE_SEQ.NEXTVAL, #{wh.whCode, jdbcType=VARCHAR},
+			 #{orders.orderCode, jdbcType=VARCHAR},
+			 #{item.itemCode, jdbcType=VARCHAR}, #{itemQuantity, jdbcType=NUMERIC}, '저장',
+			 #{productType, jdbcType=VARCHAR}, #{workOrderType, jdbcType=VARCHAR},
+			 #{workOrderDate, jdbcType=DATE}, #{workOrderStatus, jdbcType=VARCHAR},
+			 #{finishDate, jdbcType=DATE}, 'N', #{regUser, jdbcType=VARCHAR}, SYSDATE)
+	</insert>
+	<update id="updateWo" parameterType="Wo">
+		UPDATE WO SET
+			WH_CODE = #{wh.whCode, jdbcType=VARCHAR},
+			ORDER_CODE = #{orders.orderCode, jdbcType=VARCHAR},
+			ITEM_CODE = #{item.itemCode, jdbcType=VARCHAR},
+			ITEM_QUANTITY = #{itemQuantity, jdbcType=NUMERIC},
+			PRODUCT_TYPE = #{productType, jdbcType=VARCHAR},
+			WORK_ORDER_TYPE = #{workOrderType, jdbcType=VARCHAR},
+			WORK_ORDER_DATE = #{workOrderDate, jdbcType=DATE},
+			WORK_ORDER_STATUS = #{workOrderStatus, jdbcType=VARCHAR},
+			FINISH_DATE = #{finishDate, jdbcType=DATE},
+			MEMO = #{memo, jdbcType=VARCHAR},
+			UPDATE_USER = #{updateUser, jdbcType=VARCHAR},
+			UPDATE_DATE = #{updateDate, jdbcType=DATE}
+		WHERE WORK_ORDER_CODE = #{workOrderCode}
+	</update>
+	<select id="selectOneWo" parameterType="java.lang.String" resultMap="WoResultMap">
+		SELECT * FROM WO
+		WHERE WORK_ORDER_CODE = #{workOrderCode}
+	</select>
 </mapper>

@@ -34,4 +34,16 @@ public class WoDaoImpl implements WoDao {
 	public int updateWoCancel(String workOrderCode) {
 		return session.update("updateWoCancel", workOrderCode);
 	}
+	@Override
+	public int insertWo(Wo wo) {
+		return session.insert("insertWo", wo);
+	}
+	@Override
+	public int updateWo(Wo wo) {
+		return session.update("updateWo", wo);
+	}
+	@Override
+	public Wo selectOneWo(String workOrderCode) {
+		return session.selectOne("selectOneWo", workOrderCode);
+	}
 }
