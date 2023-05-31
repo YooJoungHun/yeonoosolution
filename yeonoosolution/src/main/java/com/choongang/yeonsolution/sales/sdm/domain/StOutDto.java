@@ -21,9 +21,21 @@ public class StOutDto {
 	
 	
 	//detail
-	private Long sorder;
+	private Long 	sorder;
 	private String 	whCode;
 	private String  itemCode;
-	private Long outQuantity;
+	private Long 	outQuantity;
+	private String  memo2;
+	
+	//##
+	private String 	memberUid;
+	private String 	memberName;
+	private String 	companyName;
+	private String  itemName;
+	private Long	salesPrice;
+	
+	
+	// 단가 * 출고수량 = 총액
+	private Long 	totalPrice;
 
 }

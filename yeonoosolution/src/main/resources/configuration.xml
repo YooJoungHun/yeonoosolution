@@ -6,5 +6,8 @@
     	<setting name="mapUnderscoreToCamelCase" value="true"/>
   	</settings>
   	
+  	<typeAliases>
+  		<typeAlias type="com.choongang.yeonsolution.sales.sdm.domain.StOutDto" alias="StOutDto"/>
+  	</typeAliases>
   	
 </configuration>
