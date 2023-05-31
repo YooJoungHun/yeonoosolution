@@ -21,5 +21,7 @@ public interface AMDao {
 	public List<AMDto> selectJobList();
 
 	public int updateMember(MemberDto memberDto);
+
+	public List<AMDto> selectMemberListByKeword(AMDto keywordDto);
 	
 }

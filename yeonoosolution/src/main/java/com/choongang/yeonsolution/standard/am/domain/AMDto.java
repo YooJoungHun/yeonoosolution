@@ -52,4 +52,7 @@ public class AMDto {
 	public String companyUpdateDate;
 	public String useYn;
 	
+	//search
+	public String nameKeyword;
+	public String idKeyword;
 }   

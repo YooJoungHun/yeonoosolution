@@ -21,5 +21,7 @@ public interface AMService {
 	public List<AMDto> findJobList();
 
 	public int membersSaveByMemberList(List<MemberDto> memberList);
+
+	public List<AMDto> findMemberListByKeyword(AMDto keywordDto);
 	
 }

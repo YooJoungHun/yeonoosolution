@@ -94,7 +94,6 @@ public class AMServiceImpl implements AMService{
 		            
 		            try {
 						if (field.get(memberDto) != null) {
-							log.info("before : {}, after : {}", field.get(foundMemberDto)  , field.get(memberDto));
 							//field.set(해당 필드값을 set 할 인스턴스, set 해줄 값)
 							field.set(foundMemberDto, field.get(memberDto));
 						}
@@ -116,6 +115,39 @@ public class AMServiceImpl implements AMService{
 		}
 		
 		return result;
+	}
+
+	/**
+	 * 키워드를 한글자씩 나누어서 사이에 %를 추가하여 LIKE문을 변경
+	 * @param keyword
+	 */
+	private String getKeywordBuilder(String keyword) {
+		StringBuilder keywordBuilder = new StringBuilder();
+		
+	    for (int i = 0; i < keyword.length(); i++) {
+	        keywordBuilder.append(keyword.charAt(i));
+	        if (i < keyword.length() - 1) {
+	            keywordBuilder.append("%");
+	        }
+	    }
+		return keywordBuilder.toString();
+	}
+	
+	@Override
+	public List<AMDto> findMemberListByKeyword(AMDto keywordDto) {
+		String nameKeyword = keywordDto.getNameKeyword().replaceAll("\\s+", "");;
+		String idKeyword = keywordDto.getIdKeyword().trim().replaceAll("\\s+", "");;
+		
+		nameKeyword = getKeywordBuilder(nameKeyword);
+		idKeyword = getKeywordBuilder(idKeyword);	
+		
+		log.info("[findMemberListByKeyword] nameKeyword : {}, idKeyword : {}", nameKeyword, idKeyword);
+		
+		keywordDto.setNameKeyword(nameKeyword);
+		keywordDto.setIdKeyword(idKeyword);
+		
+		List<AMDto> memberList = amDao.selectMemberListByKeword(keywordDto);
+		return memberList;
 	}
 
 }

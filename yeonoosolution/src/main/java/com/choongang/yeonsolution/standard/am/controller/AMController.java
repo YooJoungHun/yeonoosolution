@@ -104,7 +104,7 @@ public class AMController {
 	 * user-admin페이지 로드시, member의 companyCode에 해당하는 memeberList조회
 	 * @return memberList
 	 */
-	@GetMapping("/members/{companyCode}")
+	@GetMapping("/members/company-code/{companyCode}")
 	@ResponseBody
 	public List<AMDto> memberListByCompanyCode(@PathVariable String companyCode){
 		log.info("[memberListByCompanyCode] companyCode : {}", companyCode);
@@ -147,12 +147,31 @@ public class AMController {
 		return jobList;
 	}
 	
+	/**
+	 * 저장버튼 요청 url
+	 * memberUid의 null 여부를 통해 수정, 등록을 수행
+	 * @param memberList
+	 */
 	@PatchMapping("/members")
 	@ResponseBody
 	public ResponseEntity<Object> membersSave(@RequestBody List<MemberDto> memberList){
 		log.info("[membersSave] memberList : {}", memberList);
 		int result = amService.membersSaveByMemberList(memberList);
 		return ResponseEntity.ok(result);
+	}
+	
+	/**
+	 * 검색 버튼 요청 url
+	 * 여러키워드로 검색시 글자를 쪼개서 글자 각각을 포함하는 member 조회
+	 * id name 동시 검색시 두 조건 모두 만족하는 member 표시
+	 * @param keywordDto(idKeyword, nameKeyword)
+	 */
+	@GetMapping("/members/keyword")
+	@ResponseBody
+	public List<AMDto> memberListByKeyword(AMDto keywordDto){
+		log.info("[memberListByNameKeyword] keywordDto : {}", keywordDto);
+		List<AMDto> memberList = amService.findMemberListByKeyword(keywordDto);
+		return memberList;
 	}
 	
 }//end class

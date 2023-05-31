@@ -121,7 +121,6 @@ td > select{
 				<div>사용자명  <input type="text" class="form-control" id="search-member-name"></div>
 				<div>사용자 ID  <input type="text" class="form-control" id="search-member-id"></div>
 				<div id="btn-div">
-					<button id="member-search-btn">조회</button>
 					<button id="member-save-btn">저장</button>
 					<button id="member-init-btn">초기화</button>
 					<button type="button" id="member-add">+</button>
@@ -157,18 +156,14 @@ td > select{
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript">
+	const loginMemberUid = '<%= session.getAttribute("memberUid") %>';
 	const loginMemberId = '<%= session.getAttribute("memberId") %>';
 	const loginMemberCompanyCode = '<%= session.getAttribute("memberCompanyCode") %>';
-	console.log("memberID : " + loginMemberId);
-	console.log("memberCompanyCode : " + loginMemberCompanyCode);
-	
 	
 	/**
 	* 페이지 로드완료시 member의 company에 속한 memberList 출력
 	*/
-	
 	function printMember(member, printLocation){
-		console.log('yn : ' + member.memberYn);
 		let memberRow = $('<tr>').append($('<input>').addClass('member-yn').attr({'type': 'hidden', 'value': member.memberYn}))
 								 .append($('<td>').addClass('member-checkbox').append($('<input>').attr({'name': 'editing', 'type': 'checkbox', 'value': member.memberUid})))
 								 .append($('<td>').addClass('dept-code').append($('<select>').attr('disabled', 'disabled').append($('<option>').attr({'value': member.deptCode, 'selected': 'selected'}).text(member.deptName))))
@@ -186,7 +181,7 @@ td > select{
 	function getMemberList(printLocation){
 		$.ajax({
 			type : "GET",
-			url : "/v1/standard/members/" + loginMemberCompanyCode,
+			url : "/v1/standard/members/company-code/" + loginMemberCompanyCode,
 			contentType: 'application/json',
 			dataType : 'json',
 			success : function(memberList, textStatus, xhr){
@@ -445,8 +440,6 @@ td > select{
 				
 			});
 			
-			console.log('memberList : ' + JSON.stringify(memberList));
-			
 			$.ajax({
 				type : "PATCH",
 				url : "/v1/standard/members",
@@ -483,6 +476,47 @@ td > select{
 			} 
 		});
 		
+	});
+	
+	/**
+	 * id, name 검색 통합 요청
+	 * keyup시마다 ajax요청으로 member 조회
+	 */
+	$(document).on('keyup', '#search-member-name, #search-member-id', function(){
+		let $nameKeyword = $('#search-member-name').val();
+		let $idKeyword = $('#search-member-id').val();
+		let data = {
+			nameKeyword: $nameKeyword,
+			idKeyword: $idKeyword,
+			companyCode: loginMemberCompanyCode
+		};
+		
+		if($nameKeyword.trim() == ''){
+			$nameKeyword = ' ';
+		}
+		
+		if($idKeyword.trim() == ''){
+			$idKeyword = ' ';
+		}
+		
+		let url = '/v1/standard/members/keyword?'+ 'nameKeyword=' + encodeURIComponent($nameKeyword)
+									             + '&idKeyword=' + encodeURIComponent($idKeyword)
+									             + '&companyCode=' + encodeURIComponent(loginMemberCompanyCode);
+		$.ajax({
+			type : "GET",
+			url : url,
+			dataType : 'json',
+			success : function(memberList, textStatus, xhr){
+				let $printLocation = $('#member-list-table-body');
+				$printLocation.empty();
+				$.each(memberList, function(index, member){
+					printMember(member, $printLocation);
+				});
+			},
+			error : function(xhr){
+				console.log("error");
+			}
+		});
 	});
 </script>
 </body>
