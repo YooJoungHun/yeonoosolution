@@ -30,8 +30,8 @@ public class IMIController {
 	private final IMIService imiService;
 	
 	@GetMapping("/imi")
-	public String item() {
-		log.info("Item Controller Start");
+	public String imi() {
+		log.info("Imi Controller Start");
 		
 		return "standard/item-management-info";
 	}

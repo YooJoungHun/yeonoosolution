@@ -27,7 +27,8 @@ public class IMIServiceImpl implements IMIService {
 			item.setItemName(item.getItemName() == null ? "" : item.getItemName());
 			item.setStockUnit(item.getStockUnit() == null ? "" : item.getStockUnit());
 			item.setWhCode(item.getWhCode() == null ? "" : item.getWhCode());
-			
+			item.setPurchasePrice(item.getPurchasePrice() == null ? 0 : item.getPurchasePrice());
+			item.setSalesPrice(item.getSalesPrice() == null ? 0 : item.getSalesPrice());
 		}
 		
 		log.info("selectItemList -> " + itemList);

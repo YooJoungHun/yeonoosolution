@@ -55,7 +55,7 @@
 
 </style>
 <meta charset="UTF-8">
-<title>품목 관리 정보</title>
+<title>품목 단가 관리</title>
 </head>
 <body>
 
@@ -70,7 +70,7 @@
 		            <li><a href="/standard/imi">품목 관리 및 등록</a></li>
 		            <li><a href="/standard/ipi">품목 단가 관리</a></li>
 		            <li><a href="#">창고 관리 정보</a></li>
-		            <li><a href="#">생산 관리 BOM 등록</a></li>
+		            <li><a href="/standard/pmi">생산 관리 BOM 등록</a></li>
 		        </ul>
 		    </li>
 		</ul>
@@ -153,6 +153,10 @@
 	
 	// 제품 단가 수정(업데이트)
 	$(document).on('click', '#item-update', function() {
+		if (!$('input[type="radio"]:checked').val()) {
+		    alert("제품을 먼저 선택해주세요.");
+		    return;
+		}
 		if ($('#reg-user').val() === "") {
 			alert("필수 정보를 입력해주세요.")
 		} else {

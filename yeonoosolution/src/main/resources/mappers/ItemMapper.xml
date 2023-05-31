@@ -22,6 +22,7 @@
 	<select id="selectWhList" resultType="ItemDto">
 		SELECT wh_code as whCode2, wh_name
 		FROM wh
+		WHERE use_yn = 'Y'
 	</select>
 	
 	<!-- 제품 삭제 시 업데이트  -->
@@ -49,5 +50,36 @@
 						update_user = #{updateUser}, update_date = #{updateDate}
 		WHERE item_code = #{itemCode}
 	</update>
+	
+	<!-- Bom 완제품 리스트 -->
+	<select id="selectProductItemList" resultType="ItemDto">
+		SELECT *
+		FROM item
+		WHERE item_type = '완제품'
+		AND use_yn = 'Y'
+	</select>
+	
+	<!-- Bom 반제품 리스트  -->
+	<select id="selectSemiProductItemList" resultType="ItemDto">
+		SELECT *
+		FROM item
+		WHERE use_yn = 'Y'
+		AND item_type = '반제품' 
+		OR item_type = '원자재'
+	</select>
+	
+	<!-- Bom Tree 리스트  -->
+	<select id="selectBomListBy" parameterType="String" resultType="BomDto">
+		SELECT b.high_item_code, b.low_item_code, b.material_quantity, i.item_name, i.item_type, i.stock_unit
+		FROM bom b
+		JOIN item i ON b.low_item_code = i.item_code
+		WHERE b.high_item_code = #{itemCode}
+	</select>
+	
+	<!-- Bom 인서트 -->
+	<insert id="insertBomByBomDto" parameterType="BomDto">
+		INSERT INTO bom (high_item_code, low_item_code, material_quantity)
+		VALUES(#{highItemCode}, #{lowItemCode}, #{materialQuantity})
+	</insert>
 
 </mapper>

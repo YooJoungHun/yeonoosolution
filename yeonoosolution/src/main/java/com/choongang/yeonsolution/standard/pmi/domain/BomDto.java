@@ -13,7 +13,13 @@ import lombok.ToString;
 @NoArgsConstructor
 public class BomDto {
 	
-	private String itemCode;	// 완제품 코드
-	private String itemCode2;	// 재료 코드
+	private String highItemCode;	// 완제품 코드
+	private String lowItemCode;		// 재료 코드
 	private Long materialQuantity;	// 재료 수량
+	
+	// item 테이블 조인용
+	private String itemName;
+	private String itemType; 
+	private String stockUnit;
+	
 }

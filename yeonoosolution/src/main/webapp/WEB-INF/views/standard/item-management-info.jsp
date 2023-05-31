@@ -139,7 +139,7 @@
 		            <li><a href="/standard/imi">품목 관리 및 등록</a></li>
 		            <li><a href="/standard/ipi">품목 단가 관리</a></li>
 		            <li><a href="#">창고 관리 정보</a></li>
-		            <li><a href="#">생산 관리 BOM 등록</a></li>
+		            <li><a href="/standard/pmi">생산 관리 BOM 등록</a></li>
 		        </ul>
 		    </li>
 		</ul>
@@ -446,8 +446,6 @@
 	}
 	
 	
-	
-	
 	// 체크 된 아이템 정보 가져오기
 	function updateInputFields(selectedRow) {
 		let whCode = selectedRow.find('td:eq(2)').text();
@@ -537,8 +535,6 @@
 	});
 	
 	
-
-	
 	$(document).on('click', '#content-table tr', function () {
 		let radioInput = $(this).find('td:eq(1) input[type="radio"]');
 		radioInput.prop('checked', true);
@@ -562,14 +558,6 @@
 		$('#content-table tr input[type="radio"]:checked').prop('checked', false);
 		$('#content-table tr.checked-row').removeClass('checked-row');
 	});
-
-	
-	
-	$(document).on('click', '#search-btn', function(){
-		
-	});
-	
-	
 
 
 </script>
