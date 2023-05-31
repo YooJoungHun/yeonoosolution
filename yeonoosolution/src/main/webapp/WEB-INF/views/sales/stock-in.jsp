@@ -479,7 +479,7 @@
 			console.log(orderDetails);
 			
 			$.ajax({
-				url : "/pm/order-add",
+				url : "/pm/st-in-add",
 				type : "POST",
 				dataType : "TEXT",
 				contentType: "application/json",

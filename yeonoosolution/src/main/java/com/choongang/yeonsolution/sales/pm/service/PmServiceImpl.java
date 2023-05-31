@@ -14,6 +14,7 @@ import com.choongang.yeonsolution.sales.pm.domain.OrdersDataDto;
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDetailDto;
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDto;
 import com.choongang.yeonsolution.sales.pm.domain.Search;
+import com.choongang.yeonsolution.sales.pm.domain.StInDataDto;
 import com.choongang.yeonsolution.sales.pm.domain.StInDetailDto;
 import com.choongang.yeonsolution.sales.pm.domain.StockInDto;
 import com.choongang.yeonsolution.sales.pm.domain.WhDto;
@@ -31,12 +32,12 @@ public class PmServiceImpl implements PmService{
 	@Override
 	public List<OrdersDto> findOrdersBySearch(Search search) {
 		List<OrdersDto> orderList = pmDao.selectOrdersBySearch(search);
-		for(int i = 0; i < orderList.size(); i++) {
-			if(orderList.get(i).getOrderDate() != null || !orderList.get(i).getOrderDate().equals("")) {
-				orderList.get(i).setOrderDate(orderList.get(i).getOrderDate().substring(0, 10));
+		for(OrdersDto otder : orderList) {
+			if(otder.getOrderDate() != null) {
+				otder.setOrderDate(otder.getOrderDate().substring(0, 10));
 			}
-			if(orderList.get(i).getDueDate() != null || !orderList.get(i).getDueDate().equals("")) {
-				orderList.get(i).setDueDate(orderList.get(i).getDueDate().substring(0, 10));
+			if(otder.getDueDate() != null) {
+				otder.setDueDate(otder.getDueDate().substring(0, 10));
 			}
 		}
 		return orderList;
@@ -144,13 +145,30 @@ public class PmServiceImpl implements PmService{
 
 	@Override
 	public String modifyStockInByInCode(String inCode, String column, String data) {
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("inCode", inCode);
 		map.put("column", column);
 		map.put("data", data);
 		int result = pmDao.updateStockInByInCode(map);
 		String msg = "";
-		log.info("result -> {}",result);
+		if(data.equals("확정") && result > 0) {
+			List<StInDetailDto> stInDetailList = pmDao.selectStockInDetailByInCode(inCode);
+			for(StInDetailDto stInDetail : stInDetailList) {
+				map = new HashMap<String, Object>();
+				map.put("whCode", stInDetail.getWhCode());
+				map.put("itemCode", stInDetail.getItemCode());
+				map.put("inQuantity", stInDetail.getInQuantity());
+				map.put("updateUser", "bsm");			// 추후 세센에서 받아올 값
+				pmDao.updateWhStockDetailBystInDetail(map);
+			}
+			
+		}else if(data.equals("저장") && result > 0) {
+			List<StInDetailDto> stInDetailList = pmDao.selectStockInDetailByInCode(inCode);
+			for(StInDetailDto stInDetail : stInDetailList) {
+				pmDao.updateWhStockDetailBystInDetail(stInDetail);
+			}
+		}
+			
 		if(column.equals("deleteStatus")) {
 			msg += "삭제 ";
 		}else if(column.equals("orderStatus")) {
@@ -173,5 +191,23 @@ public class PmServiceImpl implements PmService{
 	@Override
 	public List<WhDto> findWhList() {
 		return pmDao.selectWh();
+	}
+
+	@Override
+	public String addStIn(StInDataDto stInData) {
+		StockInDto stIn = stInData.getStockIn();
+		List<StInDetailDto> stInDetails = stInData.getStInDetails();
+		String stInCode = pmDao.insertStIn(stIn);
+		int insertRow = 0;
+		for(StInDetailDto stInDetail : stInDetails) {
+			stInDetail.setOrderDetailCode(stInCode);
+        	insertRow += pmDao.insertStInDetail(stInDetail);
+        }
+		 if(stInCode != null && insertRow == stInDetails.size()) {
+        	return "저장 성공";
+        }else {
+        	return "저장 실패";
+        }
+       
 	}
 }

@@ -8,6 +8,7 @@ import com.choongang.yeonsolution.sales.pm.domain.OrdersDataDto;
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDetailDto;
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDto;
 import com.choongang.yeonsolution.sales.pm.domain.Search;
+import com.choongang.yeonsolution.sales.pm.domain.StInDataDto;
 import com.choongang.yeonsolution.sales.pm.domain.StInDetailDto;
 import com.choongang.yeonsolution.sales.pm.domain.StockInDto;
 import com.choongang.yeonsolution.sales.pm.domain.WhDto;
@@ -26,5 +27,6 @@ public interface PmService {
 	List<StInDetailDto> findStockInDetailByInCode(String inCode);
 	String modifyStockInByInCode(String inCode, String column, String data);
 	List<WhDto> findWhList();
+	String addStIn(StInDataDto stInData);
 
 }

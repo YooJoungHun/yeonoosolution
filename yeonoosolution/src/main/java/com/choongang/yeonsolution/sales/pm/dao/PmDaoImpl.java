@@ -73,6 +73,7 @@ public class PmDaoImpl implements PmDao{
 		parameters.put("memo", order.getMemo());
 		parameters.put("regUser", order.getRegUser());
 		parameters.put("updateUser", order.getUpdateUser());
+		
 		session.selectOne("orders.insertOrder", parameters);
 
 		String orderCode = (String) parameters.get("orderCode");
@@ -96,7 +97,7 @@ public class PmDaoImpl implements PmDao{
 	@Override
 	public int deleteOrderDetailByOrderCode(String orderCode) {
 		int result = session.delete("deleteOrderDetailByOrderCode", orderCode);
-		return 0;
+		return result;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////
@@ -117,7 +118,7 @@ public class PmDaoImpl implements PmDao{
 	}
 
 	@Override
-	public int updateStockInByInCode(Map<String, String> map) {
+	public int updateStockInByInCode(Map<String, Object> map) {
 		log.info("updateStockInByInCode map -> {}", map);
 		int result = session.update("updateStockInByInCode", map);
 		return result;
@@ -129,4 +130,22 @@ public class PmDaoImpl implements PmDao{
 		log.info("whList -> {}", whList);
 		return whList;
 	}
+	// 재고 추가
+	@Override
+	public void updateWhStockDetailBystInDetail(Map<String, Object> map) {
+		session.selectOne("orders.updateWhStockDetailBystInDetail", map);
+	}
+	// 재고 빼기
+	@Override
+	public void updateWhStockDetailBystInDetail(StInDetailDto stInDetail) {
+		session.update("updateWhStockDetailBystInDetailmius", stInDetail);
+		
+	}
+
+	@Override
+	public String insertStIn(StockInDto stIn) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

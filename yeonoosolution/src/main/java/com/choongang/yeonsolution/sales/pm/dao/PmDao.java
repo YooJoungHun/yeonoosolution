@@ -26,7 +26,10 @@ public interface PmDao {
 	
 	List<StockInDto> selectStockInListBySearch(Search search);
 	List<StInDetailDto> selectStockInDetailByInCode(String inCode);
-	int updateStockInByInCode(Map<String, String> map);
+	int updateStockInByInCode(Map<String, Object> map);
 	List<WhDto> selectWh();
+	void updateWhStockDetailBystInDetail(Map<String, Object> map);
+	void updateWhStockDetailBystInDetail(StInDetailDto stInDetail);
+	String insertStIn(StockInDto stIn);
 
 }

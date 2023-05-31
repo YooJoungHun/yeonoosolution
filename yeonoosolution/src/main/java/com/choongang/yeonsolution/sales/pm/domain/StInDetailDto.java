@@ -21,5 +21,4 @@ public class StInDetailDto {
 	private String whName;
 	private String stockUnit;
 	
-	
 }

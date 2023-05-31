@@ -18,6 +18,7 @@ import com.choongang.yeonsolution.sales.pm.domain.OrdersDataDto;
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDetailDto;
 import com.choongang.yeonsolution.sales.pm.domain.OrdersDto;
 import com.choongang.yeonsolution.sales.pm.domain.Search;
+import com.choongang.yeonsolution.sales.pm.domain.StInDataDto;
 import com.choongang.yeonsolution.sales.pm.domain.StInDetailDto;
 import com.choongang.yeonsolution.sales.pm.domain.StockInDto;
 import com.choongang.yeonsolution.sales.pm.domain.WhDto;
@@ -125,5 +126,12 @@ public class PmController {
     public List<WhDto> whList() {
         List<WhDto> whList = pmService.findWhList();
         return whList;
+    }
+    
+    @PostMapping("/st-in-add")
+	@ResponseBody
+    public String stInAdd(@RequestBody StInDataDto stInData) {
+        String resultMsg = pmService.addStIn(stInData);
+        return resultMsg;
     }
 }
