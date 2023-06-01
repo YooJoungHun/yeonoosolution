@@ -3,7 +3,7 @@
 
 <mapper namespace="order-management-mapper">
 
-	<select id="selectPlaceOrderListByCompanyCode" resultType="OrdersDto">
+	<select id="selectPlaceOrderListByCompanyCode" resultType="OMOrdersDto">
 		
 		SELECT   
 		        o.order_status,
@@ -49,28 +49,28 @@
 		WHERE	order_code = #{orderCode}
 	</update>
 	
-	<update id="updateOrderDateByOrderCode" parameterType="ordersDto">
+	<update id="updateOrderDateByOrderCode" parameterType="OMOrdersDto">
 		UPDATE	orders
 		SET		order_date = #{orderDate},
 				update_date  = SYSDATE
 		WHERE	order_code = #{orderCode}
 	</update>
 	
-	<update id="updateDueDateByOrderCode" parameterType="ordersDto">
+	<update id="updateDueDateByOrderCode" parameterType="OMOrdersDto">
 		UPDATE	orders
 		SET		due_date = #{dueDate},
 				update_date  = SYSDATE
 		WHERE	order_code = #{orderCode}
 	</update>
 	
-	<update id="updateEmpidByOrderCode" parameterType="ordersDto">
+	<update id="updateEmpidByOrderCode" parameterType="OMOrdersDto">
 		UPDATE	orders
 		SET		order_empid = #{orderEmpid},
 				update_date  = SYSDATE
 		WHERE	order_code = #{orderCode}
 	</update>
 	
-	<insert id="insertReceiveOrder" parameterType="ordersDto">
+	<insert id="insertReceiveOrder" parameterType="OMOrdersDto">
 		INSERT INTO	orders(
 			order_code,
 			company_code,
@@ -128,7 +128,7 @@
 	</delete>
 	
 	<!-- detail -->
-	<select id="selectPlaceOrderDetailListByCompanyCode" parameterType="String" resultType="OrdersDetailDto">
+	<select id="selectPlaceOrderDetailListByCompanyCode" parameterType="String" resultType="OMOrdersDetailDto">
 		
 		SELECT   
 		        od.item_code,
@@ -147,7 +147,7 @@
 		
 	</select>
 	
-	<insert id="insertReceiveOrderDetail" parameterType="ordersDetailDto">
+	<insert id="insertReceiveOrderDetail" parameterType="OMOrdersDetailDto">
 		INSERT INTO orders_detail (
 									order_detail_code, 
 									sorder, 
@@ -174,7 +174,7 @@
 	
 	</insert>
 	
-	<update id="updateAmountByordersDetailDto" parameterType="ordersDetailDto">
+	<update id="updateAmountByordersDetailDto" parameterType="OMOrdersDetailDto">
 		UPDATE	orders_detail
 		SET		quantity = #{quantity},
 				price = #{price},
@@ -182,19 +182,19 @@
 		WHERE	order_detail_code = #{orderDetailCode}
 	</update>
 	
-	<update id="updateItemStockUnitByorderCode" parameterType="ordersDetailDto">
+	<update id="updateItemStockUnitByorderCode" parameterType="OMOrdersDetailDto">
 		UPDATE	orders_detail
 		SET		item_stock_unit = #{itemStockUnit}
 		WHERE	order_detail_code = #{orderDetailCode}
 	</update>
 	
-	<update id="updateMemoByOrdersDetailDto" parameterType="ordersDetailDto">
+	<update id="updateMemoByOrdersDetailDto" parameterType="OMOrdersDetailDto">
 		UPDATE	orders_detail
 		SET		memo = #{memo}
 		WHERE	order_detail_code = #{orderDetailCode}
 	</update>
 	
-	<update id="updateEndYnByOrderDetailCode" parameterType="ordersDetailDto">
+	<update id="updateEndYnByOrderDetailCode" parameterType="OMOrdersDetailDto">
 		UPDATE	orders_detail
 		SET		end_yn = #{endYn}
 		WHERE	order_detail_code = #{orderDetailCode}
@@ -292,14 +292,14 @@
 	
 	</insert>
 	
-	<select id="selectCustomerList" resultType="OrdersCompanyDto">
+	<select id="selectCustomerList" resultType="OMOrdersCompanyDto">
 		SELECT   
 		        company_code,
 		        company_name
 		FROM    company
 	</select>
 	
-	<select id="selectItemList" resultType="OrdersItemDto">
+	<select id="selectItemList" resultType="OMOrdersItemDto">
 		SELECT   
 		        item_code,
 		        item_name
@@ -308,13 +308,13 @@
 		WHERE	item_type = '완제품'	
 	</select>
 	
-	<update id="updateItemByordersDetailDto" parameterType="ordersItemDto">
+	<update id="updateItemByordersDetailDto" parameterType="OMOrdersItemDto">
 		UPDATE	orders_detail
 		SET		item_code = #{itemCode}
 		WHERE	order_detail_code = #{orderDetailCode}
 	</update>
 	
-	<select id="selectReceiveOrderListByCompanyCode" resultType="OrdersAOMDto">
+	<select id="selectReceiveOrderListByCompanyCode" resultType="OMOrdersAOMDto">
 	
 		SELECT
 			    o.order_code,
@@ -339,7 +339,7 @@
 	
 	</select>
 	
-	<select id="selectSemiManufacturesListByCompanyCode" parameterType="String" resultType="OrdersAOMDto">
+	<select id="selectSemiManufacturesListByCompanyCode" parameterType="String" resultType="OMOrdersAOMDto">
 	
 		SELECT
 		        <!-- bom.low_item_code AS item_code, -->
