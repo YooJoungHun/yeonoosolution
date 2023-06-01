@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="authority-management-mapper">
+	<select id="amSelectMemberByMemberId" parameterType="String" resultType="AMMemberDto">
+		SELECT *
+		FROM member
+		WHERE member_id = #{memberId}
+		AND member_yn = 'Y'
+	</select>
+	
+	<select id="amSelectMember" parameterType="String" resultType="AMMemberDto">
+		SELECT *
+		FROM member
+		WHERE member_uid = #{memberUid}
+		AND member_yn = 'Y'
+	</select>
+	
+	<insert id="amInsertMember" parameterType="AMMemberDto">
+		insert into member(
+			member_uid,
+			dept_code,
+			job_code,
+			company_code,
+			member_id,
+			password,
+			member_name,
+			address,
+			tel,
+			member_image,
+			member_role,
+			reg_user,
+			reg_date,
+			member_yn
+		) values (
+			UPPER(#{companyCode}) || '.' || #{memberId},
+			#{deptCode, jdbcType=VARCHAR},
+			#{jobCode, jdbcType=VARCHAR},
+			UPPER(#{companyCode, jdbcType=VARCHAR}),
+			#{memberId, jdbcType=VARCHAR},
+			#{password, jdbcType=VARCHAR},
+			#{memberName, jdbcType=VARCHAR},
+			#{address, jdbcType=VARCHAR},
+			#{tel, jdbcType=VARCHAR},
+			#{memberImage, jdbcType=VARCHAR},
+			#{memberRole, jdbcType=VARCHAR},
+			#{regUser, jdbcType=VARCHAR},
+			sysdate,
+			'Y'
+		)
+	</insert>
+	
+	<select id="amSelectMemberListByCompanyCode" parameterType="String" resultType="AMDto">
+		SELECT
+			m.member_uid,
+			m.dept_code,
+			d.dept_name,
+			m.job_code,
+			j.job_name,
+			m.company_code,
+			c.company_name,
+			m.member_id,
+			m.member_name,
+			m.address,
+			m.tel,
+			m.member_image,
+			m.member_role,
+			m.reg_user as member_reg_user,
+			m.reg_date as member_reg_date,
+			m.update_user as member_update_user,
+			m.update_date as member_update_date,
+			m.member_yn
+		FROM member m
+		INNER JOIN department d ON m.dept_code = d.dept_code
+		INNER JOIN job j ON m.job_code = j.job_code
+        INNER JOIN company c ON m.company_code = c.company_code
+		WHERE m.company_code = UPPER(#{companyCode})
+		AND m.member_yn = 'Y' 
+ 		ORDER BY LENGTH(m.job_code), m.job_code
+	</select>
+	
+	<select id="amSelectCompanyList" resultType="AMDto">
+		SELECT
+			company_code,
+			business_type,
+			order_type,
+			company_name,
+			business_code,
+			owner_name,
+			tel as company_tel,
+			address as company_address,
+			company_logo,
+			reg_date as company_reg_date,
+			reg_user as company_reg_user,
+			update_user as company_update_user,
+			update_date as company_update_date,
+			use_yn
+		FROM company
+		WHERE use_yn = 'Y'
+	</select>
+	
+	<select id="amSelectDepartmentList" resultType="AMDto">
+		SELECT
+			dept_code,
+			dept_name,
+			dept_yn,
+			reg_date as dept_reg_date,
+			reg_user as dept_reg_user,
+			update_date as dept_update_date,
+			update_user as dept_update_user
+		FROM department
+		WHERE dept_yn = 'Y'
+	</select>
+	
+	<select id="amSelectJobList" resultType="AMDto">
+		SELECT
+			job_code,
+			job_name,
+			job_yn,
+			reg_date as job_reg_date,
+			reg_user as job_reg_user,
+			update_date as job_update_date,
+			update_user as job_update_user
+		FROM job
+		WHERE job_yn = 'Y'
+	</select>
+	
+	<update id="amUpdateMember" parameterType="AMMemberDto">
+		UPDATE member
+		SET
+			dept_code = #{deptCode},
+			job_code = #{jobCode},
+			company_code = #{companyCode},
+			member_id = #{memberId},
+			password = #{password},
+			member_name = #{memberName},
+			address = #{address},
+			tel = #{tel},
+			member_image = #{memberImage, jdbcType=VARCHAR},
+			member_role = #{memberRole},
+			update_user = #{updateUser},
+			update_date = sysdate,
+			member_yn = #{memberYn}
+		WHERE member_uid = #{memberUid}
+	</update>
+	
+	<select id="amSelectMemberListByKeword" parameterType="AMDto" resultType="AMDto">
+		SELECT
+			m.member_uid,
+			m.dept_code,
+			d.dept_name,
+			m.job_code,
+			j.job_name,
+			m.company_code,
+			c.company_name,
+			m.member_id,
+			m.member_name,
+			m.address,
+			m.tel,
+			m.member_image,
+			m.member_role,
+			m.reg_user as member_reg_user,
+			m.reg_date as member_reg_date,
+			m.update_user as member_update_user,
+			m.update_date as member_update_date,
+			m.member_yn
+		FROM member m
+		INNER JOIN department d ON m.dept_code = d.dept_code
+		INNER JOIN job j ON m.job_code = j.job_code
+        INNER JOIN company c ON m.company_code = c.company_code
+		WHERE m.company_code = UPPER(#{companyCode})
+		AND m.member_yn = 'Y' 
+		AND m.member_name LIKE '%' || #{nameKeyword} || '%'
+		AND m.member_id LIKE '%' || #{idKeyword} || '%'
+ 		ORDER BY m.job_code
+	</select>
+</mapper>

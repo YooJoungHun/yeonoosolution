@@ -25,6 +25,12 @@ spring:
       hibernate:
         format_sql: true
         default_batch_fetch_size: 100
+
+  
+  devtools:
+    restart:
+      enabled: false
+      
 #Mybatis     
 mybatis :
   config-location: classpath:configuration.xml

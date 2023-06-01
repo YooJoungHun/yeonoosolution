@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.choongang.yeonsolution.sales.om.dao.OMDao;
-import com.choongang.yeonsolution.sales.om.domain.OrdersCompanyDto;
-import com.choongang.yeonsolution.sales.om.domain.OrdersDetailDto;
-import com.choongang.yeonsolution.sales.om.domain.OrdersDto;
-import com.choongang.yeonsolution.sales.om.domain.OrdersItemDto;
+import com.choongang.yeonsolution.sales.om.domain.OMOrdersCompanyDto;
+import com.choongang.yeonsolution.sales.om.domain.OMOrdersDetailDto;
+import com.choongang.yeonsolution.sales.om.domain.OMOrdersDto;
+import com.choongang.yeonsolution.sales.om.domain.OMOrdersItemDto;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,10 +28,10 @@ public class OMDaoImpl implements OMDao {
 	}
 	
 	@Override
-	public List<OrdersDto> selectPlaceOrderListByCompanyCode() {
+	public List<OMOrdersDto> selectPlaceOrderListByCompanyCode() {
 		// log.info("[selectPlaceOrderListByCompanyCode] companyCode -> {}", companyCode);
 		
-		List<OrdersDto> placeOrderList = null;
+		List<OMOrdersDto> placeOrderList = null;
 		
 		try {
 			placeOrderList = sqlSession.selectList("selectPlaceOrderListByCompanyCode");
@@ -68,7 +68,7 @@ public class OMDaoImpl implements OMDao {
 	}
 
 	@Override
-	public int updateOrderTypeByorderCode(String orderCode, OrdersDto ordersDto) {
+	public int updateOrderTypeByorderCode(String orderCode, OMOrdersDto ordersDto) {
 		int orderType = 0;
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("orderCode", orderCode);
@@ -83,7 +83,7 @@ public class OMDaoImpl implements OMDao {
 	}
 	
 	@Override
-	public int updateOrderDateByorderCode(OrdersDto ordersDto) {
+	public int updateOrderDateByorderCode(OMOrdersDto ordersDto) {
 		log.info("[updateOrderDateByorderCode] ordersDto.getOrderDate() -> {}", ordersDto.getOrderDate());
 		log.info("[updateOrderDateByorderCode] ordersDto.getOrderDate() -> {}", ordersDto.getOrderCode());
 
@@ -98,7 +98,7 @@ public class OMDaoImpl implements OMDao {
 	}
 	
 	@Override
-	public int updateDueDateByorderCode(OrdersDto ordersDto) {
+	public int updateDueDateByorderCode(OMOrdersDto ordersDto) {
 		log.info("[updateDueDateByorderCode] ordersDto.getDueDate() -> {}", ordersDto.getDueDate());
 		log.info("[updateDueDateByorderCode] ordersDto.getOrderCode() -> {}", ordersDto.getOrderCode());
 
@@ -113,7 +113,7 @@ public class OMDaoImpl implements OMDao {
 	}
 	
 	@Override
-	public int updateEmpidByOrderCode(OrdersDto ordersDto) {
+	public int updateEmpidByOrderCode(OMOrdersDto ordersDto) {
 		log.info("[updateEmpidByOrderCode] ordersDto.getOrderCode() -> {}", ordersDto.getOrderCode());
 		log.info("[updateEmpidByOrderCode] ordersDto.getOrderEmpid() -> {}", ordersDto.getOrderEmpid());
 
@@ -128,7 +128,7 @@ public class OMDaoImpl implements OMDao {
 	}
 	
 	@Override
-	public void insertReceiveOrder(OrdersDto ordersDto) {
+	public void insertReceiveOrder(OMOrdersDto ordersDto) {
 		log.info("[insertReceiveOrder] ordersDto.toString() -> {}", ordersDto.toString());
 		try {
 			sqlSession.insert("insertReceiveOrder", ordersDto);
@@ -170,10 +170,10 @@ public class OMDaoImpl implements OMDao {
 	////
 	
 	@Override
-	public List<OrdersDetailDto> selectPlaceOrderDetailListByCompanyCode(String orderCode) {
+	public List<OMOrdersDetailDto> selectPlaceOrderDetailListByCompanyCode(String orderCode) {
 		log.info("[selectPlaceOrderDetailListByCompanyCode] orderCode -> {}", orderCode);
 		
-		List<OrdersDetailDto> placeOrderDetailList = null;
+		List<OMOrdersDetailDto> placeOrderDetailList = null;
 		
 		try {
 			placeOrderDetailList = sqlSession.selectList("selectPlaceOrderDetailListByCompanyCode", orderCode);
@@ -186,7 +186,7 @@ public class OMDaoImpl implements OMDao {
 	}
 
 	@Override
-	public void insertReceiveOrderDetail(OrdersDetailDto ordersDetailDto) {
+	public void insertReceiveOrderDetail(OMOrdersDetailDto ordersDetailDto) {
 		log.info("[insertReceiveOrderDetail] ordersDto.toString() -> {}", ordersDetailDto.toString());
 		try {
 			sqlSession.insert("insertReceiveOrderDetail", ordersDetailDto);
@@ -197,7 +197,7 @@ public class OMDaoImpl implements OMDao {
 	}
 
 	@Override
-	public int updateAmountByordersDetailDto(OrdersDetailDto ordersDetailDto) {
+	public int updateAmountByordersDetailDto(OMOrdersDetailDto ordersDetailDto) {
 		log.info("[updateAmountByordersDetailDto] ordersDetailDto.toString() -> {}", ordersDetailDto.toString());
 
 		int updatedAmount = 0;
@@ -211,7 +211,7 @@ public class OMDaoImpl implements OMDao {
 	}
 
 	@Override
-	public int updateItemStockUnitByorderCode(OrdersDetailDto ordersDetailDto) {
+	public int updateItemStockUnitByorderCode(OMOrdersDetailDto ordersDetailDto) {
 		log.info("[updateItemStockUnitByorderCode] ordersDetailDto.toString() -> {}", ordersDetailDto.toString());
 
 		int modifiedUnit = 0;
@@ -225,7 +225,7 @@ public class OMDaoImpl implements OMDao {
 	}
 
 	@Override
-	public int updateEndYnByOrderDetailCode(OrdersDetailDto ordersDetailDto) {
+	public int updateEndYnByOrderDetailCode(OMOrdersDetailDto ordersDetailDto) {
 		log.info("[updateEndYnByOrderDetailCode] ordersDetailDto.toString() -> {}", ordersDetailDto.toString());
 
 		int modifiedEndYn = 0;
@@ -298,8 +298,8 @@ public class OMDaoImpl implements OMDao {
 	}
 
 	@Override
-	public List<OrdersCompanyDto> selectCustomerList() {
-		List<OrdersCompanyDto> customerList = null;
+	public List<OMOrdersCompanyDto> selectCustomerList() {
+		List<OMOrdersCompanyDto> customerList = null;
 		
 		try {
 			customerList = sqlSession.selectList("selectCustomerList");
@@ -311,8 +311,8 @@ public class OMDaoImpl implements OMDao {
 	}
 
 	@Override
-	public List<OrdersItemDto> selectItemList() {
-		List<OrdersItemDto> itemList = null;
+	public List<OMOrdersItemDto> selectItemList() {
+		List<OMOrdersItemDto> itemList = null;
 		
 		try {
 			itemList = sqlSession.selectList("selectItemList");
@@ -325,7 +325,7 @@ public class OMDaoImpl implements OMDao {
 	}
 
 	@Override
-	public int updateItemByordersDetailDto(OrdersItemDto ordersItemDto) {
+	public int updateItemByordersDetailDto(OMOrdersItemDto ordersItemDto) {
 		log.info("[updateItemByordersDetailDto] ordersItemDto.toString() -> {}", ordersItemDto.toString());
 
 		int updatedItem = 0;
@@ -339,7 +339,7 @@ public class OMDaoImpl implements OMDao {
 	}
 
 	@Override
-	public int updateMemoByOrdersDetailDto(OrdersDetailDto ordersDetailDto) {
+	public int updateMemoByOrdersDetailDto(OMOrdersDetailDto ordersDetailDto) {
 		log.info("[updateMemoByOrdersDetailDto] ordersItemDto.toString() -> {}", ordersDetailDto.toString());
 
 		int updatedMemo = 0;
