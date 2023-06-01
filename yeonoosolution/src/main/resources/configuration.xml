@@ -7,6 +7,10 @@
   	</settings>
   	
   	<typeAliases>
+  	
+	<!-- 출고관리 -->
+  		<typeAlias type="com.choongang.yeonsolution.sales.sdm.domain.SDMStOutDto" alias="SDMStOutDto"/>
+
  	<!-- 권한 관리 -->
   		<typeAlias alias="AMMemberDto" type="com.choongang.yeonsolution.standard.am.domain.MemberDto"/>
   		<typeAlias alias="AMDto" type="com.choongang.yeonsolution.standard.am.domain.AMDto"/>
@@ -62,6 +66,7 @@
   		<typeAlias alias="UMDepartmentDto" type="com.choongang.yeonsolution.standard.um.domain.DepartmentDto"/>
   		<typeAlias alias="UMJobDto" type="com.choongang.yeonsolution.standard.um.domain.JobDto"/>
   	
+
   	</typeAliases>
   	
 </configuration>
