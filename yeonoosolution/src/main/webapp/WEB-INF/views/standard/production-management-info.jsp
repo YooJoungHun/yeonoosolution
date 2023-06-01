@@ -23,9 +23,32 @@
 
 .input-info {
 	width: 1305px;
-	height: 100px;
+	height: 85px;
 	margin: 0px auto;
-	
+	background-color: #F8F8F8;
+  	justify-content: space-between;
+  	border-radius: 10px;
+}
+
+.input-info label {
+	width: 120px;
+    border-radius: 5px;
+    border: 1px solid #E8EBF0;
+    padding: 10px;
+    font-size: 14px;
+    text-align: center;
+    line-height: 30px;
+    flex-shrink: 0;
+    position: relative;
+    margin-right: 4px;
+    margin-left: 20px;
+}
+
+.input-info span {
+	padding-bottom: 50px;
+    font-size: 18px;
+    text-align: center;
+    margin-left: 20px;
 }
 
 .product-item-list {
@@ -232,10 +255,12 @@
 	
 	
 	<div class="input-info">
-		Bom 등록<br>
-		<span>*완제품 코드</span><input placeholder="더블 클릭 하여 선택" id="high-item-code" readonly>
-		<span>*반제품/원자재 코드</span><input placeholder="더블 클릭 하여 선택" id="low-item-code" readonly>
-		<span>*재료 수량</span><input id="material-quantity">
+		<span>Bom 등록 정보</span>
+		<br>
+		<br>
+		<label>*완제품 코드</label><input placeholder="더블 클릭 하여 선택" id="high-item-code" readonly>
+		<label>*반제품/원자재 코드</label><input placeholder="더블 클릭 하여 선택" id="low-item-code" readonly>
+		<label>*재료 수량</label><input id="material-quantity">
 		
 		<div class="btn-group1">
 			<button id="bom-insert">BOM 등록</button>

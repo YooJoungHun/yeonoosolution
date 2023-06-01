@@ -26,7 +26,7 @@
 
 .input-info {
 	width: 1305px;
-	height: 130px;
+	height: 110px;
 	margin: 0px auto;
 	
 }
@@ -147,13 +147,6 @@
 	
 	
 	<div class="input-info">
-		<div class="btn-group1">
-			<button id="item-insert">제품 등록</button>
-			<button id="item-update" data-action="update">수정 완료</button>
-			<button id="item-delete" data-action="delete">삭제</button> 
-			<button id="reset-btn">초기화</button>
-		</div>
-		
 		제품 정보 입력<br>
 		<span>창고</span><input id="wh-code" placeholder="더블 클릭하여 창고 선택" readonly>
 		<span>*거래처 코드</span><input id="company-code" placeholder="더블 클릭하여 거래처 선택" readonly>
@@ -170,6 +163,13 @@
 		<span>*종료일</span><input id="end-date" type="date">
 		<span>*등록/수정자</span><input id="reg-user" placeholder="필수 입력 정보">
 		<span>등록/수정일자</span><input id="reg-date" readonly>
+		
+		<div class="btn-group1">
+			<button id="item-insert">제품 등록</button>
+			<button id="item-update" data-action="update">수정 완료</button>
+			<button id="item-delete" data-action="delete">삭제</button> 
+			<button id="reset-btn">초기화</button>
+		</div>
 	</div>
 	
 	
