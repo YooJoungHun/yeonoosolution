@@ -27,7 +27,7 @@ public class SIMController {
 	public String StIn(StInDto stInDto, Model model) {
 		List<StInDto> stInList = simService.stInList(stInDto);
 		model.addAttribute("stInList", stInList);
-		return "product/st-in";
+		return "product/inventory-stock-in";
 	}
 
 	@RequestMapping(value = "/product/sim/{action}")
