@@ -7,6 +7,12 @@
   	</settings>
   	
   	<typeAliases>
+      <!--  재고 현황 조회  -->
+      <typeAlias alias="IsWhStockDetailDto" type="com.choongang.yeonsolution.product.is.domain.IsWhStockDetailDto"/>
+  		<typeAlias alias="IsWhDto" type="com.choongang.yeonsolution.product.is.domain.IsWhDto"/>
+  		<typeAlias alias="IsPaginationDto" type="com.choongang.yeonsolution.product.is.domain.IsPaginationDto"/>
+  		<typeAlias alias="IsBomDto" type="com.choongang.yeonsolution.product.is.domain.IsBomDto"/>
+      
       <!-- 생산 지시  -->
   		<typeAlias type="com.choongang.yeonsolution.product.wo.domain.Wo" alias="WOWo"/>
   		<typeAlias type="com.choongang.yeonsolution.product.wo.domain.Wh" alias="WOWh"/>
