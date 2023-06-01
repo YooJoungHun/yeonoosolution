@@ -186,40 +186,4 @@ public class WOController {
 		for (Wo wo : woList) result += woService.modifyWo(wo);
 		return String.format("{ \"result\":%d }", result);
 	}
-	
-	@ResponseBody
-	@RequestMapping(value = "/wo/comparison")
-	public String woComparison(@RequestBody Map<String, Object> data) {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		List<Map<String, Object>> items = (List<Map<String, Object>>) data.get("data");
-		List<Wo> woComps = items.stream().map(item -> {
-			Wo wo = mapper.convertValue(item, Wo.class);
-			Item it = new Item();
-			String itemCode = (String)((Map<String, Object>)item.get("item")).get("itemCode");
-			it.setItemCode(itemCode);
-			Wh wh = new Wh();
-			String whCode = (String)((Map<String, Object>)item.get("wh")).get("whCode");
-			wh.setWhCode(whCode);
-			Orders orders = new Orders();
-			String orderCode = (Map<String, Object>)item.get("orders") == null ? null : (String)((Map<String, Object>)item.get("wh")).get("orderCode");
-			orders.setOrderCode(orderCode);
-			wo.setItem(it);
-			wo.setWh(wh);
-			wo.setOrders(orders);
-			wo.setStartDate(null);
-			wo.setEndDate(null);
-			wo.setRegDate(null);
-			wo.setRegUser(null);
-			wo.setUpdateDate(null);
-			wo.setUpdateUser(null);
-			wo.setWorkStatus(null);
-			wo.setDeleteStatus(null);
-			System.out.println(wo);
-			return wo;
-		}).collect(Collectors.toList());
-		boolean result = woComps.get(0).equals(woComps.get(1));
-		return String.format("{ \"result\":%s }", Boolean.toString(result));
-	}
 }

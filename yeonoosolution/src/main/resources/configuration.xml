@@ -15,7 +15,7 @@
   		<typeAlias type="com.choongang.yeonsolution.product.wo.domain.Company" alias="WOCompany"/>
       
       <!-- 수주서 관리 -->
-      <typeAlias alias="OMOrdersDto" type="com.choongang.yeonsolution.sales.om.domain.OrdersDto"/>
+      	<typeAlias alias="OMOrdersDto" type="com.choongang.yeonsolution.sales.om.domain.OrdersDto"/>
   		<typeAlias alias="OMOrdersDetailDto" type="com.choongang.yeonsolution.sales.om.domain.OrdersDetailDto"/>
   		<typeAlias alias="OMOrdersCompanyDto" type="com.choongang.yeonsolution.sales.om.domain.OrdersCompanyDto"/>
   		<typeAlias alias="OMOrdersItemDto" type="com.choongang.yeonsolution.sales.om.domain.OrdersItemDto"/>
