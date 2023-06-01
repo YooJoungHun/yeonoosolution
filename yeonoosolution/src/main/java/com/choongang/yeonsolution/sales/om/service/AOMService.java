@@ -2,12 +2,12 @@ package com.choongang.yeonsolution.sales.om.service;
 
 import java.util.List;
 
-import com.choongang.yeonsolution.sales.om.domain.OrdersAOMDto;
+import com.choongang.yeonsolution.sales.om.domain.OMOrdersAOMDto;
 
 public interface AOMService {
 
-	List<OrdersAOMDto> findRecieveOrderListByCompanyCode();
+	List<OMOrdersAOMDto> findRecieveOrderListByCompanyCode();
 
-	List<OrdersAOMDto> findSemiManufacturesListByCompanyCode(String orderCode);
+	List<OMOrdersAOMDto> findSemiManufacturesListByCompanyCode(String orderCode);
 
 }

@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.choongang.yeonsolution.sales.om.dao.OMDao;
-import com.choongang.yeonsolution.sales.om.domain.OrdersCompanyDto;
-import com.choongang.yeonsolution.sales.om.domain.OrdersDetailDto;
-import com.choongang.yeonsolution.sales.om.domain.OrdersDto;
-import com.choongang.yeonsolution.sales.om.domain.OrdersItemDto;
+import com.choongang.yeonsolution.sales.om.domain.OMOrdersCompanyDto;
+import com.choongang.yeonsolution.sales.om.domain.OMOrdersDetailDto;
+import com.choongang.yeonsolution.sales.om.domain.OMOrdersDto;
+import com.choongang.yeonsolution.sales.om.domain.OMOrdersItemDto;
 import com.choongang.yeonsolution.sales.om.service.OMService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +25,9 @@ public class OMServiceImpl implements OMService {
 	
 	
 	@Override
-	public List<OrdersDto> findPlaceOrderListByCompanyCode() {
+	public List<OMOrdersDto> findPlaceOrderListByCompanyCode() {
 		
-		List<OrdersDto> placeOrderList = null;
+		List<OMOrdersDto> placeOrderList = null;
 		
 		placeOrderList = omDao.selectPlaceOrderListByCompanyCode();
 		log.info("[findPlaceOrderListByCompanyCode] placeOrderList.size() -> {}", placeOrderList.size());
@@ -54,7 +54,7 @@ public class OMServiceImpl implements OMService {
 	}
 
 	@Override
-	public int modifyOrderTypeByorderCode(String orderCode, OrdersDto ordersDto) {
+	public int modifyOrderTypeByorderCode(String orderCode, OMOrdersDto ordersDto) {
 		
 		int orderType = omDao.updateOrderTypeByorderCode(orderCode, ordersDto);
 		
@@ -62,7 +62,7 @@ public class OMServiceImpl implements OMService {
 	}
 	
 	@Override
-	public int modifyOrderDateByorderCode(OrdersDto ordersDto) {
+	public int modifyOrderDateByorderCode(OMOrdersDto ordersDto) {
 
 		int updatedOrderDate = omDao.updateOrderDateByorderCode(ordersDto);
 		
@@ -71,21 +71,21 @@ public class OMServiceImpl implements OMService {
 	
 
 	@Override
-	public int modifyDueDateByorderCode(OrdersDto ordersDto) {
+	public int modifyDueDateByorderCode(OMOrdersDto ordersDto) {
 		int updatedDueDate = omDao.updateDueDateByorderCode(ordersDto);
 		
 		return updatedDueDate;
 	}
 	
 	@Override
-	public int modifyEmpidByOrderCode(OrdersDto ordersDto) {
+	public int modifyEmpidByOrderCode(OMOrdersDto ordersDto) {
 		int updatedEmpid = omDao.updateEmpidByOrderCode(ordersDto);
 		
 		return updatedEmpid;
 	}
 	
 	@Override
-	public void addReceiveOrder(OrdersDto ordersDto) {
+	public void addReceiveOrder(OMOrdersDto ordersDto) {
 		
 		omDao.insertReceiveOrder(ordersDto);
 	}
@@ -109,9 +109,9 @@ public class OMServiceImpl implements OMService {
 	
 	//
 	@Override
-	public List<OrdersDetailDto> findPlaceOrderDetailListByCompanyCode(String orderCode) {
+	public List<OMOrdersDetailDto> findPlaceOrderDetailListByCompanyCode(String orderCode) {
 		
-		List<OrdersDetailDto> placeOrderDetailList = null;
+		List<OMOrdersDetailDto> placeOrderDetailList = null;
 		
 		placeOrderDetailList = omDao.selectPlaceOrderDetailListByCompanyCode(orderCode);
 		log.info("[findPlaceOrderDetailListByCompanyCode] placeOrderList.size() -> {}", placeOrderDetailList.size());
@@ -121,7 +121,7 @@ public class OMServiceImpl implements OMService {
 
 
 	@Override
-	public void addReceiveOrderDetail(OrdersDetailDto ordersDetailDto) {
+	public void addReceiveOrderDetail(OMOrdersDetailDto ordersDetailDto) {
 
 		omDao.insertReceiveOrderDetail(ordersDetailDto);
 		
@@ -129,7 +129,7 @@ public class OMServiceImpl implements OMService {
 
 
 	@Override
-	public int modifyAmountByordersDetailDto(OrdersDetailDto ordersDetailDto) {
+	public int modifyAmountByordersDetailDto(OMOrdersDetailDto ordersDetailDto) {
 		int updatedAmount = omDao.updateAmountByordersDetailDto(ordersDetailDto);
 		
 		return updatedAmount;
@@ -137,14 +137,14 @@ public class OMServiceImpl implements OMService {
 
 
 	@Override
-	public int modifyItemStockUnitByorderDetailCode(OrdersDetailDto ordersDetailDto) {
+	public int modifyItemStockUnitByorderDetailCode(OMOrdersDetailDto ordersDetailDto) {
 		int modifiedUnit = omDao.updateItemStockUnitByorderCode(ordersDetailDto);
 		
 		return modifiedUnit;
 	}
 	
 	@Override
-	public int modifyMemoByOrdersDetailDto(OrdersDetailDto ordersDetailDto) {
+	public int modifyMemoByOrdersDetailDto(OMOrdersDetailDto ordersDetailDto) {
 		int modifiedMemo = omDao.updateMemoByOrdersDetailDto(ordersDetailDto);
 		
 		return modifiedMemo;
@@ -152,7 +152,7 @@ public class OMServiceImpl implements OMService {
 
 
 	@Override
-	public int modifyEndYnByOrderDetailCode(OrdersDetailDto ordersDetailDto) {
+	public int modifyEndYnByOrderDetailCode(OMOrdersDetailDto ordersDetailDto) {
 		int modifiedEndYn = omDao.updateEndYnByOrderDetailCode(ordersDetailDto);
 		
 		return modifiedEndYn;
@@ -193,8 +193,8 @@ public class OMServiceImpl implements OMService {
 
 
 	@Override
-	public List<OrdersCompanyDto> findCustomerList() {
-		List<OrdersCompanyDto> customerList = null;
+	public List<OMOrdersCompanyDto> findCustomerList() {
+		List<OMOrdersCompanyDto> customerList = null;
 		
 		customerList = omDao.selectCustomerList();
 		log.info("[findCustomerList] customerList.size() -> {}", customerList.size());
@@ -204,8 +204,8 @@ public class OMServiceImpl implements OMService {
 
 
 	@Override
-	public List<OrdersItemDto> finditemList() {
-		List<OrdersItemDto> itemList = null;
+	public List<OMOrdersItemDto> finditemList() {
+		List<OMOrdersItemDto> itemList = null;
 		
 		itemList = omDao.selectItemList();
 		log.info("[findCustomerList] itemList.size() -> {}", itemList.size());
@@ -215,7 +215,7 @@ public class OMServiceImpl implements OMService {
 
 
 	@Override
-	public int modifyItemByordersDetailDto(OrdersItemDto ordersItemDto) {
+	public int modifyItemByordersDetailDto(OMOrdersItemDto ordersItemDto) {
 		int updatedItem = omDao.updateItemByordersDetailDto(ordersItemDto);
 		
 		return updatedItem;

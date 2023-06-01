@@ -11,12 +11,73 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
 <style type="text/css">
-	.table-content {
+	#table-content {
+		border:3px solid;
+		padding: 5px;
+		text-align: center;
+		white-space: nowrap;		/* 셀 내용이 넘칠 경우 줄바꿈 방지 */
+		overflow: hidden;			/* 셀 내용이 넘칠 경우 가리기 */
+		text-overflow: ellipsis;	/* 셀 내용이 넘칠 경우 말줄임표(...) 표시 */
+	
+		overflow: auto;
+		white-space: nowrap;
+		
+	}
+	#table-content th {
+		border: 1px solid;			/* 각 셀에 테두리 추가 */
+	}
+	#table-content td {
+		width: 100px; 
+		border: 1px solid;			/* 각 셀에 테두리 추가 */
+	}
+	#table-content td:first-child {
+		width: 30px; 
+	}
+	#table-content td:nth-child(2) {
+		width: 50px; 
+	}
+	
+	.bg-gray {
+		background-color: #D9D9D9;
+	}
+	.bg-orange {
+		background-color: #FFFFCC;
+	}
+	.bg-blue {
+		background-color: #E6F2FF;
+	}
+	
+	#table-detail-content {
+		border:3px solid;
+		padding: 5px;
+		text-align: center;
+		white-space: nowrap; 
+		overflow: hidden; 
+		text-overflow: ellipsis; 
+	
 		overflow: auto;
 		white-space: nowrap;
 	}
+	#table-detail-content th {
+		border: 1px solid;			/* 각 셀에 테두리 추가 */
+	}
+	#table-detail-content td {
+		width: 70px; 
+		border: 1px solid;			/* 각 셀에 테두리 추가 */
+	}
+	#table-detail-content td:first-child {
+		width: 30px; 
+	}
+	#table-detail-content td:nth-child(2),
+	#table-detail-content td:nth-child(3),
+	#table-detail-content td:nth-child(4),
+	#table-detail-content td:nth-child(5),
+	#table-detail-content td:nth-child(8) {
+		background-color: #FFFFCC;
+	}
 	
-
+	
+	
 	
 	
 </style>
@@ -63,7 +124,7 @@
 	
 	<div class="receive-order-table-content">
 	
-		<table id="table-content" border="1">
+		<table id="table-content">
 			<caption>수주서</caption>
 			<thead>
 				<tr>
@@ -232,7 +293,7 @@
 	
 	<div class="receive-order-detail-content">
 	
-		<table id="table-detail-content" border="1">
+		<table id="table-detail-content">
 			<caption>수주서 세부항목</caption>
 			<thead>
 				<tr>
@@ -313,6 +374,7 @@
 			</table>
  			<!-- <input type="hidden" name="orderCodeHidden" id="order-code-hidden" value=""> --> 
 			<input type="hidden" name="orderDetailCode" id="order-detail-code" value=""> 
+			<input type="hidden" name="sorder" id="sorder" value=""> 
 			
 		</form>	<!-- /action="/sales/om/insert-receive-order-detail" -->
 		
@@ -363,23 +425,22 @@
 						radio.prop("checked", true); // 이전에 체크된 radio 선택
 					}
 					
-					//row.append('<td><input type="radio" name="selectRow" value = '+ order.orderCode +'></td>');
+					//row.append('<td><input type="radio" name="selectRow" value = '+ order.orderCode +'></td>');	
+	
 					row.append($('<td>').append(radio));
-					row.append('<td>' + order.orderStatus + '</td>');
-					row.append('<td>' + order.orderCode + '</td>');
-					row.append('<td>' + order.customerCode + '</td>');
-					row.append('<td>' + order.receiveOrderType + '</td>');
-					row.append('<td>' + order.companyName + '</td>');
-					row.append('<td>' + order.orderDate.substring(0, 10) + '</td>');
-					row.append('<td>' + order.orderEmpid + '</td>');
-					//row.append('<td>' + order.deliveryPlan + '</td>');
-					row.append('<td>' + (order.deliveryPlan ? order.deliveryPlan : '') + '</td>');
-					row.append('<td>' + order.dueDate.substring(0, 10) + '</td>');
-					row.append('<td>' + order.regDate.substring(0, 10) + '</td>');
-					row.append('<td>' + order.regUser + '</td>');
-					row.append('<td>' + order.updateDate.substring(0, 10) + '</td>');
-					//row.append('<td>' + order.updateUser + '</td>');
-					row.append('<td>' + (order.updateUser ? order.updateUser : '') + '</td>');
+					row.append('<td class="bg-gray">' + order.orderStatus + '</td>');
+					row.append('<td class="bg-gray">' + order.orderCode + '</td>');
+					row.append('<td class="bg-gray">' + order.customerCode + '</td>');
+					row.append('<td	class="bg-orange">' + order.receiveOrderType + '</td>');
+					row.append('<td class="bg-gray">' + order.companyName + '</td>');
+					row.append('<td class="bg-blue">' + order.orderDate.substring(0, 10) + '</td>');
+					row.append('<td class="bg-blue">' + order.orderEmpid + '</td>');
+					row.append('<td class="bg-orange">' + (order.deliveryPlan ? order.deliveryPlan : '') + '</td>');
+					row.append('<td class="bg-blue">' + order.dueDate.substring(0, 10) + '</td>');
+					row.append('<td class="bg-blue">' + order.regDate.substring(0, 10) + '</td>');
+					row.append('<td class="bg-gray">' + (order.regUser ? order.regUser : '') + '</td>');
+					row.append('<td class="bg-gray">' + order.updateDate.substring(0, 10) + '</td>');
+					row.append('<td class="bg-gray">' + (order.updateUser ? order.updateUser : '') + '</td>');
 					
 					table.append(row);
 					 
@@ -659,15 +720,14 @@
 					placeOrderDetailList.forEach(function(order){  
 						const row =$("<tr>");
 						row.append('<td><input type="radio" name="selectDetailRow" value = '+ order.orderDetailCode +'></td>');
-						row.append('<td>' + order.itemCode + '</td>');
-						row.append('<td>' + order.itemName + '</td>');
-						row.append('<td>' + order.quantity + '</td>');
-						row.append('<td>' + order.price + '</td>');
-						row.append('<td>' + order.amount + '</td>');
-						row.append('<td>' + order.itemStockUnit + '</td>');
-						//row.append('<td>' + order.memo + '</td>'); 
-						row.append('<td>' + (order.memo ? order.memo : '') + '</td>');
-						row.append('<td>' + order.endYn + '</td>');
+						row.append('<td class="bg-orange">' + order.itemCode + '</td>');
+						row.append('<td class="bg-orange">' + order.itemName + '</td>');
+						row.append('<td class="bg-orange">' + order.quantity + '</td>');
+						row.append('<td class="bg-orange">' + order.price + '</td>');
+						row.append('<td class="bg-blue">' + order.amount + '</td>');
+						row.append('<td class="bg-blue">' + order.itemStockUnit + '</td>');
+						row.append('<td class="bg-orange">' + (order.memo ? order.memo : '') + '</td>');
+						row.append('<td class="bg-blue">' + order.endYn + '</td>');
 						
 						table.append(row);
 						

@@ -1,4 +1,4 @@
-/** WO page scripts
+/**
  * 
  */
  
@@ -75,17 +75,23 @@ const rowNumbering = () => {
 var tableLayout = [
 	{ header: 'numbering', name: null, width: '50px', compType: 'numbering', dataType: 'numbering', data: null, styles: [] },
 	{ header: 'checkbox', name: null, width: '50px', compType: 'checkbox', dataType: 'checkbox', data: null, styles: [] },
+	//{ header: '지시번호', name: 'workOrderCode', width: '80px', compType: 'readonly', dataType: 'text', data: null, styles: [] },
 	{ header: '지시번호', name: 'workOrderCode', width: '80px', compType: 'readonly', dataType: null, data: null, styles: [] },
+	//{ header: '상태', name: 'workStatus', width: '50px', compType: 'readonly', dataType: 'text', data: null, styles: [] },
 	{ header: '상태', name: 'workStatus', width: '50px', compType: 'readonly', dataType: null, data: null, styles: [] },
 	{ header: '유형', name: 'productType', width: '60px', compType: 'required', dataType: 'select', data: [{value:'', text:'--'}, {value:'일반', text:'일반'}, {value:'재작업', text:'재작업'}, {value:'개발품(시제품)', text:'개발품(시제품)'}], styles: [{'width':'60px'}] },
 	{ header: '지시일', name: 'workOrderDate', width: '110px', compType: 'editable', dataType: 'date', data: null, styles: [] },
 	{ header: '완료일', name: 'finishDate', width: '105px', compType: 'editable', dataType: 'date', data: null, styles: [] },
 	{ header: 'ITEM코드', name: 'item.itemCode', width: '155px', compType: 'editable', dataType: 'text', data: null, styles: [] },
+	//{ header: '품목유형', name: 'item.itemType', width: '121px', compType: 'readonly', dataType: 'text', data: null, styles: [] },
 	{ header: '품목유형', name: 'item.itemType', width: '121px', compType: 'readonly', dataType: null, data: null, styles: [] },
+	//{ header: '품명', name: 'item.itemName', width: '305px', compType: 'readonly', dataType: 'text', data: null, styles: [] },
 	{ header: '품명', name: 'item.itemName', width: '305px', compType: 'readonly', dataType: null, data: null, styles: [] },
 	{ header: '수량', name: 'itemQuantity', width: '50px', compType: 'required', dataType: 'number', data: null, styles: [] },
 	{ header: '창고', name: 'wh.whCode', width: '92px', compType: 'editable', dataType: 'text', data: null, styles: [] },
+	//{ header: '창고명', name: 'wh.whName', width: '91px', compType: 'readonly', dataType: 'text', data: null, styles: [] },
 	{ header: '창고명', name: 'wh.whName', width: '91px', compType: 'readonly', dataType: null, data: null, styles: [] },
+	//{ header: '작업지시유형', name: 'workOrderType', width: '110px', compType: 'readonly', dataType: 'select', data: [{value:'', text:'--'}, {value:'자재수동투입', text:'자재수동투입'}, {value:'자재자동차감', text:'자재자동차감'}], styles: [{'width':'110px'}] }
 	{ header: '작업지시유형', name: 'workOrderType', width: '110px', compType: 'readonly', dataType: null, data: [{value:'', text:'--'}, {value:'자재수동투입', text:'자재수동투입'}, {value:'자재자동차감', text:'자재자동차감'}], styles: [{'width':'110px'}] }
 ];
 
@@ -133,7 +139,7 @@ const templateChild = (datum) => {
 	const nameSetter = x => !x ? '' : ' name="' + x + '"';
 	switch(datum.dataType) {
 		case 'text': return '<td' + className + roleName + '><input' + nameSetter(name) + ' type="text"></td>';
-		case 'number': return '<td' + className + roleName + '><input' + nameSetter(name) + ' type="number" min="1"></td>';
+		case 'number': return '<td' + className + roleName + '><input' + nameSetter(name) + ' type="number"></td>';
 		case 'date': return '<td' + className + roleName + '><input' + nameSetter(name) + ' type="date"></td>';
 		case 'select':
 			let selectString = '<td' + className + roleName + '><select' + nameSetter(name);
@@ -243,13 +249,27 @@ $(document).on('click', 'button.select-item', e => {
 const comparison = (obj1, obj2) => {
 	let dataObj1 = {};
 	let dataObj2 = {};
+	// comparison (for Replace)
+	let keys1 = Object.keys(obj1);
+	for (let key of keys1) dataObj1[key] = obj1[key];
+	let keys2 = Object.keys(obj2);
+	for (let key of keys2) dataObj2[key] = obj2[key];
+	let sendData = JSON.stringify({ 'data': [dataObj1, dataObj2] });
+	let result = false;
+	$.ajax({
+		url: location.protocol + '//' + location.host + '/wo/comparison',
+		type: 'post',
+		data: sendData,
+		dataType: 'json',
+		contentType: 'application/json',
+		success: data => {
+			result = data.result;
+		}
+	});
+	//
 	let props = tableLayout.map(data => data.name != null ? data.name.split('.')[0] : null).filter(name => name != null);
 	let uniques = [...new Set(props)];
-	for (let uniq of uniques) {
-		dataObj1[uniq] = obj1[uniq];
-		dataObj2[uniq] = obj2[uniq];
-	}
-	let result = JSON.stringify(dataObj1) == JSON.stringify(dataObj2);
+	//for (let uniq of uniques)
 	return result;
 };
 
@@ -303,6 +323,8 @@ $(document).on('click', 'button.update-item', e => {
 		if (!data.workOrderCode) return true;
 		let compData = compareData.filter(cd => cd.workOrderData == data.workOrderData)[0];
 		let aggregation = !comparison(data, compData) && (data.workStatus == '저장');
+		//console.log(data.workOrderCode + ' => ' + data.workStatus);
+		//console.log(typeof aggregation + ' aggregation:' + (aggregation ? 'true' : 'false'));
 		return aggregation;
 	});
 	let news = diff.filter(data => data.workOrderCode == null);

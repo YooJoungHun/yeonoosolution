@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.choongang.yeonosolution.stMoveDetailMapper">
+	
+	<!-- stockMoveStatus 이동현황 페이지 -->
+	<select id="selectStockMoveStatusList" resultType="SMMStMoveDetailDto">
+		SELECT 
+			sm.move_date, sm.move_type, 
+			smd.move_code, smd.item_code, smd.wh_code_out, smd.wh_code_in, smd.move_quantity, smd.memo, smd.sorder,
+            i.item_name, 
+            NVL(wsd.good_quantity, 0) + NVL(wsd.bad_quantity, 0) as stock_quantity
+		FROM 
+			st_move sm
+            JOIN st_move_detail smd ON sm.move_code = smd.move_code
+            JOIN item i ON smd.item_code = i.item_code
+            LEFT JOIN wh_stock_detail wsd ON smd.item_code = wsd.item_code
+		WHERE 
+			sm.move_type = '확정'
+		AND 
+			sm.delete_status = 'N'
+		ORDER BY
+			smd.move_code, smd.sorder
+	</select>
+	
+	<!-- 이동등록현황 페이지 통합 검색 결과 -->
+	<select id="selectStockMoveSearchListByKeywordAndDate" parameterType="map" resultType="SMMStMoveDetailDto">
+		<![CDATA[
+		SELECT 
+			sm.move_date, sm.move_type, 
+			smd.move_code, smd.item_code, smd.wh_code_out, smd.wh_code_in, smd.move_quantity, smd.memo, smd.sorder,
+			i.item_name, 
+			NVL(wsd.good_quantity, 0) + NVL(wsd.bad_quantity, 0) as stock_quantity
+		FROM 
+			st_move sm
+			JOIN st_move_detail smd ON sm.move_code = smd.move_code
+			JOIN item i ON smd.item_code = i.item_code
+			LEFT JOIN wh_stock_detail wsd ON smd.item_code = wsd.item_code
+		WHERE 
+			sm.move_type = '확정'
+		AND 
+			sm.delete_status = 'N'
+		AND (
+			TRIM(#{keyword}) IS NULL
+			OR LOWER(smd.move_code) LIKE '%' || #{keyword} || '%'
+			OR LOWER(smd.item_code) LIKE '%' || #{keyword} || '%'
+			OR LOWER(i.item_name) LIKE '%' || #{keyword} || '%'
+			OR LOWER(smd.wh_code_out) LIKE '%' || #{keyword} || '%'
+			OR LOWER(smd.wh_code_in) LIKE '%' || #{keyword} || '%'
+			OR LOWER(smd.memo) LIKE '%' || #{keyword} || '%'
+		)
+		AND ( 
+			#{startDate} IS NULL OR TO_DATE(sm.move_date, 'YYYY-MM-DD') >= TO_DATE(#{startDate}, 'YYYY-MM-DD')
+		)
+		AND (
+			#{endDate} IS NULL OR TO_DATE(sm.move_date, 'YYYY-MM-DD') <= TO_DATE(#{endDate}, 'YYYY-MM-DD')
+		)
+		ORDER BY
+	    	smd.move_code, smd.sorder
+	    ]]>
+	</select>
+	
+	<!-- 이동등록 리스트 -->
+	<select id="selectStockMoveRegistrationList" resultType="SMMStMoveDto">
+		SELECT *
+		FROM 
+			st_move sm
+		WHERE
+			sm.delete_status = 'N'
+		ORDER BY
+			sm.move_code
+	</select>
+	
+	<!-- 이동확정 변경-->
+	<update id="updateStockMoveConfirmationByMoveCodes" parameterType="java.lang.String">
+		UPDATE st_move
+		SET move_type = '확정'
+		where move_code = #{moveCode}
+	</update>
+	
+	<!-- 이동 세부내역 List -->
+	<select id="selectStockMoveDetailListByMoveCode" parameterType="java.lang.String" resultType="SMMStMoveDetailDto">
+		SELECT 
+			smd.move_code, smd.wh_code_out, smd.wh_code_in, smd.move_quantity, smd.sorder,
+			i.item_code, i.item_name, 
+			NVL(wsd.good_quantity, 0) + NVL(wsd.bad_quantity, 0) as stock_quantity
+		FROM 
+			st_move_detail smd
+			JOIN item i ON smd.item_code = i.item_code
+			LEFT JOIN wh_stock_detail wsd ON smd.item_code = wsd.item_code
+		WHERE
+			smd.move_code = #{moveCode}
+		ORDER BY
+			smd.move_code, smd.sorder
+	</select>
+	
+	<!-- 이동등록 추가 -->
+	<insert id="insertStockMoveRegistrationByMoveDateAndMoveMemo" parameterType="map">
+		INSERT INTO st_move (move_code, begin_end_inventory, move_date, reg_date, reg_user, 
+							update_date, update_user, move_type, delete_status, memo)
+		VALUES ('MOVE' || move_code_seq.nextval, 1, #{moveDate}, sysdate, 'COMPANY1.admin@yeonoo.com', 
+							null, null, '저장', 'N', #{moveMemo})
+	</insert>
+	
+	<!-- 제품코드 리스트(모달) -->
+	<select id="selectItemCodeList" resultType="SMMItemDto">
+		SELECT item_code, wh_code, item_name
+		FROM 
+			item
+		ORDER BY
+			item_code
+	</select>
+	
+	<!-- 세부내역 행 기입용 -->
+	<select id="selectItemCodeRowDataListByItemCode" parameterType="java.lang.String" resultType="SMMitemDto">
+		SELECT 
+			i.item_code, i.wh_code, i.item_name,
+			NVL(wsd.good_quantity, 0) + NVL(wsd.bad_quantity, 0) as stock_quantity
+		FROM 
+			item i
+			LEFT JOIN wh_stock_detail wsd ON i.item_code = wsd.item_code
+		WHERE
+			i.item_code = #{itemCode}
+	</select>
+</mapper>
