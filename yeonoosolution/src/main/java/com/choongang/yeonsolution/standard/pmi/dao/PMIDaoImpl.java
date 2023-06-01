@@ -39,5 +39,11 @@ public class PMIDaoImpl implements PMIDao {
 		
 		return sqlSession.insert("insertBomByBomDto", bomDto);
 	}
+
+	@Override
+	public int deleteBomByBomDto(BomDto bomDto) {
+		
+		return sqlSession.delete("deleteBomByBomDto", bomDto);
+	}
 	
 }

@@ -239,7 +239,6 @@
 		
 		<div class="btn-group1">
 			<button id="bom-insert">BOM 등록</button>
-			<button id="bom-delete">삭제</button>
 			<button id="reset-btn">초기화</button>
 		</div>
 	</div>
@@ -262,6 +261,7 @@
 		
 		<div class="bom-tree">
 			<span>Bom Tree</span>
+			<button id="semi-product-delete">삭제</button>
 			<table id="item3-table">
 			  <thead>
 			    <tr>
@@ -528,8 +528,15 @@
 	}); 
 	
 	// Bom Tree 리스트
-	function bomList() {
+	function bomList(paramItemCode) {
 		let itemCode = $('#item-table tr input[type="radio"]:checked').closest('tr').find('td:eq(2)').text();
+		if (paramItemCode === undefined){
+			itemCode = itemCode;
+		} else {
+			itemCode = paramItemCode;
+		}
+		console.log('bomList -> ' + itemCode);
+		console.log('paramItemCodeBomList -> ' + paramItemCode);
 		
 		$.ajax({
 		    url: '/standard/pmi/bom-list/' + itemCode,
@@ -591,7 +598,7 @@
 				success : function(bomInsert){
 					if(bomInsert == 1){
 						alert("Bom 등록 완료.");
-						bomList();
+						bomList($('#high-item-code').val());
 					} else if (bomInsert == -1){
 						alert("중복 등록은 불가 합니다.");
 					} else {
@@ -606,10 +613,40 @@
 	});
 	
 	
-	/* $(document).on('click', '#bom-delete', function(){
+	// 반제품/원자재 삭제 버튼
+	$(document).on('click', '#semi-product-delete', function(){
+		let highItemCode = $('#high-item-code').val();
+		let lowItemCode = $('#low-item-code').val();
+		console.log(highItemCode);
+		console.log(lowItemCode);
 		
-	};
-	 */
+		if (highItemCode === '' || lowItemCode === ''){
+			alert("삭제 할 반제품/원자재를 선택해주세요.");
+		} else {
+			$.ajax({
+				url : '/standard/pmi/bom',
+				type : 'DELETE',
+				dataType : 'json',
+				contentType : 'application/json',
+				data : JSON.stringify({
+					highItemCode : highItemCode,
+					lowItemCode : lowItemCode
+				}),
+				success : function(bomDelete){
+					if(bomDelete == 1){
+						alert("삭제가 완료되었습니다.");
+						bomList(highItemCode);
+					} else {
+						alert("삭제 중 문제가 발생 했습니다.다음에 다시 시도해주세요.");
+					}
+				},
+				error: function(xhr, status, error) {
+				      console.log('Error:', error);
+				}
+			});
+		}
+	});
+	 
 	
 	
 

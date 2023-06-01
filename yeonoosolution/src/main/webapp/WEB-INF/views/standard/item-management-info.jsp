@@ -148,7 +148,6 @@
 	
 	<div class="input-info">
 		<div class="btn-group1">
-			<input><button id="search-btn">검색</button><br>
 			<button id="item-insert">제품 등록</button>
 			<button id="item-update" data-action="update">수정 완료</button>
 			<button id="item-delete" data-action="delete">삭제</button> 

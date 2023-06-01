@@ -18,5 +18,8 @@ public interface PMIDao {
 	
 	// Bom 인서트
 	int insertBomByBomDto(BomDto bomDto);
+	
+	// Bom 딜리트
+	int deleteBomByBomDto(BomDto bomDto);
 
 }

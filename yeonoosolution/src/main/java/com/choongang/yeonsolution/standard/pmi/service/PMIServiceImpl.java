@@ -65,4 +65,10 @@ public class PMIServiceImpl implements PMIService {
 	    }
 	}
 
+	@Override
+	public int removeBomByBomDto(BomDto bomDto) {
+		
+		return pmiDao.deleteBomByBomDto(bomDto);
+	}
+
 }

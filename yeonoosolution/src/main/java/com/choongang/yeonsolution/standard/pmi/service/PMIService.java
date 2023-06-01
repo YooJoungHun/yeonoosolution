@@ -19,5 +19,8 @@ public interface PMIService {
 	// Bom 인서트
 	int addBomByBomDto(BomDto bomDto);
 	
+	// Bom 딜리트
+	int removeBomByBomDto(BomDto bomDto);
+	
 
 }

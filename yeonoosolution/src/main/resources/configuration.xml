@@ -7,9 +7,9 @@
   	</settings>
   	
   	<typeAliases>
-  		<typeAlias alias="ItemDto" type="com.choongang.yeonsolution.standard.imi.domain.ItemDto"/>
-  		<typeAlias alias="CompanyDto" type="com.choongang.yeonsolution.standard.imi.domain.CompanyDto"/>
-  		<typeAlias alias="BomDto" type="com.choongang.yeonsolution.standard.pmi.domain.BomDto"/>
+  		<typeAlias alias="IMIItemDto" type="com.choongang.yeonsolution.standard.imi.domain.ItemDto"/>
+  		<typeAlias alias="IMICompanyDto" type="com.choongang.yeonsolution.standard.imi.domain.CompanyDto"/>
+  		<typeAlias alias="PMIBomDto" type="com.choongang.yeonsolution.standard.pmi.domain.BomDto"/>
   	</typeAliases>
   	
 </configuration>

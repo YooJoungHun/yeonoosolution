@@ -3,6 +3,7 @@ package com.choongang.yeonsolution.standard.pmi.controller;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -76,6 +77,17 @@ public class PMIController {
 		int bomInsert = pmiService.addBomByBomDto(bomDto);
 		
 		return bomInsert;
+	}
+	
+	@ResponseBody
+	@DeleteMapping("/pmi/bom")
+	public int bomRemove(@RequestBody BomDto bomDto) {
+		log.info("BomRemove Controller Start");
+		
+		int bomRemove = pmiService.removeBomByBomDto(bomDto);
+		log.info("BomRemove Info -> " + bomDto);
+		
+		return bomRemove;
 	}
 	
 	

@@ -79,7 +79,6 @@
 	
 	<div class="input-info">
 		<div class="btn-group1">
-			<input><button id="search-btn">검색</button><br>
 			<button id="item-update">단가 등록/수정</button>
 			<button id="reset-btn">초기화</button>
 		</div>
@@ -337,13 +336,6 @@
 		$('#content-table tr input[type="radio"]:checked').prop('checked', false);
 		$('#content-table tr.checked-row').removeClass('checked-row');
 	});
-
-	
-	$(document).on('click', '#search-btn', function(){
-		
-	});
-	
-	
 
 
 </script>
