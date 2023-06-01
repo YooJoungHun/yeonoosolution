@@ -23,14 +23,14 @@ import lombok.RequiredArgsConstructor;
 public class SIMController {
 	private final SIMService simService;
 
-	@GetMapping(value = "/")
+	@GetMapping(value = "/product/sim")
 	public String StIn(StInDto stInDto, Model model) {
 		List<StInDto> stInList = simService.stInList(stInDto);
 		model.addAttribute("stInList", stInList);
 		return "product/st-in";
 	}
 
-	@RequestMapping(value = "/{action}")
+	@RequestMapping(value = "/product/sim/{action}")
 	public String find(	@PathVariable(name = "action")String action,
 						@RequestParam(required = false)Map<String, Object> data,
 						RedirectAttributes redirectAttributes) {
@@ -55,6 +55,6 @@ public class SIMController {
 		case "cancel":
 			simService.modifyStInCancel(stInDto); break;
 		}
-		return "redirect:/";
+		return "redirect:/product/sim";
 	}
 }

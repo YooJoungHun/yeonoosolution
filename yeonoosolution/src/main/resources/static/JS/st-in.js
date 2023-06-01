@@ -131,11 +131,11 @@ function findGet(url, method) {
 
 // 버튼 이벤트 맵
 const btnMap = {
-    find: [`${contextPath}/find`, 'get'],
-    save: [`${contextPath}/save`, 'put'],
-    delete: [`${contextPath}/delete`, 'delete'],
-    fix: [`${contextPath}/fix`, 'patch'],
-    cancel: [`${contextPath}/cancel`, 'patch']
+    find: [`${contextPath}/product/sim/find`, 'get'],
+    save: [`${contextPath}/product/sim/save`, 'put'],
+    delete: [`${contextPath}/product/sim/delete`, 'delete'],
+    fix: [`${contextPath}/product/sim/fix`, 'patch'],
+    cancel: [`${contextPath}/product/sim/cancel`, 'patch']
 };
 
 // 버튼 이벤트
