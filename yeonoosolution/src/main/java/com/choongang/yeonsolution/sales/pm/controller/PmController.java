@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.choongang.yeonsolution.sales.pm.domain.CompanyDto;
-import com.choongang.yeonsolution.sales.pm.domain.ItemDto;
-import com.choongang.yeonsolution.sales.pm.domain.OrdersDataDto;
-import com.choongang.yeonsolution.sales.pm.domain.OrdersDetailDto;
-import com.choongang.yeonsolution.sales.pm.domain.OrdersDto;
-import com.choongang.yeonsolution.sales.pm.domain.Search;
-import com.choongang.yeonsolution.sales.pm.domain.StInDataDto;
-import com.choongang.yeonsolution.sales.pm.domain.StInDetailDto;
-import com.choongang.yeonsolution.sales.pm.domain.StockInDto;
-import com.choongang.yeonsolution.sales.pm.domain.WhDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmCompanyDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmItemDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmOrdersDataDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmOrdersDetailDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmOrdersDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmSearch;
+import com.choongang.yeonsolution.sales.pm.domain.PmStInDataDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmStInDetailDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmStockInDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmWhDto;
 import com.choongang.yeonsolution.sales.pm.service.PmService;
 
 import lombok.RequiredArgsConstructor;
@@ -41,9 +41,9 @@ public class PmController {
 	
 	@GetMapping("/order-list")
 	@ResponseBody
-	public List<OrdersDto> OrdersListBySearch(Search search){
+	public List<PmOrdersDto> OrdersListBySearch(PmSearch search){
 		log.info("search Data -> {}", search);
-		List<OrdersDto> orderList = pmService.findOrdersBySearch(search);
+		List<PmOrdersDto> orderList = pmService.findOrdersBySearch(search);
 		log.info("orderList -> {}", orderList.size());
 		return orderList;
 		
@@ -51,9 +51,9 @@ public class PmController {
 	
 	@GetMapping("/order/{orderCode}/details")
 	@ResponseBody
-	public List<OrdersDetailDto> ordersDetailListByOrderCode(@PathVariable String orderCode){
+	public List<PmOrdersDetailDto> ordersDetailListByOrderCode(@PathVariable String orderCode){
 		
-		List<OrdersDetailDto> ordersDetailList = pmService.findOrdersDetailByOrderCode(orderCode);
+		List<PmOrdersDetailDto> ordersDetailList = pmService.findOrdersDetailByOrderCode(orderCode);
 		return ordersDetailList;
 	}
 	
@@ -67,27 +67,27 @@ public class PmController {
 	
 	@GetMapping("/customer-list")
 	@ResponseBody
-	public List<CompanyDto> companyListBySearch(@RequestParam String search){
+	public List<PmCompanyDto> companyListBySearch(@RequestParam String search){
 		log.info("search -> {}", search);
-		List<CompanyDto> companyList = pmService.findCompanyBySearch(search);
+		List<PmCompanyDto> companyList = pmService.findCompanyBySearch(search);
 		return companyList;
 	}
 	@GetMapping("/item-list")
 	@ResponseBody
-	public List<ItemDto> itemListBySearch(@RequestParam String search){
+	public List<PmItemDto> itemListBySearch(@RequestParam String search){
 		log.info("search -> {}", search);
-		List<ItemDto> itemList = pmService.findItemBySearch(search);
+		List<PmItemDto> itemList = pmService.findItemBySearch(search);
 		return itemList;
 	}
 	@PostMapping("/order-add")
 	@ResponseBody
-    public String orderAdd(@RequestBody OrdersDataDto orderData) {
+    public String orderAdd(@RequestBody PmOrdersDataDto orderData) {
         String resultMsg = pmService.addOrder(orderData);
         return resultMsg;
     }
     @PostMapping("/order-modify")
     @ResponseBody
-    public String OrderSave(@RequestBody OrdersDataDto orderData) {
+    public String OrderSave(@RequestBody PmOrdersDataDto orderData) {
     	String resultMsg = pmService.modifyOrder(orderData);
     	return resultMsg;
     }
@@ -99,17 +99,17 @@ public class PmController {
     }
     @GetMapping("/stock-in-list")
     @ResponseBody
-    public List<StockInDto> stockInListBySearch(Search search){
+    public List<PmStockInDto> stockInListBySearch(PmSearch search){
     	log.info("search Data -> {}", search);
-    	List<StockInDto> stockinList = pmService.findStockInListBySearch(search);
+    	List<PmStockInDto> stockinList = pmService.findStockInListBySearch(search);
     	return stockinList;
     	
     }
     
     @GetMapping("/stock-in/{inCode}/details")
     @ResponseBody
-    public List<StInDetailDto> stockInDetailListByOrderCode(@PathVariable String inCode){
-    	List<StInDetailDto> stockInDetailList = pmService.findStockInDetailByInCode(inCode);
+    public List<PmStInDetailDto> stockInDetailListByOrderCode(@PathVariable String inCode){
+    	List<PmStInDetailDto> stockInDetailList = pmService.findStockInDetailByInCode(inCode);
     	return stockInDetailList;
     }
     
@@ -122,21 +122,21 @@ public class PmController {
     }
     @GetMapping("/wh-list")
     @ResponseBody
-    public List<WhDto> whList() {
-        List<WhDto> whList = pmService.findWhList();
+    public List<PmWhDto> whList() {
+        List<PmWhDto> whList = pmService.findWhList();
         return whList;
     }
     
     @PostMapping("/st-in-add")
 	@ResponseBody
-    public String stInAdd(@RequestBody StInDataDto stInData) {
+    public String stInAdd(@RequestBody PmStInDataDto stInData) {
         String resultMsg = pmService.addStIn(stInData);
         return resultMsg;
     }
     
     @PostMapping("/st-in-modify")
     @ResponseBody
-    public String stInSave(@RequestBody StInDataDto stInData) {
+    public String stInSave(@RequestBody PmStInDataDto stInData) {
     	String resultMsg = pmService.modifyStIn(stInData);
     	return resultMsg;
     }

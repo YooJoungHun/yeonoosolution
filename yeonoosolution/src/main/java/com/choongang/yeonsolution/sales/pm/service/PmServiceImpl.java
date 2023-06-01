@@ -8,16 +8,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.choongang.yeonsolution.sales.pm.dao.PmDao;
-import com.choongang.yeonsolution.sales.pm.domain.CompanyDto;
-import com.choongang.yeonsolution.sales.pm.domain.ItemDto;
-import com.choongang.yeonsolution.sales.pm.domain.OrdersDataDto;
-import com.choongang.yeonsolution.sales.pm.domain.OrdersDetailDto;
-import com.choongang.yeonsolution.sales.pm.domain.OrdersDto;
-import com.choongang.yeonsolution.sales.pm.domain.Search;
-import com.choongang.yeonsolution.sales.pm.domain.StInDataDto;
-import com.choongang.yeonsolution.sales.pm.domain.StInDetailDto;
-import com.choongang.yeonsolution.sales.pm.domain.StockInDto;
-import com.choongang.yeonsolution.sales.pm.domain.WhDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmCompanyDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmItemDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmOrdersDataDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmOrdersDetailDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmOrdersDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmSearch;
+import com.choongang.yeonsolution.sales.pm.domain.PmStInDataDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmStInDetailDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmStockInDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmWhDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,9 +30,9 @@ public class PmServiceImpl implements PmService{
 	private final PmDao pmDao;
 
 	@Override
-	public List<OrdersDto> findOrdersBySearch(Search search) {
-		List<OrdersDto> orderList = pmDao.selectOrdersBySearch(search);
-		for(OrdersDto otder : orderList) {
+	public List<PmOrdersDto> findOrdersBySearch(PmSearch search) {
+		List<PmOrdersDto> orderList = pmDao.selectOrdersBySearch(search);
+		for(PmOrdersDto otder : orderList) {
 			if(otder.getOrderDate() != null) {
 				otder.setOrderDate(otder.getOrderDate().substring(0, 10));
 			}
@@ -44,7 +44,7 @@ public class PmServiceImpl implements PmService{
 	}
 
 	@Override
-	public List<OrdersDetailDto> findOrdersDetailByOrderCode(String orderCode) {
+	public List<PmOrdersDetailDto> findOrdersDetailByOrderCode(String orderCode) {
 		return pmDao.selectOrdersDetailByOrderCode(orderCode);
 	}
 
@@ -77,22 +77,22 @@ public class PmServiceImpl implements PmService{
 	}
 
 	@Override
-	public List<CompanyDto> findCompanyBySearch(String search) {
+	public List<PmCompanyDto> findCompanyBySearch(String search) {
 		return pmDao.selectCompanyBySearch(search);
 	}
 
 	@Override
-	public List<ItemDto> findItemBySearch(String search) {
+	public List<PmItemDto> findItemBySearch(String search) {
 		return pmDao.selectItemyBySearch(search);
 	}
 
 	@Override
-	public String addOrder(OrdersDataDto orderData) {
-		OrdersDto order = orderData.getOrder();
-        List<OrdersDetailDto> orderDetails = orderData.getOrderDetails();
+	public String addOrder(PmOrdersDataDto orderData) {
+		PmOrdersDto order = orderData.getOrder();
+        List<PmOrdersDetailDto> orderDetails = orderData.getOrderDetails();
         String orderCode = pmDao.insertOrder(order);
         int insertRow = 0;
-        for(OrdersDetailDto orderDetail : orderDetails) {
+        for(PmOrdersDetailDto orderDetail : orderDetails) {
         	orderDetail.setOrderDetailCode(orderCode);
         	insertRow += pmDao.insertOrdersDetail(orderDetail);
         }
@@ -104,14 +104,14 @@ public class PmServiceImpl implements PmService{
 	}
 
 	@Override
-	public String modifyOrder(OrdersDataDto orderData) {
-		OrdersDto order = orderData.getOrder();
-        List<OrdersDetailDto> orderDetails = orderData.getOrderDetails();
+	public String modifyOrder(PmOrdersDataDto orderData) {
+		PmOrdersDto order = orderData.getOrder();
+        List<PmOrdersDetailDto> orderDetails = orderData.getOrderDetails();
         int insertRow = 0;
 		int orderUpdateResult = pmDao.updateOrder(order);
 		if(orderUpdateResult > 0) {
 			int orderDetailDel = pmDao.deleteOrderDetailByOrderCode(order.getOrderCode());
-			for(OrdersDetailDto orderDetail : orderDetails) {
+			for(PmOrdersDetailDto orderDetail : orderDetails) {
 				insertRow += pmDao.insertOrdersDetail(orderDetail);
 			}
 		}if(insertRow == orderDetails.size()) {
@@ -128,9 +128,9 @@ public class PmServiceImpl implements PmService{
 	
 	
 	@Override
-	public List<StockInDto> findStockInListBySearch(Search search) {
-		List<StockInDto> stockInList = pmDao.selectStockInListBySearch(search);
-		for(StockInDto stockIn : stockInList) {
+	public List<PmStockInDto> findStockInListBySearch(PmSearch search) {
+		List<PmStockInDto> stockInList = pmDao.selectStockInListBySearch(search);
+		for(PmStockInDto stockIn : stockInList) {
 			if(stockIn.getInDate() != null && stockIn.getInDate().length() > 9) {
 				stockIn.setInDate(stockIn.getInDate().substring(0, 10).replaceAll("/", "-"));
 			}
@@ -139,7 +139,7 @@ public class PmServiceImpl implements PmService{
 	}
 
 	@Override
-	public List<StInDetailDto> findStockInDetailByInCode(String inCode) {
+	public List<PmStInDetailDto> findStockInDetailByInCode(String inCode) {
 		return pmDao.selectStockInDetailByInCode(inCode);
 	}
 
@@ -152,8 +152,8 @@ public class PmServiceImpl implements PmService{
 		int result = pmDao.updateStockInByInCode(map);
 		String msg = "";
 		if(data.equals("확정") && result > 0) {
-			List<StInDetailDto> stInDetailList = pmDao.selectStockInDetailByInCode(inCode);
-			for(StInDetailDto stInDetail : stInDetailList) {
+			List<PmStInDetailDto> stInDetailList = pmDao.selectStockInDetailByInCode(inCode);
+			for(PmStInDetailDto stInDetail : stInDetailList) {
 				map = new HashMap<String, Object>();
 				map.put("whCode", stInDetail.getWhCode());
 				map.put("itemCode", stInDetail.getItemCode());
@@ -163,8 +163,8 @@ public class PmServiceImpl implements PmService{
 			}
 			
 		}else if(data.equals("저장") && result > 0) {
-			List<StInDetailDto> stInDetailList = pmDao.selectStockInDetailByInCode(inCode);
-			for(StInDetailDto stInDetail : stInDetailList) {
+			List<PmStInDetailDto> stInDetailList = pmDao.selectStockInDetailByInCode(inCode);
+			for(PmStInDetailDto stInDetail : stInDetailList) {
 				pmDao.updateWhStockDetailBystInDetail(stInDetail);
 			}
 		}
@@ -189,19 +189,19 @@ public class PmServiceImpl implements PmService{
 	}
 
 	@Override
-	public List<WhDto> findWhList() {
+	public List<PmWhDto> findWhList() {
 		return pmDao.selectWh();
 	}
 
 	@Override
-	public String addStIn(StInDataDto stInData) {
-		StockInDto stIn = stInData.getStockIn();
-		List<StInDetailDto> stInDetails = stInData.getStInDetails();
+	public String addStIn(PmStInDataDto stInData) {
+		PmStockInDto stIn = stInData.getStockIn();
+		List<PmStInDetailDto> stInDetails = stInData.getStInDetails();
 		String stInCode = pmDao.insertStIn(stIn);
 		log.info("stIn -> {}", stIn);
 		log.info("stInDetails -> {}", stInDetails);
 		int insertRow = 0;
-		for(StInDetailDto stInDetail : stInDetails) {
+		for(PmStInDetailDto stInDetail : stInDetails) {
 			stInDetail.setInCode(stInCode);
         	insertRow += pmDao.insertStInDetail(stInDetail);
         }
@@ -214,9 +214,9 @@ public class PmServiceImpl implements PmService{
 	}
 
 	@Override
-	public String modifyStIn(StInDataDto stInData) {
-		StockInDto stIn = stInData.getStockIn();
-		List<StInDetailDto> stInDetails = stInData.getStInDetails();
+	public String modifyStIn(PmStInDataDto stInData) {
+		PmStockInDto stIn = stInData.getStockIn();
+		List<PmStInDetailDto> stInDetails = stInData.getStInDetails();
 		log.info("stIn -> {}", stIn);
 		log.info("stInDetails -> {}", stInDetails);
 		int insertRow = 0;
@@ -225,7 +225,7 @@ public class PmServiceImpl implements PmService{
 			int stInDetailDel = pmDao.deleteStInDetailByInCode(stIn.getInCode());
 			log.info("stInDetailDel -> {}",stInDetailDel);
 			log.info("stInDetails -> {}",stInDetails);
-			for(StInDetailDto stInDetail : stInDetails) {
+			for(PmStInDetailDto stInDetail : stInDetails) {
 				insertRow += pmDao.insertStInDetail(stInDetail);
 			}
 		}if(insertRow == stInDetails.size()) {

@@ -3,36 +3,36 @@ package com.choongang.yeonsolution.sales.pm.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.choongang.yeonsolution.sales.pm.domain.CompanyDto;
-import com.choongang.yeonsolution.sales.pm.domain.ItemDto;
-import com.choongang.yeonsolution.sales.pm.domain.OrdersDetailDto;
-import com.choongang.yeonsolution.sales.pm.domain.OrdersDto;
-import com.choongang.yeonsolution.sales.pm.domain.Search;
-import com.choongang.yeonsolution.sales.pm.domain.StInDetailDto;
-import com.choongang.yeonsolution.sales.pm.domain.StockInDto;
-import com.choongang.yeonsolution.sales.pm.domain.WhDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmCompanyDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmItemDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmOrdersDetailDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmOrdersDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmSearch;
+import com.choongang.yeonsolution.sales.pm.domain.PmStInDetailDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmStockInDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmWhDto;
 
 public interface PmDao {
 
-	List<OrdersDto> selectOrdersBySearch(Search search);
-	List<OrdersDetailDto> selectOrdersDetailByOrderCode(String orderCode);
+	List<PmOrdersDto> selectOrdersBySearch(PmSearch search);
+	List<PmOrdersDetailDto> selectOrdersDetailByOrderCode(String orderCode);
 	int updateOrdersByOrderCode(Map<String, String> map);
-	List<CompanyDto> selectCompanyBySearch(String search);
-	List<ItemDto> selectItemyBySearch(String search);
-	String insertOrder(OrdersDto order);
-	int insertOrdersDetail(OrdersDetailDto orderDetail);
-	int updateOrder(OrdersDto order);
+	List<PmCompanyDto> selectCompanyBySearch(String search);
+	List<PmItemDto> selectItemyBySearch(String search);
+	String insertOrder(PmOrdersDto order);
+	int insertOrdersDetail(PmOrdersDetailDto orderDetail);
+	int updateOrder(PmOrdersDto order);
 	int deleteOrderDetailByOrderCode(String orderCode);
 	
-	List<StockInDto> selectStockInListBySearch(Search search);
-	List<StInDetailDto> selectStockInDetailByInCode(String inCode);
+	List<PmStockInDto> selectStockInListBySearch(PmSearch search);
+	List<PmStInDetailDto> selectStockInDetailByInCode(String inCode);
 	int updateStockInByInCode(Map<String, Object> map);
-	List<WhDto> selectWh();
+	List<PmWhDto> selectWh();
 	void updateWhStockDetailBystInDetail(Map<String, Object> map);
-	void updateWhStockDetailBystInDetail(StInDetailDto stInDetail);
-	String insertStIn(StockInDto stIn);
-	int insertStInDetail(StInDetailDto stInDetail);
-	int updateStIn(StockInDto stIn);
+	void updateWhStockDetailBystInDetail(PmStInDetailDto stInDetail);
+	String insertStIn(PmStockInDto stIn);
+	int insertStInDetail(PmStInDetailDto stInDetail);
+	int updateStIn(PmStockInDto stIn);
 	int deleteStInDetailByInCode(String inCode);
 
 }

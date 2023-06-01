@@ -7,14 +7,14 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.choongang.yeonsolution.sales.pm.domain.CompanyDto;
-import com.choongang.yeonsolution.sales.pm.domain.ItemDto;
-import com.choongang.yeonsolution.sales.pm.domain.OrdersDetailDto;
-import com.choongang.yeonsolution.sales.pm.domain.OrdersDto;
-import com.choongang.yeonsolution.sales.pm.domain.Search;
-import com.choongang.yeonsolution.sales.pm.domain.StInDetailDto;
-import com.choongang.yeonsolution.sales.pm.domain.StockInDto;
-import com.choongang.yeonsolution.sales.pm.domain.WhDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmCompanyDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmItemDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmOrdersDetailDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmOrdersDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmSearch;
+import com.choongang.yeonsolution.sales.pm.domain.PmStInDetailDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmStockInDto;
+import com.choongang.yeonsolution.sales.pm.domain.PmWhDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,17 +26,17 @@ public class PmDaoImpl implements PmDao{
 	private final SqlSession session;
 
 	@Override
-	public List<OrdersDto> selectOrdersBySearch(Search search) {
+	public List<PmOrdersDto> selectOrdersBySearch(PmSearch search) {
 		
-		List<OrdersDto> orderList = session.selectList("selectOrdersBySearch", search);
+		List<PmOrdersDto> orderList = session.selectList("selectPmOrdersBySearch", search);
 		log.info("orderList.size() -> {}",orderList.size());
 		return orderList;
 	}
 
 	@Override
-	public List<OrdersDetailDto> selectOrdersDetailByOrderCode(String orderCode) {
+	public List<PmOrdersDetailDto> selectOrdersDetailByOrderCode(String orderCode) {
 		log.info("orderCode -> {}", orderCode);
-		List<OrdersDetailDto> ordersDetailList = session.selectList("selectOrdersDetailByOrderCode", orderCode);
+		List<PmOrdersDetailDto> ordersDetailList = session.selectList("selectPmOrdersDetailByOrderCode", orderCode);
 		log.info("ordersDetailList.size() -> {}",ordersDetailList.size());
 		return ordersDetailList;
 	}
@@ -44,24 +44,24 @@ public class PmDaoImpl implements PmDao{
 	@Override
 	public int updateOrdersByOrderCode(Map<String, String> map) {
 		log.info("updateOrdersByOrderCode map -> {}", map);
-		int result = session.update("updateOrdersByOrderCode", map);
+		int result = session.update("updatePmOrdersByOrderCode", map);
 		return result;
 	}
 
 	@Override
-	public List<CompanyDto> selectCompanyBySearch(String search) {
-		List<CompanyDto> companyList = session.selectList("selectCompanyBySearch", search);
+	public List<PmCompanyDto> selectCompanyBySearch(String search) {
+		List<PmCompanyDto> companyList = session.selectList("selectPmCompanyBySearch", search);
 		return companyList;
 	}
 
 	@Override
-	public List<ItemDto> selectItemyBySearch(String search) {
-		List<ItemDto> itemList = session.selectList("selectItemBySearch", search);
+	public List<PmItemDto> selectItemyBySearch(String search) {
+		List<PmItemDto> itemList = session.selectList("selectPmItemBySearch", search);
 		return itemList;
 	}
 
 	@Override
-	public String insertOrder(OrdersDto order) {
+	public String insertOrder(PmOrdersDto order) {
 		Map<String, Object> parameters = new HashMap<>();
 		parameters.put("companyCode", order.getCompanyCode());
 		parameters.put("customerCode", order.getCustomerCode());
@@ -74,7 +74,7 @@ public class PmDaoImpl implements PmDao{
 		parameters.put("regUser", order.getRegUser());
 		parameters.put("updateUser", order.getUpdateUser());
 		
-		session.selectOne("orders.insertOrder", parameters);
+		session.selectOne("orders.insertPmOrder", parameters);
 
 		String orderCode = (String) parameters.get("orderCode");
 		
@@ -83,36 +83,36 @@ public class PmDaoImpl implements PmDao{
 	}
 
 	@Override
-	public int insertOrdersDetail(OrdersDetailDto orderDetail) {
-		int result = session.insert("insertOrdersDetail", orderDetail);
+	public int insertOrdersDetail(PmOrdersDetailDto orderDetail) {
+		int result = session.insert("insertPmOrdersDetail", orderDetail);
 		return result;
 	}
 
 	@Override
-	public int updateOrder(OrdersDto order) {
-		int result = session.update("updateOrder", order);
+	public int updateOrder(PmOrdersDto order) {
+		int result = session.update("updatePmOrder", order);
 		return result;
 	}
 
 	@Override
 	public int deleteOrderDetailByOrderCode(String orderCode) {
-		int result = session.delete("deleteOrderDetailByOrderCode", orderCode);
+		int result = session.delete("deletePmOrderDetailByOrderCode", orderCode);
 		return result;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////
 	
 	@Override
-	public List<StockInDto> selectStockInListBySearch(Search search) {
-		List<StockInDto> stockInList = session.selectList("selectStockInListBySearch", search);
+	public List<PmStockInDto> selectStockInListBySearch(PmSearch search) {
+		List<PmStockInDto> stockInList = session.selectList("selectPmStockInListBySearch", search);
 		log.info("stockInList.size() -> {}",stockInList.size());
 		return stockInList;
 	}
 
 	@Override
-	public List<StInDetailDto> selectStockInDetailByInCode(String inCode) {
+	public List<PmStInDetailDto> selectStockInDetailByInCode(String inCode) {
 		log.info("inCode -> {}", inCode);
-		List<StInDetailDto> stockInDetailList = session.selectList("selectStockInDetailByInCode", inCode);
+		List<PmStInDetailDto> stockInDetailList = session.selectList("selectPmStockInDetailByInCode", inCode);
 		log.info("stockInDetailList.size() -> {}",stockInDetailList.size());
 		return stockInDetailList;
 	}
@@ -120,30 +120,30 @@ public class PmDaoImpl implements PmDao{
 	@Override
 	public int updateStockInByInCode(Map<String, Object> map) {
 		log.info("updateStockInByInCode map -> {}", map);
-		int result = session.update("updateStockInByInCode", map);
+		int result = session.update("updatePmStockInByInCode", map);
 		return result;
 	}
 
 	@Override
-	public List<WhDto> selectWh() {
-		List<WhDto> whList = session.selectList("selectWh");
+	public List<PmWhDto> selectWh() {
+		List<PmWhDto> whList = session.selectList("selectWh");
 		log.info("whList -> {}", whList);
 		return whList;
 	}
 	// 재고 추가
 	@Override
 	public void updateWhStockDetailBystInDetail(Map<String, Object> map) {
-		session.selectOne("orders.updateWhStockDetailBystInDetail", map);
+		session.selectOne("orders.updatePmWhStockDetailBystInDetail", map);
 	}
 	// 재고 빼기
 	@Override
-	public void updateWhStockDetailBystInDetail(StInDetailDto stInDetail) {
-		session.update("updateWhStockDetailBystInDetailmius", stInDetail);
+	public void updateWhStockDetailBystInDetail(PmStInDetailDto stInDetail) {
+		session.update("updatePmWhStockDetailBystInDetailmius", stInDetail);
 		
 	}
 
 	@Override
-	public String insertStIn(StockInDto stIn) {
+	public String insertStIn(PmStockInDto stIn) {
 		Map<String, Object> parameters = new HashMap<>();
 		parameters.put("orderCode", stIn.getOrderCode());
 		parameters.put("companyCode", stIn.getCompanyCode());
@@ -153,7 +153,7 @@ public class PmDaoImpl implements PmDao{
 		parameters.put("updateUser", stIn.getUpdateUser());
 		parameters.put("memo", stIn.getMemo());
 		
-		session.selectOne("orders.insertStIn", parameters);
+		session.selectOne("orders.insertPmStIn", parameters);
 
 		String inCode = (String) parameters.get("inCode");
 		
@@ -163,20 +163,20 @@ public class PmDaoImpl implements PmDao{
 	}
 
 	@Override
-	public int insertStInDetail(StInDetailDto stInDetail) {
-		int result = session.insert("insertStInDetail", stInDetail);
+	public int insertStInDetail(PmStInDetailDto stInDetail) {
+		int result = session.insert("insertPmStInDetail", stInDetail);
 		return result;
 	}
 
 	@Override
-	public int updateStIn(StockInDto stIn) {
-		int result = session.update("updateStIn", stIn);
+	public int updateStIn(PmStockInDto stIn) {
+		int result = session.update("updatePmStIn", stIn);
 		return result;
 	}
 
 	@Override
 	public int deleteStInDetailByInCode(String inCode) {
-		int result = session.delete("deleteStInDetailByOrderCode", inCode);
+		int result = session.delete("deletePmStInDetailByOrderCode", inCode);
 		return result;
 	}
 
