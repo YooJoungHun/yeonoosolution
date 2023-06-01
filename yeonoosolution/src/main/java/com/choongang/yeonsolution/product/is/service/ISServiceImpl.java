@@ -15,7 +15,7 @@ import com.choongang.yeonsolution.product.is.domain.IsWhStockDetailDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-//@Service
+@Service
 @Slf4j
 @RequiredArgsConstructor
 public class ISServiceImpl implements ISService {

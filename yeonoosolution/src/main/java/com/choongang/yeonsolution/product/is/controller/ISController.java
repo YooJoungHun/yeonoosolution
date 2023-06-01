@@ -18,7 +18,7 @@ import com.choongang.yeonsolution.product.is.service.ISService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-//@Controller
+@Controller
 @Slf4j
 @RequiredArgsConstructor
 public class ISController {

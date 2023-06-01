@@ -13,7 +13,7 @@ import com.choongang.yeonsolution.product.is.domain.IsWhStockDetailDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-//@Repository
+@Repository
 @Slf4j
 @RequiredArgsConstructor
 public class ISDaoImpl implements ISDao {
