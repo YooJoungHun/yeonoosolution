@@ -35,3 +35,9 @@ spring:
 mybatis :
   config-location: classpath:configuration.xml
   mapper-locations: classpath:mappers/*.xml
+  
+#file size
+servlet:
+  multipart:
+    max-file-size: 10MB
+    max-request-size: 10MB
