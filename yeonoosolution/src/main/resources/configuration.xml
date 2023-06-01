@@ -7,6 +7,15 @@
   	</settings>
   	
   	<typeAliases>
+	<!-- 구매 관리 -->
+  		<typeAlias alias="PmOrdersDto" type="com.choongang.yeonsolution.sales.pm.domain.PmOrdersDto"/>
+  		<typeAlias alias="PmOrdersDetailDto" type="com.choongang.yeonsolution.sales.pm.domain.PmOrdersDetailDto"/>
+  		<typeAlias alias="PmSearch" type="com.choongang.yeonsolution.sales.pm.domain.PmSearch"/>
+  		<typeAlias alias="PmCompanyDto" type="com.choongang.yeonsolution.sales.pm.domain.PmCompanyDto"/>
+  		<typeAlias alias="PmItemDto" type="com.choongang.yeonsolution.sales.pm.domain.PmItemDto"/>
+  		<typeAlias alias="PmStockInDto" type="com.choongang.yeonsolution.sales.pm.domain.PmStockInDto"/>
+  		<typeAlias alias="PmStInDetailDto" type="com.choongang.yeonsolution.sales.pm.domain.PmStInDetailDto"/>
+  		<typeAlias alias="PmWhDto" type="com.choongang.yeonsolution.sales.pm.domain.PmWhDto"/>
 
       <!--  재고 현황 조회  -->
       	<typeAlias alias="IsWhStockDetailDto" type="com.choongang.yeonsolution.product.is.domain.IsWhStockDetailDto"/>
