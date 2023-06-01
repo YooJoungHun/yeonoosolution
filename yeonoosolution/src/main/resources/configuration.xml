@@ -6,6 +6,8 @@
     	<setting name="mapUnderscoreToCamelCase" value="true"/>
   	</settings>
   	
+
+
   	<typeAliases>
 	<!-- 구매 관리 -->
   		<typeAlias alias="PmOrdersDto" type="com.choongang.yeonsolution.sales.pm.domain.PmOrdersDto"/>
@@ -42,6 +44,16 @@
   		<typeAlias alias="IMICompanyDto" type="com.choongang.yeonsolution.standard.imi.domain.IMICompanyDto"/>
   		<typeAlias alias="PMIBomDto" type="com.choongang.yeonsolution.standard.pmi.domain.PMIBomDto"/>
   		
+  		
+  	<!--  기타 입고  -->
+  		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.StInDto"				alias="SIMStInDto"/>
+  		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.StInDetailDto"		alias="SIMStInDetailDto"/>
+  		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.CompanyDto"			alias="SIMCompanyDto"/>
+  		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.ItemDto"				alias="SIMItemDto"/>
+  		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.OrdersDto"			alias="SIMOrdersDto"/>
+  		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.OrdersDetailDto"		alias="SIMOrdersDetailDto"/>
+  		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.WhDto"				alias="SIMWhDto"/>
+  		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.WhStockDetailDto"	alias="SIMWhStockDetailDto"/>
   	</typeAliases>
   	
 </configuration>
