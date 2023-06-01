@@ -4,41 +4,41 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.choongang.yeonsolution.sales.om.domain.OrdersCompanyDto;
-import com.choongang.yeonsolution.sales.om.domain.OrdersDetailDto;
-import com.choongang.yeonsolution.sales.om.domain.OrdersDto;
-import com.choongang.yeonsolution.sales.om.domain.OrdersItemDto;
+import com.choongang.yeonsolution.sales.om.domain.OMOrdersCompanyDto;
+import com.choongang.yeonsolution.sales.om.domain.OMOrdersDetailDto;
+import com.choongang.yeonsolution.sales.om.domain.OMOrdersDto;
+import com.choongang.yeonsolution.sales.om.domain.OMOrdersItemDto;
 
 @Repository
 public interface OMDao {
 
-	List<OrdersDto> selectPlaceOrderListByCompanyCode();
+	List<OMOrdersDto> selectPlaceOrderListByCompanyCode();
 
 	int updateStatusToConfirmByorderCode(String orderCode);
 
 	int updateStatusToCancelByorderCode(String orderCode);
 
-	List<OrdersDetailDto> selectPlaceOrderDetailListByCompanyCode(String orderCode);
+	List<OMOrdersDetailDto> selectPlaceOrderDetailListByCompanyCode(String orderCode);
 
-	int updateOrderTypeByorderCode(String orderCode, OrdersDto ordersDto);
+	int updateOrderTypeByorderCode(String orderCode, OMOrdersDto ordersDto);
 
-	void insertReceiveOrder(OrdersDto ordersDto);
+	void insertReceiveOrder(OMOrdersDto ordersDto);
 
 	int deleteReceiveOrderByOrderCode(String orderCode);
 
 	int deleteReceiveOrderDetailByOrderCode(String orderCode);
 	
-	void insertReceiveOrderDetail(OrdersDetailDto ordersDetailDto);
+	void insertReceiveOrderDetail(OMOrdersDetailDto ordersDetailDto);
 
-	int updateOrderDateByorderCode(OrdersDto ordersDto);
+	int updateOrderDateByorderCode(OMOrdersDto ordersDto);
 
-	int updateDueDateByorderCode(OrdersDto ordersDto);
+	int updateDueDateByorderCode(OMOrdersDto ordersDto);
 
-	int updateAmountByordersDetailDto(OrdersDetailDto ordersDetailDto);
+	int updateAmountByordersDetailDto(OMOrdersDetailDto ordersDetailDto);
 
-	int updateItemStockUnitByorderCode(OrdersDetailDto ordersDetailDto);
+	int updateItemStockUnitByorderCode(OMOrdersDetailDto ordersDetailDto);
 
-	int updateEndYnByOrderDetailCode(OrdersDetailDto ordersDetailDto);
+	int updateEndYnByOrderDetailCode(OMOrdersDetailDto ordersDetailDto);
 
 	int insertOdersToStOutByOrderCod(String orderCode);
 
@@ -48,15 +48,15 @@ public interface OMDao {
 
 	String selectOrderStatusByOrderCode(String orderCode);
 
-	List<OrdersCompanyDto> selectCustomerList();
+	List<OMOrdersCompanyDto> selectCustomerList();
 
-	List<OrdersItemDto> selectItemList();
+	List<OMOrdersItemDto> selectItemList();
 
-	int updateItemByordersDetailDto(OrdersItemDto ordersItemDto);
+	int updateItemByordersDetailDto(OMOrdersItemDto ordersItemDto);
 
-	int updateEmpidByOrderCode(OrdersDto ordersDto);
+	int updateEmpidByOrderCode(OMOrdersDto ordersDto);
 
-	int updateMemoByOrdersDetailDto(OrdersDetailDto ordersDetailDto);
+	int updateMemoByOrdersDetailDto(OMOrdersDetailDto ordersDetailDto);
 
 
 }

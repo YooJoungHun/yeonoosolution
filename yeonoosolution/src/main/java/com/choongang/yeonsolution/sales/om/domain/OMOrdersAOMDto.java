@@ -3,7 +3,7 @@ package com.choongang.yeonsolution.sales.om.domain;
 import lombok.Data;
 
 @Data
-public class OrdersAOMDto {
+public class OMOrdersAOMDto {
 	
 	private String	orderCode;
 	private String	lowItemCode;

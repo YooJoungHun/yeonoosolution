@@ -2,12 +2,12 @@ package com.choongang.yeonsolution.sales.om.dao;
 
 import java.util.List;
 
-import com.choongang.yeonsolution.sales.om.domain.OrdersAOMDto;
+import com.choongang.yeonsolution.sales.om.domain.OMOrdersAOMDto;
 
 public interface AOMDao {
 
-	List<OrdersAOMDto> selectReceiveOrderListByCompanyCode();
+	List<OMOrdersAOMDto> selectReceiveOrderListByCompanyCode();
 
-	List<OrdersAOMDto> selectSemiManufacturesListByCompanyCode(String orderCode);
+	List<OMOrdersAOMDto> selectSemiManufacturesListByCompanyCode(String orderCode);
 
 }
