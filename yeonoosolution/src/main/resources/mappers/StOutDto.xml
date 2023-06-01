@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 
-<mapper namespace="com.choongang.yeonsolution.sales.sdm.domain.StOutDtoMapper">
+<mapper namespace="com.choongang.yeonsolution.sales.sdm.domain.SDMStOutDtoMapper">
 	
-	<select id="JHOutList" resultType="StOutDto">
+	<select id="sdmSelectOutList" resultType="SDMStOutDto">
 		SELECT  s.out_type, s.out_code, s.delete_status,
 		        s.customer_code, c.company_name, 
 		        s.out_date, s.order_code, s.reg_user,
@@ -21,7 +21,7 @@
 		ORDER BY s.out_code asc
 	</select>
 
-	<select id="JHOutDetailList" resultType="StOutDto" parameterType="StOutDto" >
+	<select id="sdmSelectStOutDetailDtoListByOutCode" resultType="SDMStOutDto" parameterType="SDMStOutDto" >
 		SELECT sd.out_code, sd.item_code, i.item_name, sd.out_quantity,
 		       i.sales_price, sd.wh_code, sd.sorder, sd.delete_status,
 		       (i.sales_price * sd.out_quantity) AS totalPrice,
@@ -33,25 +33,25 @@
 		ORDER BY sd.sorder asc
 	</select> 
 	
-	<update id="JHConfirm" parameterType="java.lang.String">
+	<update id="sdmUpdateOutTypeConfirm" parameterType="java.lang.String">
 		UPDATE st_out 
 		SET out_type = '확정'
 		WHERE out_code = #{outCode}
 	</update>
 	
-	<update id="JHConfirmCancle" parameterType="java.lang.String">
+	<update id="sdmUpdateOutTypeConfirmCancel" parameterType="java.lang.String">
 		UPDATE st_out 
 		SET out_type = '저장'
 		WHERE out_code = #{outCode}
 	</update>
 	
-	<!-- <select id="JHOutTypeCCYN" parameterType="StOutDto" resultType="StOutDto" >
+	<!-- <select id="JHOutTypeCCYN" parameterType="SDMStOutDto" resultType="SDMStOutDto" >
 		SELECT out_type
 		FROM st_out
 		WHERE out_code = #{outCode}
 	</select> -->
 	
-	<insert id="JHInsertStOut" parameterType="StOutDto">
+	<insert id="sdmInsertStOut" parameterType="SDMStOutDto">
 		<selectKey keyProperty="outCode" resultType="String" order="BEFORE">
 	    	SELECT 'OUT_CODE' || out_code_seq.nextval FROM DUAL
 	    </selectKey>
@@ -67,13 +67,13 @@
 		
 	</insert>
 	
-	<update id="JHDeleteStOut" parameterType="java.lang.String">
+	<update id="sdmDeleteStOut" parameterType="java.lang.String">
 		UPDATE st_out
 		SET delete_status = 'Y'
 		WHERE out_code = #{outCode}
 	</update>
 	
-	<update id="JHUpdateStOut" parameterType="StOutDto">
+	<update id="sdmUpdateStOut" parameterType="SDMStOutDto">
 		UPDATE st_out 
 		SET customer_code = #{customerCode},
 			out_date = #{outDate},
@@ -83,37 +83,37 @@
 		WHERE out_code = #{outCode}
 	</update>
 	
-	<update id="JHUpdateStOutItem" parameterType="StOutDto">
+	<update id="sdmUpdateStOutItemByOutCodeAndSorder" parameterType="SDMStOutDto">
 		UPDATE st_out_detail 
 		SET out_quantity = #{outQuantity},
 			memo = #{memo2}
 		WHERE out_code = #{outCode} and sorder = #{sorder}
 	</update>
 	
-	<select id="JHCompanyCodeList" resultType="StOutDto">
+	<select id="sdmCompanyCodeList" resultType="SDMStOutDto">
 		SELECT company_code FROM company where use_yn = 'Y'
 	</select>
 	
-	<select id="JHOutCodeList" resultType="StOutDto">
+	<select id="sdmOutCodeList" resultType="SDMStOutDto">
 		SELECT out_code FROM st_out_detail WHERE delete_status = 'N'
 	</select>
 	
-	<select id="JHWhCodeList" resultType="StOutDto">
+	<select id="sdmWhCodeList" resultType="SDMStOutDto">
 		SELECT wh_code FROM wh WHERE use_yn ='Y'
 	</select>
 	
-	<select id="JHItemCodeList" resultType="StOutDto">
+	<select id="sdmItemCodeList" resultType="SDMStOutDto">
 		SELECT item_code FROM item WHERE wh_code = 'WH1' and use_yn = 'Y'
 	</select>
 
-	<update id="JHDeleteStOutItem" parameterType="StOutDto">
+	<update id="sdmDeleteStOutItemByOutCodeAndSorder" parameterType="SDMStOutDto">
 		UPDATE st_out_detail
 		SET delete_status = 'Y'
 		WHERE out_code = #{outCode}
 		AND sorder = #{sorder}
 	</update>
 	
-	<insert id="JHInsertStOutDetail" parameterType="StOutDto">
+	<insert id="sdmInsertStOutItem" parameterType="SDMStOutDto">
 		INSERT INTO st_out_detail  (out_code,    wh_code, 
 									sorder,
 									item_code,     out_quantity,   memo,     delete_status)
@@ -124,7 +124,7 @@
 	
 	</insert>
 	
-	<select id="JHOutListWithDetail" resultType="StOutDto">
+	<select id="sdmSelectStOutWithDetailByCustomerCode" resultType="SDMStOutDto">
 		SELECT s.delete_status, sd.delete_status,
 	       	   s.out_type, s.customer_code, c.company_name, 
 	           s.order_code, s.out_code, s.out_date, s.reg_user,
@@ -138,17 +138,28 @@
 		ON sd.item_code = i.item_code
 		LEFT JOIN company c
 		ON s.customer_code = c.company_code
-		<!-- WHERE s.delete_status = 'N' or sd.delete_status = 'N' -->
+		WHERE s.delete_status = 'N' and sd.delete_status = 'N' 
 		<choose>
 	       	<when test="customerCode != null and customerCode != ''">
-	       		WHERE s.customer_code = #{customerCode}
+	       		and s.customer_code = #{customerCode}
 	       	</when>
 	  	</choose>
 		ORDER BY c.company_code asc, sd.sorder asc
 	</select>
 	
-	<select id="JHCompanyCodeList2" resultType="StOutDto">
+	<select id="sdmSelectCompanyCodeList2" resultType="SDMStOutDto">
 		SELECT company_code FROM company where use_yn = 'Y'
 	</select>
 	
+	<update id="sdmUpdateWhStockDatilMiu"  parameterType="SDMStOutDto">
+		UPDATE wh_stock_detail
+		SET good_quantity = good_quantity - #{outQuantity}
+		WHERE item_code = #{itemCode} and wh_code = #{whCode} 
+	</update>
+	
+	<update id="sdmUpdateWhStockDatilPlus"  parameterType="SDMStOutDto">
+		UPDATE wh_stock_detail
+		SET good_quantity = good_quantity + #{outQuantity}
+		WHERE item_code = #{itemCode} and wh_code = #{whCode} 
+	</update>
 </mapper>

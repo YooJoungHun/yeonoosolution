@@ -19,7 +19,7 @@
  
 		function itemList(outCode) {
 			  $.ajax({
-			    url: '/itemList',
+			    url: '/sales/stock/'+outCode,
 			    type: 'GET',
 			    data: { outCode: outCode },
 			    success: function(response) {
@@ -97,22 +97,22 @@
 			  var selectedRadio = document.querySelector('input[name="rd1"]:checked');
 			  if (selectedRadio) {
 			    
-			  var outCode = selectedRadio.parentNode.nextElementSibling.textContent;
-			    
-			 
-			    
-			    $.ajax({
-			      url: '/confirm',
-			      type: 'PATCH',
-			      data: { outCode: outCode },
-			      success: function(response) {
-			    	 alert("확정으로 변경되었습니다.");
-						location.reload();
-			      },
-			      error: function(error) {
-			      }
-			    });
-			  
+				  var outCode = selectedRadio.parentNode.nextElementSibling.textContent;
+				    
+				 
+				    
+				    $.ajax({
+				      url: '/sales/stock/confrim/'+outCode,
+				      type: 'PATCH',
+				      data: { outCode: outCode },
+				      success: function(response) {
+				    	 alert("확정으로 변경되었습니다.");
+							location.reload();
+				      },
+				      error: function(error) {
+				      }
+				    });
+				  
 			  }
 			}
 		
@@ -122,7 +122,7 @@
 			    var outCode = selectedRadio.parentNode.nextElementSibling.textContent;
 				    
 			    $.ajax({
-				      url: '/confirmCancle',
+				      url: '/sales/stock/cancel/'+outCode,
 				      type: 'PATCH',
 				      data: { outCode: outCode },
 				      success: function(response) {
@@ -142,7 +142,7 @@
 			    var outCode = selectedRadio.parentNode.nextElementSibling.textContent;
 				    
 			    $.ajax({
-				      url: '/stOutDelete',
+				      url: '/sales/stock/'+outCode,
 				      type: 'DELETE',
 				      data: { outCode: outCode },
 				      success: function(response) {
@@ -185,7 +185,7 @@
 			}
  */
  			function goUpdateRow(countNum){ /* 출고리스트 열 수정 */
-				var selOutCode 		= $("#idoutCode"+countNum).val();
+				var outCode 		= $("#idoutCode"+countNum).val();
 				var selCustomerCode = $("#customerCode"+countNum).val();
 				var selOutDate 		= $("#outDate"+countNum).val();
 				var selRegUser 		= $("#regUser"+countNum).val();
@@ -194,8 +194,8 @@
 	 			
 	 			
 	 			$.ajax({ 
-	 					url:"/updateStOut",
-	 					data: {outCode : selOutCode,
+	 					url:"/sales/stock/stout/"+outCode,
+	 					data: {outCode : outCode,
 	 						   customerCode : selCustomerCode,
 	 						   outDate : selOutDate,
 	 						   regUser : selRegUser,
@@ -216,7 +216,7 @@
 				var memo2 		= $("#memo2"+rowIndex).val();
 	 			
 	 			$.ajax({ 
-	 					url:"/updateItemStOut",
+	 					url:"/sales/stock/item/"+outCode,
 	 					data: {outCode : outCode,
 	 						   sorder : sorder,
 	 						   outQuantity : outQuantity,
@@ -235,7 +235,7 @@
 				var sorder	  = $("#sorder"+rowIndex).val();
 	 			
 	 			$.ajax({ 
-	 					url:"/deleteItemStOut",
+	 					url:"/sales/stock/deletion/"+outCode,
 	 					data: {outCode : outCode,
 	 						   sorder : sorder},
 	 					dataType:'text',
@@ -294,19 +294,19 @@
 </head>
 <body>
 
-<form name="form1" method="post">
+<form name="form1" method="post" >
 
 			<button type="button" onclick="stOutDelete()">삭제</button>
 			<button type="button" onclick="confirm()">출고확정</button>
 			<button type="button" onclick="confirmCancle()">출고확정취소</button>
 			<button type="button" onclick="location.href='/'">초기화</button><p>
-			<button type="button" onclick="location.href='/new'">출고조회</button><p>
+			<button type="button" onclick="location.href='/sales/stock/detail/'">출고조회</button><p>
 			
 				
 			
 			
 			
-			<input type="submit" value="저장" formaction="/insertStOut" > 
+			<input type="submit" value="저장" formaction="/sales/stock" > 
 	<table border="1" class="table1">
 		<tr>
 			<th>수주번호</th>
@@ -336,7 +336,7 @@
 
 
 
-<form name="form2" method="get" action="${pageContext.request.contextPath }/">
+<form name="form2" method="get" action="${pageContext.request.contextPath }/sales/stock/">
 
  	<h4>출고리스트</h4>
 
@@ -437,7 +437,7 @@
  	
 <form name="form4" method="post" > 	
 
-	<input type="submit" value="제품추가" formaction="/insertStOutDetail">
+	<input type="submit" value="제품추가" formaction="/sales/stock/item">
 	
 	<input type="hidden" name="deleteStatus" >
 	<input type="hidden" name="sorder" 		 >

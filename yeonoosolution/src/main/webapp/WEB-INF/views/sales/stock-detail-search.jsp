@@ -25,7 +25,7 @@
 </script>
 </head>
 <body >
-<form name="form2" method="get" action="${pageContext.request.contextPath }/new">
+<form name="form2" method="get" action="${pageContext.request.contextPath }/sales/stock/detail/">
 
 			<select name="customerCode"  id="customerCode" onchange="showSelect()">
 				<option value="" selected>거래처코드 찾기</option>
@@ -34,7 +34,7 @@
 				</c:forEach>
 			</select>  
 					<input type="submit" value="검색">
-					<button type="button" onclick="location.href='/new'">초기화</button><p>
+					<button type="button" onclick="location.href='/sales/stock/detail/'">초기화</button><p>
 
 <table border="1" class="table1"> 
 

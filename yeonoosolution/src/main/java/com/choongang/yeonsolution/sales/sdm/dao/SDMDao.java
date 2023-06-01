@@ -2,25 +2,25 @@ package com.choongang.yeonsolution.sales.sdm.dao;
 
 import java.util.List;
 
-import com.choongang.yeonsolution.sales.sdm.domain.StOutDto;
+import com.choongang.yeonsolution.sales.sdm.domain.SDMStOutDto;
 
 public interface SDMDao {
 
-	List<StOutDto>      findOut(String customerCode);
-	List<StOutDto> 		findDetailOut(String outCode);
-	void                modifyOutTypeC(String outCode);
-	void                modifyOutTypeCC(String outCode);
-	String              findOutTypeCCYN(StOutDto stout);
-	void                addInsertStOut(StOutDto stout);
-	void                removeStOut(String outCode);
-	void                modifyStOut(StOutDto stout);
-	void                modifyStOutItem(StOutDto stout);
-	List<StOutDto>      findCompanyCodeList();
-	List<StOutDto>		findOutCodeList();
-	List<StOutDto>      findWhCodeList();
-	List<StOutDto>      findItemCodeList();
-	void                removeStOutItem(StOutDto stout);
-	void                addInsertStOutDetail(StOutDto stout);
-	List<StOutDto>      findOutListWithDetailByCustomerCode(String customerCode);
-	List<StOutDto>      findCompanyCodeList2();
+	List<SDMStOutDto>      selectOutList(String customerCode);
+	List<SDMStOutDto> 		selectStOutDetailDtoListByOutCode(String outCode);
+	void                updateOutTypeConfirm(String outCode);
+	void                updateOutTypeConfirmCancel(String outCode);
+	String              findOutTypeCCYN(SDMStOutDto stout);
+	void                insertStOut(SDMStOutDto stout);
+	void                deleteStOutByOutCode(String outCode);
+	void                updateStOutByOutCode(SDMStOutDto stout);
+	void                updateStOutItemByOutCodeAndSorder(SDMStOutDto stout);
+	List<SDMStOutDto>      selectCompanyCodeList();
+	List<SDMStOutDto>		selectfindOutCodeList();
+	List<SDMStOutDto>      selectfindWhCodeList();
+	List<SDMStOutDto>      selectfindItemCodeList();
+	void                deleteStOutItemByOutCodeAndSorder(SDMStOutDto stout);
+	void                insertStOutItem(SDMStOutDto stout);
+	List<SDMStOutDto>      selectStOutWithDetailByCustomerCode(String customerCode);
+	List<SDMStOutDto>      selectCompanyCodeList2();
 }

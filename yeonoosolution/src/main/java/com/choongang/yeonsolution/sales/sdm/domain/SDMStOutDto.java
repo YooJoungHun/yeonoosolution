@@ -3,7 +3,7 @@ package com.choongang.yeonsolution.sales.sdm.domain;
 import lombok.Data;
 
 @Data
-public class StOutDto {
+public class SDMStOutDto {
 	
 	private String  outCode;
 	private String  orderCode;

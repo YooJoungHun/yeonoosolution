@@ -7,7 +7,7 @@
   	</settings>
   	
   	<typeAliases>
-  		<typeAlias type="com.choongang.yeonsolution.sales.sdm.domain.StOutDto" alias="StOutDto"/>
+  		<typeAlias type="com.choongang.yeonsolution.sales.sdm.domain.SDMStOutDto" alias="SDMStOutDto"/>
   	</typeAliases>
   	
 </configuration>

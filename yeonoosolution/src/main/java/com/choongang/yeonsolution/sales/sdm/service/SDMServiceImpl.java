@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.choongang.yeonsolution.sales.sdm.dao.SDMDao;
-import com.choongang.yeonsolution.sales.sdm.domain.StOutDto;
+import com.choongang.yeonsolution.sales.sdm.domain.SDMStOutDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,103 +15,103 @@ public class SDMServiceImpl implements SDMService {
 	private final SDMDao sd;
 
 	@Override
-	public List<StOutDto> outListByCustomerCode(String customerCode) {
-		List<StOutDto> outList = null;
-		outList = sd.findOut(customerCode);
+	public List<SDMStOutDto> findOutListByCustomerCode(String customerCode) {
+		List<SDMStOutDto> outList = null;
+		outList = sd.selectOutList(customerCode);
 		return outList;
 	}
 
 	@Override
-	public List<StOutDto> outDetailList(String outCode) {
-		List<StOutDto> outDetailList = null;
-		outDetailList = sd.findDetailOut(outCode);
+	public List<SDMStOutDto> findStOutDetailDtoListByOutCode(String outCode) {
+		List<SDMStOutDto> outDetailList = null;
+		outDetailList = sd.selectStOutDetailDtoListByOutCode(outCode);
 		return outDetailList;
 	}
 
 	@Override
-	public void outTypeCModify(String outCode) {
-		sd.modifyOutTypeC(outCode);
+	public void outTypeConfirmModify(String outCode) {
+		sd.updateOutTypeConfirm(outCode);
 	}
 
 	@Override
-	public void outTypeCCModify(String outCode) {
-		sd.modifyOutTypeCC(outCode);
+	public void outTypeConfirmCancelModify(String outCode) {
+		sd.updateOutTypeConfirmCancel(outCode);
 	}
 
 	@Override
-	public String outTypeCCYNDetails(StOutDto stout) {
+	public String outTypeCCYNDetails(SDMStOutDto stout) {
 		return sd.findOutTypeCCYN(stout);
 	}
 
 	@Override
-	public void insertStOutAdd(StOutDto stout) {
-		sd.addInsertStOut(stout);
+	public void addStOut(SDMStOutDto stout) {
+		sd.insertStOut(stout);
 	}
 
 	@Override
-	public void stOutRemove(String outCode) {
-		sd.removeStOut(outCode);
+	public void removeStOutByOutCode(String outCode) {
+		sd.deleteStOutByOutCode(outCode);
 	}
 
 	@Override
-	public void stOutModify(StOutDto stout) {
-		sd.modifyStOut(stout);
+	public void modifyStOutByOutCode(SDMStOutDto stout) {
+		sd.updateStOutByOutCode(stout);
 	}
 
 	@Override
-	public void stOutItemModify(StOutDto stout) {
-		sd.modifyStOutItem(stout);
+	public void modifyStOutItemByOutCodeAndSorder(SDMStOutDto stout) {
+		sd.updateStOutItemByOutCodeAndSorder(stout);
 	}
 
 	@Override
-	public List<StOutDto> companyCodeListDetails() {
-		List<StOutDto> companyCodeList = null;
-		companyCodeList = sd.findCompanyCodeList();
+	public List<SDMStOutDto> findCompanyCodeList() {
+		List<SDMStOutDto> companyCodeList = null;
+		companyCodeList = sd.selectCompanyCodeList();
 		return companyCodeList;
 	}
 	
 	@Override
-	public List<StOutDto> outCodeListDetails() {
-		List<StOutDto> outCodeList = null;
-		outCodeList = sd.findOutCodeList();
+	public List<SDMStOutDto>  findOutCodeList() {
+		List<SDMStOutDto> outCodeList = null;
+		outCodeList = sd.selectfindOutCodeList();
 		return outCodeList;
 	}
 	
 	@Override
-	public List<StOutDto> whCodeListDetails() {
-		List<StOutDto> whCodeList = null;
-		whCodeList = sd.findWhCodeList();
+	public List<SDMStOutDto> findWhCodeList() {
+		List<SDMStOutDto> whCodeList = null;
+		whCodeList = sd.selectfindWhCodeList();
 		return whCodeList;
 	}
 	
 	@Override
-	public List<StOutDto> itemCodeListDetails() {
-		List<StOutDto> itemCodeList = null;
-		itemCodeList = sd.findItemCodeList();
+	public List<SDMStOutDto> findItemCodeList() {
+		List<SDMStOutDto> itemCodeList = null;
+		itemCodeList = sd.selectfindItemCodeList();
 		return itemCodeList;
 	}
 
 	@Override
-	public void stOutItemRemove(StOutDto stout) {
-		sd.removeStOutItem(stout);
+	public void removeStOutItemByOutCodeAndSorder(SDMStOutDto stout) {
+		sd.deleteStOutItemByOutCodeAndSorder(stout);
 	}
 
 	@Override
-	public void insertStOutDetailAdd(StOutDto stout) {
-		sd.addInsertStOutDetail(stout);
+	public void addStOutItem(SDMStOutDto stout) {
+		sd.insertStOutItem(stout);
 	}
 
 	@Override
-	public List<StOutDto> outListWithDetailListByCustomerCode(String customerCode) {
-		List<StOutDto> outListWithDetail = null;
-		outListWithDetail = sd.findOutListWithDetailByCustomerCode(customerCode);
+	public List<SDMStOutDto> findStOutListWithDetailByCustomerCode(String customerCode) {
+		List<SDMStOutDto> outListWithDetail = null;
+		outListWithDetail = sd.selectStOutWithDetailByCustomerCode(customerCode);
 		return outListWithDetail;
 	}
 
 	@Override
-	public List<StOutDto> companyCodeList2Details() {
-		List<StOutDto> companyCodeList2 = null;
-		companyCodeList2 = sd.findCompanyCodeList2();
+	public List<SDMStOutDto> findCompanyCodeList2() {
+		List<SDMStOutDto> companyCodeList2 = null;
+		companyCodeList2 = sd.selectCompanyCodeList2();
 		return companyCodeList2;
 	}
 

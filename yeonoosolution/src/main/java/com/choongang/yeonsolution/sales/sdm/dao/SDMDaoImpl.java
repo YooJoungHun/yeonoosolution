@@ -4,23 +4,25 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.choongang.yeonsolution.sales.sdm.domain.StOutDto;
+import com.choongang.yeonsolution.sales.sdm.domain.SDMStOutDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Repository
+@Transactional
 @RequiredArgsConstructor
 @Slf4j
 public class SDMDaoImpl implements SDMDao {
 	private final SqlSession session;
 
 	@Override
-	public List<StOutDto> findOut(String customerCode) {
-		List<StOutDto> findOut = null;
+	public List<SDMStOutDto> selectOutList(String customerCode) {
+		List<SDMStOutDto> findOut = null;
 		try {
-			findOut = session.selectList("JHOutList",customerCode);
+			findOut = session.selectList("sdmSelectOutList",customerCode);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -30,10 +32,10 @@ public class SDMDaoImpl implements SDMDao {
 
 
 	@Override
-	public List<StOutDto> findDetailOut(String outCode) {
-		List<StOutDto> findDetailOut = null;
+	public List<SDMStOutDto> selectStOutDetailDtoListByOutCode(String outCode) {
+		List<SDMStOutDto> findDetailOut = null;
 		try {
-			findDetailOut = session.selectList("JHOutDetailList",outCode);
+			findDetailOut = session.selectList("sdmSelectStOutDetailDtoListByOutCode",outCode);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -41,19 +43,32 @@ public class SDMDaoImpl implements SDMDao {
 	}
 
 	@Override
-	public void modifyOutTypeC(String outCode) {
+	public void updateOutTypeConfirm(String outCode) {
+		List<SDMStOutDto> findDetailOut = null;
 		try {
-			session.update("JHConfirm",outCode);
+			session.update("sdmUpdateOutTypeConfirm",outCode);
+			findDetailOut = session.selectList("sdmSelectStOutDetailDtoListByOutCode",outCode);
+			for(SDMStOutDto ssd: findDetailOut) {
+				session.update("sdmUpdateWhStockDatilMiu",ssd);
+			}
 		} catch (Exception e) {
 		System.out.println("daoImpl modifyOutType error -> "+e.getMessage());
 			e.printStackTrace();
 		}
+		
+		
+		
 	}
 
 	@Override
-	public void modifyOutTypeCC(String outCode) {
+	public void updateOutTypeConfirmCancel(String outCode) {
+		List<SDMStOutDto> findDetailOut = null;
 		try {
-			session.update("JHConfirmCancle",outCode);
+			session.update("sdmUpdateOutTypeConfirmCancel",outCode);
+			findDetailOut = session.selectList("sdmSelectStOutDetailDtoListByOutCode",outCode);
+			for(SDMStOutDto ssd: findDetailOut) {
+				session.update("sdmUpdateWhStockDatilPlus",ssd);
+			}
 		} catch (Exception e) {
 		System.out.println("daoImpl modifyOutType2 error -> "+e.getMessage());
 			e.printStackTrace();
@@ -61,52 +76,52 @@ public class SDMDaoImpl implements SDMDao {
 	}
 
 	@Override
-	public String findOutTypeCCYN(StOutDto stout) {
+	public String findOutTypeCCYN(SDMStOutDto stout) {
 		return session.selectOne("JHOutTypeCCYN",stout);
 
 	}
 
 	@Override
-	public void addInsertStOut(StOutDto stout) {
+	public void insertStOut(SDMStOutDto stout) {
 		try {
-			session.insert("JHInsertStOut",stout);
+			session.insert("sdmInsertStOut",stout);
 		} catch (Exception e) {
-			System.out.println("daoImpl addInsertStOut error -> "+e.getMessage());
+			System.out.println("daoImpl insertStOut error -> "+e.getMessage());
 		}
 	}
 
 	@Override
-	public void removeStOut(String outCode) {
+	public void deleteStOutByOutCode(String outCode) {
 		try {
-			session.update("JHDeleteStOut",outCode);
+			session.update("sdmDeleteStOut",outCode);
 		} catch (Exception e) {
 			System.out.println("daoImpl removeStOut error -> "+e.getMessage());
 		}
 	}
 
 	@Override
-	public void modifyStOut(StOutDto stout) {
+	public void updateStOutByOutCode(SDMStOutDto stout) {
 		try {
-			session.update("JHUpdateStOut",stout);
+			session.update("sdmUpdateStOut",stout);
 		} catch (Exception e) {
 			System.out.println("daoImpl modifyStOut error -> "+e.getMessage());
 		}
 	}
 
 	@Override
-	public void modifyStOutItem(StOutDto stout) {
+	public void updateStOutItemByOutCodeAndSorder(SDMStOutDto stout) {
 		try {
-			session.update("JHUpdateStOutItem",stout);
+			session.update("sdmUpdateStOutItemByOutCodeAndSorder",stout);
 		} catch (Exception e) {
 			System.out.println("daoImpl modifyStOutItem error -> "+e.getMessage());
 		}
 	}
 	
 	@Override
-	public List<StOutDto> findCompanyCodeList() {
-		List<StOutDto> findCompanyCodeList = null;
+	public List<SDMStOutDto> selectCompanyCodeList() {
+		List<SDMStOutDto> findCompanyCodeList = null;
 		try {
-			findCompanyCodeList = session.selectList("JHCompanyCodeList");
+			findCompanyCodeList = session.selectList("sdmCompanyCodeList");
 		} catch (Exception e) {
 			System.out.println("daoImpl findCompanyCodeList error -> "+e.getMessage());
 		}
@@ -114,10 +129,10 @@ public class SDMDaoImpl implements SDMDao {
 	}
 	
 	@Override
-	public List<StOutDto> findOutCodeList() {
-		List<StOutDto> findOutCodeList = null;
+	public List<SDMStOutDto> selectfindOutCodeList() {
+		List<SDMStOutDto> findOutCodeList = null;
 		try {
-			findOutCodeList = session.selectList("JHOutCodeList");
+			findOutCodeList = session.selectList("sdmOutCodeList");
 		} catch (Exception e) {
 			System.out.println("daoImpl findCompanyCodeList error -> "+e.getMessage());
 		}
@@ -125,10 +140,10 @@ public class SDMDaoImpl implements SDMDao {
 	}
 
 	@Override
-	public List<StOutDto> findWhCodeList() {
-		List<StOutDto> findWhCodeList = null;
+	public List<SDMStOutDto> selectfindWhCodeList() {
+		List<SDMStOutDto> findWhCodeList = null;
 		try {
-			findWhCodeList = session.selectList("JHWhCodeList");
+			findWhCodeList = session.selectList("sdmWhCodeList");
 		} catch (Exception e) {
 			System.out.println("daoImpl findWhCodeList error -> "+e.getMessage());
 		}
@@ -136,10 +151,10 @@ public class SDMDaoImpl implements SDMDao {
 	}
 	
 	@Override
-	public List<StOutDto> findItemCodeList() { 
-		List<StOutDto> findItemCodeList = null;
+	public List<SDMStOutDto>  selectfindItemCodeList() { 
+		List<SDMStOutDto> findItemCodeList = null;
 		try {
-			findItemCodeList = session.selectList("JHItemCodeList");
+			findItemCodeList = session.selectList("sdmItemCodeList");
 		} catch (Exception e) {
 			System.out.println("daoImpl findItemCodeList error -> "+e.getMessage());
 		}
@@ -147,9 +162,9 @@ public class SDMDaoImpl implements SDMDao {
 	}
 
 	@Override
-	public void removeStOutItem(StOutDto stout) {
+	public void deleteStOutItemByOutCodeAndSorder(SDMStOutDto stout) {
 		try {
-			session.update("JHDeleteStOutItem",stout);
+			session.update("sdmDeleteStOutItemByOutCodeAndSorder",stout);
 		} catch (Exception e) {
 			System.out.println("daoImpl removeStOutItem error -> "+e.getMessage());
 		}		
@@ -158,9 +173,9 @@ public class SDMDaoImpl implements SDMDao {
 
 
 	@Override
-	public void addInsertStOutDetail(StOutDto stout) {
+	public void insertStOutItem(SDMStOutDto stout) {
 		try {
-			session.insert("JHInsertStOutDetail",stout);
+			session.insert("sdmInsertStOutItem",stout);
 		} catch (Exception e) {
 			System.out.println("daoImpl addInsertStOutDetail error -> "+e.getMessage());
 		}
@@ -169,10 +184,10 @@ public class SDMDaoImpl implements SDMDao {
 
 
 	@Override
-	public List<StOutDto> findOutListWithDetailByCustomerCode(String customerCode) {
-		List<StOutDto> findOutListWithDetail = null;
+	public List<SDMStOutDto> selectStOutWithDetailByCustomerCode(String customerCode) {
+		List<SDMStOutDto> findOutListWithDetail = null;
 		try {
-			findOutListWithDetail = session.selectList("JHOutListWithDetail",customerCode);
+			findOutListWithDetail = session.selectList("sdmSelectStOutWithDetailByCustomerCode",customerCode);
 		} catch (Exception e) {
 			System.out.println("daoImpl findOutListWithDetailByCustomerCode error -> "+e.getMessage());
 		}
@@ -182,10 +197,10 @@ public class SDMDaoImpl implements SDMDao {
 
 
 	@Override
-	public List<StOutDto> findCompanyCodeList2() {
-		List<StOutDto> findCompanyCodeList2 = null;
+	public List<SDMStOutDto> selectCompanyCodeList2() {
+		List<SDMStOutDto> findCompanyCodeList2 = null;
 		try {
-			findCompanyCodeList2 = session.selectList("JHCompanyCodeList2");
+			findCompanyCodeList2 = session.selectList("sdmSelectCompanyCodeList2");
 		} catch (Exception e) {
 			System.out.println("daoImpl findCompanyCodeList2 error -> "+e.getMessage());
 		}
