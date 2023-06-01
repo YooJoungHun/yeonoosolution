@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /*
- * 기본정보 컨트롤러
+ * 기본정보 컨트롤러입니다.
  * 
 */
 
