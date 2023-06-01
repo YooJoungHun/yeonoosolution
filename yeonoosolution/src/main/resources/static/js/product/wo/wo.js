@@ -249,6 +249,7 @@ $(document).on('click', 'button.select-item', e => {
 const comparison = (obj1, obj2) => {
 	let dataObj1 = {};
 	let dataObj2 = {};
+	// comparison (for Replace)
 	let keys1 = Object.keys(obj1);
 	for (let key of keys1) dataObj1[key] = obj1[key];
 	let keys2 = Object.keys(obj2);
@@ -265,6 +266,10 @@ const comparison = (obj1, obj2) => {
 			result = data.result;
 		}
 	});
+	//
+	let props = tableLayout.map(data => data.name != null ? data.name.split('.')[0] : null).filter(name => name != null);
+	let uniques = [...new Set(props)];
+	//for (let uniq of uniques)
 	return result;
 };
 

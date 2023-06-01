@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.choongang.yeonsolution.product.wo.domain.WoMapper">
-	<resultMap type="Company" id="CompanyResultMap">
+	<resultMap type="WOCompany" id="CompanyResultMap">
 		<id			property="companyCode"	column="company_code"/>
 		<result		property="businessType"		column="business_type"/>
 		<result		property="orderType"			column="order_type"/>
@@ -17,7 +17,7 @@
 		<result		property="updateUser"		column="update_user"/>
 		<result		property="updateDate"		column="update_date"/>
 	</resultMap>
-	<resultMap type="Wh" id="WhResultMap">
+	<resultMap type="WOWh" id="WhResultMap">
 		<id			property="whCode"			column="wh_code"/>
 		<result		property="whName"			column="wh_name"/>
 		<result		property="regUser"			column="reg_user"/>
@@ -28,7 +28,7 @@
 		<result		property="memo"				column="memo"/>
 		<collection	property="company"			resultMap="CompanyResultMap"/>
 	</resultMap>
-	<resultMap type="Item" id="ItemResultMap">
+	<resultMap type="WOItem" id="ItemResultMap">
 		<id			property="itemCode"			column="item_code"/>
 		<result		property="itemName"			column="item_name"/>
 		<result		property="itemType"			column="item_type"/>
@@ -45,7 +45,7 @@
 		<collection	property="wh"					resultMap="WhResultMap"/>
 		<collection	property="company"			resultMap="CompanyResultMap"/>
 	</resultMap>
-	<resultMap type="Orders" id="OrdersResultMap">
+	<resultMap type="WOOrders" id="OrdersResultMap">
 		<id			property="orderCode"			column="order_code"/>
 		<result		property="receiveOrPlace"		column="receive_or_place"/>
 		<result		property="receiveOrderType"	column="receive_order_type"/>
@@ -62,7 +62,7 @@
 		<collection	property="company"				columnPrefix="CO" resultMap="CompanyResultMap"/>
 		<collection	property="customer"				columnPrefix="CU" resultMap="CompanyResultMap"/>
 	</resultMap>
-	<resultMap type="Wo" id="WoResultMap">
+	<resultMap type="WOWo" id="WoResultMap">
 		<id			property="workOrderCode"	column="work_order_code"/>
 		<result		property="itemQuantity"		column="item_quantity"/>
 		<result		property="workStatus"		column="work_status"/>
@@ -91,7 +91,7 @@
 		WHERE wo.DELETE_STATUS = 'N'
 		ORDER BY TO_NUMBER(REPLACE(wo.WORK_ORDER_CODE, 'WORK', '')) DESC
 	</select>
-	<select id="selectWoSearch" parameterType="Wo" resultMap="WoResultMap">
+	<select id="selectWoSearch" parameterType="WOWo" resultMap="WoResultMap">
 		SELECT wo.*, wh.*, orders.*, item.*
 		FROM WO wo LEFT OUTER JOIN WH wh ON (wo.WH_CODE = wh.WH_CODE)
 						   LEFT OUTER JOIN ORDERS orders ON (wo.ORDER_CODE = orders.ORDER_CODE)
@@ -146,7 +146,7 @@
 			 #{workOrderDate, jdbcType=DATE}, #{workOrderStatus, jdbcType=VARCHAR},
 			 #{finishDate, jdbcType=DATE}, 'N', #{regUser, jdbcType=VARCHAR}, SYSDATE)
 	</insert>
-	<update id="updateWo" parameterType="Wo">
+	<update id="updateWo" parameterType="WOWo">
 		UPDATE WO SET
 			WH_CODE = #{wh.whCode, jdbcType=VARCHAR},
 			ORDER_CODE = #{orders.orderCode, jdbcType=VARCHAR},

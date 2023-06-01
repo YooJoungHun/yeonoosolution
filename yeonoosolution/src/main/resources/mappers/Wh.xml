@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.choongang.yeonsolution.product.wo.domain.WhMapper">
-	<resultMap type="Company" id="CompanyResultMap">
+	<resultMap type="WOCompany" id="CompanyResultMap">
 		<id			property="companyCode"	column="company_code"/>
 		<result		property="businessType"		column="business_type"/>
 		<result		property="orderType"			column="order_type"/>
@@ -17,7 +17,7 @@
 		<result		property="updateUser"		column="update_user"/>
 		<result		property="updateDate"		column="update_date"/>
 	</resultMap>
-	<resultMap type="Wh" id="WhResultMap">
+	<resultMap type="WOWh" id="WhResultMap">
 		<id			property="whCode"			column="wh_code"/>
 		<result		property="whName"			column="wh_name"/>
 		<result		property="regUser"			column="reg_user"/>
