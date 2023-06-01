@@ -71,7 +71,13 @@
 		<typeAlias alias="SMMStMoveDetailDto" type="com.choongang.yeonsolution.product.smm.domain.stMoveDetailDto" />
 		<typeAlias alias="SMMItemDto" type="com.choongang.yeonsolution.product.smm.domain.itemDto" />
 		<typeAlias alias="SMMWhDto" type="com.choongang.yeonsolution.product.smm.domain.whDto" />
-
+	
+	<!-- 창고  -->
+		<typeAlias alias="WMIWhDto" type="com.choongang.yeonsolution.standard.wmi.domain.WMIWhDto"/>
+		
+	<!-- 기타출고 -->	
+  		<typeAlias alias="SOMStOutDto" type="com.choongang.yeonsolution.product.som.domain.SOMStOutDto"/>
+	
   	</typeAliases>
   	
   	
