@@ -1,24 +1,21 @@
 @charset "UTF-8";
 section {
-	margin: 60px;
+	margin: 30px 50px;
 	font-size: 13px;
 }
 section > div:first-child {
 	margin: 20px 0px;
 }
-.list-table {
+.table-content {
 	display: block;
 	table-layout: fixed;
-	width: auto;
+	width: 1000px;
+	height: 250px;
+	overflow: auto;
+	border-collapse: collap;
+	border: 1px solid black;
 }
-thead {
-	display: table;
-}
-tbody {
-	display: block;
-	width: 100%;
-	overflow-x: auto;
-}
+
 table th {
 	font-weight: 700;
 	background-color: rgba(0,0,0, 0.05);
@@ -31,6 +28,15 @@ tbody tr, th, td {
 	height: 40px;
 	text-align: center;
 	box-sizing: border-box;
+	padding: 0;
+
+}
+tbody input:disabled {
+	width: inherit;
+	border: none;
+	background-color: transparent;
+	text-align: center;
+	disabled;
 }
 .stock-in-list {
 	display: flex;
@@ -47,10 +53,12 @@ tbody tr, th, td {
 .content-btn  button:hover {
 	background-color: rgba(0,0,0, 0.1);
 }
+
+
 .stock-in-item {
 	background-color: rgba(0,0,0, 0.05);
 	display: flex;
-	padding: 20px 30px;
+	padding: 10px 20px;
 	height: auto;
 }
 
@@ -71,7 +79,7 @@ tbody tr, th, td {
 	justify-content: center;
 }
 
-.stock-in-detail-list tr:hover {
+tr:hover {
 	background-color: rgba(0,0,0, 0.05);
 }
 

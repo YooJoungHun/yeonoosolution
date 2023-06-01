@@ -3,7 +3,7 @@
  */
 const contextPath = window.location.pathname.split('/')[0];
 //let inCode, orderType, orderCode, inDate, customerCode, companyName, regUser, regDate, memo;
-let previousRow, row, stIn;
+let previousRow, row, stIn, previousCheckBox;
 $(()=> {
 	$(document).on('click', '.stInRow', tableRowClick);
 	$(document).on('dblclick', '.stInDetailRow', openModal);
@@ -20,15 +20,21 @@ function closeModal(e){
 	}
 }
 
+// 체크 이벤트
+$(()=>{
+	console.log($('.checkBox').is('checked'));
+});
+
+
 // 테이블 행 클릭 이벤트
 function tableRowClick(e){
-
 	stIn = $(e.target).closest('tr');
-	let inDate = formatDateMinus(new Date(stIn.find('.inDate').text()));
-	let regDate = formatDateMinus(new Date(stIn.find('.regDate').text()));
-	let updateDate = formatDateMinus(new Date(stIn.find('.updateDate').text()));
 	
-	let orderType = stIn.find('.orderType').text();
+	
+	
+
+	
+	let orderType = stIn.find('.orderType').val();
 	if(orderType == '구매입고'){
 		$('#orderType').val(1);
 	}
@@ -36,41 +42,89 @@ function tableRowClick(e){
 		$('#orderType').val(0);
 	}
 
-	$('#inCode').val(stIn.find('.inCode').text());
-	$('#orderCode').val(stIn.find('.orderCode').text());
-	$('#customerCode').val(stIn.find('.customerCode').text());
-	$('#inDate').val(inDate);
-	$('#regDate').val(regDate);
-	$('#regUser').val(stIn.find('.regUser').text());
-	$('#updateUser').val(stIn.find('.updateUser').text());
-	$('#updateDate').val(updateDate);
-	$('#inType').val(stIn.find('.inType').text());
-	$('#companyName').val(stIn.find('.companyName').text());
-	$('#memo').val(stIn.find('.memo').text());
-	
-	$('#inCode, #orderCode, #orderType').attr('disabled', true);
-	
-	
+
+
+
 	row = $(e.target).closest('tr').next('tr').attr('class');
 	checkBox = $(e.target).closest('tr').find('.checkBox');
 
-	if(previousRow != null && previousRow != row){
-		$(`.${previousRow}`).hide();
-		previousCheckBox.prop('checked', false);
+	if(previousCheckBox != null && previousCheckBox != checkBox){
+		//$(`.${previousRow}`).hide();
+		previousCheckBox.prop('checked', false).trigger('change');
 	}
 	
-	$(`.${row}`).toggle();
+	//$(`.${row}`).toggle();
 	
-	if(!$(e.target).is('input[type="checkbox"]'))
-		checkBox.prop('checked', (_, checked)=> {return !checked;});
+	//if(!$(e.target).is('input[type="checkbox"]'))
+	checkBox.prop('checked', (_, checked)=> {return !checked;}).trigger('change');
 
-	if(previousRow != null || previousRow != row){
-		previousRow = row;
+	if(previousCheckBox != null || previousCheckBox != checkBox){
+		//previousRow = row;
 		previousCheckBox = checkBox;
 	}
+	
+	// if(stIn.find('.checkBox').is(':checked')){
+	// 	$('#inCode').val(stIn.find('.inCode').val());
+	// 	$('#orderCode').val(stIn.find('.orderCode').val());
+	// 	$('#customerCode').val(stIn.find('.customerCode').val());
+	// 	$('#inDate').val(inDate);
+	// 	$('#regDate').val(regDate);
+	// 	$('#regUser').val(stIn.find('.regUser').val());
+	// 	$('#updateUser').val(stIn.find('.updateUser').val());
+	// 	$('#updateDate').val(updateDate);
+	// 	$('#inType').val(stIn.find('.inType').val());
+	// 	$('#companyName').val(stIn.find('.companyName').val());
+	// 	$('#memo').val(stIn.find('.memo').val());
+	// 	$('#inCode, #orderCode, #orderType').attr('disabled', true);
+	// }
 }
 
 
+$(()=>{
+	$('.checkBox').on('change', (e)=>{
+		let inCode = $(e.target).closest('tr').find('.inCode').val();
+		let orderCode = $(e.target).closest('tr').find('.orderCode').val();
+		let customerCode = $(e.target).closest('tr').find('.customerCode').val();
+		let inDate = $(e.target).closest('tr').find('.inDate').val();
+		let regDate = $(e.target).closest('tr').find('.regDate').val();
+		let regUser = $(e.target).closest('tr').find('.regUser').val();
+		let updateUser = $(e.target).closest('tr').find('.updateUser').val();
+		let updateDate = $(e.target).closest('tr').find('.updateDate').val();
+		let inType = $(e.target).closest('tr').find('.inType').val();
+		let companyName = $(e.target).closest('tr').find('.companyName').val();
+		let memo = $(e.target).closest('tr').find('.memo').val();
+
+		inDate = formatDateMinus(new Date(inDate));
+		regDate = formatDateMinus(new Date(regDate));
+		updateDate = formatDateMinus(new Date(updateDate));
+	
+		if ($(e.target).is(':checked')) {
+			$('#inCode').val(inCode);
+			$('#orderCode').val(orderCode);
+			$('#customerCode').val(customerCode);
+			$('#inDate').val(inDate);
+			$('#regDate').val(regDate);
+			$('#regUser').val(regUser);
+			$('#updateUser').val(updateUser);
+			$('#updateDate').val(updateDate);
+			$('#inType').val(inType);
+			$('#companyName').val(companyName);
+			$('#memo').val(memo);
+		} else {
+			$('#inCode').val('');
+			$('#orderCode').val('');
+			$('#customerCode').val('');
+			$('#inDate').val('');
+			$('#regDate').val('');
+			$('#regUser').val('');
+			$('#updateUser').val('');
+			$('#updateDate').val('');
+			$('#inType').val('');
+			$('#companyName').val('');
+			$('#memo').val('');
+		}
+	});
+});
 
 
 
@@ -153,6 +207,3 @@ function formatDateMinus(date) {
 	return (`${year}-${month}-${day}`);
 }
 
-$(()=>{
-	
-});
