@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.choongang.yeonsolution.sales.om.domain.OrdersCompanyDto;
-import com.choongang.yeonsolution.sales.om.domain.OrdersDetailDto;
-import com.choongang.yeonsolution.sales.om.domain.OrdersDto;
-import com.choongang.yeonsolution.sales.om.domain.OrdersItemDto;
+import com.choongang.yeonsolution.sales.om.domain.OMOrdersCompanyDto;
+import com.choongang.yeonsolution.sales.om.domain.OMOrdersDetailDto;
+import com.choongang.yeonsolution.sales.om.domain.OMOrdersDto;
+import com.choongang.yeonsolution.sales.om.domain.OMOrdersItemDto;
 import com.choongang.yeonsolution.sales.om.service.OMService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -53,11 +53,11 @@ public class OMController {
 	 */
 	@GetMapping("/sales/receive-order/place-order-list")
 	@ResponseBody
-	public List<OrdersDto> placeOrderList() {
+	public List<OMOrdersDto> placeOrderList() {
 		
 		//log.info("[placeOrder] -> {}", companyCode);
 		
-		List<OrdersDto> placeOrderList = omService.findPlaceOrderListByCompanyCode();
+		List<OMOrdersDto> placeOrderList = omService.findPlaceOrderListByCompanyCode();
 		//model.addAttribute("placeOrderList", placeOrderList);
 		
 		return placeOrderList;
@@ -108,7 +108,7 @@ public class OMController {
 		log.info("[modifyOrderTypeByOrderCode] orderCode -> {}", orderCode);
 		log.info("[modifyOrderTypeByOrderCode] receiveOrderType -> {}", receiveOrderType);
 		
-		OrdersDto ordersDto = new OrdersDto();
+		OMOrdersDto ordersDto = new OMOrdersDto();
 		ordersDto.setReceiveOrderType(receiveOrderType);
 		
 		int orderType = omService.modifyOrderTypeByorderCode(orderCode, ordersDto);
@@ -130,7 +130,7 @@ public class OMController {
 		log.info("[modifyOrderDateByOrderCode] orderCode -> {}", orderCode);
 		log.info("[modifyOrderDateByOrderCode] orderDate -> {}", orderDate);
 		
-		OrdersDto ordersDto = new OrdersDto();
+		OMOrdersDto ordersDto = new OMOrdersDto();
 		ordersDto.setOrderDate(orderDate);
 		ordersDto.setOrderCode(orderCode);
 		log.info("[modifyOrderDateByOrderCode] orderDate.toString -> {}", ordersDto.toString());
@@ -153,7 +153,7 @@ public class OMController {
 		log.info("[modifyOrderDueByOrderCode] orderCode -> {}", orderCode);
 		log.info("[modifyOrderDueByOrderCode] orderDate -> {}", dueDate);
 		
-		OrdersDto ordersDto = new OrdersDto();
+		OMOrdersDto ordersDto = new OMOrdersDto();
 		ordersDto.setDueDate(dueDate);
 		ordersDto.setOrderCode(orderCode);
 		log.info("[modifyOrderDueByOrderCode] ordersDto.toString -> {}", ordersDto.toString());
@@ -172,7 +172,7 @@ public class OMController {
 	@PatchMapping("/sales/receive-order/{orderCode}/modify-empid")
 	@ResponseBody
 	public int modifyEmpidByOrderCode(@PathVariable String orderCode, 
-									  @RequestBody OrdersDto ordersDto){
+									  @RequestBody OMOrdersDto ordersDto){
 										    
 		ordersDto.setOrderCode(orderCode);
 		
@@ -195,7 +195,7 @@ public class OMController {
 	 * receive-opder-insert
 	 */
 	@PostMapping(value = "/sales/om/insert-receive-order")
-	public String receiveOrderAdd(OrdersDto ordersDto, Model model) {
+	public String receiveOrderAdd(OMOrdersDto ordersDto, Model model) {
 		log.info("[receiveOrderAdd] ordersDto.toString -> {}", ordersDto.toString());
 		
 		omService.addReceiveOrder(ordersDto);
@@ -225,9 +225,9 @@ public class OMController {
 	 */
 	@GetMapping("/sales/receive-order/customer-code-list")
 	@ResponseBody
-	public List<OrdersCompanyDto> customerList() {
+	public List<OMOrdersCompanyDto> customerList() {
 		
-		List<OrdersCompanyDto> customerList = omService.findCustomerList();
+		List<OMOrdersCompanyDto> customerList = omService.findCustomerList();
 		log.info("[customerList] customerList.toString() -> {}", customerList.toString());
 		
 		return customerList;
@@ -243,11 +243,11 @@ public class OMController {
 	@GetMapping("/sales/receive-order/place-order-detail-list")
 	@ResponseBody
 	//public List<OrdersDto> placeOrderDetailList(@PathVariable String orderCode) {
-	public List<OrdersDetailDto> placeOrderDetailList(@RequestParam("orderCode") String orderCode) {
+	public List<OMOrdersDetailDto> placeOrderDetailList(@RequestParam("orderCode") String orderCode) {
 		
 		log.info("[placeOrderDetailList] orderCode -> {}", orderCode);
 		
-		List<OrdersDetailDto> placeOrderDetailList = omService.findPlaceOrderDetailListByCompanyCode(orderCode);
+		List<OMOrdersDetailDto> placeOrderDetailList = omService.findPlaceOrderDetailListByCompanyCode(orderCode);
 		//model.addAttribute("placeOrderList", placeOrderList);
 		
 		return placeOrderDetailList;
@@ -257,7 +257,7 @@ public class OMController {
 	 * receive-opder-detail-insert
 	 */
 	@PostMapping(value = "/sales/om/insert-receive-order-detail")
-	public String receiveOrderDetailAdd(OrdersDetailDto ordersDetailDto, Model model) {
+	public String receiveOrderDetailAdd(OMOrdersDetailDto ordersDetailDto, Model model) {
 		log.info("[receiveOrderDetailAdd] ordersDto.toString -> {}", ordersDetailDto.toString());
 		
 		omService.addReceiveOrderDetail(ordersDetailDto);
@@ -271,7 +271,7 @@ public class OMController {
 	@ResponseBody
 	@PatchMapping("/sales/receive-order/{orderDetailCode}/modify-item")
 	public int modifyItemByOrderDetailCode(@PathVariable String orderDetailCode, 
-										   @RequestBody  OrdersItemDto ordersItemDto){
+										   @RequestBody  OMOrdersItemDto ordersItemDto){
 										    
 		log.info("[modifyItemByOrderDetailCode] orderDetailCode -> {}", orderDetailCode);
 		ordersItemDto.setOrderDetailCode(orderDetailCode);
@@ -290,7 +290,7 @@ public class OMController {
 	@ResponseBody
 	@PatchMapping("/sales/receive-order/{orderDetailCode}/modify-amount")
 	public int modifyAmountByOrderDetailCode(@PathVariable String orderDetailCode, 
-											 @RequestBody  OrdersDetailDto ordersDetailDto){
+											 @RequestBody  OMOrdersDetailDto ordersDetailDto){
 										    
 		log.info("[modifyAmountByOrderDetailCode] orderDetailCode -> {}", orderDetailCode);
 		ordersDetailDto.setOrderDetailCode(orderDetailCode);
@@ -314,7 +314,7 @@ public class OMController {
 		log.info("[modifyItemStockUnitByOrderDetailCode] orderDetailCode -> {}", orderDetailCode);
 		log.info("[modifyItemStockUnitByOrderDetailCode] itemStockUnit -> {}", itemStockUnit);
 		
-		OrdersDetailDto ordersDetailDto = new OrdersDetailDto();
+		OMOrdersDetailDto ordersDetailDto = new OMOrdersDetailDto();
 		ordersDetailDto.setOrderDetailCode(orderDetailCode);
 		ordersDetailDto.setItemStockUnit(itemStockUnit);
 		
@@ -334,7 +334,7 @@ public class OMController {
 		log.info("[modifyItemStockUnitByOrderDetailCode] orderDetailCode -> {}", orderDetailCode);
 		log.info("[modifyItemStockUnitByOrderDetailCode] endYn -> {}", endYn);
 		
-		OrdersDetailDto ordersDetailDto = new OrdersDetailDto();
+		OMOrdersDetailDto ordersDetailDto = new OMOrdersDetailDto();
 		ordersDetailDto.setOrderDetailCode(orderDetailCode);
 		ordersDetailDto.setEndYn(endYn);
 		
@@ -367,7 +367,7 @@ public class OMController {
 	@PatchMapping("/sales/receive-order/{orderDetailCode}/modify-memo")
 	@ResponseBody
 	public int modifyMemoByOrdersDetailDto(@PathVariable String orderDetailCode, 
-									       @RequestBody OrdersDetailDto ordersDetailDto){
+									       @RequestBody OMOrdersDetailDto ordersDetailDto){
 										    
 		ordersDetailDto.setOrderDetailCode(orderDetailCode);
 		
@@ -389,9 +389,9 @@ public class OMController {
 	 */
 	@GetMapping("/sales/receive-order/item-code-list")
 	@ResponseBody
-	public List<OrdersItemDto> itemList() {
+	public List<OMOrdersItemDto> itemList() {
 		
-		List<OrdersItemDto> itemList = omService.finditemList();
+		List<OMOrdersItemDto> itemList = omService.finditemList();
 		log.info("[itemList] itemList.size() -> {}", itemList.size());
 		
 		return itemList;

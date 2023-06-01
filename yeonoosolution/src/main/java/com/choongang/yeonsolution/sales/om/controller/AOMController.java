@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.choongang.yeonsolution.sales.om.domain.OrdersAOMDto;
+import com.choongang.yeonsolution.sales.om.domain.OMOrdersAOMDto;
 import com.choongang.yeonsolution.sales.om.service.AOMService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -38,11 +38,11 @@ public class AOMController {
 	 */
 	@GetMapping("/sales/analysis-of-materials/receive-order-list")
 	@ResponseBody
-	public List<OrdersAOMDto> recieveOrderList() {
+	public List<OMOrdersAOMDto> recieveOrderList() {
 		
 		log.info("[recieveOrderList]");
 		
-		List<OrdersAOMDto> recieveOrderList = aomService.findRecieveOrderListByCompanyCode();
+		List<OMOrdersAOMDto> recieveOrderList = aomService.findRecieveOrderListByCompanyCode();
 		//model.addAttribute("placeOrderList", placeOrderList);
 		
 		return recieveOrderList;
@@ -53,11 +53,11 @@ public class AOMController {
 	 */
 	@ResponseBody
 	@GetMapping("/sales/analysis-of-materials/semi-manufactures-list")
-	public List<OrdersAOMDto> semiManufactures(@RequestParam(value= "orderCode") String orderCode) {
+	public List<OMOrdersAOMDto> semiManufactures(@RequestParam(value= "orderCode") String orderCode) {
 		
 		log.info("[semiManufactures] orderCode -> {}", orderCode);
 		
-		List<OrdersAOMDto> semiManufacturesList = aomService.findSemiManufacturesListByCompanyCode(orderCode);
+		List<OMOrdersAOMDto> semiManufacturesList = aomService.findSemiManufacturesListByCompanyCode(orderCode);
 		log.info("[semiManufactures] semiManufacturesList -> {}", semiManufacturesList.toString());
 		
 		return semiManufacturesList;
