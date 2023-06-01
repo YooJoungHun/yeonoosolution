@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class ItemDto {
+public class IMIItemDto {
 	
 	private String itemCode;	// 제품 코드
 	private String companyCode;	// 회사 코드

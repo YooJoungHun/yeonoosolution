@@ -11,7 +11,7 @@ import lombok.Setter;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class CompanyDto {
+public class IMICompanyDto {
 	
 	private String companyCode; // 회사 코드
 	private String orderType;	// 발/수주 구분

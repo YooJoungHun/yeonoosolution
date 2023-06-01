@@ -2,25 +2,25 @@ package com.choongang.yeonsolution.standard.pmi.service;
 
 import java.util.List;
 
-import com.choongang.yeonsolution.standard.imi.domain.ItemDto;
-import com.choongang.yeonsolution.standard.pmi.domain.BomDto;
+import com.choongang.yeonsolution.standard.imi.domain.IMIItemDto;
+import com.choongang.yeonsolution.standard.pmi.domain.PMIBomDto;
 
 public interface PMIService {
 
 	// 완제품 리스트
-	List<ItemDto> findProductItemList();
+	List<IMIItemDto> findProductItemList();
 	
 	// 반제품 리스트
-	List<ItemDto> findSemiProductItemList();
+	List<IMIItemDto> findSemiProductItemList();
 	
 	// Bom 리스트
-	List<BomDto> findBomListByItemCode(String itemCode);
+	List<PMIBomDto> findBomListByItemCode(String itemCode);
 	
 	// Bom 인서트
-	int addBomByBomDto(BomDto bomDto);
+	int addBomByBomDto(PMIBomDto bomDto);
 	
 	// Bom 딜리트
-	int removeBomByBomDto(BomDto bomDto);
+	int removeBomByBomDto(PMIBomDto bomDto);
 	
 
 }

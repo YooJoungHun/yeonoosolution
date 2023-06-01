@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class BomDto {
+public class PMIBomDto {
 	
 	private String highItemCode;	// 완제품 코드
 	private String lowItemCode;		// 재료 코드

@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.choongang.yeonsolution.standard.imi.domain.ItemDto;
+import com.choongang.yeonsolution.standard.imi.domain.IMIItemDto;
 import com.choongang.yeonsolution.standard.pmi.dao.PMIDao;
-import com.choongang.yeonsolution.standard.pmi.domain.BomDto;
+import com.choongang.yeonsolution.standard.pmi.domain.PMIBomDto;
 
 
 @Service
@@ -17,10 +17,10 @@ public class PMIServiceImpl implements PMIService {
 	private final PMIDao pmiDao;
 
 	@Override
-	public List<ItemDto> findProductItemList() {
-		List<ItemDto> findProductItemList = pmiDao.selectProductItemList();
+	public List<IMIItemDto> findProductItemList() {
+		List<IMIItemDto> findProductItemList = pmiDao.selectProductItemList();
 		// null 값 공백 처리
-		for(ItemDto item : findProductItemList) {
+		for(IMIItemDto item : findProductItemList) {
 			item.setMemo(item.getMemo() == null ? "" : item.getMemo());
 			item.setItemName(item.getItemName() == null ? "" : item.getItemName());
 			item.setStockUnit(item.getStockUnit() == null ? "" : item.getStockUnit());
@@ -33,10 +33,10 @@ public class PMIServiceImpl implements PMIService {
 	}
 
 	@Override
-	public List<ItemDto> findSemiProductItemList() {
-		List<ItemDto> findSemiProductItemList = pmiDao.selectSemiProductItemList();
+	public List<IMIItemDto> findSemiProductItemList() {
+		List<IMIItemDto> findSemiProductItemList = pmiDao.selectSemiProductItemList();
 		// null 값 공백 처리
-		for(ItemDto item : findSemiProductItemList) {
+		for(IMIItemDto item : findSemiProductItemList) {
 			item.setMemo(item.getMemo() == null ? "" : item.getMemo());
 			item.setItemName(item.getItemName() == null ? "" : item.getItemName());
 			item.setStockUnit(item.getStockUnit() == null ? "" : item.getStockUnit());
@@ -49,13 +49,13 @@ public class PMIServiceImpl implements PMIService {
 	}
 
 	@Override
-	public List<BomDto> findBomListByItemCode(String itemCode) {
+	public List<PMIBomDto> findBomListByItemCode(String itemCode) {
 
 		return pmiDao.selectBomListByItemCode(itemCode);
 	}
 
 	@Override
-	public int addBomByBomDto(BomDto bomDto) {
+	public int addBomByBomDto(PMIBomDto bomDto) {
 		try {
 	        int insertResult = pmiDao.insertBomByBomDto(bomDto);
 	        return insertResult;
@@ -66,7 +66,7 @@ public class PMIServiceImpl implements PMIService {
 	}
 
 	@Override
-	public int removeBomByBomDto(BomDto bomDto) {
+	public int removeBomByBomDto(PMIBomDto bomDto) {
 		
 		return pmiDao.deleteBomByBomDto(bomDto);
 	}

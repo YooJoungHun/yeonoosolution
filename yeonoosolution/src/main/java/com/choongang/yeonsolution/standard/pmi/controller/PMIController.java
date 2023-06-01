@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.choongang.yeonsolution.standard.imi.domain.ItemDto;
-import com.choongang.yeonsolution.standard.pmi.domain.BomDto;
+import com.choongang.yeonsolution.standard.imi.domain.IMIItemDto;
+import com.choongang.yeonsolution.standard.pmi.domain.PMIBomDto;
 import com.choongang.yeonsolution.standard.pmi.service.PMIService;
 
 import lombok.RequiredArgsConstructor;
@@ -35,10 +35,10 @@ public class PMIController {
 	
 	@ResponseBody
 	@GetMapping("/pmi/product/items")
-	public List<ItemDto> productItemList() {
+	public List<IMIItemDto> productItemList() {
 		log.info("Pmi ProductItemList Controller Start");
 		
-		List<ItemDto> productItemList = pmiService.findProductItemList();
+		List<IMIItemDto> productItemList = pmiService.findProductItemList();
 		log.info("ProductItemList -> " + productItemList);
 		
 		return productItemList;
@@ -46,10 +46,10 @@ public class PMIController {
 	
 	@ResponseBody
 	@GetMapping("/pmi/product/semi-items")
-	public List<ItemDto> semiProductItemList() {
+	public List<IMIItemDto> semiProductItemList() {
 		log.info("Pmi SemiProductItemList Controller Start");
 		
-		List<ItemDto> semiProductItemList = pmiService.findSemiProductItemList();
+		List<IMIItemDto> semiProductItemList = pmiService.findSemiProductItemList();
 		log.info("semiProductItemList -> " + semiProductItemList);
 		
 		return semiProductItemList;
@@ -57,12 +57,12 @@ public class PMIController {
 	
 	@ResponseBody
 	@GetMapping("/pmi/bom-list/{itemCode}")
-	public List<BomDto> bomList(@PathVariable String itemCode, BomDto bomDto) {
+	public List<PMIBomDto> bomList(@PathVariable String itemCode, PMIBomDto bomDto) {
 		log.info("Pmi bomList Controller Start");
 		log.info("itemCode -> " + itemCode);
 		log.info("bomDto -> " + bomDto);
 		
-		List<BomDto> bomList = pmiService.findBomListByItemCode(itemCode);
+		List<PMIBomDto> bomList = pmiService.findBomListByItemCode(itemCode);
 		log.info("bomList -> " + bomList);
 		
 		return bomList;
@@ -70,7 +70,7 @@ public class PMIController {
 	
 	@ResponseBody
 	@PostMapping("/pmi/bom")
-	public int bomAdd(@RequestBody BomDto bomDto) {
+	public int bomAdd(@RequestBody PMIBomDto bomDto) {
 		log.info("BomAdd Controller Start");
 		log.info("Bom Info -> " + bomDto);
 		
@@ -81,7 +81,7 @@ public class PMIController {
 	
 	@ResponseBody
 	@DeleteMapping("/pmi/bom")
-	public int bomRemove(@RequestBody BomDto bomDto) {
+	public int bomRemove(@RequestBody PMIBomDto bomDto) {
 		log.info("BomRemove Controller Start");
 		
 		int bomRemove = pmiService.removeBomByBomDto(bomDto);

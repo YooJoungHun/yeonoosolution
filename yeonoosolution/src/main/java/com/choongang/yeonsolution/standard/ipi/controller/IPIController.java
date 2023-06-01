@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.choongang.yeonsolution.standard.imi.domain.ItemDto;
+import com.choongang.yeonsolution.standard.imi.domain.IMIItemDto;
 import com.choongang.yeonsolution.standard.imi.service.IMIService;
 import com.choongang.yeonsolution.standard.ipi.service.IPIService;
 
@@ -35,17 +35,17 @@ public class IPIController {
 	
 	@ResponseBody
 	@GetMapping("/ipi/items")
-	public List<ItemDto> itemList() {
+	public List<IMIItemDto> itemList() {
 		log.info("Ipi ItemList Controller Start");
 		
-		List<ItemDto> itemList = imiService.findItemList();
+		List<IMIItemDto> itemList = imiService.findItemList();
 		
 		return itemList;
 	}
 	
 	@ResponseBody
 	@PutMapping("/ipi/{itemCode}")
-	public int itemPriceModify(@PathVariable("itemCode") String itemCode, @RequestBody ItemDto itemDto) {
+	public int itemPriceModify(@PathVariable("itemCode") String itemCode, @RequestBody IMIItemDto itemDto) {
 		log.info("Item Price Update Controller Start");
 		log.info("Item Price Update Code Is -> " + itemCode);
 		int updateResult = 0;

@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.choongang.yeonsolution.standard.imi.dao.IMIDao;
-import com.choongang.yeonsolution.standard.imi.domain.ItemDto;
-import com.choongang.yeonsolution.standard.imi.domain.CompanyDto;
+import com.choongang.yeonsolution.standard.imi.domain.IMIItemDto;
+import com.choongang.yeonsolution.standard.imi.domain.IMICompanyDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,10 +19,10 @@ public class IMIServiceImpl implements IMIService {
 	private final IMIDao imiDao;
 	
 	@Override
-	public List<ItemDto> findItemList() {
-		List<ItemDto> itemList = imiDao.selectItemList();
+	public List<IMIItemDto> findItemList() {
+		List<IMIItemDto> itemList = imiDao.selectItemList();
 		// null 값 공백 처리
-		for(ItemDto item : itemList) {
+		for(IMIItemDto item : itemList) {
 			item.setMemo(item.getMemo() == null ? "" : item.getMemo());
 			item.setItemName(item.getItemName() == null ? "" : item.getItemName());
 			item.setStockUnit(item.getStockUnit() == null ? "" : item.getStockUnit());
@@ -37,14 +37,14 @@ public class IMIServiceImpl implements IMIService {
 	}
 
 	@Override
-	public int addItem(ItemDto itemInfo) {
+	public int addItem(IMIItemDto itemInfo) {
 		int insertResult = imiDao.insertItem(itemInfo);
 		
 		return insertResult;
 	}
 
 	@Override
-	public List<ItemDto> findWhList() {
+	public List<IMIItemDto> findWhList() {
 		
 		return imiDao.selectWhList();
 	}
@@ -56,13 +56,13 @@ public class IMIServiceImpl implements IMIService {
 	}
 
 	@Override
-	public int modifyItemByItemDto(ItemDto itemDto) {
+	public int modifyItemByItemDto(IMIItemDto itemDto) {
 		
 		return imiDao.updateItemByItemDto(itemDto);
 	}
 
 	@Override
-	public List<CompanyDto> findCompanyList() {
+	public List<IMICompanyDto> findCompanyList() {
 		
 		return imiDao.selectCompanyList();
 	}

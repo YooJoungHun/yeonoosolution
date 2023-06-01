@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.choongang.yeonsolution.standard.imi.domain.ItemDto;
-import com.choongang.yeonsolution.standard.imi.domain.CompanyDto;
+import com.choongang.yeonsolution.standard.imi.domain.IMIItemDto;
+import com.choongang.yeonsolution.standard.imi.domain.IMICompanyDto;
 import com.choongang.yeonsolution.standard.imi.service.IMIService;
 
 import lombok.RequiredArgsConstructor;
@@ -38,17 +38,17 @@ public class IMIController {
 	
 	@ResponseBody
 	@GetMapping("/imi/items")
-	public List<ItemDto> itemList() {
+	public List<IMIItemDto> itemList() {
 		log.info("ItemList Controller Start");
 		
-		List<ItemDto> itemList = imiService.findItemList();
+		List<IMIItemDto> itemList = imiService.findItemList();
 		
 		return itemList;
 	}
 	
 	@ResponseBody
 	@PostMapping("/imi/item")
-	public int itemAdd(@RequestBody ItemDto itemInfo) {
+	public int itemAdd(@RequestBody IMIItemDto itemInfo) {
 		log.info("ItemAdd Controller Start");
 		log.info("Item Info -> " + itemInfo);
 		
@@ -60,10 +60,10 @@ public class IMIController {
 	
 	@ResponseBody
 	@GetMapping("/imi/wh")
-	public List<ItemDto> whList() {
+	public List<IMIItemDto> whList() {
 		log.info("whList Controller Start");
 		
-		List<ItemDto> whList = imiService.findWhList();	
+		List<IMIItemDto> whList = imiService.findWhList();	
 		log.info("whList -> " + whList);
 		
 		return whList;
@@ -71,10 +71,10 @@ public class IMIController {
 	
 	@ResponseBody
 	@GetMapping("/imi/companys")
-	public List<CompanyDto> companyList() {
+	public List<IMICompanyDto> companyList() {
 		log.info("companyList Controller Start");
 		
-		List<CompanyDto> companyList = imiService.findCompanyList();
+		List<IMICompanyDto> companyList = imiService.findCompanyList();
 		log.info("companyList -> " + companyList);
 		
 		return companyList;
@@ -83,7 +83,7 @@ public class IMIController {
 
 	@ResponseBody
 	@PutMapping("/imi/{itemCode}")
-	public Map<String, Integer> itemModify(@PathVariable("itemCode") String itemCode, @RequestHeader String action, @RequestBody ItemDto itemDto) {
+	public Map<String, Integer> itemModify(@PathVariable("itemCode") String itemCode, @RequestHeader String action, @RequestBody IMIItemDto itemDto) {
 		log.info("Item Update Controller Start");
 		log.info("Item Update Code Is -> " + itemCode);
 		log.info("Action Is -> " + action);
