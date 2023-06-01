@@ -26,6 +26,13 @@
 	
 }
 
+.side-bar {
+	border: 1px solid #ddd;
+	padding: 20px;
+	float: left;
+	height: 100vh;
+}
+
 #content-table table {
 	width: 100%;
 	border-collapse: collapse;
@@ -58,23 +65,42 @@
 <title>품목 단가 관리</title>
 </head>
 <body>
-
+	
 	<div class="side-bar">
-		<ul class="side-bar">
-		    <li class="category">
-		        <a href="#" class="category-link">
-		            기준 정보
-		        </a>
-		        <ul class="categories">
-		            <li><a href="#">사용자 관리</a></li>
-		            <li><a href="/standard/imi">품목 관리 및 등록</a></li>
-		            <li><a href="/standard/ipi">품목 단가 관리</a></li>
-		            <li><a href="#">창고 관리 정보</a></li>
-		            <li><a href="/standard/pmi">생산 관리 BOM 등록</a></li>
-		        </ul>
-		    </li>
-		</ul>
-	</div>
+      <!-- product/ds -->
+      <a href="/product/status/defect">불량현황</a><p>
+      <!-- product/ps -->
+      <a href="/product/status/production">생산현황 검색</a><p>
+      <!-- product/pr -->
+      <!-- product -->
+      <a href="/product/is/item">품목별 재고 현황</a><p>
+      <a href="/product/is/bom">BOM별 재고 현황</a><p>
+      <a href="/product/is/wh">창고별 재고 현황</a><p>
+      <a href="/product/is/wh/">창고별 재고 현황 상세</a><p>
+      <a href="/item/search">제품 검색</a><p>
+      <a href="/product/sim">입고</a><p>
+      <a href="/wo">제품 생산 지시</a><p>
+      
+      <!-- sales -->
+      <a href="/sales/analysis-of-materials">자제소요분석</a><p>
+      <a href="/sales/receive-order">수주서 관리</a><p>
+      <a href="/sales/order">구매</a><p>
+      <a href="/sales/stock-in">구매입고등록</a><p>
+      
+      <!-- standard -->
+      <a href="/standard/login">로그인</a><p>
+      <a href="/standard/user-admin">사용자 계정관리</a><p>
+      <a href="/standard/imi">품목 관리 및 등록</a><p>
+      <a href="/standard/ipi">품목 단가 관리</a><p>
+      <a href="/standard/pmi">품목 관리 정보</a><p>
+      
+      <!-- 로그아웃 -->
+      <c:if test="${sessionScope.member != null}">
+         <form action="/standard/logout" method="POST">
+            <button type="submit">로그아웃</button>
+         </form>
+      </c:if>
+   </div>
 	
 	
 	<div class="input-info">
@@ -82,8 +108,8 @@
 		<span>거래처 코드</span><input id="company-code" readonly>
 		<span>제품 코드</span><input id="item-code" readonly>
 		<span>품명</span><input id="item-name" readonly>
-		<span>*매입 단가</span><input id="purchase-price">
-		<span>*매출 단가</span><input id="sales-price"><br>
+		<span>*매입 단가</span><input id="purchase-price" type="number">
+		<span>*매출 단가</span><input id="sales-price" type="number"><br>
 		<span>시작일</span><input id="start-date" type="date">
 		<span>종료일</span><input id="end-date" type="date">
 		<span>비고</span><input id="memo">
@@ -125,6 +151,17 @@
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script>
+
+	// 숫자 형식 변환
+	function formatNumber(number) {
+		return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+	
+	// 원래 숫자 형식으로 되돌리기
+	function defaultNumber(numberString) {
+		  return numberString.replace(/,/g, '');
+	}
+
 	
 	$(document).ready(function () {
 		defaultItemList();
@@ -212,8 +249,8 @@
 		          '<td>' + item.itemType + '</td>' +
 		          '<td>' + item.itemCode + '</td>' +
 		          '<td>' + item.itemName + '</td>' +
-		          '<td>' + item.purchasePrice + '</td>' +
-		          '<td>' + item.salesPrice + '</td>' +
+		          '<td>' + formatNumber(item.purchasePrice) + '</td>' +
+		          '<td>' + formatNumber(item.salesPrice) + '</td>' +
 		          '<td>' + item.startDate.substring(0, 10) + '</td>' +
 		          '<td>' + item.endDate.substring(0, 10) + '</td>' +
 		          '<td>' + item.stockUnit + '</td>' +
@@ -249,8 +286,8 @@
 		$('#company-code').val(companyCode);
 		$('#item-code').val(itemCode);
 		$('#item-name').val(itemName);
-		$('#purchase-price').val(purchasePrice);
-		$('#sales-price').val(salesPrice);
+		$('#purchase-price').val(defaultNumber(purchasePrice));
+		$('#sales-price').val(defaultNumber(salesPrice));
 		$('#start-date').val(startDate);
 		$('#end-date').val(endDate);
 		$('#stock-unit').val(stockUnit);
