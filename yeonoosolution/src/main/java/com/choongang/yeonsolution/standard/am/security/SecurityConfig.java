@@ -49,13 +49,12 @@ public class SecurityConfig{
 					//인증 허용 범위 설정
 					.authorizeRequests()
 						.antMatchers("/images/**").permitAll() //static resources 인증 제외
-						.antMatchers("/standard/login", "/standard/sign-up", "/standard/not-authorized", "/").permitAll() //로그인 페이지, 회원가입 페이지, 메인페이지 인증 제외
-						.antMatchers(HttpMethod.POST, "/standard/member").permitAll() //회원가입 인증 제외
+						.antMatchers("/standard/login", "/standard/not-authorized", "/").permitAll() //로그인 페이지, 권한 부족 페이지, 메인페이지 인증 제외
 						.antMatchers(HttpMethod.POST, "/**").hasAnyRole("ADMIN", "MANAGER") // POST 요청은 ADMIN과 MANAGER 역할을 가진 사용자 모두 접근 가능
 						.antMatchers(HttpMethod.PUT, "/**").hasAnyRole("ADMIN", "MANAGER") // PUT 요청은 ADMIN과 MANAGER 역할을 가진 사용자 모두 접근 가능
 						.antMatchers(HttpMethod.DELETE, "/**").hasAnyRole("ADMIN", "MANAGER") // DELETE 요청은 ADMIN과 MANAGER 역할을 가진 사용자 모두 접근 가능
 						.antMatchers(HttpMethod.PATCH, "/**").hasAnyRole("ADMIN", "MANAGER") // PATCH 요청은 ADMIN과 MANAGER 역할을 가진 사용자 모두 접근 가능
-						.antMatchers("/standard/**").hasAnyRole("STANDARD", "ADMIN")
+						.antMatchers("/standard/**").authenticated()
 						.antMatchers("/product/**").hasAnyRole("PRODUCT", "ADMIN")
 						.antMatchers("/sales/**").hasAnyRole("SALES", "ADMIN")
 						.anyRequest()
@@ -85,7 +84,8 @@ public class SecurityConfig{
 						.rememberMeParameter("remember")
 						.tokenValiditySeconds(600)
 						.alwaysRemember(false)
-						.userDetailsService(memberDetailsServiceImpl);
+						.userDetailsService(memberDetailsServiceImpl)
+						.authenticationSuccessHandler(userLoginSuccessHandler);
 		
 		return httpSecurity.build();
 	}
