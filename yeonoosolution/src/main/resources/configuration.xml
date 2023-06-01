@@ -6,9 +6,10 @@
     	<setting name="mapUnderscoreToCamelCase" value="true"/>
   	</settings>
   	
-
-
   	<typeAliases>
+ 	<!-- 권한 관리 -->
+  		<typeAlias alias="AMMemberDto" type="com.choongang.yeonsolution.standard.am.domain.MemberDto"/>
+  		<typeAlias alias="AMDto" type="com.choongang.yeonsolution.standard.am.domain.AMDto"/>
 	<!-- 구매 관리 -->
   		<typeAlias alias="PmOrdersDto" type="com.choongang.yeonsolution.sales.pm.domain.PmOrdersDto"/>
   		<typeAlias alias="PmOrdersDetailDto" type="com.choongang.yeonsolution.sales.pm.domain.PmOrdersDetailDto"/>

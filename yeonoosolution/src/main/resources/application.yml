@@ -17,8 +17,12 @@ spring:
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
-        
+  
+  devtools:
+    restart:
+      enabled: false
+      
 #Mybatis     
 mybatis :
   config-location: classpath:configuration.xml
-  mapper-locations: classpath:mappers/**/*.xml
+  mapper-locations: classpath:mappers/*.xml
