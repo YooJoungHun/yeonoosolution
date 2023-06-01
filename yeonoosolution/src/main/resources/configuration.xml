@@ -55,6 +55,13 @@
   		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.OrdersDetailDto"		alias="SIMOrdersDetailDto"/>
   		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.WhDto"				alias="SIMWhDto"/>
   		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.WhStockDetailDto"	alias="SIMWhStockDetailDto"/>
+  	
+  	<!-- 사용자관리 -->
+  		<typeAlias alias="BICompanyDto" type="com.choongang.yeonsolution.standard.bi.domain.CompanyDto"/>
+  		<typeAlias alias="BIMemberDto" type="com.choongang.yeonsolution.standard.bi.domain.MemberDto"/>
+  		<typeAlias alias="UMDepartmentDto" type="com.choongang.yeonsolution.standard.um.domain.DepartmentDto"/>
+  		<typeAlias alias="UMJobDto" type="com.choongang.yeonsolution.standard.um.domain.JobDto"/>
+  	
   	</typeAliases>
   	
 </configuration>
