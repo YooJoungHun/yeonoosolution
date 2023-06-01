@@ -93,14 +93,15 @@
 		WHERE	order_detail_code = #{orderCode}
 	</delete>
 	
-	<!-- 입고 -->
+	<!-- 입고 --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
+	
 	<select id="selectStockInListBySearch" parameterType="Search" resultType="StockInDto">
 		SELECT	st_in.*, com.company_name AS customerName
 		FROM	st_in INNER JOIN company com ON st_in.customer_code = com.company_code
 		WHERE	delete_status = 'N'
 		AND		st_in.in_type IN ('저장', '확정')
-		AND (#{orderDate} IS NULL OR st_in.in_date = #{orderDate})
-		AND (#{customerCode} IS NULL OR st_in.customer_code = #{customerCode})
+		AND 	(#{orderDate} IS NULL OR st_in.in_date = #{orderDate})
+		AND 	(#{customerCode} IS NULL OR st_in.customer_code = #{customerCode})
 	</select>
 	<select id="selectStockInDetailByInCode" parameterType="String" resultType="StInDetailDto">
 		SELECT 	 sidt.*, it.item_name AS item_name, it.STOCK_UNIT AS  stockUnit, wh.wh_name AS whName
@@ -141,4 +142,36 @@
 		WHERE	wh_code = #{whCode}
         AND 	item_code = #{itemCode}
 	</update>
+	<select id="insertStIn" statementType="CALLABLE">
+		{ CALL 
+			ST_IN_INSERT(
+				#{orderCode,	mode=IN, jdbcType=VARCHAR}, 
+				#{companyCode,	mode=IN, jdbcType=VARCHAR}, 
+				#{customerCode,	mode=IN, jdbcType=VARCHAR}, 
+				#{inDate, 		mode=IN, jdbcType=DATE}, 
+				#{regUser,		mode=IN, jdbcType=VARCHAR},
+				#{updateUser,	mode=IN, jdbcType=VARCHAR},
+				#{memo,			mode=IN, jdbcType=VARCHAR}, 
+				#{inCode,		mode=OUT, jdbcType=VARCHAR}
+			) 
+		}
+	</select>
+	<select id="insertStInDetail" parameterType="StInDetailDto">
+		INSERT INTO st_in_detail
+			VALUES(#{inCode}, #{sorder}, #{whCode}, #{itemCode}, #{inQuantity}, #{inPrice}, #{memo})
+	</select>
+	<update id="updateStIn" parameterType="StockInDto">
+	    UPDATE  st_in
+    	SET     order_code = #{orderCode}, customer_code = #{customerCode}, in_date = #{inDate},
+            	update_date = SYSDATE, update_user = #{updateUser}
+            	<if test="memo != null and memo != ''">
+            	, memo = #{memo}
+            	</if>
+    	WHERE   in_code = #{inCode}
+	</update>
+	<delete id="deleteStInDetailByOrderCode" parameterType="String">
+		DELETE 
+		FROM	st_in_detail
+		WHERE	in_code = #{inCode}
+	</delete>
 </mapper>

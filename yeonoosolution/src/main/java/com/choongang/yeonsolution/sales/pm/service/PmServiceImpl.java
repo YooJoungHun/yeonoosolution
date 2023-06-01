@@ -130,9 +130,9 @@ public class PmServiceImpl implements PmService{
 	@Override
 	public List<StockInDto> findStockInListBySearch(Search search) {
 		List<StockInDto> stockInList = pmDao.selectStockInListBySearch(search);
-		for(int i = 0; i < stockInList.size(); i++) {
-			if(stockInList.get(i).getInDate() != null || !stockInList.get(i).getInDate().equals("")) {
-				stockInList.get(i).setInDate(stockInList.get(i).getInDate().substring(0, 10).replaceAll("/", "-"));
+		for(StockInDto stockIn : stockInList) {
+			if(stockIn.getInDate() != null && stockIn.getInDate().length() > 9) {
+				stockIn.setInDate(stockIn.getInDate().substring(0, 10).replaceAll("/", "-"));
 			}
 		}
 		return stockInList;
@@ -198,9 +198,11 @@ public class PmServiceImpl implements PmService{
 		StockInDto stIn = stInData.getStockIn();
 		List<StInDetailDto> stInDetails = stInData.getStInDetails();
 		String stInCode = pmDao.insertStIn(stIn);
+		log.info("stIn -> {}", stIn);
+		log.info("stInDetails -> {}", stInDetails);
 		int insertRow = 0;
 		for(StInDetailDto stInDetail : stInDetails) {
-			stInDetail.setOrderDetailCode(stInCode);
+			stInDetail.setInCode(stInCode);
         	insertRow += pmDao.insertStInDetail(stInDetail);
         }
 		 if(stInCode != null && insertRow == stInDetails.size()) {
@@ -209,5 +211,27 @@ public class PmServiceImpl implements PmService{
         	return "저장 실패";
         }
        
+	}
+
+	@Override
+	public String modifyStIn(StInDataDto stInData) {
+		StockInDto stIn = stInData.getStockIn();
+		List<StInDetailDto> stInDetails = stInData.getStInDetails();
+		log.info("stIn -> {}", stIn);
+		log.info("stInDetails -> {}", stInDetails);
+		int insertRow = 0;
+		int stInUpdateResult = pmDao.updateStIn(stIn);
+		if(stInUpdateResult > 0) {
+			int stInDetailDel = pmDao.deleteStInDetailByInCode(stIn.getInCode());
+			log.info("stInDetailDel -> {}",stInDetailDel);
+			log.info("stInDetails -> {}",stInDetails);
+			for(StInDetailDto stInDetail : stInDetails) {
+				insertRow += pmDao.insertStInDetail(stInDetail);
+			}
+		}if(insertRow == stInDetails.size()) {
+        	return "수정 성공";
+        }else {
+        	return "수정 실패";
+        }
 	}
 }

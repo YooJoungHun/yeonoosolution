@@ -144,8 +144,40 @@ public class PmDaoImpl implements PmDao{
 
 	@Override
 	public String insertStIn(StockInDto stIn) {
-		// TODO Auto-generated method stub
-		return null;
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("orderCode", stIn.getOrderCode());
+		parameters.put("companyCode", stIn.getCompanyCode());
+		parameters.put("customerCode", stIn.getCustomerCode());
+		parameters.put("inDate", stIn.getInDate());
+		parameters.put("regUser", stIn.getRegUser());
+		parameters.put("updateUser", stIn.getUpdateUser());
+		parameters.put("memo", stIn.getMemo());
+		
+		session.selectOne("orders.insertStIn", parameters);
+
+		String inCode = (String) parameters.get("inCode");
+		
+		System.out.println("inCode -> " + inCode);
+		return inCode;
+	
+	}
+
+	@Override
+	public int insertStInDetail(StInDetailDto stInDetail) {
+		int result = session.insert("insertStInDetail", stInDetail);
+		return result;
+	}
+
+	@Override
+	public int updateStIn(StockInDto stIn) {
+		int result = session.update("updateStIn", stIn);
+		return result;
+	}
+
+	@Override
+	public int deleteStInDetailByInCode(String inCode) {
+		int result = session.delete("deleteStInDetailByOrderCode", inCode);
+		return result;
 	}
 
 }

@@ -28,5 +28,6 @@ public interface PmService {
 	String modifyStockInByInCode(String inCode, String column, String data);
 	List<WhDto> findWhList();
 	String addStIn(StInDataDto stInData);
+	String modifyStIn(StInDataDto stInData);
 
 }

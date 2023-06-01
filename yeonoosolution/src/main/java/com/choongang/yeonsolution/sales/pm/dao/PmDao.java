@@ -31,5 +31,8 @@ public interface PmDao {
 	void updateWhStockDetailBystInDetail(Map<String, Object> map);
 	void updateWhStockDetailBystInDetail(StInDetailDto stInDetail);
 	String insertStIn(StockInDto stIn);
+	int insertStInDetail(StInDetailDto stInDetail);
+	int updateStIn(StockInDto stIn);
+	int deleteStInDetailByInCode(String inCode);
 
 }

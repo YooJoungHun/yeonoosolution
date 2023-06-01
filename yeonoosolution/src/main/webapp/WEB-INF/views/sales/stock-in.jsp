@@ -83,7 +83,7 @@
 	min-width: 70px;
 }
 
-.stock-in-code {
+.st-in-code {
 	min-width: 110px;
 }
 .order-code {
@@ -190,6 +190,9 @@
 .td-hidden {
 	visibility: hidden;
 }
+.change-td {
+	background-color: #e6f2ff;
+}
 </style>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
 </head>
@@ -234,7 +237,7 @@
 							<th class="order-number"></th>
 							<th class="order-radio"></th>
 							<th class="order-status">상태</th>
-							<th class="stock-in-code">입고 번호</th><!--  -->
+							<th class="st-in-code">입고 번호</th><!--  -->
 							<th class="order-date">입고일자</th>
 							<th class="order-code">발주 번호</th>
 							<th class="customer-code">거래처코드</th>
@@ -421,7 +424,7 @@
 	$('#order-save-btn').click(function(){
 		let saveOrderTr = $('.order-radio input[type="radio"]:checked').closest('tr');
 		console.log("saveOrderTr.find('.order-code').text() -> "+ saveOrderTr.find('.order-code').text());
-		if(saveOrderTr.find('.order-code').text() == '' && confirm("발주서를 저장하시겠습니까?")){
+		if(saveOrderTr.find('.st-in-code').text() == '' && confirm("입고서를 저장하시겠습니까?")){
 
 			let ordernullCheck = true;
 			saveOrderTr.find('.change-td').each(function() {
@@ -433,34 +436,30 @@
 		  		}
 			});
 			if (!ordernullCheck) {
-			  	alert("선택하신 발주서에 필수 작성 항목이 작성되지 않았습니다. 다시 확인해주세요.");
+			  	alert("선택하신 입고서에 필수 작성 항목이 작성되지 않았습니다. 다시 확인해주세요.");
 			  	return;
 			}
-			let order = {
+			let stockIn = {
+				orderCode : saveOrderTr.find('.order-code').text(),
 				companyCode : "COMPANY1",
 				customerCode : saveOrderTr.find('.customer-code').text(),
-				receiveOrderType : saveOrderTr.find('.receive-order-type').text(),
-				orderDate : saveOrderTr.find('.order-date').text(),
-				orderEmpid : "bsm",
-				deliveryPlan : saveOrderTr.find('.delivery-plan').text(),
-				dueDate : saveOrderTr.find('.due-date').text(),
-				memo : saveOrderTr.find('.memo').text(),
+				inDate : saveOrderTr.find('.order-date').text(),
 				regUser : "bsm",
-				updateUser : "bsm"
+				updateUser : "bsm",
+				memo : saveOrderTr.find('.memo').text()
 			};
-			console.log(order);
+			console.log(stockIn);
 			
-			let orderDetails = [];
+			let stOInDetails = [];
 			$('.order-detail-table-tr-area').each(function(){
 				let orderDetailTr = $(this);
-				let orderDetail = { 
+				let stInDetail = { 
 						sorder : $(this).find('.item-sorder').text(),
+						whCode : $(this).find('.wh-code').text(),
 						itemCode : $(this).find('.item-code').text(),
-						quantity : $(this).find('.quantity').text(),
-						price : $(this).find('.item-price').text(),
-						amount : $(this).find('.amount').text(),
+						inQuantity : $(this).find('.quantity').text(),
+						inPrice : $(this).find('.item-price').text(),
 						memo : $(this).find('.memo').text(),
-						itemStockUnit : $(this).find('.item-stock-unit').text()
 				};
 				orderDetailTr.find('.change-td').each(function() {
 				  	let text = $(this).text().trim();
@@ -471,12 +470,12 @@
 			  		}
 				});
 				if (!ordernullCheck) {
-				  	alert("선택하신 발주서 세부항목 필수 작성 항목이 작성되지 않았습니다. 다시 확인해주세요.");
+				  	alert("선택하신 입고서 세부항목 필수 작성 항목이 작성되지 않았습니다. 다시 확인해주세요.");
 				  	return;
 				}
-				orderDetails.push(orderDetail);
+				stOInDetails.push(stInDetail);
 			});
-			console.log(orderDetails);
+			console.log(stOInDetails);
 			
 			$.ajax({
 				url : "/pm/st-in-add",
@@ -484,16 +483,16 @@
 				dataType : "TEXT",
 				contentType: "application/json",
 				data: JSON.stringify({
-			        order: order,
-			        orderDetails: orderDetails
+					stockIn : stockIn,
+					stOInDetails : stOInDetails
 			    }),
 				success : function(mag){
 					alert(mag);
 					orderList();
 				}
 			});
-		}else if(saveOrderTr.find('.order-code').text() != '' && confirm("발주서를 수정하시겠습니까?")){
-			let orderCode = saveOrderTr.find('.order-code').text();
+		}else if(saveOrderTr.find('.st-in-code').text() != '' && confirm("입고서를 수정하시겠습니까?")){
+			let stInCode = saveOrderTr.find('.st-in-code').text();
 			let ordernullCheck = true;
 			saveOrderTr.find('.change-td').each(function() {
 			  	let text = $(this).text().trim();
@@ -507,33 +506,29 @@
 			  	alert("선택하신 발주서에 필수 작성 항목이 작성되지 않았습니다. 다시 확인해주세요.");
 			  	return;
 			}
-			let order = {
+			let stockIn = {
+				inCode : saveOrderTr.find('.st-in-code').text(),
 				orderCode : saveOrderTr.find('.order-code').text(),
 				companyCode : "COMPANY1",
 				customerCode : saveOrderTr.find('.customer-code').text(),
-				receiveOrderType : saveOrderTr.find('.receive-order-type').text(),
-				orderDate : saveOrderTr.find('.order-date').text(),
-				orderEmpid : "bsm",
-				deliveryPlan : saveOrderTr.find('.delivery-plan').text(),
-				dueDate : saveOrderTr.find('.due-date').text(),
-				memo : saveOrderTr.find('.memo').text(),
+				inDate : saveOrderTr.find('.order-date').text(),
 				regUser : "bsm",
-				updateUser : "bsm"
+				updateUser : "bsm",
+				memo : saveOrderTr.find('.memo').text()
 			};
-			console.log(order);
+			console.log(stockIn);
 			
-			let orderDetails = [];
+			let stInDetails = [];
 			$('.order-detail-table-tr-area').each(function(){
 				let orderDetailTr = $(this);
-				let orderDetail = { 
-					orderDetailCode : orderCode,
+				let stInDetail = { 
+					inCode : saveOrderTr.find('.st-in-code').text(),
 					sorder : $(this).find('.item-sorder').text(),
+					whCode : $(this).find('.wh-code').text(),
 					itemCode : $(this).find('.item-code').text(),
-					quantity : $(this).find('.quantity').text(),
-					price : $(this).find('.item-price').text(),
-					amount : $(this).find('.amount').text(),
+					inQuantity : $(this).find('.quantity').text(),
+					inPrice : $(this).find('.item-price').text(),
 					memo : $(this).find('.memo').text(),
-					itemStockUnit : $(this).find('.item-stock-unit').text()
 				};
 				orderDetailTr.find('.change-td').each(function() {
 				  	let text = $(this).text().trim();
@@ -547,18 +542,18 @@
 				  	alert("선택하신 발주서 세부항목 필수 작성 항목이 작성되지 않았습니다. 다시 확인해주세요.");
 				  	return;
 				}
-				orderDetails.push(orderDetail);
+				stInDetails.push(stInDetail);
 			});	
-			console.log(orderDetails);
+			console.log(stInDetails);
 			
 			$.ajax({
-				url : "/pm/order-modify",
+				url : "/pm/st-in-modify",
 				type : "POST",
 				dataType : "TEXT",
 				contentType: "application/json",
 				data: JSON.stringify({
-			        order: order,
-			        orderDetails: orderDetails
+					stockIn : stockIn,
+					stInDetails : stInDetails
 			    }),
 				success : function(mag){
 					alert(mag);
@@ -672,7 +667,7 @@
 					  .append(itemStockUnit).append(quantity).append(price).append(amount).append(memo);
 		$('#order-detail-list-table tbody').append(orderDetailRow);
 	}
-	// 발주서 세부항목 불러오기
+	// 입고서 세부항목 불러오기
 	function orderDetailList(orderCode){
 		if(orderCode == radioOrderCode){
 			radioOrderCode = null;
@@ -717,7 +712,7 @@
 		let orderNumber = $('<td>').addClass('order-number').text(index);
 		let orderRadio = $('<td>').addClass('order-radio').append($("<input type='radio' class='order-radio-select' value='" + order.inCode +"' name='chk_info'>"));
 		let orderStatus = $('<td>').addClass('order-status').text(order.inType);
-		let inCode = $('<td>').addClass('stock-in-code').text(order.inCode);/*  */
+		let inCode = $('<td>').addClass('st-in-code').text(order.inCode);/*  */
 		let orderDate = $('<td>').addClass('order-date change-td').text(order.inDate);
 		let orderCode = $('<td>').addClass('order-code').text(order.orderCode);/*  */
 		let customerCode = $('<td>').addClass('customer-code change-td').text(order.customerCode);
@@ -847,16 +842,14 @@
 	function orderList(){
 		let orderDate = $('#search-order-day').val();
 		let customerCode = $('#search-customer-code').val();
-		let orderEmpid = $('#order-empid').val();
 		$.ajax({
 			url: "/pm/stock-in-list",
 			type : "GET",
 			dataType : "JSON",
 			data : { 
 				orderDate : orderDate,
-				customerCode : customerCode,
-				orderEmpid : orderEmpid
-				   },
+				customerCode : customerCode
+			},
 			success : function(orderList){
 				$('#order-list-table tbody').empty();
 				$('#order-detail-list-table tbody').empty();

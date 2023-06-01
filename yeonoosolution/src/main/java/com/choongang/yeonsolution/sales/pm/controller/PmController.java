@@ -109,7 +109,6 @@ public class PmController {
     @GetMapping("/stock-in/{inCode}/details")
     @ResponseBody
     public List<StInDetailDto> stockInDetailListByOrderCode(@PathVariable String inCode){
-    	///////////////////////////////
     	List<StInDetailDto> stockInDetailList = pmService.findStockInDetailByInCode(inCode);
     	return stockInDetailList;
     }
@@ -133,5 +132,12 @@ public class PmController {
     public String stInAdd(@RequestBody StInDataDto stInData) {
         String resultMsg = pmService.addStIn(stInData);
         return resultMsg;
+    }
+    
+    @PostMapping("/st-in-modify")
+    @ResponseBody
+    public String stInSave(@RequestBody StInDataDto stInData) {
+    	String resultMsg = pmService.modifyStIn(stInData);
+    	return resultMsg;
     }
 }
