@@ -83,6 +83,7 @@
 		<collection	property="orders"				resultMap="OrdersResultMap"/>
 		<collection	property="item"				resultMap="ItemResultMap"/>
 	</resultMap>
+	<!-- WO mapper -->
 	<select id="selectWo" resultMap="WoResultMap">
 		SELECT wo.*, wh.*, orders.*, item.*
 		FROM WO wo LEFT OUTER JOIN WH wh ON (wo.WH_CODE = wh.WH_CODE)
@@ -165,5 +166,13 @@
 	<select id="selectOneWo" parameterType="java.lang.String" resultMap="WoResultMap">
 		SELECT * FROM WO
 		WHERE WORK_ORDER_CODE = #{workOrderCode}
+	</select>
+	<!-- WH mapper -->
+	<select id="selectWh" parameterType="java.lang.String" resultMap="WhResultMap">
+		SELECT * FROM WH WHERE WH_CODE = #{whCode}
+	</select>
+	<!-- Item mapper -->
+	<select id="selectItem" parameterType="java.lang.String" resultMap="ItemResultMap">
+		SELECT * FROM ITEM WHERE ITEM_CODE = #{itemCode}
 	</select>
 </mapper>
