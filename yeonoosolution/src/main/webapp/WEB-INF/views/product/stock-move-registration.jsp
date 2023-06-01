@@ -494,12 +494,12 @@
 			});
 			
 			// 선택한 행을 저장할 변수
-			
+			let selectedRow;
 			// 제품코드 모달
 			$(document).on('dblclick', '.stockMoveDetailTable .itemCode', function(){
 				if($(this).parents('tr').data('status') === 'add'){
 					$('#itemModal').modal('show');
-					y = $(this).closest('tr');  // 선택한 행을 저장
+					selectedRow = $(this).closest('tr');  // 선택한 행을 저장
 				}
 			});
 			
