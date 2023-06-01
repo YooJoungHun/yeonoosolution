@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.choongang.yeonsolution.sales.om.dao.AOMDao;
-import com.choongang.yeonsolution.sales.om.domain.OrdersAOMDto;
+import com.choongang.yeonsolution.sales.om.domain.OMOrdersAOMDto;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,8 +23,8 @@ public class AOMDaoImpl implements AOMDao {
 	}
 
 	@Override
-	public List<OrdersAOMDto> selectReceiveOrderListByCompanyCode() {
-		List<OrdersAOMDto> receiveOrderList = null;
+	public List<OMOrdersAOMDto> selectReceiveOrderListByCompanyCode() {
+		List<OMOrdersAOMDto> receiveOrderList = null;
 		
 		try {
 			receiveOrderList = sqlSession.selectList("selectReceiveOrderListByCompanyCode");
@@ -36,8 +36,8 @@ public class AOMDaoImpl implements AOMDao {
 	}
 
 	@Override
-	public List<OrdersAOMDto> selectSemiManufacturesListByCompanyCode(String orderCode) {
-		List<OrdersAOMDto> semiManufacturesList = null;
+	public List<OMOrdersAOMDto> selectSemiManufacturesListByCompanyCode(String orderCode) {
+		List<OMOrdersAOMDto> semiManufacturesList = null;
 		
 		try {
 			semiManufacturesList = sqlSession.selectList("selectSemiManufacturesListByCompanyCode", orderCode);

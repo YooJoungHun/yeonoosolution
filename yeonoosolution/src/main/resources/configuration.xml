@@ -31,11 +31,11 @@
   		<typeAlias type="com.choongang.yeonsolution.product.wo.domain.Company" alias="WOCompany"/>
       
       <!-- 수주서 관리 -->
-      	<typeAlias alias="OMOrdersDto" type="com.choongang.yeonsolution.sales.om.domain.OrdersDto"/>
-  		<typeAlias alias="OMOrdersDetailDto" type="com.choongang.yeonsolution.sales.om.domain.OrdersDetailDto"/>
-  		<typeAlias alias="OMOrdersCompanyDto" type="com.choongang.yeonsolution.sales.om.domain.OrdersCompanyDto"/>
-  		<typeAlias alias="OMOrdersItemDto" type="com.choongang.yeonsolution.sales.om.domain.OrdersItemDto"/>
-  		<typeAlias alias="OMOrdersAOMDto" type="com.choongang.yeonsolution.sales.om.domain.OrdersAOMDto"/>
+      	<typeAlias alias="OMOrdersDto" type="com.choongang.yeonsolution.sales.om.domain.OMOrdersDto"/>
+  		<typeAlias alias="OMOrdersDetailDto" type="com.choongang.yeonsolution.sales.om.domain.OMOrdersDetailDto"/>
+  		<typeAlias alias="OMOrdersCompanyDto" type="com.choongang.yeonsolution.sales.om.domain.OMOrdersCompanyDto"/>
+  		<typeAlias alias="OMOrdersItemDto" type="com.choongang.yeonsolution.sales.om.domain.OMOrdersItemDto"/>
+  		<typeAlias alias="OMOrdersAOMDto" type="com.choongang.yeonsolution.sales.om.domain.OMOrdersAOMDto"/>
   	  
   	  <!-- 제품 등록/단가/Bom 관리 -->
   		<typeAlias alias="IMIItemDto" type="com.choongang.yeonsolution.standard.imi.domain.IMIItemDto"/>
