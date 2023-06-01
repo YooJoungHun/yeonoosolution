@@ -25,7 +25,6 @@ public class SIMController {
 
 	@GetMapping(value = "/")
 	public String StIn(StInDto stInDto, Model model) {
-		System.err.println(stInDto);
 		List<StInDto> stInList = simService.stInList(stInDto);
 		model.addAttribute("stInList", stInList);
 		return "product/st-in";

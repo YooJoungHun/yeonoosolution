@@ -6,6 +6,7 @@ import com.choongang.yeonsolution.product.sim.domain.StInDto;
 
 public interface SIMService {
 
+	// 양동균
 	List<StInDto> stInList();
 	List<StInDto> stInList(StInDto stInDto);
 	void modifyStIn(StInDto stInDto);

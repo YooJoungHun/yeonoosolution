@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 public class SIMServiceImpl implements SIMService {
 	private final SIMDao simDao;
 	
+	// 양동균
 	@Override
 	public List<StInDto> stInList() {return simDao.findStIn(); }
 	@Override

@@ -24,6 +24,8 @@
 			
 			<div class="stock-in-list">
 				<div class="stock-in-item">
+					<input id="updateDate" name="updateDate" type="date" hidden="1">
+					<input id="updateUser" name="updateUser" type="text" hidden="1">
 					<div class="item-title">
 						<label for="inCode">입고번호</label>
 					</div>
@@ -68,9 +70,10 @@
 				</div>
 				<div class="stock-in-item">
 					<div class="item-title">
-						<label for="inType">입고 유형</label>
+						<label for="orderType">입고 유형</label>
 					</div>
 					<div class="item-content">
+						<input type="hidden" name="inType" id="inType">
 						<select id="orderType" name="orderType" onchange="orderTypeEvent(this)">
 							<option value="">선택</option>
 							<option value="1">구매입고</option>
@@ -108,9 +111,6 @@
 			</div>
 		</section>
 			
-			
-			
-			
 		<section class="content-body">
 			<div class="stock-in-detail-list">
 				
@@ -120,9 +120,9 @@
 							<th>
 								<div class="item-title">순번</div>
 							</th>
-							<th onclick="$('.checkBox').prop('checked', (_, checked)=> {return !checked;});">
+							<th>
 								<div class="item-title">
-									<input class="checkBox" type="checkbox">
+									<input class="checkBox" type="checkbox" onclick="$('.checkBox').prop('checked', (_, checked)=> {return !checked;});">
 								</div>
 							</th>
 							<th>
@@ -192,7 +192,7 @@
 						<c:forEach var="stIn" items="${stInList}" varStatus="status">
 							<tr class="stInRow">
 								<td><div>${status.index+1}</div></td>
-								<td><div><input class="checkBox" type="checkbox"></div></td>
+								<td><input class="checkBox" type="checkbox"></td>
 								<td class="inType">${stIn.inType}</td>
 								<td class="orderType">${stIn.orderCode != null? '구매입고':'기타입고'}</td>
 								<td class="inDate">${stIn.inDate}</td>

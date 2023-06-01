@@ -14,20 +14,20 @@ import lombok.RequiredArgsConstructor;
 public class SIMDaoImpl implements SIMDao {
 	private final SqlSession session;
 
+	
+	// 양동균
 	@Override
 	public List<StInDto> findStIn() {
 		List<StInDto> findStIn = null;
 		findStIn = session.selectList("selectStIn");
 		return findStIn;
 	}
-
 	@Override
 	public List<StInDto> findStIn(StInDto stInDto) {
 		List<StInDto> findStIn = null;
 		findStIn = session.selectList("selectStIn", stInDto);
 		return findStIn;
 	}
-
 	@Override
 	public void updateStIn(StInDto stInDto) {session.update("updateStIn", stInDto);	}
 	@Override

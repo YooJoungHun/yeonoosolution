@@ -6,6 +6,7 @@ import com.choongang.yeonsolution.product.sim.domain.StInDto;
 
 public interface SIMDao {
 	
+	// 양동균
 	List<StInDto> findStIn();
 	List<StInDto> findStIn(StInDto stInDto);
 	void updateStIn(StInDto stInDto);

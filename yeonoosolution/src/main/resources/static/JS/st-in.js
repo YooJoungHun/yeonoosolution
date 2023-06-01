@@ -7,11 +7,17 @@ let previousRow, row, stIn;
 $(()=> {
 	$(document).on('click', '.stInRow', tableRowClick);
 	$(document).on('dblclick', '.stInDetailRow', openModal);
+	$(document).on('click', '.myModal', closeModal);
 });
 
 // 모달 창
-function openModal(e){
+function openModal(){
 	$('.myModal').css('display', 'flex');
+}
+function closeModal(e){
+	if($(e.target).is('.myModal')){
+	$('.myModal').css('display', 'none');
+	}
 }
 
 // 테이블 행 클릭 이벤트
@@ -20,6 +26,7 @@ function tableRowClick(e){
 	stIn = $(e.target).closest('tr');
 	let inDate = formatDateMinus(new Date(stIn.find('.inDate').text()));
 	let regDate = formatDateMinus(new Date(stIn.find('.regDate').text()));
+	let updateDate = formatDateMinus(new Date(stIn.find('.updateDate').text()));
 	
 	let orderType = stIn.find('.orderType').text();
 	if(orderType == '구매입고'){
@@ -29,15 +36,16 @@ function tableRowClick(e){
 		$('#orderType').val(0);
 	}
 
-	$('#inType').val(stIn.find('.inType').text());
 	$('#inCode').val(stIn.find('.inCode').text());
-	$('#inType').val(stIn.find('.inType').text());
 	$('#orderCode').val(stIn.find('.orderCode').text());
-	$('#inDate').val(inDate);
 	$('#customerCode').val(stIn.find('.customerCode').text());
-	$('#companyName').val(stIn.find('.companyName').text());
-	$('#regUser').val(stIn.find('.regUser').text());
+	$('#inDate').val(inDate);
 	$('#regDate').val(regDate);
+	$('#regUser').val(stIn.find('.regUser').text());
+	$('#updateUser').val(stIn.find('.updateUser').text());
+	$('#updateDate').val(updateDate);
+	$('#inType').val(stIn.find('.inType').text());
+	$('#companyName').val(stIn.find('.companyName').text());
 	$('#memo').val(stIn.find('.memo').text());
 	
 	$('#inCode, #orderCode, #orderType').attr('disabled', true);
@@ -50,11 +58,12 @@ function tableRowClick(e){
 		$(`.${previousRow}`).hide();
 		previousCheckBox.prop('checked', false);
 	}
-
+	
 	$(`.${row}`).toggle();
-	checkBox.prop('checked', (_, checked)=> {return !checked;});
 	
-	
+	if(!$(e.target).is('input[type="checkbox"]'))
+		checkBox.prop('checked', (_, checked)=> {return !checked;});
+
 	if(previousRow != null || previousRow != row){
 		previousRow = row;
 		previousCheckBox = checkBox;
@@ -82,13 +91,16 @@ function orderTypeEvent(select){
 function getParams() {
 	const params = {
 		inCode: $('#inCode').val(),
-		orderType: $('#orderType').val(),
 		orderCode: $('#orderCode').val(),
-		inDate: $('#inDate').val(),
+		orderType: $('#orderType').val(),
 		customerCode: $('#customerCode').val(),
-		companyName: $('#companyName').val(),
-		regUser: $('#regUser').val(),
+		inDate: $('#inDate').val(),
 		regDate: $('#regDate').val(),
+		regUser: $('#regUser').val(),
+		updateUser: $('#updateUser').val(),
+		updateDate: $('#updateDate').val(),
+		inType: $('#inType').val(),
+		companyName: $('#companyName').val(),
 		memo: $('#memo').val()
 	};
 	return params;

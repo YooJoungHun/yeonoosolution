@@ -3,7 +3,7 @@
 
 <mapper namespace="com.choongang.yeonsolution.product.sim.domain.StInDtoMapper">
 
- 	<resultMap  id="stInDtoMap" type="StInDto">
+ 	<resultMap  id="stInDtoMap" type="SIMStInDto">
 		<id 	property="inCode" 				column="in_code"/>
 		<result property="orderCode" 			column="order_code"/>
 		<result property="companyCode" 			column="company_code"/>
@@ -22,7 +22,7 @@
 		<collection property="companyDto"		column="customerCode" ofType="CompanyDto" 	resultMap="companyDtoMap"/>	
 	</resultMap>
 	
-	<resultMap  id="stInDetailDtoMap" type="StInDetailDto">
+	<resultMap  id="stInDetailDtoMap" type="SIMStInDetailDto">
 	    <id		property="inCode" 		column="in_code"/>
 	    <id		property="sorder" 		column="sorder"/>
 	    <result property="whCode" 		column="wh_code"/>
@@ -34,7 +34,7 @@
 		<collection property="whStockDetailDto" column="itemCode" columnPrefix="WSD_" ofType="List" resultMap="WhStockDetailDtoMap"/>
 	</resultMap>
 	
-	<resultMap id="whDtoMap" type="WhDto">
+	<resultMap id="whDtoMap" type="SIMWhDto">
 		<id 	property="whCode" 		column="wh_code"/>
 		<result property="companyCode" 	column="company_code"/>
 		<result property="whName" 		column="wh_name"/>
@@ -46,7 +46,7 @@
 		<result property="memo" 		column="memo"/>
 	</resultMap>
 	
-	<resultMap id="WhStockDetailDtoMap" type="WhStockDetailDto">
+	<resultMap id="WhStockDetailDtoMap" type="SIMWhStockDetailDto">
 		<id 	property="whCode" 		column="wh_code"/>
 		<id 	property="itemCode" 	column="item_code"/>
 		<result property="checkDate" 	column="check_date"/>
@@ -59,7 +59,7 @@
 		<collection property="itemDto"	column="itemCode" columnPrefix="I_" ofType="ItemDto" 	resultMap="itemDtoMap"/>
 	</resultMap>
 		
-	<resultMap id="itemDtoMap" type="ItemDto">
+	<resultMap id="itemDtoMap" type="SIMItemDto">
 		<id 	property="itemCode" 	column="item_code"/>
 		<result property="whCode" 		column="wh_code"/>
 		<result property="companyCode" 	column="company_code"/>
@@ -77,7 +77,7 @@
 		<result property="updateDate" 	column="update_date"/>
 	</resultMap>
 	
-	<resultMap id="ordersDtoMap" type="OrdersDto">
+	<resultMap id="ordersDtoMap" type="SIMOrdersDto">
 		<id 	property="orderCode" 		column="order_code"/>
 		<result property="companyCode" 		column="company_code"/>
 		<result property="customerCode" 	column="customer_code"/>
@@ -96,7 +96,7 @@
 		<collection property="ordersDetailDto" 	column="orderCode" columnPrefix="ORD_" ofType="OrdersDetailDto" resultMap="ordersDetailDtoMap"/>
 	</resultMap>
 	
-	<resultMap id="ordersDetailDtoMap" type="OrdersDetailDto">
+	<resultMap id="ordersDetailDtoMap" type="SIMOrdersDetailDto">
 		<id 	property="orderDetailCode" 	column="order_detail_code"/>
 		<result property="sorder" 		column="sorder"/>
 		<result property="itemCode" 	column="item_code"/>
@@ -108,7 +108,7 @@
 		<result property="endYn" 		column="end_yn"/>
 	</resultMap>
 	
-	<resultMap id="companyDtoMap" type="CompanyDto">
+	<resultMap id="companyDtoMap" type="SIMCompanyDto">
 		<id 	property="companyCode" 	column="company_code"/>
 		<result property="businessType" column="business_type"/>
 		<result property="orderType" 	column="order_type"/>
@@ -127,7 +127,7 @@
 	
 	
 	
-	<select id="selectStIn" resultMap="stInDtoMap" parameterType="StInDto">
+	<select id="selectStIn" resultMap="stInDtoMap" parameterType="SIMStInDto">
 		SELECT
 		SI.*,
 		C.COMPANY_NAME COMPANY_NAME,
@@ -157,7 +157,7 @@
 				AND SI.CUSTOMER_CODE = #{customerCode}
 			</when>
 			<when test="inDate != null and inDate != ''">
-				AND SI.IN_DATE = #{inDate}
+				AND SI.zIN_DATE = #{inDate}
 			</when>
 			<when test="regDate != null">
 				AND TO_DATE(SI.REG_DATE,'yyyy/MM/dd') = TO_DATE(#{regDate, jdbcType=DATE},'yyyy/MM/dd')
@@ -172,17 +172,30 @@
 		</choose>
 		ORDER BY TO_NUMBER(REPLACE(SI.IN_CODE, 'IN_CODE', ''))ASC, SID.SORDER ASC
 	</select>
-	<update id="updateStIn" parameterType="StInDto">
+	<update id="updateStIn" parameterType="SIMStInDto">
 		UPDATE 	ST_IN
-		SET 	IN_TYPE = '확정'		
+		SET 	ORDER_CODE 			= #{orderCode, 			jdbcType=VARCHAR},
+				CUSTOMER_CODE 		= #{customerCode, 		jdbcType=VARCHAR},
+				IN_DATE 			= #{inDate, 			jdbcType=VARCHAR},
+				REG_DATE 			= #{regDate, 			jdbcType=DATE},
+				REG_USER 			= #{regUser, 			jdbcType=VARCHAR},
+				UPDATE_USER 		= #{updateUser, 		jdbcType=VARCHAR},
+				UPDATE_DATE 		= #{updateDate, 		jdbcType=DATE},
+				IN_TYPE 			= #{inType, 			jdbcType=VARCHAR},
+				MEMO 				= #{memo, 				jdbcType=VARCHAR}
 		WHERE	IN_CODE = #{inCode}
 	</update>
-	<update id="updateStInFix" parameterType="StInDto">
+	<update id="updateStInFix" parameterType="SIMStInDto">
 		UPDATE	ST_IN
 		SET 	IN_TYPE = '확정'
 		WHERE	IN_CODE = #{inCode}
 	</update>
-	<update id="updateStInCancel" parameterType="StInDto">
+	<update id="updateStInCancel" parameterType="SIMStInDto">
+		UPDATE	ST_IN
+		SET 	IN_TYPE = '저장'
+		WHERE	IN_CODE = #{inCode}
+	</update>
+	<update id="deleteStIn" parameterType="SIMStInDto">
 		UPDATE	ST_IN
 		SET 	IN_TYPE = '저장'
 		WHERE	IN_CODE = #{inCode}
