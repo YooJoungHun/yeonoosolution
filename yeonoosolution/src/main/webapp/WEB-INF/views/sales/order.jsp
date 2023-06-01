@@ -186,8 +186,8 @@
 </head>
 <body>
 	<div id="contain">
-			<input type="button" value="구매 발주" onclick="location.href='/pm/order'">
-			<input type="button" value="구매 입고 등록" onclick="location.href='/pm/stock-in'">
+			<input type="button" value="구매 발주" onclick="location.href='/sales/order'">
+			<input type="button" value="구매 입고 등록" onclick="location.href='/sales/stock-in'">
 			<input type="button" value="구매 내역조회">
 		<div id="content">
 			<div id="btn-div">
@@ -418,16 +418,13 @@
 			  	return;
 			}
 			let order = {
-				companyCode : "COMPANY1",
 				customerCode : saveOrderTr.find('.customer-code').text(),
 				receiveOrderType : saveOrderTr.find('.receive-order-type').text(),
 				orderDate : saveOrderTr.find('.order-date').text(),
-				orderEmpid : "bsm",
+				orderEmpid : saveOrderTr.find('.order-empid').text(),
 				deliveryPlan : saveOrderTr.find('.delivery-plan').text(),
 				dueDate : saveOrderTr.find('.due-date').text(),
-				memo : saveOrderTr.find('.memo').text(),
-				regUser : "bsm",
-				updateUser : "bsm"
+				memo : saveOrderTr.find('.memo').text()
 			};
 			console.log(order);
 			
@@ -460,7 +457,7 @@
 			console.log(orderDetails);
 			
 			$.ajax({
-				url : "/pm/order-add",
+				url : "/sales/order-add",
 				type : "POST",
 				dataType : "TEXT",
 				contentType: "application/json",
@@ -490,16 +487,13 @@
 			}
 			let order = {
 				orderCode : saveOrderTr.find('.order-code').text(),
-				companyCode : "COMPANY1",
 				customerCode : saveOrderTr.find('.customer-code').text(),
 				receiveOrderType : saveOrderTr.find('.receive-order-type').text(),
 				orderDate : saveOrderTr.find('.order-date').text(),
-				orderEmpid : "bsm",
+				orderEmpid : saveOrderTr.find('.order-empid').text(),
 				deliveryPlan : saveOrderTr.find('.delivery-plan').text(),
 				dueDate : saveOrderTr.find('.due-date').text(),
-				memo : saveOrderTr.find('.memo').text(),
-				regUser : "bsm",
-				updateUser : "bsm"
+				memo : saveOrderTr.find('.memo').text()
 			};
 			console.log(order);
 			
@@ -533,7 +527,7 @@
 			console.log(orderDetails);
 			
 			$.ajax({
-				url : "/pm/order-modify",
+				url : "/sales/order-modify",
 				type : "POST",
 				dataType : "TEXT",
 				contentType: "application/json",
@@ -552,7 +546,7 @@
 	// 제품 검색 데이터 받기
 	function itemSearch(search){
 		$.ajax({
-			url : "/pm/item-list",
+			url : "/sales/item-list",
 			type : "GET",
 			dataType : "JSON",
 			data : {search :search.toUpperCase()},
@@ -577,7 +571,7 @@
 	// 회사 검색 데이터 받기
 	function companySearch(search){
 		$.ajax({
-			url : "/pm/customer-list",
+			url : "/sales/customer-list",
 			type : "GET",
 			dataType : "JSON",
 			data : {search :search.toUpperCase()},
@@ -635,7 +629,7 @@
 			return;
 		}
 		$.ajax({
-			url: "/pm/order/" + orderCode +"/details",
+			url: "/sales/order/" + orderCode +"/details",
 			type : "GET",
 			dataType : "JSON",
 			success : function(orderDetailList){
@@ -816,7 +810,7 @@
 		let customerCode = $('#search-customer-code').val();
 		let orderEmpid = $('#order-empid').val();
 		$.ajax({
-			url: "/pm/order-list",
+			url: "/sales/order-list",
 			type : "GET",
 			dataType : "JSON",
 			data : { startDate : startDate,
@@ -890,10 +884,12 @@
 	function orderUpdate(column, data){
 		let orderCode = radioOrderCode;
 		$.ajax({
-			url: "/pm/order/" + orderCode,
+			url: "/sales/order/" + orderCode,
 			type : "PATCH",
-			data : {column : column,
-					data : data},
+			data : {
+				orderCode : orderCode,
+				column : column,
+				data : data},
 			dataType : "TEXT",
 			success : function(msg){
 				console.log(msg);
