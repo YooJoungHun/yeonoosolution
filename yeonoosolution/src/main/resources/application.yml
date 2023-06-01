@@ -17,8 +17,27 @@ spring:
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
-        
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
+
+  
+  devtools:
+    restart:
+      enabled: false
+      
 #Mybatis     
 mybatis :
   config-location: classpath:configuration.xml
-  mapper-locations: classpath:mappers/**/*.xml
+  mapper-locations: classpath:mappers/*.xml
+  
+#file size
+servlet:
+  multipart:
+    max-file-size: 10MB
+    max-request-size: 10MB

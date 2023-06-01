@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.choongang.yeonsolution.product.sim.domain.StInDtoMapper">
+
+ 	<resultMap  id="stInDtoMap" type="SIMStInDto">
+		<id 	property="inCode" 				column="in_code"/>
+		<result property="orderCode" 			column="order_code"/>
+		<result property="companyCode" 			column="company_code"/>
+		<result property="customerCode" 		column="customer_code"/>
+		<result property="beginEndInventory" 	column="begin_end_inventory"/>
+		<result property="inDate" 				column="in_date"/>
+		<result property="regDate" 				column="reg_date"/>
+		<result property="regUser" 				column="reg_user"/>
+		<result property="updateDate" 			column="update_date"/>
+		<result property="updateUser" 			column="update_user"/>
+		<result property="inType" 				column="in_type"/>
+		<result property="deleteStatus" 		column="delete_status"/>
+		<result property="memo" 				column="memo"/>
+		<collection property="stInDetailDto" 	column="inCode" columnPrefix="SID_"	 ofType="List" resultMap="stInDetailDtoMap"/>
+		<collection property="ordersDto" 		column="orderCode" columnPrefix="O_" ofType="OrdersDto" resultMap="ordersDtoMap"/>
+		<collection property="companyDto"		column="customerCode" ofType="CompanyDto" 	resultMap="companyDtoMap"/>	
+	</resultMap>
+	
+	<resultMap  id="stInDetailDtoMap" type="SIMStInDetailDto">
+	    <id		property="inCode" 		column="in_code"/>
+	    <id		property="sorder" 		column="sorder"/>
+	    <result property="whCode" 		column="wh_code"/>
+	    <result property="itemCode" 	column="item_code"/>
+	    <result property="inQuantity" 	column="in_quantity"/>
+	    <result property="inPrice" 		column="in_price"/>
+	    <result property="memo" 		column="memo"/>
+	    <collection property="whDto" 	column="whCode" columnPrefix="W_" ofType="WhDto" resultMap="whDtoMap"/>
+		<collection property="whStockDetailDto" column="itemCode" columnPrefix="WSD_" ofType="List" resultMap="WhStockDetailDtoMap"/>
+	</resultMap>
+	
+	<resultMap id="whDtoMap" type="SIMWhDto">
+		<id 	property="whCode" 		column="wh_code"/>
+		<result property="companyCode" 	column="company_code"/>
+		<result property="whName" 		column="wh_name"/>
+		<result property="regUser" 		column="reg_user"/>
+		<result property="regDate" 		column="reg_date"/>
+		<result property="updateUser" 	column="update_user"/>
+		<result property="updateDate" 	column="update_date"/>
+		<result property="useYn" 		column="use_yn"/>
+		<result property="memo" 		column="memo"/>
+	</resultMap>
+	
+	<resultMap id="WhStockDetailDtoMap" type="SIMWhStockDetailDto">
+		<id 	property="whCode" 		column="wh_code"/>
+		<id 	property="itemCode" 	column="item_code"/>
+		<result property="checkDate" 	column="check_date"/>
+		<result property="beginEndInventory" column="begin_end_inventory"/>
+		<result property="goodQuantity" column="good_quantity"/>
+		<result property="badQuantity" 	column="bad_quantity"/>
+		<result property="updateUser" 	column="update_user"/>
+		<result property="updateDate" 	column="update_date"/>
+		<result property="memo" column="memo"/>
+		<collection property="itemDto"	column="itemCode" columnPrefix="I_" ofType="ItemDto" 	resultMap="itemDtoMap"/>
+	</resultMap>
+		
+	<resultMap id="itemDtoMap" type="SIMItemDto">
+		<id 	property="itemCode" 	column="item_code"/>
+		<result property="whCode" 		column="wh_code"/>
+		<result property="companyCode" 	column="company_code"/>
+		<result property="itemName" 	column="item_name"/>
+		<result property="itemType" 	column="item_type"/>
+		<result property="stockUnit" 	column="stock_unit"/>
+		<result property="purchasePrice" column="purchase_price"/>
+		<result property="salesPrice" 	column="sales_price"/>
+		<result property="memo" 		column="memo"/>
+		<result property="startDate" 	column="start_date"/>
+		<result property="endDate" 		column="end_date"/>
+		<result property="regUser" 		column="reg_user"/>
+		<result property="regDate" 		column="reg_date"/>
+		<result property="updateUser" 	column="update_user"/>
+		<result property="updateDate" 	column="update_date"/>
+	</resultMap>
+	
+	<resultMap id="ordersDtoMap" type="SIMOrdersDto">
+		<id 	property="orderCode" 		column="order_code"/>
+		<result property="companyCode" 		column="company_code"/>
+		<result property="customerCode" 	column="customer_code"/>
+		<result property="receiveOrPlace" 	column="receive_or_place"/>
+		<result property="receiveOrderType" column="receive_order_type"/>
+		<result property="orderDate" 		column="order_date"/>
+		<result property="orderEmpId" 		column="order_emp_id"/>
+		<result property="deliveryPlan" 	column="delivery_plan"/>
+		<result property="orderStatus" 		column="order_status"/>
+		<result property="deuDate" 			column="deu_date"/>
+		<result property="memo" 			column="memo"/>
+		<result property="regDate" 			column="reg_date"/>
+		<result property="regUser" 			column="reg_user"/>
+		<result property="updateDate" 		column="update_date"/>
+		<result property="updateUser" 		column="update_user"/>
+		<collection property="ordersDetailDto" 	column="orderCode" columnPrefix="ORD_" ofType="OrdersDetailDto" resultMap="ordersDetailDtoMap"/>
+	</resultMap>
+	
+	<resultMap id="ordersDetailDtoMap" type="SIMOrdersDetailDto">
+		<id 	property="orderDetailCode" 	column="order_detail_code"/>
+		<result property="sorder" 		column="sorder"/>
+		<result property="itemCode" 	column="item_code"/>
+		<result property="quantity" 	column="quantity"/>
+		<result property="price" 		column="price"/>
+		<result property="amount" 		column="amount"/>
+		<result property="memo" 		column="memo"/>
+		<result property="itemStockUnit" column="item_stock_unit"/>
+		<result property="endYn" 		column="end_yn"/>
+	</resultMap>
+	
+	<resultMap id="companyDtoMap" type="SIMCompanyDto">
+		<id 	property="companyCode" 	column="company_code"/>
+		<result property="businessType" column="business_type"/>
+		<result property="orderType" 	column="order_type"/>
+		<result property="companyName" 	column="company_name"/>
+		<result property="businessCode" column="business_code"/>
+		<result property="ownerName" 	column="owner_name"/>
+		<result property="tel" 			column="tel"/>
+		<result property="address" 		column="address"/>
+		<result property="companyLogo" 	column="company_logo"/>
+		<result property="regDate" 		column="reg_date"/>
+		<result property="regUser" 		column="reg_user"/>
+		<result property="updateUser" 	column="update_user"/>
+		<result property="updateDate" 	column="update_date"/>
+		<result property="useYn" 		column="use_yn"/>
+	</resultMap>
+	
+	
+	
+	<select id="selectStIn" resultMap="stInDtoMap" parameterType="SIMStInDto">
+		SELECT
+		SI.*,
+		C.COMPANY_NAME COMPANY_NAME,
+		SID.IN_CODE, SID.IN_CODE SID_IN_CODE, SID.WH_CODE SID_WH_CODE, SID.ITEM_CODE SID_ITEM_CODE, SID.SORDER SID_SORDER, SID.IN_QUANTITY SID_IN_QUANTITY, SID.IN_PRICE SID_IN_PRICE, SID.MEMO SID_MEMO,
+		W.WH_CODE SID_W_WH_CODE, W.WH_NAME SID_W_WH_NAME, W.REG_USER SID_W_REG_USER, W.REG_DATE SID_W_REG_DATE, W.UPDATE_USER SID_W_UPDATE_USER, W.UPDATE_DATE SID_W_UPDATE_DATE, W.USE_YN SID_W_USE_YN, W.MEMO SID_W_MEMO,
+		WSD.WH_CODE SID_WSD_WH_CODE, WSD.ITEM_CODE SID_WSD_ITEM_CODE, WSD.ITEM_CODE SID_WSD_ITEM_CODE, WSD.UPDATE_USER SID_WSD_UPDATE_USER, WSD.UPDATE_DATE SID_WSD_UPDATE_DATE,
+		I.ITEM_CODE SID_WSD_I_ITEM_CODE, I.ITEM_NAME SID_WSD_I_ITEM_NAME, I.ITEM_TYPE SID_WSD_I_ITEM_TYPE, I.STOCK_UNIT SID_WSD_I_STOCK_UNIT, I.PURCHASE_PRICE SID_WSD_I_PURCHASE_PRICE, I.SALES_PRICE SID_WSD_I_SALES_PRICE, I.START_DATE SID_WSD_I_START_DATE, I.END_DATE SID_WSD_I_END_DATE, I.REG_USER SID_WSD_I_REG_USER, I.REG_DATE SID_WSD_I_REG_DATE, I.UPDATE_USER SID_WSD_I_UPDATE_USER, I.UPDATE_DATE SID_WSD_I_UPDATE_DATE, I.MEMO SID_WSD_I_MEMO,
+		O.ORDER_CODE O_ORDER_CODE, O.CUSTOMER_CODE O_CUSTOMER_CODE, O.RECEIVE_OR_PLACE O_RECEIVE_OR_PLACE, O.ORDER_DATE O_ORDER_DATE, O.ORDER_EMPID O_ORDER_EMPID, O.DELIVERY_PLAN O_DELIVERY_PLAN, O.ORDER_STATUS O_ORDER_STATUS, O.DUE_DATE O_DUE_DATE, O.REG_USER O_REG_USER, O.REG_DATE O_REG_DATE, O.UPDATE_USER O_UPDATE_USER, O.UPDATE_DATE O_UPDATE_DATE, ORD.SORDER O_ORD_SORDER, ORD.ITEM_CODE O_ORD_ITEM_CODE, ORD.QUANTITY O_ORD_QUANTITY, ORD.PRICE O_ORD_PRICE, ORD.AMOUNT O_ORD_AMOUNT, ORD.ITEM_STOCK_UNIT O_ORD_ITEM_STOCK_UNIT, ORD.END_YN O_ORD_END_YN
+		
+		FROM ST_IN SI
+		LEFT OUTER JOIN COMPANY C           ON SI.CUSTOMER_CODE = C.COMPANY_CODE
+		LEFT OUTER JOIN ORDERS O            ON SI.ORDER_CODE = O.ORDER_CODE
+		LEFT OUTER JOIN ORDERS_DETAIL ORD   ON O.ORDER_CODE = ORD.ORDER_DETAIL_CODE
+		LEFT OUTER JOIN ST_IN_DETAIL SID    ON SI.IN_CODE = SID.IN_CODE
+		LEFT OUTER JOIN WH W                ON SID.WH_CODE = W.WH_CODE
+		LEFT OUTER JOIN WH_STOCK_DETAIL WSD ON SID.ITEM_CODE = WSD.ITEM_CODE
+		LEFT OUTER JOIN ITEM I              ON WSD.ITEM_CODE = I.ITEM_CODE
+		WHERE SI.DELETE_STATUS LIKE 'N'
+		<choose>
+			<when test="inCode != null and inCode != ''">
+				AND SI.IN_CODE = #{inCode}
+			</when>
+			<when test="orderCode != null and orderCode != ''">
+				AND SI.ORDER_CODE = #{orderCode}
+			</when>
+			<when test="customerCode != null and customerCode != ''">
+				AND SI.CUSTOMER_CODE = #{customerCode}
+			</when>
+			<when test="inDate != null and inDate != ''">
+				AND SI.zIN_DATE = #{inDate}
+			</when>
+			<when test="regDate != null">
+				AND TO_DATE(SI.REG_DATE,'yyyy/MM/dd') = TO_DATE(#{regDate, jdbcType=DATE},'yyyy/MM/dd')
+			</when>
+			<when test="regUser != null and regUser != ''">
+				AND SI.REG_USER = #{regUser}
+			</when>
+			<when test="inType != null and inType != ''">
+				AND SI.IN_TYPE = #{inType}
+			</when>
+			<otherwise></otherwise>
+		</choose>
+		ORDER BY TO_NUMBER(REPLACE(SI.IN_CODE, 'IN_CODE', ''))ASC, SID.SORDER ASC
+	</select>
+	<update id="updateStIn" parameterType="SIMStInDto">
+		UPDATE 	ST_IN
+		SET 	ORDER_CODE 			= #{orderCode, 			jdbcType=VARCHAR},
+				CUSTOMER_CODE 		= #{customerCode, 		jdbcType=VARCHAR},
+				IN_DATE 			= #{inDate, 			jdbcType=VARCHAR},
+				REG_DATE 			= #{regDate, 			jdbcType=DATE},
+				REG_USER 			= #{regUser, 			jdbcType=VARCHAR},
+				UPDATE_USER 		= #{updateUser, 		jdbcType=VARCHAR},
+				UPDATE_DATE 		= #{updateDate, 		jdbcType=DATE},
+				IN_TYPE 			= #{inType, 			jdbcType=VARCHAR},
+				MEMO 				= #{memo, 				jdbcType=VARCHAR}
+		WHERE	IN_CODE = #{inCode}
+	</update>
+	<update id="updateStInFix" parameterType="SIMStInDto">
+		UPDATE	ST_IN
+		SET 	IN_TYPE = '확정'
+		WHERE	IN_CODE = #{inCode}
+	</update>
+	<update id="updateStInCancel" parameterType="SIMStInDto">
+		UPDATE	ST_IN
+		SET 	IN_TYPE = '저장'
+		WHERE	IN_CODE = #{inCode}
+	</update>
+	<update id="deleteStIn" parameterType="SIMStInDto">
+		UPDATE	ST_IN
+		SET 	IN_TYPE = '저장'
+		WHERE	IN_CODE = #{inCode}
+	</update>
+<!-- 	<select id="selectStIn" resultMap="stInDtoMap">
+		SELECT  *
+		FROM    ST_IN
+		LEFT OUTER JOIN(SELECT  SID.IN_CODE, SID.IN_CODE SID_IN_CODE, SID.WH_CODE SID_WH_CODE, SID.ITEM_CODE SID_ITEM_CODE, SID.SORDER SID_SORDER, SID.IN_QUANTITY SID_IN_QUANTITY, SID.IN_PRICE SID_IN_PRICE, SID.MEMO SID_MEMO, W.*
+		                FROM    ST_IN_DETAIL SID
+		                LEFT OUTER JOIN(SELECT          *
+		                                FROM           (SELECT W.WH_CODE, W.WH_CODE W_WH_CODE, W.WH_NAME W_WH_NAME, W.REG_USER W_REG_USER, W.REG_DATE W_REG_DATE, W.UPDATE_USER W_UPDATE_USER, W.UPDATE_DATE W_UPDATE_DATE, W.USE_YN W_USE_YN, W.MEMO W_MEMO
+		                                                FROM   WH W)
+		                                LEFT OUTER JOIN(SELECT 	WSD.WH_CODE, WSD.ITEM_CODE, WSD.WH_CODE WSD_WH_CODE, WSD.ITEM_CODE WSD_ITEM_CODE, WSD.UPDATE_USER WSD_UPDATE_USER, WSD.UPDATE_DATE WSD_UPDATE_DATE, ITEM_NAME I_ITEM_NAME, ITEM_TYPE I_ITEM_TYPE, STOCK_UNIT I_STOCK_UNIT, PURCHASE_PRICE I_PURCHASE_PRICE, SALES_PRICE I_SALES_PRICE, START_DATE I_START_DATE, END_DATE I_END_DATE, REG_USER I_REG_USER, REG_DATE I_REG_DATE, I.UPDATE_USER I_UPDATE_USER, I.UPDATE_DATE I_UPDATE_DATE, I.MEMO I_MEMO
+		                                                FROM 	WH_STOCK_DETAIL WSD
+		                                                LEFT OUTER JOIN ITEM I 
+		                                                ON      WSD.ITEM_CODE = I.ITEM_CODE
+		                                                AND     WSD.WH_CODE = I.WH_CODE) USING(WH_CODE))W
+		                ON      SID.WH_CODE = W.WH_CODE
+		                AND     SID.ITEM_CODE = W.ITEM_CODE)USING(IN_CODE)
+		LEFT OUTER JOIN(SELECT DISTINCT CUSTOMER_CODE, COMPANY_NAME
+		                FROM    ST_IN SI
+		                LEFT OUTER JOIN COMPANY C
+		                ON      SI.CUSTOMER_CODE = C.COMPANY_CODE)USING(CUSTOMER_CODE)
+		LEFT OUTER JOIN(SELECT  ORDER_CODE, O.ORDER_CODE O_ORDER_CODE, CUSTOMER_CODE O_CUSTOMER_CODE, RECEIVE_OR_PLACE, ORDER_DATE, ORDER_EMPID, DELIVERY_PLAN, ORDER_STATUS, DUE_DATE, O.REG_USER O_REG_USER, O.REG_DATE O_REG_DATE, O.UPDATE_USER O_UPDATE_USER, O.UPDATE_DATE O_UPDATE_DATE, ORD.SORDER ORD_SORDER, ORD.ITEM_CODE ORD_ITEM_CODE, ORD.QUANTITY ORD_QUANTITY, ORD.PRICE ORD_PRICE, ORD.AMOUNT ORD_AMOUNT, ORD.ITEM_STOCK_UNIT ORD_ITEM_STOCK_UNIT, ORD.END_YN ORD_END_YN
+		                FROM    ORDERS O
+		                LEFT OUTER JOIN ORDERS_DETAIL ORD
+		                ON      ORDER_CODE = ORDER_DETAIL_CODE)USING(ORDER_CODE)
+		ORDER BY TO_NUMBER(REPLACE(IN_CODE, 'IN_CODE', '')) ASC, SID_SORDER ASC
+	</select> -->
+	
+</mapper>
