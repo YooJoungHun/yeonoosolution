@@ -6,5 +6,11 @@
     	<setting name="mapUnderscoreToCamelCase" value="true"/>
   	</settings>
   	
-  	
+  	<typeAliases>
+  		<typeAlias type="com.choongang.yeonsolution.product.wo.domain.Wo" alias="WOWo"/>
+  		<typeAlias type="com.choongang.yeonsolution.product.wo.domain.Wh" alias="WOWh"/>
+  		<typeAlias type="com.choongang.yeonsolution.product.wo.domain.Orders" alias="WOOrders"/>
+  		<typeAlias type="com.choongang.yeonsolution.product.wo.domain.Item" alias="WOItem"/>
+  		<typeAlias type="com.choongang.yeonsolution.product.wo.domain.Company" alias="WOCompany"/>
+  	</typeAliases>
 </configuration>
