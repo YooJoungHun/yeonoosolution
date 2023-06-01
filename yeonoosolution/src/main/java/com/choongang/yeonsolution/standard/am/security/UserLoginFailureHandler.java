@@ -29,7 +29,7 @@ public class UserLoginFailureHandler extends SimpleUrlAuthenticationFailureHandl
 		
 		int errorCode = HttpStatus.BAD_REQUEST.value();
 		
-		setDefaultFailureUrl("/v1/standard/login?error=" + errorCode);
+		setDefaultFailureUrl("/standard/login?error=" + errorCode);
 		super.onAuthenticationFailure(request, response, exception);
 		
 	}

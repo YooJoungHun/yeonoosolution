@@ -35,7 +35,7 @@ public class SecurityConfig{
 	
 	/**
 	 * SecurityFilterChain 설정
-	 * 로그인페이지 설정 : /v1/standard/login → standard/login.jsp
+	 * 로그인페이지 설정 : /standard/login → standard/login.jsp
 	 * 로그인페이지 인증제외 설정
 	 */
 	@Bean
@@ -47,17 +47,17 @@ public class SecurityConfig{
 				    .cors()
 			    	.and()
 					//인증 허용 범위 설정
-					.authorizeHttpRequests()
+					.authorizeRequests()
 						.antMatchers("/images/**").permitAll() //static resources 인증 제외
-						.antMatchers("/v1/standard/login", "/v1/standard/sign-up", "/v1/standard/not-authorized").permitAll() //로그인 페이지, 회원가입 페이지 인증 제외
-						.antMatchers(HttpMethod.POST, "/v1/standard/member").permitAll() //회원가입 인증 제외
-						.antMatchers("/v1/standard/**").hasAnyRole("STANDARD", "ADMIN")
-						.antMatchers("/v1/product/**").hasAnyRole("PRODUCT", "ADMIN")
-						.antMatchers("/v1/sales/**").hasAnyRole("SALES", "ADMIN")
-					    .antMatchers(HttpMethod.POST, "/v1/**").hasAnyRole("ADMIN", "MANAGER") // POST 요청은 ADMIN과 MANAGER 역할을 가진 사용자 모두 접근 가능
-					    .antMatchers(HttpMethod.PUT, "/v1/**").hasAnyRole("ADMIN", "MANAGER") // PUT 요청은 ADMIN과 MANAGER 역할을 가진 사용자 모두 접근 가능
-					    .antMatchers(HttpMethod.DELETE, "/v1/**").hasAnyRole("ADMIN", "MANAGER") // DELETE 요청은 ADMIN과 MANAGER 역할을 가진 사용자 모두 접근 가능
-					    .antMatchers(HttpMethod.PATCH, "/v1/**").hasAnyRole("ADMIN", "MANAGER") // PATCH 요청은 ADMIN과 MANAGER 역할을 가진 사용자 모두 접근 가능
+						.antMatchers("/standard/login", "/standard/sign-up", "/standard/not-authorized", "/").permitAll() //로그인 페이지, 회원가입 페이지, 메인페이지 인증 제외
+						.antMatchers(HttpMethod.POST, "/standard/member").permitAll() //회원가입 인증 제외
+						.antMatchers(HttpMethod.POST, "/**").hasAnyRole("ADMIN", "MANAGER") // POST 요청은 ADMIN과 MANAGER 역할을 가진 사용자 모두 접근 가능
+						.antMatchers(HttpMethod.PUT, "/**").hasAnyRole("ADMIN", "MANAGER") // PUT 요청은 ADMIN과 MANAGER 역할을 가진 사용자 모두 접근 가능
+						.antMatchers(HttpMethod.DELETE, "/**").hasAnyRole("ADMIN", "MANAGER") // DELETE 요청은 ADMIN과 MANAGER 역할을 가진 사용자 모두 접근 가능
+						.antMatchers(HttpMethod.PATCH, "/**").hasAnyRole("ADMIN", "MANAGER") // PATCH 요청은 ADMIN과 MANAGER 역할을 가진 사용자 모두 접근 가능
+						.antMatchers("/standard/**").hasAnyRole("STANDARD", "ADMIN")
+						.antMatchers("/product/**").hasAnyRole("PRODUCT", "ADMIN")
+						.antMatchers("/sales/**").hasAnyRole("SALES", "ADMIN")
 						.anyRequest()
 						.authenticated()
 						.and()
@@ -68,8 +68,8 @@ public class SecurityConfig{
 						.and()
 					//로그인 설정
 					.formLogin()
-						.loginPage("/v1/standard/login") //custom 로그인 페이지 설정, GET 로그인 요청
-						.loginProcessingUrl("/v1/standard/login") //POST 로그인 요청
+						.loginPage("/standard/login") //custom 로그인 페이지 설정, GET 로그인 요청
+						.loginProcessingUrl("/standard/login") //POST 로그인 요청
 						.usernameParameter("memberId")
 						.passwordParameter("password")
 						.successHandler(userLoginSuccessHandler)
@@ -77,8 +77,8 @@ public class SecurityConfig{
 						.and()
 					//로그아웃 설정	
 					.logout()
-						.logoutUrl("/v1/standard/logout")
-						.logoutSuccessUrl("/v1/standard/login")
+						.logoutUrl("/standard/logout")
+						.logoutSuccessUrl("/standard/login")
 						.and()
 					.rememberMe()
 						.key("secret")

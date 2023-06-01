@@ -31,18 +31,26 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 		log.info("[handle] accessDeniedException : {}", accessDeniedException.getMessage());
 		RequestCache requestCache = new HttpSessionRequestCache();
 		SavedRequest savedRequest = requestCache.getRequest(request, response);
-		String defaultUrl = "/v1/standard/login";
-		String redirectUrl = "/v1/standard/not-authorized";
+		String defaultUrl = "/standard/login";
+		String redirectUrl = "/standard/not-authorized";
+		
 		if (savedRequest != null) {
 			String prevUrl = savedRequest.getRedirectUrl();
 			request.getSession().setAttribute("prevUrl", prevUrl);
 		} else {
 			request.getSession().setAttribute("prevUrl", defaultUrl);
-			
 		}
 		
-		response.sendRedirect(redirectUrl);
+        if (isAjaxRequest(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied");
+        } else {
+            response.sendRedirect(redirectUrl);
+        }
 		
+	}
+
+	private boolean isAjaxRequest(HttpServletRequest request) {
+		return "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 	}
 
 }

@@ -1,6 +1,5 @@
 package com.choongang.yeonsolution.standard.am.security;
 
-import java.io.Serializable;
 import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -17,7 +16,9 @@ import lombok.Getter;
  * @since 2023/05/24
  */
 @Getter
-public class UserDetailsDto extends User implements Serializable {
+public class UserDetailsDto extends User{
+	
+	private static final long serialVersionUID = 2262860898085560566L;
 	
 	private MemberDto memberDto;
 	Collection<GrantedAuthority> roles;

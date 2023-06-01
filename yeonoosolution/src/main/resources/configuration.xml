@@ -7,7 +7,7 @@
   	</settings>
   	
   	<typeAliases>
-  		<typeAlias alias="MemberDto" type="com.choongang.yeonsolution.standard.am.domain.MemberDto"/>
+  		<typeAlias alias="AMMemberDto" type="com.choongang.yeonsolution.standard.am.domain.MemberDto"/>
   		<typeAlias alias="AMDto" type="com.choongang.yeonsolution.standard.am.domain.AMDto"/>
   	</typeAliases>
   	

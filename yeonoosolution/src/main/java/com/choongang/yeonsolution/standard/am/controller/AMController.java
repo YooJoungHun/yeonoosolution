@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since 2023/05/23
  */
 @Controller
-@RequestMapping("v1/standard")
+@RequestMapping("/standard")
 @Slf4j
 public class AMController {
 	
@@ -79,7 +79,7 @@ public class AMController {
 	 * 403 error 처리 페이지
 	 * @return 403 error 처리 페이지 url 
 	 */
-	@GetMapping("/not-authorized")
+	@RequestMapping("/not-authorized")
 	public String notAuthorizedPage() {
 		return "standard/not-authorized";
 	}
@@ -94,7 +94,7 @@ public class AMController {
 		int result = amService.addMember(memberDto);
 		
 		if (result > 0) {
-			return "redirect:/v1/standard/login";
+			return "redirect:/standard/login";
 		}
 		
 		throw new IllegalArgumentException();

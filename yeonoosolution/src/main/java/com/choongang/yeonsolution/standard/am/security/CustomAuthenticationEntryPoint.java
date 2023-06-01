@@ -27,7 +27,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 			AuthenticationException authException) throws IOException, ServletException {
 		log.info("[commence] authException : {}", authException.getMessage());
 		int errorCode= HttpStatus.UNAUTHORIZED.value();
-		String redirectUrl = "/v1/standard/login?error=";
+		String redirectUrl = "/standard/login?error=";
 		
 		response.sendRedirect(redirectUrl + errorCode);
 	}

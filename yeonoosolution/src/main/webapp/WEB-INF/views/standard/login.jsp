@@ -63,7 +63,7 @@
 </head>
 <body class="text-center">
 	<main class="form-signin">
-		<form action="/v1/standard/login" method="POST">
+		<form action="/standard/login" method="POST">
 			<img class="mb-4" src="${pageContext.request.contextPath}/images/logo.png" alt="" width="120" height="60">
 			<h1 class="h3 mb-3 fw-normal">로그인</h1>
 	
@@ -79,11 +79,11 @@
 				<div class="mb-3" style="color: red;" id="error-message"></div>
 			</c:if>
 			
-			<div class="checkbox mb-3">
+<!-- 			<div class="checkbox mb-3">
 				<label>
 					<input type="checkbox" name="remember"> 자동 로그인
 				</label>
-			</div>
+			</div> -->
 			
 			<button class="w-100 btn btn-lg btn-primary" type="submit">로그인</button>
 			<p class="mt-5 mb-3 text-muted">&copy; 2023</p>

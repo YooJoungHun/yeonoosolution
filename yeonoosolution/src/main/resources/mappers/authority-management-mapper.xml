@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="authority-management-mapper">
-	<select id="amSelectMemberByMemberId" parameterType="String" resultType="MemberDto">
+	<select id="amSelectMemberByMemberId" parameterType="String" resultType="AMMemberDto">
 		SELECT *
 		FROM member
 		WHERE member_id = #{memberId}
 		AND member_yn = 'Y'
 	</select>
 	
-	<select id="amSelectMember" parameterType="String" resultType="MemberDto">
+	<select id="amSelectMember" parameterType="String" resultType="AMMemberDto">
 		SELECT *
 		FROM member
 		WHERE member_uid = #{memberUid}
 		AND member_yn = 'Y'
 	</select>
 	
-	<insert id="amInsertMember" parameterType="MemberDto">
+	<insert id="amInsertMember" parameterType="AMMemberDto">
 		insert into member(
 			member_uid,
 			dept_code,
@@ -75,7 +75,7 @@
         INNER JOIN company c ON m.company_code = c.company_code
 		WHERE m.company_code = UPPER(#{companyCode})
 		AND m.member_yn = 'Y' 
- 		ORDER BY m.job_code
+ 		ORDER BY LENGTH(m.job_code), m.job_code
 	</select>
 	
 	<select id="amSelectCompanyList" resultType="AMDto">
@@ -124,7 +124,7 @@
 		WHERE job_yn = 'Y'
 	</select>
 	
-	<update id="amUpdateMember" parameterType="MemberDto">
+	<update id="amUpdateMember" parameterType="AMMemberDto">
 		UPDATE member
 		SET
 			dept_code = #{deptCode},

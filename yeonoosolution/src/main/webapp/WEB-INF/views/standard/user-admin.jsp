@@ -163,6 +163,16 @@ td > select{
 	/**
 	* 페이지 로드완료시 member의 company에 속한 memberList 출력
 	*/
+	function handleError(status){
+		let locationUrl = "/standard/not-authorized";
+		if(status === 403){
+			location.href = locationUrl;
+		}
+	}
+	
+	/**
+	* 페이지 로드완료시 member의 company에 속한 memberList 출력
+	*/
 	function printMember(member, printLocation){
 		let memberRow = $('<tr>').append($('<input>').addClass('member-yn').attr({'type': 'hidden', 'value': member.memberYn}))
 								 .append($('<td>').addClass('member-checkbox').append($('<input>').attr({'name': 'editing', 'type': 'checkbox', 'value': member.memberUid})))
@@ -181,7 +191,7 @@ td > select{
 	function getMemberList(printLocation){
 		$.ajax({
 			type : "GET",
-			url : "/v1/standard/members/company-code/" + loginMemberCompanyCode,
+			url : "/standard/members/company-code/" + loginMemberCompanyCode,
 			contentType: 'application/json',
 			dataType : 'json',
 			success : function(memberList, textStatus, xhr){
@@ -208,7 +218,7 @@ td > select{
 	function getCompanyList(printLocation){
 		$.ajax({
 			type : "GET",
-			url : "/v1/standard/companies",
+			url : "/standard/companies",
 			dataType : 'json',
 			success : function(companyList, textStatus, xhr){
 				if(xhr.status === 200){
@@ -244,7 +254,7 @@ td > select{
 	function getDeptList(printLocation){
 		$.ajax({
 			type : "GET",
-			url : "/v1/standard/departments",
+			url : "/standard/departments",
 			dataType : 'json',
 			success : function(deptList, textStatus, xhr){
 				if(xhr.status === 200){
@@ -280,7 +290,7 @@ td > select{
 	function getJobList(printLocation){
 		$.ajax({
 			type : "GET",
-			url : "/v1/standard/jobs",
+			url : "/standard/jobs",
 			dataType : 'json',
 			success : function(jobList, textStatus, xhr){
 				if(xhr.status === 200){
@@ -398,6 +408,7 @@ td > select{
 	$(document).on('click', "#member-save-btn", function(){
 		if(confirm('저장하시겠습니까?')){
 			let checkedRows = $('.member-checkbox input[type="checkbox"]:checked').closest('tr');
+			let hasNull = false;
 			let memberList = [];
 
 			checkedRows.each(function() {
@@ -418,7 +429,7 @@ td > select{
 				
 			    if (isNullOrWhitespace(deptCode) || isNullOrWhitespace(jobCode) || isNullOrWhitespace(companyCode) ||  
 			    	isNullOrWhitespace(memberId) || isNullOrWhitespace(memberName) || isNullOrWhitespace(address) || isNullOrWhitespace(tel)) {
-					alert('입력되지 않은 값이 있습니다');
+			    	hasNull = true;
 					return;
 			    }
 				
@@ -440,9 +451,14 @@ td > select{
 				
 			});
 			
+			if(hasNull){
+				alert('입력되지 않은 값이 있습니다');
+				return;
+			}
+			
 			$.ajax({
 				type : "PATCH",
-				url : "/v1/standard/members",
+				url : "/standard/members",
 				dataType : 'json',
 				contentType: 'application/json',
 				data: JSON.stringify(memberList),
@@ -452,8 +468,8 @@ td > select{
 					$printLocation.empty();
 					getMemberList($printLocation);
 				},
-				error : function(xhr){
-					console.log("error");
+				error : function(xhr, textStatus){
+					handleError(xhr.status);
 				}
 			});
 		}
@@ -499,9 +515,10 @@ td > select{
 			$idKeyword = ' ';
 		}
 		
-		let url = '/v1/standard/members/keyword?'+ 'nameKeyword=' + encodeURIComponent($nameKeyword)
-									             + '&idKeyword=' + encodeURIComponent($idKeyword)
-									             + '&companyCode=' + encodeURIComponent(loginMemberCompanyCode);
+		let url = '/standard/members/keyword?'+ 'nameKeyword=' + encodeURIComponent($nameKeyword)
+									          + '&idKeyword=' + encodeURIComponent($idKeyword)
+									          + '&companyCode=' + encodeURIComponent(loginMemberCompanyCode);
+		
 		$.ajax({
 			type : "GET",
 			url : url,
