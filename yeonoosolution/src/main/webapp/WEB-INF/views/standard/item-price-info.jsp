@@ -12,18 +12,64 @@
 	height: 615px;
 	margin: 0px auto;
 	overflow: auto;
+	border: 1px solid #ddd;
+	margin-top: 8px;
 }
 
 .btn-group1 {
-	width: 280px;
+	width: 320px;
 	margin: 3px;
 }
 
 .input-info {
 	width: 1305px;
-	height: 110px;
+	height: 210px;
 	margin: 0px auto;
+	padding: 16px;
+    border-radius: 10px;
+    margin-top: 8px;
+    background-color: #F8F8F8;
+    margin-right: 175px;
 	
+}
+
+.input-info label {
+	display: inline-block;
+    width: 100px;
+    border-radius: 5px;
+    border: 1px solid #E8EBF0;
+    padding: 0;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 30px;
+    background-color: #9BABB8;
+    margin-bottom: 15px;
+}
+
+.input-info input {
+	display: inline-block;
+    width: 150px;
+    border-radius: 5px;
+    border: 1px solid #E8EBF0;
+    padding: 0px;
+    font-size: 14px;
+    text-align: center;
+    line-height: 30px;
+}
+
+.btn-group1 button {
+	display: inline-block;
+	border: 1px solid #D6DAE2;
+    outline: none;
+    border-radius: 5px;
+    padding: 0 12px;
+    height: 30px;
+	
+}
+
+.input-info button:hover {
+	background-color: #D6D2C4;
 }
 
 .side-bar {
@@ -33,27 +79,35 @@
 	height: 100vh;
 }
 
-#content-table table {
-	width: 100%;
-	border-collapse: collapse;
-	border: 1px solid #ddd;
-}
-
-#content-table th, td {
-	padding: 8px;
-	text-align: center;
-	border: 1px solid #ddd;
-	white-space: nowrap;
-}
-
 #content-table th {
-	background-color: #ddd;
+	background-color: #9BABB8;
 	font-weight: bold;
 }
+
+#content-table th, #content-table td {
+	white-space: nowrap;
+	padding: 8px;
+	text-align: center;
+	border: 1px solid #B3B3B3;
+}
+
+
+#content-table tr {
+	height: 24px;
+}
+
+#content-table {
+	width: 1305px;
+	border-collapse: collapse;
+	white-space: nowrap;
+	font-size: 15px;
+}
+
 
 #content-table tr:hover {
   	background-color: #f5f5f5;
 }
+
 
 #content-table input[type="checkbox"] {
  	margin: 0;
@@ -90,9 +144,9 @@
       <!-- standard -->
       <a href="/standard/login">로그인</a><p>
       <a href="/standard/user-admin">사용자 계정관리</a><p>
-      <a href="/standard/imi">품목 관리 및 등록</a><p>
+      <a href="/standard/imi">품목 관리</a><p>
       <a href="/standard/ipi">품목 단가 관리</a><p>
-      <a href="/standard/pmi">품목 관리 정보</a><p>
+      <a href="/standard/pmi">BOM 등록</a><p>
       
       <!-- 로그아웃 -->
       <c:if test="${sessionScope.member != null}">
@@ -104,18 +158,20 @@
 	
 	
 	<div class="input-info">
-		제품 단가 입력<br>
-		<span>거래처 코드</span><input id="company-code" readonly>
-		<span>제품 코드</span><input id="item-code" readonly>
-		<span>품명</span><input id="item-name" readonly>
-		<span>*매입 단가</span><input id="purchase-price" type="number">
-		<span>*매출 단가</span><input id="sales-price" type="number"><br>
-		<span>시작일</span><input id="start-date" type="date">
-		<span>종료일</span><input id="end-date" type="date">
-		<span>비고</span><input id="memo">
-		<span>*등록/수정자</span><input id="reg-user" placeholder="필수 입력 정보">
-		<span>등록/수정일자</span><input id="reg-date" readonly>
-		
+		<span style="font-weight: bold;">제품 단가 입력</span> <br>
+		<br>
+		<span style="font-size: 11px; color: gray;">(*)입력 필수 </span><br>
+		<label>거래처 코드</label><input id="company-code" readonly style="background-color: #D9D9D9">
+		<label>제품 코드</label><input id="item-code" readonly style="background-color: #D9D9D9">
+		<label>품명</label><input id="item-name" readonly style="background-color: #D9D9D9">
+		<label>*매입 단가</label><input id="purchase-price" type="number"placeholder="숫자만 입력" style="background-color: #E6F2FF">
+		<label>*매출 단가</label><input id="sales-price" type="number" placeholder="숫자만 입력" style="background-color: #E6F2FF"><br>
+		<label>시작일</label><input id="start-date" type="date" style="background-color: #FFFFCC">
+		<label>종료일</label><input id="end-date" type="date" style="background-color: #FFFFCC">
+		<label>비고</label><input id="memo">
+		<label>*등록/수정자</label><input id="reg-user" placeholder="필수 입력 정보" style="background-color: #E6F2FF">
+		<label>등록/수정일자</label><input id="reg-date" readonly style="background-color: #D9D9D9"><br>
+		<br>
 		<div class="btn-group1">
 			<button id="item-update">단가 등록/수정</button>
 			<button id="reset-btn">초기화</button>
@@ -244,21 +300,21 @@
 			      let row = '<tr>' +
 			      '<td>' + (i + 1) + '</td>' +
 		          '<td><input type="radio" name="item-radio"></td>' +
-		          '<td>' + item.whCode	 + '</td>' +
-		          '<td>' + item.companyCode	 + '</td>' +
-		          '<td>' + item.itemType + '</td>' +
-		          '<td>' + item.itemCode + '</td>' +
-		          '<td>' + item.itemName + '</td>' +
-		          '<td>' + formatNumber(item.purchasePrice) + '</td>' +
-		          '<td>' + formatNumber(item.salesPrice) + '</td>' +
-		          '<td>' + item.startDate.substring(0, 10) + '</td>' +
-		          '<td>' + item.endDate.substring(0, 10) + '</td>' +
-		          '<td>' + item.stockUnit + '</td>' +
+		          '<td style="background-color: #D9D9D9">' + item.whCode	 + '</td>' +
+		          '<td style="background-color: #D9D9D9">' + item.companyCode	 + '</td>' +
+		          '<td style="background-color: #D9D9D9">' + item.itemType + '</td>' +
+		          '<td style="background-color: #D9D9D9">' + item.itemCode + '</td>' +
+		          '<td style="background-color: #D9D9D9">' + item.itemName + '</td>' +
+		          '<td style="background-color: #E6F2FF">' + formatNumber(item.purchasePrice) + '</td>' +
+		          '<td style="background-color: #E6F2FF">' + formatNumber(item.salesPrice) + '</td>' +
+		          '<td style="background-color: #FFFFCC">' + item.startDate.substring(0, 10) + '</td>' +
+		          '<td style="background-color: #FFFFCC">' + item.endDate.substring(0, 10) + '</td>' +
+		          '<td style="background-color: #D9D9D9">' + item.stockUnit + '</td>' +
 		          '<td>' + item.memo + '</td>' +
-		          '<td>' + item.regUser + '</td>' +
-		          '<td>' + item.regDate.substring(0, 10) + '</td>' +
-		          '<td>' + item.updateUser + '</td>' +
-		          '<td>' + item.updateDate.substring(0, 10) + '</td>' +
+		          '<td style="background-color: #E6F2FF">' + item.regUser + '</td>' +
+		          '<td style="background-color: #D9D9D9">' + item.regDate.substring(0, 10) + '</td>' +
+		          '<td style="background-color: #E6F2FF">' + item.updateUser + '</td>' +
+		          '<td style="background-color: #D9D9D9">' + item.updateDate.substring(0, 10) + '</td>' +
 		          '</tr>';
 		      	  table.append(row);
 		      }

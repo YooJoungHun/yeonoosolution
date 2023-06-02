@@ -13,6 +13,8 @@
 	margin: 0px auto;
 	display: flex;
 	flex-wrap: wrap;
+	margin-top: 8px;
+	border: 1px solid #ddd;
 }
 
 .btn-group1 {
@@ -23,40 +25,53 @@
 
 .input-info {
 	width: 1305px;
-	height: 85px;
+	height: 110px;
 	margin: 0px auto;
-	background-color: #F8F8F8;
-  	justify-content: space-between;
-  	border-radius: 10px;
+	padding: 16px;
+    border-radius: 10px;
+    margin-top: 8px;
+    background-color: #F8F8F8;
+    margin-right: 175px;
+    margin-bottom: 7px;
 }
 
 .input-info label {
-	width: 120px;
+	display: inline-block;
+    width: 105px;
     border-radius: 5px;
     border: 1px solid #E8EBF0;
-    padding: 10px;
+    padding: 0;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 30px;
+    background-color: #9BABB8;
+    margin-bottom: 10px;
+}
+
+.input-info input {
+	display: inline-block;
+    width: 150px;
+    border-radius: 5px;
+    border: 1px solid #E8EBF0;
+    padding: 0px;
     font-size: 14px;
     text-align: center;
     line-height: 30px;
-    flex-shrink: 0;
-    position: relative;
-    margin-right: 4px;
-    margin-left: 20px;
 }
 
-.input-info span {
-	padding-bottom: 50px;
-    font-size: 18px;
-    text-align: center;
-    margin-left: 20px;
-}
-
-.product-item-list {
-	width: 650px;
-	height: 300px;
-	overflow: auto;
-	border: 1px solid #ddd;
+button {
+	display: inline-block;
+	border: 1px solid #D6DAE2;
+    outline: none;
+    border-radius: 5px;
+    padding: 0 12px;
+    height: 30px;
 	
+}
+
+button:hover {
+	background-color: #D6D2C4;
 }
 
 .side-bar {
@@ -67,22 +82,43 @@
 }
 
 
-#item-table table {
+.product-item-list {
+	width: 600px;
+	height: 300px;
+	overflow: auto;
+	border: 1px solid #ddd;
+	
+}
+
+#product-item-span {
+	margin-left: 190px;
+}
+
+#bom-tree-span {
+	margin-left: 510px;
+}
+
+#item-table {
 	width: 100%;
 	border-collapse: collapse;
-	border: 1px solid #ddd;
+	font-size: 15px;
+	white-space: nowrap;
 }
 
 #item-table th, td {
 	padding: 8px;
 	text-align: center;
-	border: 1px solid #ddd;
+	border: 1px solid #B3B3B3;
 	white-space: nowrap;
 }
 
 #item-table th {
-	background-color: #ddd;
+	background-color: #9BABB8;
 	font-weight: bold;
+}
+
+#item-table tr {
+	height: 24px;
 }
 
 #item-table tr:hover {
@@ -93,29 +129,34 @@
  	margin: 0;
 }	
 
+
 .semi-product-item-list {
 	width: 1305px;
 	height: 360px;
 	overflow: auto;
-	border: 1px solid #ddd;
 }
 
-#item2-table table {
+#item2-table {
 	width: 100%;
 	border-collapse: collapse;
-	border: 1px solid #ddd;
+	white-space: nowrap;
+	font-size: 15px;
 }
 
 #item2-table th, td {
 	padding: 8px;
 	text-align: center;
-	border: 1px solid #ddd;
 	white-space: nowrap;
+	border: 1px solid #B3B3B3;
 }
 
 #item2-table th {
-	background-color: #ddd;
+	background-color: #9BABB8;
 	font-weight: bold;
+}
+
+#content-table tr {
+	height: 24px;
 }
 
 #item2-table tr:hover {
@@ -127,22 +168,33 @@
 }
 
 
-#item3-table table {
+.bom-tree {
+	width: 700px;
+	height: 300px;
+	overflow: auto;
+	border: 1px solid #ddd;
+}
+
+#item3-table {
 	width: 100%;
 	border-collapse: collapse;
-	border: 1px solid #ddd;
+	font-size: 15px;
 }
 
 #item3-table th, td {
 	padding: 8px;
 	text-align: center;
-	border: 1px solid #ddd;
+	border: 1px solid #B3B3B3;
 	white-space: nowrap;
 }
 
 #item3-table th {
-	background-color: #ddd;
+	background-color: #9BABB8;
 	font-weight: bold;
+}
+
+#content-table tr {
+	height: 24px;
 }
 
 #item3-table tr:hover {
@@ -153,37 +205,31 @@
  	margin: 0;
 }
 
-
-.bom-tree {
-	width: 650px;
-	height: 300px;
-	overflow: auto;
-	border: 1px solid #ddd;
-}
-
 /* 모달 창 */
 .modal {
-	display: none; /* 기본적으로 숨김 처리 */
-	position: fixed;
-	z-index: 1;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	overflow: auto;
-	background-color: rgba(0, 0, 0, 0.5); /* 배경색과 투명도 조정 */
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 /* 모달 창 컨텐츠 */
 .modal-content {
-	background-color: #fefefe;
-	margin: 10% auto;
-	padding: 10px;
-	border: 1px solid #888;
-	max-width: 800px; /* 최대 너비 설정 */
-	width: 80%;
-	max-height: 500px;
-	overflow: auto;
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  max-width: 800px;
+  max-height: 500px;
+  width: 80%;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  overflow: auto;
 }
 
 /* 모달 창 닫기 버튼 */
@@ -202,18 +248,65 @@
 	cursor: pointer;
 }
 
+.modal-content h2 {
+	text-align: center;
+	margin: 0px auto;
+	margin-bottom: 20px;
+}
+
 /* 리스트 아이템 */
+#high-item-table th {
+	background-color: #9BABB8;
+	font-weight: bold;
+}
+
+#high-item-table th, #high-item-table td {
+	white-space: nowrap;
+	padding: 8px;
+	text-align: center;
+	border: 1px solid #B3B3B3;
+}
+
+#high-item-table {
+	width: 400px;
+	border: 2px solid #ddd;
+	border-collapse: collapse;
+	white-space: nowrap;
+	font-size: 15px;
+}
+
 #high-item-table td {
 	cursor: pointer; /* 마우스 커서를 포인터로 변경 */
 	padding: 5px;
 }
 
-#high-item-table td:hover {
+#high-item-table tr {
+	height: 24px;
+}
+
+#high-item-table tr:hover {
 	background-color: #f5f5f5; /* 호버 상태 배경색 변경 */
 }
 
-#high-item-table th {
-	padding: 0 10px;
+
+#low-item-table th {
+	background-color: #9BABB8;
+	font-weight: bold;
+}
+
+#low-item-table th, #low-item-table td {
+	white-space: nowrap;
+	padding: 8px;
+	text-align: center;
+	border: 1px solid #B3B3B3;
+}
+
+#low-item-table {
+	width: 400px;
+	border: 2px solid #ddd;
+	border-collapse: collapse;
+	white-space: nowrap;
+	font-size: 15px;
 }
 
 #low-item-table td {
@@ -221,13 +314,14 @@
 	padding: 5px;
 }
 
-#low-item-table td:hover {
+#low-item-table tr {
+	height: 24px;
+}
+
+#low-item-table tr:hover {
 	background-color: #f5f5f5; /* 호버 상태 배경색 변경 */
 }
 
-#low-item-table th {
-	padding: 0 10px;
-}
 
 @media (max-width: 480px) {
   /* 작은 화면에서 모달 창의 너비 조정 */
@@ -267,9 +361,9 @@
       <!-- standard -->
       <a href="/standard/login">로그인</a><p>
       <a href="/standard/user-admin">사용자 계정관리</a><p>
-      <a href="/standard/imi">품목 관리 및 등록</a><p>
+      <a href="/standard/imi">품목 관리</a><p>
       <a href="/standard/ipi">품목 단가 관리</a><p>
-      <a href="/standard/pmi">품목 관리 정보</a><p>
+      <a href="/standard/pmi">BOM 등록</a><p>
       
       <!-- 로그아웃 -->
       <c:if test="${sessionScope.member != null}">
@@ -281,24 +375,23 @@
 	
 	
 	<div class="input-info">
-		<span>Bom 등록 정보</span>
+		<span style="font-weight: bold;">BOM 정보 입력</span> 
 		<br>
 		<br>
-		<label>*완제품 코드</label><input placeholder="더블 클릭 하여 선택" id="high-item-code" readonly>
-		<label>*반제품/원자재 코드</label><input placeholder="더블 클릭 하여 선택" id="low-item-code" readonly>
-		<label>*재료 수량</label><input id="material-quantity">
-		
+		<label>*완제품 코드</label><input placeholder="더블 클릭 하여 선택" id="high-item-code" readonly style="background-color: #FFFFCC">
+		<label>*반/원자재 코드</label><input placeholder="더블 클릭 하여 선택" id="low-item-code" readonly style="background-color: #FFFFCC">
+		<label>*소요량</label><input placeholder="필수 입력 정보" id="material-quantity" type="number" style="background-color: #E6F2FF">
+		<span style="font-size: 11px; color: gray;">(*)입력 필수 </span><br>
 		<div class="btn-group1">
 			<button id="bom-insert">BOM 등록</button>
 			<button id="reset-btn">초기화</button>
 		</div>
 	</div>
 		
-		
+	<span id="product-item-span" style="font-weight: bold;">완제품 목록</span> <span id="bom-tree-span" style="font-weight: bold;">Bom Tree</span>
+	<button id="semi-product-delete">삭제</button> 
 	<div class="main-content">
-		
 		<div class="product-item-list">
-			<span>완제품 목록</span>
 			<table id="item-table">
 				<tr>
 					<th> </th>
@@ -306,13 +399,12 @@
 					<th>제품코드</th>
 					<th>품명</th>
 					<th>구분</th>
+					<th>비고</th>
 				</tr>
 			</table>
 		</div>
 		
 		<div class="bom-tree">
-			<span>Bom Tree</span>
-			<button id="semi-product-delete">삭제</button>
 			<table id="item3-table">
 			  <thead>
 			    <tr>
@@ -329,9 +421,8 @@
 			  <tbody></tbody>
 			</table>
 		</div>
-		
+		<span id="semi-product-item-span" style="font-weight: bold;">반제품/원자재 목록</span>
 		<div class="semi-product-item-list">
-			<span>반제품/원자재 목록</span>
 			<table id="item2-table">
 				<tr>
 					<th> </th>
@@ -358,7 +449,7 @@
 	          			<th>제품명</th>
 				        <th>제품코드</th>
 				        <th>제품구분</th>
-				        <th>메모</th>
+				        <th>비고</th>
 	        		</tr>
 	      		</thead>
 	      		<tbody id="high-item-list"></tbody>
@@ -378,7 +469,7 @@
 	          			<th>제품명</th>
 				        <th>제품코드</th>
 				        <th>제품구분</th>
-				        <th>메모</th>
+				        <th>비고</th>
 	        		</tr>
 	      		</thead>
 	      		<tbody id="low-item-list"></tbody>
@@ -495,9 +586,10 @@
 			      let row = '<tr>' +
 			      '<td>' + (i + 1) + '</td>' +
 		          '<td><input type="radio" name="item-radio"></td>' +
-		          '<td>' + item.itemCode + '</td>' +
-		          '<td>' + item.itemName + '</td>' +
-		          '<td>' + item.itemType + '</td>' +
+		          '<td style="background-color: #FFFFCC">' + item.itemCode + '</td>' +
+		          '<td style="background-color: #D9D9D9">' + item.itemName + '</td>' +
+		          '<td style="background-color: #E6F2FF">' + item.itemType + '</td>' +
+		          '<td>' + item.memo + '</td>' +
 		          '</tr>';
 		      	  table.append(row);
 		      }
@@ -532,10 +624,10 @@
 			      let row = '<tr>' +
 			      '<td>' + (i + 1) + '</td>' +
 		          '<td><input type="radio" name="item-radio"></td>' +
-		          '<td>' + item.itemCode + '</td>' +
-		          '<td>' + item.itemName + '</td>' +
-		          '<td>' + item.itemType + '</td>' +
-		          '<td>' + item.stockUnit + '</td>' +
+		          '<td style="background-color: #FFFFCC">' + item.itemCode + '</td>' +
+		          '<td style="background-color: #D9D9D9">' + item.itemName + '</td>' +
+		          '<td style="background-color: #E6F2FF">' + item.itemType + '</td>' +
+		          '<td style="background-color: #D9D9D9">' + item.stockUnit + '</td>' +
 		          '<td>' + item.memo + '</td>' +
 		          '</tr>';
 		      	  table.append(row);
@@ -606,12 +698,12 @@
 		        	let row = '<tr>' +
 		          	'<td>' + (i + 1) + '</td>' +
 		          	'<td><input type="radio" name="item-radio"></td>' +
-		          	'<td>' + bom.highItemCode + '</td>' +
-		          	'<td>' + bom.lowItemCode + '</td>' +
-		          	'<td>' + bom.itemName + '</td>' +
-		          	'<td>' + bom.materialQuantity + '</td>' +
-		          	'<td>' + bom.itemType + '</td>' +
-		          	'<td>' + bom.stockUnit + '</td>' +
+		          	'<td style="background-color: #D9D9D9">' + bom.highItemCode + '</td>' +
+		          	'<td style="background-color: #FFFFCC">' + bom.lowItemCode + '</td>' +
+		          	'<td style="background-color: #D9D9D9">' + bom.itemName + '</td>' +
+		          	'<td style="background-color: #FFFFCC">' + bom.materialQuantity + '</td>' +
+		          	'<td style="background-color: #E6F2FF">' + bom.itemType + '</td>' +
+		          	'<td style="background-color: #D9D9D9">' + bom.stockUnit + '</td>' +
 		          	'</tr>';
 		        	tbody.append(row);
 		      	}
