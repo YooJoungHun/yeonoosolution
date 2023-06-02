@@ -30,14 +30,15 @@
 		WHERE	 oddt.order_detail_code = #{orderCode}
 		ORDER BY oddt.sorder
 	</select>
-	<update id="updatePmOrdersByOrderCode" parameterType="Map">
+	<update id="updatePmOrdersByOrderCode" parameterType="PmOrdersDto">
 		UPDATE	orders
+		SET		update_user = #{updateUser},
 	<choose>
 	<when test="column == 'deleteStatus'">
-		SET		delete_status = #{data}
+		delete_status = #{data}
 	</when>
 	<when test="column == 'orderStatus'">
-		SET		order_status = #{data}
+		order_status = #{data}
 	</when>
 	</choose>
 		WHERE	order_code = #{orderCode}
@@ -99,7 +100,6 @@
 		SELECT	st_in.*, com.company_name AS customerName
 		FROM	st_in INNER JOIN company com ON st_in.customer_code = com.company_code
 		WHERE	delete_status = 'N'
-		AND		st_in.in_type IN ('저장', '확정')
 		AND 	(#{orderDate} IS NULL OR st_in.in_date = #{orderDate})
 		AND 	(#{customerCode} IS NULL OR st_in.customer_code = #{customerCode})
 	</select>
@@ -110,14 +110,15 @@
 		WHERE	 sidt.in_code = #{inCode}
 		ORDER BY sidt.sorder
 	</select>
-	<update id="updatePmStockInByInCode" parameterType="Map">
+	<update id="updatePmStockInByInCode" parameterType="PmStockInDto">
 		UPDATE	st_in
+		SET		update_user = #{updateUser},
 	<choose>
 	<when test="column == 'deleteStatus'">
-		SET		delete_status = #{data}
+		delete_status = #{data}
 	</when>
 	<when test="column == 'orderStatus'">
-		SET		in_type = #{data}
+		in_type = #{data}
 	</when>
 	</choose>
 		WHERE	in_code = #{inCode}

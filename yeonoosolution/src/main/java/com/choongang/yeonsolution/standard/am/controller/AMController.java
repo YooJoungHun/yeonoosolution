@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -50,15 +49,6 @@ public class AMController {
 	}
 
 	/**
-	 * 임시 회원가입 페이지 호출
-	 * @return 임시 회원가입 페이지 url
-	 */
-	@GetMapping("/sign-up")
-	public String signUpPage() {
-		return "standard/temp-sign-up";
-	}
-	
-	/**
 	 * 사용자 계정관리 페이지 호출
 	 * @return 사용자 계정관리 페이지 호출 url
 	 */
@@ -66,13 +56,14 @@ public class AMController {
 	public String userAdminPage() {
 		return "standard/user-admin";
 	}
+	
 	/**
-	 * 로그인 테스트 페이지 호출
-	 * @return 로그인 테스트 페이지 url
+	 * 레이아웃 포함 전 로그아웃 임시페이지 페이지 호출
+	 * @return 로그아웃 테스트 페이지 url
 	 */
-	@GetMapping("/login-test")
-	public String loginTestPage() {
-		return "standard/login-test";
+	@GetMapping("/logout-btn")
+	public String logoutBtnPage() {
+		return "standard/logout-btn";
 	}
 	
 	/**
@@ -82,22 +73,6 @@ public class AMController {
 	@RequestMapping("/not-authorized")
 	public String notAuthorizedPage() {
 		return "standard/not-authorized";
-	}
-	
-	/**
-	 * 회원가입
-	 * @return 로그인 페이지
-	 */
-	@PostMapping("/member")
-	public String memberAdd(MemberDto memberDto){
-		
-		int result = amService.addMember(memberDto);
-		
-		if (result > 0) {
-			return "redirect:/standard/login";
-		}
-		
-		throw new IllegalArgumentException();
 	}
 	
 	/**

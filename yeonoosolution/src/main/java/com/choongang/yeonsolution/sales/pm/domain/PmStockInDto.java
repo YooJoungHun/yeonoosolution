@@ -24,4 +24,6 @@ public class PmStockInDto {
 	private String memo;
 	
 	private String customerName;
+	private String column;
+	private String data;
 }
