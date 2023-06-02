@@ -435,7 +435,7 @@
 				// 테이블 행 클릭 시 데이터 설정 및 모달 숨김
 				$('#wh-table tbody tr').on('click', function() {
 				  	let selectedRow = $(this);
-				  	let whCode = selectedRow.find('td:eq(1)').text();
+				  	let whCode = selectedRow.find('td:eq(0)').text();
 				  	$('#wh-code').val(whCode);
                     $('#wh-modal').hide();
 				});
@@ -477,7 +477,7 @@
 				// 테이블 행 클릭 시 데이터 설정 및 모달 숨김
 				$('#company-table tbody tr').on('click', function() {
 				  	let selectedRow = $(this);
-				  	let companyCode = selectedRow.find('td:eq(1)').text();
+				  	let companyCode = selectedRow.find('td:eq(0)').text();
 				  	$('#company-code').val(companyCode);
                     $('#company-modal').hide();
 				});
@@ -520,9 +520,9 @@
 				}),
 				success : function(itemInsert){
 					if(itemInsert == 1){
-						alert("제품 등록 완료.");
+						alert("제품 등록이 완료되었습니다.");
 					} else {
-						alert("제품 등록 실패.");
+						alert("제품 등록이 실패하였습니다. 잠시 후 다시 시도해주세요.");
 					}
 					location.reload();
 				},

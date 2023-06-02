@@ -740,12 +740,12 @@ button:hover {
 				}),
 				success : function(bomInsert){
 					if(bomInsert == 1){
-						alert("Bom 등록 완료.");
+						alert("Bom 등록이 완료되었습니다.");
 						bomList($('#high-item-code').val());
 					} else if (bomInsert == -1){
 						alert("중복 등록은 불가 합니다.");
 					} else {
-						alert("Bom 등록 실패.");
+						alert("Bom 등록에 실패하였습니다. 잠시 후 다시 시도해주세요.");
 					}
 				},
 				error: function(xhr, status, error) {

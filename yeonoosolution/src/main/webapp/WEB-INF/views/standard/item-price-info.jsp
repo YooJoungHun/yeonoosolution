@@ -272,9 +272,9 @@
 				}),
 				success : function(updateResult){
 					if (updateResult === 1) {
-						alert("단가 등록 완료.");
-					} else {
-						alert("단가 등록 실패.");
+						alert("단가 등록이 완료되었습니다.");
+					} else { 
+						alert("단가 등록에 실패하였습니다. 잠시 후 다시 시도해주세요.");
 					}
 					location.reload();
 				},
