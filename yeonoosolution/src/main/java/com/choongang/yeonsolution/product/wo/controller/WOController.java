@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +23,7 @@ import com.choongang.yeonsolution.product.wo.domain.Wo;
 import com.choongang.yeonsolution.product.wo.service.ItemService;
 import com.choongang.yeonsolution.product.wo.service.WhService;
 import com.choongang.yeonsolution.product.wo.service.WoService;
+import com.choongang.yeonsolution.standard.am.security.UserDetailsDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping(value = "/product")
 public class WOController {
 	private final WoService woService;
 	private final ItemService itemService;
@@ -47,7 +50,7 @@ public class WOController {
 		}).collect(Collectors.toList());
 		model.addAttribute("woList", woList);
 		model.addAttribute("jsonWoList", String.format("[%s]", String.join(",", woJsonList)));
-		return "product/wo";
+		return "product/wo.layout";
 	}
 	
 	@ResponseBody
@@ -131,7 +134,8 @@ public class WOController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/wo/insertWoList")
-	public String insertWoList(@RequestBody Map<String, Object> data) {
+	public String insertWoList(@AuthenticationPrincipal UserDetailsDto userDetailsDto,
+									 @RequestBody Map<String, Object> data) {
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> items = (List<Map<String, Object>>)data.get("data");
 		ObjectMapper mapper = new ObjectMapper();
@@ -151,6 +155,7 @@ public class WOController {
 			wo.setItem(it);
 			wo.setWh(wh);
 			wo.setOrders(orders);
+			wo.setRegUser(userDetailsDto.getMemberDto().getMemberName());
 			return wo;
 		}).collect(Collectors.toList());
 		int result = 0;
@@ -160,7 +165,8 @@ public class WOController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/wo/updateWoList")
-	public String updateWoList(@RequestBody Map<String, Object> data) {
+	public String updateWoList(@AuthenticationPrincipal UserDetailsDto userDetailsDto,
+			 						   @RequestBody Map<String, Object> data) {
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> items = (List<Map<String, Object>>)data.get("data");
 		ObjectMapper mapper = new ObjectMapper();
@@ -180,6 +186,7 @@ public class WOController {
 			wo.setItem(it);
 			wo.setWh(wh);
 			wo.setOrders(orders);
+			wo.setUpdateUser(userDetailsDto.getMemberDto().getMemberName());
 			return wo;
 		}).collect(Collectors.toList());
 		int result = 0;

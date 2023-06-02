@@ -99,7 +99,7 @@ hr {
 
 div.container {
 	padding: 12px;
-	height: calc(100% - 24px);
+	height: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
@@ -110,7 +110,8 @@ div.wo-content {
 	flex-direction: column;
 	justify-content: flex-start;
 	align-items: stretch;
-	height: calc(100% - 244px);
+	flex-grow: 1;
+	overflow-y: hidden;
 }
 div.wo-content > div.wo-list-header {
 	display: flex;
@@ -168,11 +169,12 @@ div.wo-content > div.wo-list-content::-webkit-scrollbar-thumb:hover {
 }
 div.wo-content > div.wo-list-content > table {
 	position: relative;
-    border-collapse: collapse;
+    border-collapse: separate;
     border-spacing: 0;
     table-layout: fixed;
     width: max-content;
 	font-size: 14px;
+	max-height: 100%;
 }
 div.wo-content > div.wo-list-content > table > thead > tr > th,
 div.wo-content > div.wo-list-content > table > thead > tr > td {
@@ -184,17 +186,16 @@ div.wo-content > div.wo-list-content > table > thead > tr > td {
 }
 div.wo-content > div.wo-list-content > table > thead > tr > th > div,
 div.wo-content > div.wo-list-content > table > thead > tr > td > div {
-	width: 100%;
-	height: 32px;
+	width: calc(100% + 2px);
+	height: 33px;
 	margin: -1px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	border: 1px solid #B3B3B3;
 }
 div.wo-content > div.wo-list-content > table tr > th,
 div.wo-content > div.wo-list-content > table tr > td {
-	border: 1px solid #B3B3B3;
+	border: 0.5px solid #B3B3B3;
 	text-align: center;
 }
 div.wo-content > div.wo-list-content > table > tbody {
@@ -225,7 +226,6 @@ div.wo-content > div.wo-list-content > table tr > th:nth-child(2) > div {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	border: 1px solid #B3B3B3;
 }
 div.wo-content > div.wo-list-content > table tr > td {
 	

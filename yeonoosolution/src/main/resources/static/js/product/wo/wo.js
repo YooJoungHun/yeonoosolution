@@ -1,6 +1,8 @@
 /** WO page scripts
  * 
  */
+var tableData;
+var compareData;
  
 // date 타입 input 값 초기화 버튼
 $(document).on('click', '.reset-input', e => {
@@ -71,22 +73,23 @@ const rowNumbering = () => {
 	data : [데이터 값] or null => select인 경우 옵션으로...
 		if select => [{value: 값, text: 지시글자, isSelect = 선택 여부(기본 false)}]
 	styles : [{스타일 속성: 스타일 값}]
+	compare : 데이터를 비교할 때 검사할 속성인지 여부
 */
 var tableLayout = [
-	{ header: 'numbering', name: null, width: '50px', compType: 'numbering', dataType: 'numbering', data: null, styles: [] },
-	{ header: 'checkbox', name: null, width: '50px', compType: 'checkbox', dataType: 'checkbox', data: null, styles: [] },
-	{ header: '지시번호', name: 'workOrderCode', width: '80px', compType: 'readonly', dataType: null, data: null, styles: [] },
-	{ header: '상태', name: 'workStatus', width: '50px', compType: 'readonly', dataType: null, data: null, styles: [] },
-	{ header: '유형', name: 'productType', width: '60px', compType: 'required', dataType: 'select', data: [{value:'', text:'--'}, {value:'일반', text:'일반'}, {value:'재작업', text:'재작업'}, {value:'개발품(시제품)', text:'개발품(시제품)'}], styles: [{'width':'60px'}] },
-	{ header: '지시일', name: 'workOrderDate', width: '110px', compType: 'editable', dataType: 'date', data: null, styles: [] },
-	{ header: '완료일', name: 'finishDate', width: '105px', compType: 'editable', dataType: 'date', data: null, styles: [] },
-	{ header: 'ITEM코드', name: 'item.itemCode', width: '155px', compType: 'editable', dataType: 'text', data: null, styles: [] },
-	{ header: '품목유형', name: 'item.itemType', width: '121px', compType: 'readonly', dataType: null, data: null, styles: [] },
-	{ header: '품명', name: 'item.itemName', width: '305px', compType: 'readonly', dataType: null, data: null, styles: [] },
-	{ header: '수량', name: 'itemQuantity', width: '50px', compType: 'required', dataType: 'number', data: null, styles: [] },
-	{ header: '창고', name: 'wh.whCode', width: '92px', compType: 'editable', dataType: 'text', data: null, styles: [] },
-	{ header: '창고명', name: 'wh.whName', width: '91px', compType: 'readonly', dataType: null, data: null, styles: [] },
-	{ header: '작업지시유형', name: 'workOrderType', width: '110px', compType: 'readonly', dataType: null, data: [{value:'', text:'--'}, {value:'자재수동투입', text:'자재수동투입'}, {value:'자재자동차감', text:'자재자동차감'}], styles: [{'width':'110px'}] }
+	{ header: 'numbering', name: null, width: '50px', compType: 'numbering', dataType: 'numbering', data: null, styles: [], compare: false },
+	{ header: 'checkbox', name: null, width: '50px', compType: 'checkbox', dataType: 'checkbox', data: null, styles: [], compare: false },
+	{ header: '지시번호', name: 'workOrderCode', width: '80px', compType: 'readonly', dataType: null, data: null, styles: [], compare: true },
+	{ header: '상태', name: 'workStatus', width: '50px', compType: 'readonly', dataType: null, data: null, styles: [], compare: true },
+	{ header: '유형', name: 'productType', width: '60px', compType: 'required', dataType: 'select', data: [{value:'', text:'--'}, {value:'일반', text:'일반'}, {value:'재작업', text:'재작업'}, {value:'개발품(시제품)', text:'개발품(시제품)'}], styles: [{'width':'60px'}], compare: true },
+	{ header: '지시일', name: 'workOrderDate', width: '110px', compType: 'editable', dataType: 'date', data: null, styles: [], compare: true },
+	{ header: '완료일', name: 'finishDate', width: '105px', compType: 'editable', dataType: 'date', data: null, styles: [], compare: true },
+	{ header: 'ITEM코드', name: 'item.itemCode', width: '155px', compType: 'editable', dataType: 'text', data: null, styles: [], compare: true },
+	{ header: '품목유형', name: 'item.itemType', width: '121px', compType: 'readonly', dataType: null, data: null, styles: [], compare: false },
+	{ header: '품명', name: 'item.itemName', width: '305px', compType: 'readonly', dataType: null, data: null, styles: [], compare: false },
+	{ header: '수량', name: 'itemQuantity', width: '50px', compType: 'required', dataType: 'number', data: null, styles: [], compare: true },
+	{ header: '창고', name: 'wh.whCode', width: '92px', compType: 'editable', dataType: 'text', data: null, styles: [], compare: true },
+	{ header: '창고명', name: 'wh.whName', width: '91px', compType: 'readonly', dataType: null, data: null, styles: [], compare: false },
+	{ header: '작업지시유형', name: 'workOrderType', width: '110px', compType: 'readonly', dataType: null, data: [{value:'', text:'--'}, {value:'자재수동투입', text:'자재수동투입'}, {value:'자재자동차감', text:'자재자동차감'}], styles: [{'width':'110px'}], compare: true }
 ];
 
 // data 구조에 맞게 템플릿화해서 보여주는 함수
@@ -187,7 +190,7 @@ $(document).on('click', 'button.remove-item', e => {
 			let codeList = $(codes).find('td[role="workOrderCode"]').toArray().map(td => $(td).text());
 			let dataObj = { workOrderCode: codeList };
 			$.ajax({
-				url: location.protocol + '//' + location.host + '/wo/removeWos',
+				url: location.protocol + '//' + location.host + '/product/wo/removeWos',
 				type: 'post',
 				data: JSON.stringify(dataObj),
 				dataType: 'json',
@@ -225,7 +228,7 @@ $(document).on('click', 'button.select-item', e => {
 	}
 	let sendData = JSON.stringify(dataObj);
 	$.ajax({
-		url: location.protocol + '//' + location.host + '/wo/search',
+		url: location.protocol + '//' + location.host + '/product/wo/search',
 		type: 'post',
 		data: sendData,
 		dataType: 'json',
@@ -243,11 +246,32 @@ $(document).on('click', 'button.select-item', e => {
 const comparison = (obj1, obj2) => {
 	let dataObj1 = {};
 	let dataObj2 = {};
-	let props = tableLayout.map(data => data.name != null ? data.name.split('.')[0] : null).filter(name => name != null);
-	let uniques = [...new Set(props)];
-	for (let uniq of uniques) {
-		dataObj1[uniq] = obj1[uniq];
-		dataObj2[uniq] = obj2[uniq];
+	let props = tableLayout.filter(data => data.name != null && data.compare).map(data => data.name);
+	for (let prop of props) {
+		let isDate = tableLayout.filter(data => data.name == prop)[0].dataType == 'date';
+		let temp1;
+		let temp2;
+		let split = prop.split('.');
+		if (prop.includes('.')) {
+			[temp1, temp2] = [obj1, obj2];
+			for (let key of split) [temp1, temp2] = [temp1[key], temp2[key]];
+		} else [temp1, temp2] = [obj1[prop], obj2[prop]];
+		if (isDate) {
+			if (typeof temp1 == 'number') {
+				tt1 = new Date(temp1);
+				let [yyyy, MM, dd] = [tt1.getFullYear(), tt1.getMonth() + 1, tt1.getDate()];
+				temp1 = yyyy + '-' + (MM < 10 ? '0' + MM : MM) + '-' + (dd < 10 ? '0' + dd : dd);
+			}
+			if (typeof temp2 == 'number') {
+				tt2 = new Date(temp2);
+				let [yyyy, MM, dd] = [tt2.getFullYear(), tt2.getMonth() + 1, tt2.getDate()];
+				temp2 = yyyy + '-' + (MM < 10 ? '0' + MM : MM) + '-' + (dd < 10 ? '0' + dd : dd);
+			}
+		} else {
+			[temp1, temp2] = [isNaN(parseFloat(temp1)) ? temp1 : parseFloat(temp1), isNaN(parseFloat(temp2)) ? temp2 : parseFloat(temp2)];
+		}
+		if (temp1 != null) dataObj1[prop] = temp1;
+		if (temp2 != null) dataObj2[prop] = temp2;
 	}
 	// Comparison algorithm required change
 	let result = JSON.stringify(dataObj1) == JSON.stringify(dataObj2);
@@ -293,6 +317,12 @@ $(document).on('click', 'button.update-item', e => {
 	let elem = $(e.target).closest('button.update-item');
 	// 여기에 현재 입력된 데이터들 업데이트해주는 과정
 	let cloneRow = $(tbody).find('tr');
+	
+	let reqs = $(cloneRow).find('th.required, td.required');
+	let check = false;
+	$(reqs).each((index, item) => check |= !$(item).find('select, input').val());
+	if (check) return;
+	
 	let rows = $(cloneRow).toArray();
 	let replacer = [];
 	for (let row of rows) {
@@ -302,19 +332,17 @@ $(document).on('click', 'button.update-item', e => {
 	// 변경 사항 체크
 	let diff = tableData.filter(data => {
 		if (!data.workOrderCode) return true;
-		let compData = compareData.filter(cd => cd.workOrderData == data.workOrderData)[0];
+		let compData = compareData.filter(cd => cd.workOrderCode == data.workOrderCode)[0];
 		let aggregation = !comparison(data, compData) && (data.workStatus == '저장');
 		return aggregation;
 	});
 	let news = diff.filter(data => data.workOrderCode == null);
 	let olds = diff.filter(data => data.workOrderCode != null);
-	console.log(news);
-	console.log(olds);
 	// 신규아이템 추가
 	let newData = { 'data' : news };
 	let newCount = 0;
 	$.ajax({
-		url: location.protocol + '//' + location.host + '/wo/insertWoList',
+		url: location.protocol + '//' + location.host + '/product/wo/insertWoList',
 		type: 'post',
 		data: JSON.stringify(newData),
 		dataType: 'json',
@@ -327,7 +355,7 @@ $(document).on('click', 'button.update-item', e => {
 	let oldData = { 'data' : olds };
 	let oldCount = 0;
 	$.ajax({
-		url: location.protocol + '//' + location.host + '/wo/updateWoList',
+		url: location.protocol + '//' + location.host + '/product/wo/updateWoList',
 		type: 'post',
 		data: JSON.stringify(oldData),
 		dataType: 'json',
@@ -336,6 +364,7 @@ $(document).on('click', 'button.update-item', e => {
 			oldCount = data.result;
 		}
 	});
+	[newCount, oldCount] = [news.length, olds.length];
 	alert(`저장되었습니다.\r\n신규: ${newCount}\r\n수정: ${oldCount}`);
 	$('button.select-item').click();
 });
@@ -359,7 +388,7 @@ $(document).on('click', 'button.confirm-item', e => {
 	realDataList = $(realDataList).toArray().filter(row => !(!$(row).find('td[role="workStatus"]').text()));
 	let codeList = realDataList.map(row => $(row).find('td[role="workOrderCode"]').text());
 	$.ajax({
-		url: location.protocol + '//' + location.host + '/wo/woConfirm',
+		url: location.protocol + '//' + location.host + '/product/wo/woConfirm',
 		type: 'post',
 		data: JSON.stringify({ workOrderCode: codeList }),
 		dataType: 'json',
@@ -381,7 +410,7 @@ $(document).on('click', 'button.cancel-item', e => {
 	realDataList = $(realDataList).toArray().filter(row => !(!$(row).find('td[role="workStatus"]').text()));
 	let codeList = realDataList.map(row => $(row).find('td[role="workOrderCode"]').text());
 	$.ajax({
-		url: location.protocol + '//' + location.host + '/wo/woCancel',
+		url: location.protocol + '//' + location.host + '/product/wo/woCancel',
 		type: 'post',
 		data: JSON.stringify({ workOrderCode: codeList }),
 		dataType: 'json',
@@ -424,7 +453,7 @@ $(document).on('change', '.wo-header-value input[name="workOrderDate"]', e => {
 $(document).on('blur', 'input[name="item.itemCode"]', e => {
 	let elem = $(e.target).closest('input[name="item.itemCode"]');
 	$.ajax({
-		url: location.protocol + '//' + location.host + '/wo/getItem',
+		url: location.protocol + '//' + location.host + '/product/wo/getItem',
 		type: 'post',
 		data: JSON.stringify({ itemCode: $(elem).val() }),
 		dataType: 'json',
@@ -433,6 +462,9 @@ $(document).on('blur', 'input[name="item.itemCode"]', e => {
 			if (data != null) {
 				$(elem).closest('tr').find('td[role="item.itemType"]').text(data.itemType);
 				$(elem).closest('tr').find('td[role="item.itemName"]').text(data.itemName);
+			} else {
+				$(elem).closest('tr').find('td[role="item.itemType"]').text('');
+				$(elem).closest('tr').find('td[role="item.itemName"]').text('');
 			}
 		}
 	});
@@ -442,7 +474,7 @@ $(document).on('blur', 'input[name="item.itemCode"]', e => {
 $(document).on('blur', 'input[name="wh.whCode"]', e => {
 	let elem = $(e.target).closest('input[name="wh.whCode"]');
 	$.ajax({
-		url: location.protocol + '//' + location.host + '/wo/getWh',
+		url: location.protocol + '//' + location.host + '/product/wo/getWh',
 		type: 'post',
 		data: JSON.stringify({ whCode: $(elem).val() }),
 		dataType: 'json',
@@ -450,6 +482,8 @@ $(document).on('blur', 'input[name="wh.whCode"]', e => {
 		success: data => {
 			if (data != null) {
 				$(elem).closest('tr').find('td[role="wh.whName"]').text(data.whName);
+			} else {
+				$(elem).closest('tr').find('td[role="wh.whName"]').text('');
 			}
 		}
 	});
