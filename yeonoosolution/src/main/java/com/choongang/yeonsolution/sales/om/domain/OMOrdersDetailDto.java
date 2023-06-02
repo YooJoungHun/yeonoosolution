@@ -17,4 +17,8 @@ public class OMOrdersDetailDto {
 	private	String	endYn;
 	private String	orderCodeHidden;
 	
+	private String	regUser;
+	private String	updateUser;
+	private String	companyCode;
+	
 }
