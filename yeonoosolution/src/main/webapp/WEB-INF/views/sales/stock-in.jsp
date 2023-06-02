@@ -193,13 +193,70 @@
 .change-td {
 	background-color: #e6f2ff;
 }
+
+.side-bar {
+      border: 1px solid #ddd;
+      padding: 20px;
+      float: left;
+      height: 100vh;
+   }
 </style>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
 </head>
 <body>
+	<div class="side-bar">
+		<!-- product/ds -->
+		<a href="/product/status/defect">불량현황</a><p>
+		<!-- product/ps -->
+		<a href="/product/status/production">생산현황 검색</a><p>
+		<!-- product/pr -->
+		<!-- product -->
+		<a href="/product/is/item">품목별 재고 현황</a><p>
+		<a href="/product/is/bom">BOM별 재고 현황</a><p>
+		<a href="/product/is/wh">창고별 재고 현황</a><p>
+		<a href="/product/is/wh/">창고별 재고 현황 상세</a><p>
+		<a href="/item/search">제품 검색</a><p>
+		<a href="/product/sim">입고</a><p>
+		<a href="/wo">제품 생산 지시</a><p>
+		
+		<!-- product/smm -->
+		<a href="/product/stockMoveRegistration">재고 이동등록</a><p>
+		<a href="/product/stockMoveStatus">재고 이동현황</a><p>
+		
+		<!-- sales -->
+		<a href="/sales/receive-order">수주서 관리</a><p>
+		<a href="/sales/analysis-of-materials">자제요소분석</a><p>
+		<a href="/sales/order">구매</a><p>
+		<a href="/sales/stock-in">구매입고등록</a><p>
+		
+		<!-- standard -->
+		<a href="/standard/login">로그인</a><p>
+		<a href="/standard/user-admin">사용자 계정관리</a><p>
+		<a href="/standard/imi">품목 관리 및 등록</a><p>
+		<a href="/standard/ipi">품목 단가 관리</a><p>
+		<a href="/standard/pmi">품목 관리 정보</a><p>
+	   
+		<!-- standard bi -->
+		 기본정보<p>
+	    <a href="/standard/companyInfo/">회사정보</a><p>
+	    <a href="/standard/customerInfo/">거래처정보</a><p>
+	    <!-- standard um -->
+		사용자관리<p>
+	    <a href="/standard/myPage/">개인정보수정</a><p>
+	    <a href="/standard/dept/">부서등록 및 확인</a><p>
+	    <a href="/standard/job/">직급등록 및 확인</a><p>
+	   
+		<!-- 로그아웃 -->
+		<c:if test="${sessionScope.member != null}">
+	      	<form action="/standard/logout" method="POST">
+	         	<button type="submit">로그아웃</button>
+	      	</form>
+		</c:if>
+    </div>
+	
 	<div id="contain">
-			<input type="button" value="구매 발주" onclick="location.href='/pm/order'">
-			<input type="button" value="구매 입고 등록" onclick="location.href='/pm/stock-in'">
+			<input type="button" value="구매 발주" onclick="location.href='/sales/order'">
+			<input type="button" value="구매 입고 등록" onclick="location.href='/sales/stock-in'">
 			<input type="button" value="구매 내역조회">
 		<div id="content">
 			<div id="btn-div">
@@ -441,16 +498,13 @@
 			}
 			let stockIn = {
 				orderCode : saveOrderTr.find('.order-code').text(),
-				companyCode : "COMPANY1",
 				customerCode : saveOrderTr.find('.customer-code').text(),
 				inDate : saveOrderTr.find('.order-date').text(),
-				regUser : "bsm",
-				updateUser : "bsm",
 				memo : saveOrderTr.find('.memo').text()
 			};
 			console.log(stockIn);
 			
-			let stOInDetails = [];
+			let stInDetails = [];
 			$('.order-detail-table-tr-area').each(function(){
 				let orderDetailTr = $(this);
 				let stInDetail = { 
@@ -459,7 +513,7 @@
 						itemCode : $(this).find('.item-code').text(),
 						inQuantity : $(this).find('.quantity').text(),
 						inPrice : $(this).find('.item-price').text(),
-						memo : $(this).find('.memo').text(),
+						memo : $(this).find('.memo').text()
 				};
 				orderDetailTr.find('.change-td').each(function() {
 				  	let text = $(this).text().trim();
@@ -473,18 +527,18 @@
 				  	alert("선택하신 입고서 세부항목 필수 작성 항목이 작성되지 않았습니다. 다시 확인해주세요.");
 				  	return;
 				}
-				stOInDetails.push(stInDetail);
+				stInDetails.push(stInDetail);
 			});
-			console.log(stOInDetails);
+			console.log(stInDetails);
 			
 			$.ajax({
-				url : "/pm/st-in-add",
+				url : "/sales/st-in-add",
 				type : "POST",
 				dataType : "TEXT",
 				contentType: "application/json",
 				data: JSON.stringify({
 					stockIn : stockIn,
-					stOInDetails : stOInDetails
+					stInDetails : stInDetails
 			    }),
 				success : function(mag){
 					alert(mag);
@@ -509,11 +563,8 @@
 			let stockIn = {
 				inCode : saveOrderTr.find('.st-in-code').text(),
 				orderCode : saveOrderTr.find('.order-code').text(),
-				companyCode : "COMPANY1",
 				customerCode : saveOrderTr.find('.customer-code').text(),
 				inDate : saveOrderTr.find('.order-date').text(),
-				regUser : "bsm",
-				updateUser : "bsm",
 				memo : saveOrderTr.find('.memo').text()
 			};
 			console.log(stockIn);
@@ -547,7 +598,7 @@
 			console.log(stInDetails);
 			
 			$.ajax({
-				url : "/pm/st-in-modify",
+				url : "/sales/st-in-modify",
 				type : "POST",
 				dataType : "TEXT",
 				contentType: "application/json",
@@ -566,7 +617,7 @@
 	// 제품 검색 데이터 받기
 	function itemSearch(search){
 		$.ajax({
-			url : "/pm/item-list",
+			url : "/sales/item-list",
 			type : "GET",
 			dataType : "JSON",
 			data : {search :search.toUpperCase()},
@@ -591,7 +642,7 @@
 	// 창고 검색 데이터 받기
 	function whSearch(){
 		$.ajax({
-			url : "/pm/wh-list",
+			url : "/sales/wh-list",
 			type : "GET",
 			dataType : "JSON",
 			success : function(whList){
@@ -618,7 +669,7 @@
 	// 회사 검색 데이터 받기
 	function companySearch(search){
 		$.ajax({
-			url : "/pm/customer-list",
+			url : "/sales/customer-list",
 			type : "GET",
 			dataType : "JSON",
 			data : {search :search.toUpperCase()},
@@ -677,7 +728,7 @@
 			return;
 		}
 		$.ajax({
-			url: "/pm/stock-in/" + orderCode +"/details",
+			url: "/sales/stock-in/" + orderCode +"/details",
 			type : "GET",
 			dataType : "JSON",
 			success : function(orderDetailList){
@@ -838,12 +889,12 @@
 			dbEnterTd.text(value);
 		}
 	});
-	// 발주서 검색기능
+	// 입고서 검색기능
 	function orderList(){
-		let orderDate = $('#search-order-day').val();
+		let orderDate = $('#search-order-day').val().replaceAll('-', '/');
 		let customerCode = $('#search-customer-code').val();
 		$.ajax({
-			url: "/pm/stock-in-list",
+			url: "/sales/stock-in-list",
 			type : "GET",
 			dataType : "JSON",
 			data : { 
@@ -913,7 +964,7 @@
 	function orderUpdate(column, data){
 		let inCode = radioOrderCode;
 		$.ajax({
-			url: "/pm/st-in/" + inCode,
+			url: "/sales/st-in/" + inCode,
 			type : "PATCH",
 			data : {column : column,
 					data : data},
