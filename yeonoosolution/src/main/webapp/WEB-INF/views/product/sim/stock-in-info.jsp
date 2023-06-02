@@ -17,16 +17,14 @@
 			<div class="content-btn">
 				<button onclick="btnEvent('find')">조회</button>
 				<button onclick="btnEvent('save')">저장</button>
-				<button onclick="btnEvent('delete')">삭제</button>
-				<button onclick="btnEvent('fix')">확정</button>
-				<button onclick="btnEvent('cancel')">확정 취소</button>
+				<button onclick="resetEvent()">초기화</button>
 			</div>
 			
 			<div class="stock-in-list">
 				<div class="stock-in-item">
 					<input id="updateDate" name="updateDate" type="date" hidden="1">
 					<input id="updateUser" name="updateUser" type="text" hidden="1">
-					<div class="item-title"><label for="inCode">입고번호</label></div>
+					<div class="item-title"><label for="inCode">입고 번호</label></div>
 					<div class="item-content"><input id="inCode" name="inCode" placeholder="입고 번호"></div>
 				</div>
 				<div class="stock-in-item">
@@ -98,10 +96,10 @@
 				<table class="table-in table-content">
 					<thead>
 						<tr>
-							<th><div class="item-title">순번</div></th>
-							<th><div class="item-title"><input class="checkBox" type="checkbox" onclick="$('.checkBox').prop('checked', (_, checked)=> {return !checked;});"></div></th>
+							<th><div class="item-title"></div></th>
+							<th><div class="item-title"><input type="checkbox" onclick="$('.checkBox').prop('checked', this.checked ? true : false);"></div></th>
 							<th><div class="item-title"><label for="inType">입고 상태</label></div></th>
-							<th><div class="item-title"><label for="orderType">입고유형</label></div></th>
+							<th><div class="item-title"><label for="orderType">입고 유형</label></div></th>
 							<th><div class="item-title"><label for="inDate">입고일</label></div></th>
 							<th><div class="item-title"><label for="inCode">입고 번호</label></div></th>
 							<th><div class="item-title"><label for="inCode">수주 번호</label></div></th>
@@ -118,20 +116,20 @@
 					<tbody>
 						<c:forEach var="stIn" items="${stInList}" varStatus="status">
 							<tr class="stInRow" class="row${status.index}">
-								<td><div>${status.index+1}</div></td>
-								<td><input class="checkBox" type="checkbox"></td>
-								<td><input type="text" disabled="disabled" class="inType" value="${stIn.inType}"></td>
-								<td><input type="text" disabled="disabled" class="orderType" value="${stIn.orderCode != null? '구매입고':'기타입고'}"></td>
-								<td><input type="text" disabled="disabled" class="inDate" value="${stIn.inDate}"></td>
-								<td><input type="text" disabled="disabled" class="inCode" value="${stIn.inCode}"></td>
-								<td><input type="text" disabled="disabled" class="orderCode" value="${stIn.orderCode}"></td>
-								<td><input type="text" disabled="disabled" class="customerCode" value="${stIn.customerCode}"></td>
-								<td><input type="text" disabled="disabled" class="companyName" value="${stIn.companyDto.companyName}"></td>
-								<td><input type="text" disabled="disabled" class="regUser" value="${stIn.regUser}"></td>
-								<td><input type="text" disabled="disabled" class="regDate" value=<fmt:formatDate value="${stIn.regDate}" pattern="yyyy/MM/dd"/>></td>
-								<td><input type="text" disabled="disabled" class="updateUser" value="${stIn.updateUser}"></td>
-								<td><input type="text" disabled="disabled" class="updateDate" value=<fmt:formatDate value="${stIn.updateDate}" pattern="yyyy/MM/dd"/>></td>
-								<td><input type="text" disabled="disabled" class="memo" value="${stIn.memo}"></td>
+								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" value="${status.index+1}"></td>
+								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input class="checkBox" type="checkbox"></td>
+								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="inType" value="${stIn.inType}" readonly="readonly"></td>
+								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="orderType" value="${stIn.orderCode != null? '구매입고':'기타입고'}" readonly="readonly"></td>
+								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="inDate" value="${stIn.inDate}"></td>
+								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="inCode" value="${stIn.inCode}"></td>
+								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="orderCode" value="${stIn.orderCode}"></td>
+								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="customerCode" value="${stIn.customerCode}"></td>
+								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="companyName" value="${stIn.companyDto.companyName}"></td>
+								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="regUser" value="${stIn.regUser}"></td>
+								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="regDate" value=<fmt:formatDate value="${stIn.regDate}" pattern="yyyy/MM/dd"/>></td>
+								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="updateUser" value="${stIn.updateUser}"></td>
+								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="updateDate" value=<fmt:formatDate value="${stIn.updateDate}" pattern="yyyy/MM/dd"/>></td>
+								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="memo" value="${stIn.memo}"></td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -141,43 +139,41 @@
 		
 		
 		
-		<div>${stInList[0].stInDetailDto[0].sorder}</div>
-		
-		
-		
 		
 		<section class="content-footer">
 			<div class="stock-in-detail-table">
 				<table class="table-in-detail table-content">
 					<thead>
 						<tr>
-							<th>순번</th>
-							<th></th>
-							<th>창고코드</th>
-							<th>아이템코드</th>
-							<th>수량</th>
-							<th>가격</th>
-							<th>창고이름</th>
-							<th>비고</th>
+							<th><div class="item-title">순번</div></th>
+							<th><div class="item-title"><input type="checkbox" onclick="$('.dtCheckBox').prop('checked', this.checked ? true : false);"></div></th>
+							<th><div class="item-title">입고 번호</div></th>
+							<th><div class="item-title">창고 코드</div></th>
+							<th><div class="item-title">아이템 코드</div></th>
+							<th><div class="item-title">수량</div></th>
+							<th><div class="item-title">가격</div></th>
+							<th><div class="item-title">창고이름</div></th>
+							<th><div class="item-title">비고</div></th>
+						</tr>
 					</thead>
 					<tbody>
 						<c:forEach var="stIn" items="${stInList}" varStatus="status">
 						<c:forEach var="sid" items="${stIn.stInDetailDto}">
 							<tr class="stInDetailRow">
-								<td>${sid.sorder}</td>
-								<td><input type="checkbox"></td>
-								<td>${sid.whCode}</td>
-								<td>${sid.itemCode}</td>
-								<td>${sid.inQuantity}</td>
-								<td>${sid.inPrice}</td>
-								<td>${sid.whDto.whName}</td>
-								<td>${sid.memo}</td>
+								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="sidSorder" value="${sid.sorder}" readonly="readonly"></td>
+								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="checkbox" class="dtCheckBox"></td>
+								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="inCode" value="${stIn.inCode}" readonly="readonly"></td>
+								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="sidWhCode" value="${sid.whCode}"></td>
+								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="sidItemCode" value="${sid.itemCode}"></td>
+								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="sidInQuantity" value="${sid.inQuantity}"></td>
+								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="sidInPrice" value="${sid.inPrice}"></td>
+								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="sidWhDtoWhName" value="${sid.whDto.whName}"></td>
+								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="sidMemo" value="${sid.memo}"></td>
 							</tr>
 						</c:forEach>
 						</c:forEach>
 					</tbody>
 				</table>
-				
 				
 				
 				<table class="myModal">

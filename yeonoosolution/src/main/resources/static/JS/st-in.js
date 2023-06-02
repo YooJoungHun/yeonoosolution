@@ -3,12 +3,54 @@
  */
 const contextPath = window.location.pathname.split('/')[0];
 //let inCode, orderType, orderCode, inDate, customerCode, companyName, regUser, regDate, memo;
-let previousRow, row, stIn, previousCheckBox;
+let previousRow, inRow, inDetailRow, previousCheckBox;
 $(()=> {
 	$(document).on('click', '.stInRow', tableRowClick);
+	$(document).on('click', '.stInDetailRow', detailTableRowClick);
 	$(document).on('dblclick', '.stInDetailRow', openModal);
 	$(document).on('click', '.myModal', closeModal);
+
+	$(document).on('dblclick', '.stInRow', rowModify);
+	$(document).on('focusout', 'tbody input[type="text"]', inputFocusout);
+	$(document).on('keydown', 'tbody input', inputEnter);
+	$(document).on('keyup', '#inCode', inCodeEvent);
 });
+
+// 입고 번호 입력
+function inCodeEvent(){
+	let inCode = $('#inCode').val();
+	$('.stInDetailRow').css('display', 'none');
+	$(`.stInDetailRow input[value="${inCode}"]`).closest('tr').toggle();
+}
+
+
+// 포커스 아웃 이벤트
+function inputFocusout(e){
+	$(this).prop('disabled', true);
+	tableRowClick(e);
+}
+// 엔터 이벤트
+function inputEnter(e){
+	if(e.keyCode === 13){
+		$(this).prop('disabled', true);
+		tableRowClick(e);
+	}
+}
+
+// 더블 클릭시 행 수정
+function rowModify(e){
+	let rowTd = $(e.target).closest('td');
+	let tdInput = $(e.target).closest('td').find('input');
+
+	console.log($(e.target).closest('tr').find('.inType').val());
+
+	if($(e.target).closest('tr').find('.inType').val()!='확정'){
+		if(!tdInput.is('disabled', 'disabled')){
+			tdInput.prop('disabled', false);
+			rowTd.css('background-color', 'white');
+		}
+	}
+}
 
 // 모달 창
 function openModal(){
@@ -20,66 +62,53 @@ function closeModal(e){
 	}
 }
 
-// 체크 이벤트
-$(()=>{
-	console.log($('.checkBox').is('checked'));
-});
 
 
 // 테이블 행 클릭 이벤트
 function tableRowClick(e){
-	stIn = $(e.target).closest('tr');
-	
-	
-	
+	inRow = $(e.target).closest('tr');
+	checkBox = $(e.target).closest('tr').find('.checkBox');
 
-	
-	let orderType = stIn.find('.orderType').val();
+	if(previousRow != null && previousRow != inRow){
+		previousCheckBox.prop('checked', false).trigger('change');
+	}
+	if($(inRow).attr('id') == $(previousRow).attr('id')){
+		checkBox.prop('checked', false).trigger('change');
+		previousRow = null;
+	}else{
+		checkBox.prop('checked', true).trigger('change');
+		previousRow = inRow;
+		previousCheckBox = checkBox;
+	}
+
+	//checkBox.prop('checked', (_, checked)=> {return !checked;}).trigger('change');
+	// if(previousCheckBox == checkBox){
+	// 	checkBox.prop('checked', false).trigger('change');
+	// 	//previousCheckBox = null;
+	// }else if(previousCheckBox != null){
+	// 	//previousCheckBox.prop('checked', false).trigger('change');
+	// }
+
+	let orderType = inRow.find('.orderType').val();
 	if(orderType == '구매입고'){
 		$('#orderType').val(1);
 	}
 	if(orderType == '기타입고'){
 		$('#orderType').val(0);
 	}
-
-
-
-
-	row = $(e.target).closest('tr').next('tr').attr('class');
-	checkBox = $(e.target).closest('tr').find('.checkBox');
-
-	if(previousCheckBox != null && previousCheckBox != checkBox){
-		//$(`.${previousRow}`).hide();
-		previousCheckBox.prop('checked', false).trigger('change');
-	}
-	
-	//$(`.${row}`).toggle();
-	
-	//if(!$(e.target).is('input[type="checkbox"]'))
-	checkBox.prop('checked', (_, checked)=> {return !checked;}).trigger('change');
-
-	if(previousCheckBox != null || previousCheckBox != checkBox){
-		//previousRow = row;
-		previousCheckBox = checkBox;
-	}
-	
-	// if(stIn.find('.checkBox').is(':checked')){
-	// 	$('#inCode').val(stIn.find('.inCode').val());
-	// 	$('#orderCode').val(stIn.find('.orderCode').val());
-	// 	$('#customerCode').val(stIn.find('.customerCode').val());
-	// 	$('#inDate').val(inDate);
-	// 	$('#regDate').val(regDate);
-	// 	$('#regUser').val(stIn.find('.regUser').val());
-	// 	$('#updateUser').val(stIn.find('.updateUser').val());
-	// 	$('#updateDate').val(updateDate);
-	// 	$('#inType').val(stIn.find('.inType').val());
-	// 	$('#companyName').val(stIn.find('.companyName').val());
-	// 	$('#memo').val(stIn.find('.memo').val());
-	// 	$('#inCode, #orderCode, #orderType').attr('disabled', true);
-	// }
+	// inCode에 맞는 행 보여주기
+	let inCode = $(e.target).closest('tr').find('.inCode').val();
+	$('.stInDetailRow').css('display', 'none');
+	$(`.stInDetailRow input[value="${inCode}"]`).closest('tr').toggle();
 }
 
+// 상세 페이지 클릭 이벤트
+function detailTableRowClick(e){
+	inDetailRow = $(e.target).closest('tr');
+	inDetailRow.find('.dtCheckBox').prop('checked', (_, checked)=> {return !checked;});
+}
 
+// 체크시 값 입력
 $(()=>{
 	$('.checkBox').on('change', (e)=>{
 		let inCode = $(e.target).closest('tr').find('.inCode').val();
@@ -111,21 +140,29 @@ $(()=>{
 			$('#companyName').val(companyName);
 			$('#memo').val(memo);
 		} else {
-			$('#inCode').val('');
-			$('#orderCode').val('');
-			$('#customerCode').val('');
-			$('#inDate').val('');
-			$('#regDate').val('');
-			$('#regUser').val('');
-			$('#updateUser').val('');
-			$('#updateDate').val('');
-			$('#inType').val('');
-			$('#companyName').val('');
-			$('#memo').val('');
+			resetEvent();
 		}
 	});
 });
 
+
+// 리셋
+function resetEvent(){
+	$('#inCode').val('');
+	$('#orderCode').val('');
+	$('#customerCode').val('');
+	$('#inDate').val('');
+	$('#regDate').val('');
+	$('#regUser').val('');
+	$('#updateUser').val('');
+	$('#updateDate').val('');
+	$('#inType').val('');
+	$('#companyName').val('');
+	$('#memo').val('');
+	$('.checkBox').prop('checked', false);
+	$('.stInDetailRow').css('display', '');
+	Event.stopPropagation();
+}
 
 
 // 입고 유형
@@ -189,7 +226,8 @@ const btnMap = {
     save: [`${contextPath}/product/sim/save`, 'put'],
     delete: [`${contextPath}/product/sim/delete`, 'delete'],
     fix: [`${contextPath}/product/sim/fix`, 'patch'],
-    cancel: [`${contextPath}/product/sim/cancel`, 'patch']
+    cancel: [`${contextPath}/product/sim/cancel`, 'patch'],
+		//reset: resetEvent()
 };
 
 // 버튼 이벤트

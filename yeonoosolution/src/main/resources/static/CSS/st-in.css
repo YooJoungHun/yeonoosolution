@@ -9,34 +9,38 @@ section > div:first-child {
 .table-content {
 	display: block;
 	table-layout: fixed;
-	width: 1000px;
+	width: 900px;
 	height: 250px;
 	overflow: auto;
 	border-collapse: collap;
 	border: 1px solid black;
 }
-
 table th {
 	font-weight: 700;
 	background-color: rgba(0,0,0, 0.05);
-	width: 80px;
 }
 
 tbody tr, th, td {
-	word-break: break-all;	
-	width: 80px;
+	width: 100px;
 	height: 40px;
 	text-align: center;
 	box-sizing: border-box;
 	padding: 0;
 
 }
-tbody input:disabled {
-	width: inherit;
+tbody input[type="text"] {
+	width: 100px;
+	height: 30px;
 	border: none;
+	outline: none;
 	background-color: transparent;
 	text-align: center;
-	disabled;
+}
+tbody input[type="checkbox"] {
+	width: 30px;
+}
+tbody td[disabled] {
+	background-color: rgba(0,0,0, 0.2);
 }
 .stock-in-list {
 	display: flex;
@@ -55,13 +59,19 @@ tbody input:disabled {
 }
 
 
+
+
+
+
+
+
+
 .stock-in-item {
 	background-color: rgba(0,0,0, 0.05);
 	display: flex;
 	padding: 10px 20px;
 	height: auto;
 }
-
 .item-content input, select {
 	border-radius: 10px;
 	border: none;

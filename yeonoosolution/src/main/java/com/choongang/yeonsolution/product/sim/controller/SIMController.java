@@ -21,21 +21,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 
 @Controller
+@RequestMapping("/product/sim")
 @RequiredArgsConstructor
 public class SIMController {
 	private final SIMService simService;
 
-	/**
-	 * 페이지
-	 */
-	@GetMapping(value = "/product/sim")
+	/** 페이지 접속 */
+	@GetMapping(value = "")
 	public String StIn(StInDto stInDto, Model model) {
 		List<StInDto> stInList = simService.stInList(stInDto);
 		model.addAttribute("stInList", stInList);
-		return "product/inventory-stock-in";
+		return "product/sim/stock-in";
 	}
 	
-	@RequestMapping(value = "/product/sim/{action}")
+	@RequestMapping(value = "/{action}")
 	public String find(	@PathVariable(name = "action")String action,
 						@RequestParam(required = false)Map<String, Object> data,
 						RedirectAttributes redirectAttributes) {
@@ -72,8 +71,8 @@ public class SIMController {
 		return "redirect:/product/sim";
 	}
 	
-	@RequestMapping(value = "/")
-	public String pass() {
-		return "redirect:/product/is/item";
-	}
+//	@RequestMapping(value = "/")
+//	public String pass() {
+//		return "redirect:/product/is/item";
+//	}
 }
