@@ -25,4 +25,5 @@ public class IsBomDto {
 	private String whName;
 	private Long goodQuantity;
 	private Long badQuantity;
+	private String highItemName;
 }

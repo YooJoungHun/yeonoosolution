@@ -30,9 +30,9 @@ public class ISController {
 		return "/product/inventory-status-item";
 	}
 	
-	@GetMapping(value = "/product/is/item/{itemCode}")
+	@GetMapping(value = "/product/is/item/{itemName}")
 	@ResponseBody
-	public List<IsWhStockDetailDto> isItemListByItemCode(@PathVariable String itemCode, IsWhStockDetailDto whStockDetailDto) {
+	public List<IsWhStockDetailDto> isItemListByItemCode(@PathVariable String itemName, IsWhStockDetailDto whStockDetailDto) {
 		log.info("is Controller isItemListByItemCode() start");
 		log.info("WhStockDetailDto : " + whStockDetailDto.toString());
 		

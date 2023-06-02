@@ -6,7 +6,7 @@
 
 	<select id="selectIsItemListByItemCode" parameterType="IsWhStockDetailDto" resultType="IsWhStockDetailDto">
 		select		i.item_name, i.item_code, i.item_type, wd.wh_code, wd.good_quantity, 
-			  		wd.bad_quantity, wd.update_user, i.stock_unit
+			  		wd.bad_quantity, wd.update_user, i.stock_unit, i.memo
 		from		wh_stock_detail wd, item i
 		where		wd.item_code = i.item_code
 		and			i.item_name like '%' || upper(#{itemName}) || '%'
@@ -59,7 +59,8 @@
 	</select>
 	
 	<select id="selectIsBomListByItemNameAndItemType" parameterType="IsBomDto" resultType="IsBomDto">
-		select 		b.low_item_code, i.item_name, wd.wh_code, w.wh_name, wd.good_quantity, wd.bad_quantity
+		select 		b.low_item_code, i.item_name, wd.wh_code, w.wh_name, wd.good_quantity, wd.bad_quantity,
+					io.item_name as high_item_name
 		from 		bom b
 		join 		item i on b.low_item_code = i.item_code
 		join 		item io on b.high_item_code = io.item_code

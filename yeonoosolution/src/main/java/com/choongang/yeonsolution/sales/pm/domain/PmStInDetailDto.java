@@ -20,5 +20,5 @@ public class PmStInDetailDto {
 	private String itemName;
 	private String whName;
 	private String stockUnit;
-	
+	private String updateUser;
 }

@@ -8,23 +8,16 @@
 <head>
 <meta charset="UTF-8">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<style type="text/css">
-	span {
-		border: 1px solid #E8EBF0;
-		border-radius: 5px;
-		padding: 5px 10px;
-		font-weight: bold;
-		text-align: center;
-	}
-	
-	table {
-		background-color: #F8F8F8;
+<style type="text/css">	
+	.whStockDetail {
+		border-collapse : collapse;
 		padding: 20px;
 		margin: 0 auto;
-		width: 80%;
+		white-space: nowrap;
+		table-layout: fixed;
 	}
-	
-	input {
+
+ 	input {
 		height: 1.6rem;
 	}
 	
@@ -40,109 +33,161 @@
 	}
 	
 	.whStockDetail th, td {
-		border: 1px solid #ddd;
 		padding: 10px 20px;
+		text-align: center;
+		border: 1px solid #b3b3b3;
 	}
 	
-	h2 {
+	.content {	
+		display: inline-block;
+		width: 80%;
+		margin: 0px auto;
+		margin-left: 3%;
+	}
+	
+ 	.wh-stock-detail-list {
+	    width: 100%; /* 원하는 가로 크기를 설정하세요 */
+	    height: 400px; /* 원하는 세로 크기를 설정하세요 */
+	    overflow: auto; /* 내용이 넘칠 경우 스크롤 표시 */
+		border: 1px solid #ddd;
 		margin: 0 auto;
-		display: inline-block; 
-		padding-left: 55px;
+		background-color: #f8f8f8;
 	}
 	
+	.item-name, .good-quantity, .bad-quantity {
+		background-color: #ffffcc;
+	}
+	
+	.item-code, .wh-code, .update-user {
+		background-color: #e6f2ff;
+	}
+	
+	.stock-unit, .memo {
+		background-color: #d9d9d9;
+	}
+	
+	.stock-list:hover td {
+		background-color: navy;
+		color: white;
+	}
+	
+	label {
+		border: 1px solid #ddd;
+		border-radius: 5px;
+		padding: 5px;
+	}
+	
+	.btn {
+		background-color: white;
+		border-radius: 5px;
+		height: 30px;
+		border: 1px solid navy;
+		padding: 0 15px;
+	}
+	
+	.btn:hover {
+		background-color: navy;
+		color: white;
+		font-weight: bold;
+	}
+	
+	#memo {
+		width: 500px !important;
+	}
+	
+	.input-div {
+		display: flex;
+		justify-content: space-between;
+    	align-items: center;
+	}
 </style>
 <title>Insert title here</title>
 </head>
 <body>
-	   <div class="side-bar">
-            <!-- product/ds -->
-            <a href="/product/status/defect">불량현황</a><p>
-            <!-- product/ps -->
-            <a href="/product/status/production">생산현황 검색</a><p>
-            <!-- product/pr -->
-            <!-- product -->
-            <a href="/product/is/item">품목별 재고 현황</a><p>
-            <a href="/product/is/bom">BOM별 재고 현황</a><p>
-            <a href="/product/is/wh">창고별 재고 현황</a><p>
-            <a href="/product/is/wh/">창고별 재고 현황 상세</a><p>
-            <a href="/item/search">제품 검색</a><p>
-            <a href="/product/sim">입고</a><p>
-            <a href="/wo">제품 생산 지시</a><p>
-            
-            <!-- product/smm -->
-            <a href="/product/stockMoveRegistration">재고 이동등록</a><p>
-            <a href="/product/stockMoveStatus">재고 이동현황</a><p>
-            
-            <!-- sales -->
-            <a href="/sales/receive-order">수주서 관리</a><p>
-            <a href="/sales/analysis-of-materials">자제요소분석</a><p>
-            <a href="/sales/order">구매</a><p>
-            <a href="/sales/stock-in">구매입고등록</a><p>
-            
-            <!-- standard -->
-            <a href="/standard/login">로그인</a><p>
-            <a href="/standard/user-admin">사용자 계정관리</a><p>
-            <a href="/standard/imi">품목 관리 및 등록</a><p>
-            <a href="/standard/ipi">품목 단가 관리</a><p>
-            <a href="/standard/pmi">품목 관리 정보</a><p>
-            
-            <!-- standard bi -->
-               기본정보<p>
-             <a href="/standard/companyInfo/">회사정보</a><p>
-             <a href="/standard/customerInfo/">거래처정보</a><p>
-             <!-- standard um -->
-               사용자관리<p>
-             <a href="/standard/myPage/">개인정보수정</a><p>
-             <a href="/standard/dept/">부서등록 및 확인</a><p>
-             <a href="/standard/job/">직급등록 및 확인</a><p>
-            
-            <!-- 로그아웃 -->
-            <c:if test="${sessionScope.member != null}">
-               <form action="/standard/logout" method="POST">
-                  <button type="submit">로그아웃</button>
-               </form>
-            </c:if>
-            
-         </div>
+	<div class="side-bar">
+		<!-- product/ds -->
+		<a href="/product/status/defect">불량현황</a><p>
+		<!-- product/ps -->
+		<a href="/product/status/production">생산현황 검색</a><p>
+		<!-- product/pr -->
+		<!-- product -->
+		<a href="/product/is/item">품목별 재고 현황</a><p>
+		<a href="/product/is/bom">BOM별 재고 현황</a><p>
+		<a href="/product/is/wh">창고별 재고 현황</a><p>
+		<a href="/product/is/wh/">창고별 재고 현황 상세</a><p>
+		<a href="/item/search">제품 검색</a><p>
+		<a href="/product/sim">입고</a><p>
+		<a href="/wo">제품 생산 지시</a><p>
+		
+		<!-- product/smm -->
+		<a href="/product/stockMoveRegistration">재고 이동등록</a><p>
+		<a href="/product/stockMoveStatus">재고 이동현황</a><p>
+		
+		<!-- sales -->
+		<a href="/sales/receive-order">수주서 관리</a><p>
+		<a href="/sales/analysis-of-materials">자제요소분석</a><p>
+		<a href="/sales/order">구매</a><p>
+		<a href="/sales/stock-in">구매입고등록</a><p>
+		
+		<!-- standard -->
+		<a href="/standard/login">로그인</a><p>
+		<a href="/standard/user-admin">사용자 계정관리</a><p>
+		<a href="/standard/imi">품목 관리 및 등록</a><p>
+		<a href="/standard/ipi">품목 단가 관리</a><p>
+		<a href="/standard/pmi">품목 관리 정보</a><p>
+		
+		<!-- standard bi -->
+		기본정보<p>
+		<a href="/standard/companyInfo/">회사정보</a><p>
+		<a href="/standard/customerInfo/">거래처정보</a><p>
+		<!-- standard um -->
+		사용자관리<p>
+		<a href="/standard/myPage/">개인정보수정</a><p>
+		<a href="/standard/dept/">부서등록 및 확인</a><p>
+		<a href="/standard/job/">직급등록 및 확인</a><p>
+		
+		<!-- 로그아웃 -->
+		<c:if test="${sessionScope.member != null}">
+		   <form action="/standard/logout" method="POST">
+		      <button type="submit">로그아웃</button>
+		   </form>
+		</c:if> 
+	</div>
 
-	
 	<div class="content">
-		<table>
-			<tr>
-				<td>
-					<span>품목 구분</span>
+		<div class="input-div">
+			<h2>품목별 재고 현황</h2>
+			<div>
+				<label>품목 구분</label>
 					<select class="itemType">
 						<option selected disabled>---- 품목을 선택하세요 ----</option>
 						<option>완제품</option>
 						<option>반제품</option>
 						<option>원자재</option>
-					</select> 
-				</td>
-				<td>
-					<span>품명</span>
-				 	<input class="itemName" type="text">
+					</select>
+
+					<label>품명</label>
+					<input class="itemName" type="text">
 					<input type="button" class="btn btn-search" value="조회">
-				</td>
-			</tr>
-		</table>
+			</div>
+		</div>
+		
+		<div class="wh-stock-detail-list">
+			<table class="whStockDetail">
+				<tr>
+					<th>품명</th>
+					<th>제품 코드</th>
+					<th>창고 코드</th>
+					<th>양품 수량</th>
+					<th>불량 수량</th>
+					<th>저장 단위</th>
+					<th>입고 근무자</th>
+					<th id="memo">비고</th>
+				</tr>
+			</table>
+		</div>	
 	</div>
 	<br>
-	
-	<div>
-		<h2>품목별 재고 현황</h2>
-		<table class="whStockDetail">
-			<tr>
-				<th>품명</th>
-				<th>제품 코드</th>
-				<th>창고 코드</th>
-				<th>양품 수량</th>
-				<th>불량 수량</th>
-				<th>저장 단위</th>
-				<th>입고 근무자</th>
-			</tr>
-		</table>
-	</div>
-	
 </body>
 <script type="text/javascript">
 $(document).ready(function() {
@@ -165,7 +210,7 @@ $(document).ready(function() {
 		console.log("itemType : " + itemType + ", itemName : " + searchItemName);
 		
 		$.ajax({
-			url : "/product/is/item/" + itemCode,
+			url : "/product/is/item/" + searchItemName,
 			method : "GET",
 			data : {
 					 itemType : itemType,
@@ -192,24 +237,26 @@ $(document).ready(function() {
 					let headBadQuantity = $("<th>").text("불량 수량");
 					let headStockUnit = $("<th>").text("저장 단위");
 					let headUpdateUser = $("<th>").text("입고 근무자");
+					let headMemo = $("<th>").text("비고");
 					
 					headTr.append(headItemName).append(headItemCode).append(headWhCode).append(headGoodQuantity)
-						  .append(headBadQuantity).append(headStockUnit).append(headUpdateUser);
+						  .append(headBadQuantity).append(headStockUnit).append(headUpdateUser).append(headMemo);
 					
 					table.append(headTr);
 					
 					whStockDetailDto.forEach(function(wh) {
-						let tr = $("<tr></tr>").addClass("stock-list");
-						var itemName = $("<td></td>").text(wh.itemName);
-						var itemCode = $("<td></td>").text(wh.itemCode);
-						var whCode = $("<td></td>").text(wh.whCode);
-						var goodQuantity = $("<td></td>").text(wh.goodQuantity);
-						var badQuantity = $("<td></td>").text(wh.badQuantity);
-						var stockUnit = $("<td></td>").text(wh.stockUnit);
-						var updateUser = $("<td></td>").text(wh.updateUser);
+						let tr = $("<tr>").addClass("stock-list");
+						var itemName = $("<td>").text(wh.itemName).addClass("item-name");
+						var itemCode = $("<td>").text(wh.itemCode).addClass("item-code");
+						var whCode = $("<td>").text(wh.whCode).addClass("wh-code");
+						var goodQuantity = $("<td>").text(wh.goodQuantity).addClass("good-quantity");
+						var badQuantity = $("<td>").text(wh.badQuantity).addClass("bad-quantity");
+						var stockUnit = $("<td>").text(wh.stockUnit).addClass("stock-unit");
+						var updateUser = $("<td>").text(wh.updateUser).addClass("update-user");
+						var memo = $("<td>").text(wh.memo).addClass("memo");
 							
 						tr.append(itemName).append(itemCode).append(whCode).append(goodQuantity)
-						  .append(badQuantity).append(stockUnit).append(updateUser);
+						  .append(badQuantity).append(stockUnit).append(updateUser).append(memo);
 							
 						table.append(tr);
 					});
