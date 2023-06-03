@@ -148,13 +148,13 @@
 		WHERE SI.DELETE_STATUS LIKE 'N'
 		<choose>
 			<when test="inCode != null and inCode != ''">
-				AND SI.IN_CODE = #{inCode}
+				AND SI.IN_CODE LIKE '%'|| #{inCode} || '%'
 			</when>
 			<when test="orderCode != null and orderCode != ''">
-				AND SI.ORDER_CODE = #{orderCode}
+				AND SI.ORDER_CODE LIKE '%'|| #{orderCode} || '%'
 			</when>
 			<when test="customerCode != null and customerCode != ''">
-				AND SI.CUSTOMER_CODE = #{customerCode}
+				AND SI.CUSTOMER_CODE LIKE '%'|| #{customerCode} || '%'
 			</when>
 			<when test="inDate != null and inDate != ''">
 				AND SI.IN_DATE = #{inDate}
@@ -166,10 +166,10 @@
 				AND SI.REG_USER  LIKE '%'|| #{regUser} ||'%'
 			</when>
 			<when test="inType != null and inType != ''">
-				AND SI.IN_TYPE = #{inType}
+				AND SI.IN_TYPE LIKE '%'|| #{inType} || '%'
 			</when>
 			<when test="memo != null and memo != ''">
-				AND SI.MEMO  LIKE '%'|| #{memo} ||'%'
+				AND SI.MEMO LIKE '%'|| #{memo} ||'%'
 			</when>
 			<when test="companyDto != null and companyDto != ''">
 				AND C.COMPANY_NAME LIKE '%'|| #{companyDto.companyName} ||'%'

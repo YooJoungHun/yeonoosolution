@@ -27,11 +27,18 @@ public class SIMController {
 	private final SIMService simService;
 
 	/** 페이지 접속 */
-	@GetMapping(value = "")
-	public String StIn(StInDto stInDto, Model model) {
+	@GetMapping(value = "status")
+	public String InStatus(StInDto stInDto, Model model) {
 		List<StInDto> stInList = simService.stInList(stInDto);
 		model.addAttribute("stInList", stInList);
-		return "product/sim/stock-in";
+		return "product/sim/in-status";
+	}
+	/** 페이지 접속 */
+	@GetMapping(value = "register")
+	public String InRegister(StInDto stInDto, Model model) {
+		List<StInDto> stInList = simService.stInList(stInDto);
+		model.addAttribute("stInList", stInList);
+		return "product/sim/in-register";
 	}
 	
 	@RequestMapping(value = "/{action}")
@@ -68,7 +75,7 @@ public class SIMController {
 		case "cancel":
 			simService.modifyStInCancel(stInDto); break;
 		}
-		return "redirect:/product/sim";
+		return "redirect:/product/sim/status";
 	}
 	
 //	@RequestMapping(value = "/")
