@@ -100,6 +100,15 @@
 	.wh-code, .wh-name {
 		background-color: #e6f2ff;
 	}
+	
+	.pagination {
+		text-align: center;
+		padding: 20px 0;
+	}
+	
+	a {
+		text-decoration: none;
+	}
 </style>
 <title>Insert title here</title>
 </head>
@@ -194,15 +203,14 @@
 			</tr>
 			</c:forEach>
 		</table>
-				
-		<div class="pagination">	
-			<a href="/product/is/wh?currentPage=${whDtoMap.pagination.currentPage > 1 ? whDtoMap.pagination.currentPage - 1 : 1}">&lt;</a>
-		<c:forEach var="i" begin="${whDtoMap.pagination.startNum}" end="${whDtoMap.pagination.lastNum}">
-			<a href="/product/is/wh?currentPage=${i}">${i}</a>
-		</c:forEach>
-			<a href="/product/is/wh?currentPage=${whDtoMap.pagination.currentPage < whDtoMap.pagination.lastNum ? whDtoMap.pagination.currentPage + 1 : whDtoMap.pagination.lastNum}">&gt;</a>
-		</div>	
 	</div>
+		<div class="pagination">	
+			<a class="btn" href="/product/is/wh?currentPage=${whDtoMap.pagination.currentPage > 1 ? whDtoMap.pagination.currentPage - 1 : 1}">&lt;</a>
+		<c:forEach var="i" begin="${whDtoMap.pagination.startNum}" end="${whDtoMap.pagination.lastNum}">
+			<a class="btn" href="/product/is/wh?currentPage=${i}">${i}</a>
+		</c:forEach>
+			<a class="btn" href="/product/is/wh?currentPage=${whDtoMap.pagination.currentPage < whDtoMap.pagination.lastNum ? whDtoMap.pagination.currentPage + 1 : whDtoMap.pagination.lastNum}">&gt;</a>
+		</div>	
 	</div>	
 </div>
 </body>
