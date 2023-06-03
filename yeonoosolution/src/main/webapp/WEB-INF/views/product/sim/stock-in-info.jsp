@@ -91,7 +91,7 @@
 					<thead>
 						<tr>
 							<th><div class="item-title"></div></th>
-							<th><div class="item-title"><input type="checkbox" onclick="$('.checkBox').prop('checked', this.checked ? true : false);"></div></th>
+							<th><div class="item-title"><input type="checkbox" class="allCheck" onclick="$('.checkBox').prop('checked', this.checked ? true : false);"></div></th>
 							<th><div class="item-title"><label for="inType">입고 상태</label></div></th>
 							<th><div class="item-title"><label for="orderType">입고 유형</label></div></th>
 							<th><div class="item-title"><label for="inDate">입고일</label></div></th>
@@ -140,7 +140,7 @@
 					<thead>
 						<tr>
 							<th><div class="item-title">순번</div></th>
-							<th><div class="item-title"><input type="checkbox" onclick="$('.dtCheckBox').prop('checked', this.checked ? true : false);"></div></th>
+							<th><div class="item-title"><input type="checkbox" class="allCheck" onclick="$('.dtCheckBox').prop('checked', this.checked ? true : false);"></div></th>
 							<th><div class="item-title">입고 번호</div></th>
 							<th><div class="item-title">창고 코드</div></th>
 							<th><div class="item-title">아이템 코드</div></th>

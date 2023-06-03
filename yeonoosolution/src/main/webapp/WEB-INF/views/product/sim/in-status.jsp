@@ -8,8 +8,10 @@
 </head>
 <body>
 	<div style="display: flex;">
+	<!-- 사이드바 -->
 		<%@ include file="/WEB-INF/views/product/sim/sidebar.jsp" %>
-		<%@ include file="/WEB-INF/views/product/sim/stock-in.jsp" %>
+	<!-- 본문 -->
+		<%@ include file="/WEB-INF/views/product/sim/stock-in-info.jsp" %>
 	</div>
 </body>
 </html>

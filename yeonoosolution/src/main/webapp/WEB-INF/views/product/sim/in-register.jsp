@@ -11,7 +11,7 @@
 	<!-- 사이드바 -->
 		<%@ include file="/WEB-INF/views/product/sim/sidebar.jsp" %>
 	<!-- 본문 -->
-		<%@ include file="/WEB-INF/views/product/sim/stock-in-info.jsp" %>
+		<%@ include file="/WEB-INF/views/product/sim/stock-in.jsp" %>
 	</div>
 </body>
 </html>

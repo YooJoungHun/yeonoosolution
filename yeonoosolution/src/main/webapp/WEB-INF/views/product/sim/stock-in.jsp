@@ -9,9 +9,9 @@
 	<main>
 		<section class="content-header">
 			<div class="content-btn">
-				<button onclick="btnEvent('find')">조회</button>
+				<button onclick="btnEvent('register')">등록</button>
 				<button onclick="btnEvent('save')">저장</button>
-				<button onclick="resetEvent()">초기화</button>
+				<button onclick="btnEvent('reset')">초기화</button>
 			</div>
 			
 			<div class="stock-in-list">
@@ -91,10 +91,10 @@
 					<thead>
 						<tr>
 							<th><div class="item-title"></div></th>
-							<th><div class="item-title"><input type="checkbox" onclick="$('.checkBox').prop('checked', this.checked ? true : false);"></div></th>
+							<th><div class="item-title"><input type="checkbox" class="allCheck" onclick="$('.checkBox').prop('checked', this.checked ? true : false);"></div></th>
 							<th><div class="item-title"><label for="inType">입고 상태</label></div></th>
 							<th><div class="item-title"><label for="orderType">입고 유형</label></div></th>
-							<th><div class="item-title"><label for="inDate">입고일</label></div></th>
+							<th><div class="item-title"><label for="         inDate">입고일</label></div></th>
 							<th><div class="item-title"><label for="inCode">입고 번호</label></div></th>
 							<th><div class="item-title"><label for="inCode">수주 번호</label></div></th>
 							<th><div class="item-title"><label for="customerCode">거래처 번호</label></div></th>
@@ -140,7 +140,7 @@
 					<thead>
 						<tr>
 							<th><div class="item-title">순번</div></th>
-							<th><div class="item-title"><input type="checkbox" onclick="$('.dtCheckBox').prop('checked', this.checked ? true : false);"></div></th>
+							<th><div class="item-title"><input type="checkbox" class="allCheck" onclick="$('.dtCheckBox').prop('checked', this.checked ? true : false);"></div></th>
 							<th><div class="item-title">입고 번호</div></th>
 							<th><div class="item-title">창고 코드</div></th>
 							<th><div class="item-title">아이템 코드</div></th>
