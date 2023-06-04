@@ -108,7 +108,7 @@ const createTemplate = (data, values = null) => {
 					let target = $($(child).children()[0]);
 					if ($(target).is('select')) {
 						$(target).find('option[value="' + output + '"]').attr('selected', true);
-					} else if ($(target).is('input[type="date"]')) {
+					} else if ($(target).is('input[type="date"]') && !(!output)) {
 						let date = new Date(output);
 						let year = date.getFullYear();
 						let month = date.getMonth() + 1;
@@ -116,6 +116,18 @@ const createTemplate = (data, values = null) => {
 						let day = date.getDate();
 						day = day < 10 ? '0' + day : day;
 						$(target).attr('value', year + '-' + month + '-' + day);
+					} else if ($(target).is('input[type="datetime-local"]') && !(!output)) {
+						let date = new Date(output);
+						let year = date.getFullYear();
+						let month = date.getMonth() + 1;
+						month = month < 10 ? '0' + month : month;
+						let day = date.getDate();
+						day = day < 10 ? '0' + day : day;
+						let hour = date.getHours();
+						hour = hour < 10 ? '0' + hour : hour;
+						let minute = date.getMinutes();
+						minute = minute < 10 ? '0' + minute : minute;
+						$(target).attr('value', year + '-' + month + '-' + day + ' ' + hour + ':' + minute);
 					} else {
 						$(target).attr('value', output);
 					}
@@ -138,6 +150,7 @@ const templateChild = (datum) => {
 		case 'text': return '<td' + className + roleName + '><input' + nameSetter(name) + ' type="text"></td>';
 		case 'number': return '<td' + className + roleName + '><input' + nameSetter(name) + ' type="number" min="1"></td>';
 		case 'date': return '<td' + className + roleName + '><input' + nameSetter(name) + ' type="date"></td>';
+		case 'datetime-local': return '<td' + className + roleName + '><input' + nameSetter(name) + ' type="datetime-local" pattern="yyyy-MM-dd HH:mm"></td>';
 		case 'select':
 			let selectString = '<td' + className + roleName + '><select' + nameSetter(name);
 			let styleString = '';

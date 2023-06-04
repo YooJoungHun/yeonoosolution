@@ -83,7 +83,7 @@
 				<input type="number" class="add-quantity" value="1" min="1">
 				<button type="button" class="add-item">추가</button>
 				<button type="button" class="remove-item">제거</button>
-				<button type="button" class="setting">설정</button>
+				<!-- <button type="button" class="setting">설정</button> -->
 			</div>
 		</div>
 		<div class="wo-list-content">

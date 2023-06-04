@@ -92,7 +92,7 @@ var menuList = [
 				name: '작업지시',
 				value: [
 					{ name: '작업지시', value: '/product/wo' },
-					{ name: '작업지시현황', value: '' },
+					{ name: '작업지시현황', value: '/product/currentWo' },
 					{ name: '작업지시서 출력', value: '' }
 				]
 			},
@@ -264,6 +264,7 @@ $(() => {
 	$('datalist#menu-search-list').html($(virtualDataList).html());
 	
 	// 현재 페이지에 맞는 메뉴 오픈
+	// menuList 배열 데이터 내에 데이터가 없을 경우 무한루프 발생함...
 	let currentMenu = $('button.list-button[data-path="' + location.pathname + '"]');
 	$(currentMenu).css('background-color', '#FFFFCC');
 	while (true) {

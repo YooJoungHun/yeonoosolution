@@ -50,7 +50,22 @@ public class WOController {
 		}).collect(Collectors.toList());
 		model.addAttribute("woList", woList);
 		model.addAttribute("jsonWoList", String.format("[%s]", String.join(",", woJsonList)));
-		return "product/wo.layout";
+		return "product/wo/wo.layout";
+	}
+	
+	@RequestMapping(value = "/currentWo")
+	public String currentWo(Model model) {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		List<Wo> woList = woService.findWo();
+		List<String> woJsonList = woList.stream().map(wo -> {
+			try { return mapper.writeValueAsString(wo); }
+			catch (JsonProcessingException e) { return null; }
+		}).collect(Collectors.toList());
+		model.addAttribute("woList", woList);
+		model.addAttribute("jsonWoList", String.format("[%s]", String.join(",", woJsonList)));
+		return "product/wo/currentWo.layout";
 	}
 	
 	@ResponseBody
@@ -60,10 +75,13 @@ public class WOController {
 		mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		Wh wh = new Wh();
+		Item item = new Item();
 		if (data.containsKey("wh.whCode")) wh.setWhCode((String)data.get("wh.whCode"));
 		if (data.containsKey("wh.whName")) wh.setWhName((String)data.get("wh.whName"));
+		if (data.containsKey("item.itemName")) item.setItemName((String)data.get("item.itemName"));
 		Wo searcher = mapper.convertValue(data, Wo.class);
 		searcher.setWh(wh);
+		searcher.setItem(item);
 		List<Wo> woSearchList = woService.findWoSearch(searcher);//검색 결과를 내뱉음
 		List<String> woStringList = woSearchList.stream().map(wo -> {
 			try { return mapper.writeValueAsString(wo); }
@@ -192,5 +210,18 @@ public class WOController {
 		int result = 0;
 		for (Wo wo : woList) result += woService.modifyWo(wo);
 		return String.format("{ \"result\":%d }", result);
+	}
+
+	// currentWo Methods
+	@ResponseBody
+	@RequestMapping(value = "/wo/woClose")
+	public String woClose(@RequestBody Map<String, Object> data) {
+		@SuppressWarnings("unchecked")
+		List<String> codeList = (List<String>)data.get("workOrderCode");
+		int result = 0;
+		for (String workOrderCode : codeList) {
+			result += woService.modifyWoClose(workOrderCode);
+		}
+		return String.format("{ \"result\": %d }", result);
 	}
 }

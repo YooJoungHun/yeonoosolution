@@ -97,7 +97,7 @@
 		FROM WO wo LEFT OUTER JOIN WH wh ON (wo.WH_CODE = wh.WH_CODE)
 						   LEFT OUTER JOIN ORDERS orders ON (wo.ORDER_CODE = orders.ORDER_CODE)
 						   LEFT OUTER JOIN ITEM item ON (wo.ITEM_CODE = item.ITEM_CODE)
-		WHERE wo.DELETE_STATUS = 'N'
+		WHERE wo.DELETE_STATUS = 'N' AND wo.WORK_STATUS != '마감'
 			  <if test="startDate != null">
 			  	<![CDATA[
 			  		AND wo.WORK_ORDER_DATE >= #{startDate}
@@ -121,6 +121,11 @@
 			  <if test="wh != null and wh.whName != null">
 			  	<![CDATA[
 			  		AND wh.WH_NAME LIKE '%' || #{wh.whName} || '%'
+			  	]]>
+			  </if>
+			  <if test="item != null and item.itemName != null">
+			  	<![CDATA[
+			  		AND item.ITEM_NAME LIKE '%' || #{item.itemName} || '%'
 			  	]]>
 			  </if>
 		ORDER BY TO_NUMBER(REPLACE(wo.WORK_ORDER_CODE, 'WORK', '')) DESC
@@ -167,6 +172,11 @@
 		SELECT * FROM WO
 		WHERE WORK_ORDER_CODE = #{workOrderCode}
 	</select>
+	<update id="updateWoClose" parameterType="java.lang.String">
+		UPDATE WO SET WORK_STATUS = '마감'
+		WHERE WORK_ORDER_CODE = #{workOrderCode}
+				  AND WORK_STATUS = '확정'
+	</update>
 	<!-- WH mapper -->
 	<select id="selectWh" parameterType="java.lang.String" resultMap="WhResultMap">
 		SELECT * FROM WH WHERE WH_CODE = #{whCode}
