@@ -275,6 +275,7 @@ public class UmServiceImpl implements UmService {
 	public List<JobDto> findjobListByJobName(String jobName) {
 		
 		return umDao.selectJobListByJobName(jobName);
+	
 	}
 
 	@Override

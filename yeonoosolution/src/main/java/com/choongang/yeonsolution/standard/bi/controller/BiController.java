@@ -102,9 +102,6 @@ public class BiController {
 		log.info("companycode -> {} ", companyCode);
 		
 		result = biService.modifyCustomerInfoByCompanyCode(companyDto);
-
-		System.out.println("컨트롤러 끝");
-		
 		
 		return result;
 	}

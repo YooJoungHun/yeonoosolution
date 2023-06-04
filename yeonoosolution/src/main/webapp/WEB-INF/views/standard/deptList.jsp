@@ -10,109 +10,188 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 <style type="text/css">
-	.container{
+	.deptListContainer{
 		width: 100%;
-		margin: 0;
+		display: flex;
 	}
 	.content{
-		width : 100%;
-	}
-	.sideMenu{
-		border: 1px solid black;
-		float: left; 
-		width: 20%;
-		height: 700px;
+		margin:0 auto;
+		width: 75%;
 		display: inline-block;
 	}
-	
-	.sideMenu ul li{
-		list-style: none;
+	.side-bar {
+	   	width: 200px;
+	   	background-color: #f2f2f2;
+	   	border: 1px solid #ddd;
+	   	padding: 20px;
+	   	float: left;
+	   	height: auto;
 	}
 	
 	.crudBtn{
-	   display: flex; 
-	   border: 1px solid black;
-	   margin-bottom: 10px;
-	   margin-top: 10px;
+	   	display: flex; 
+	   	margin-bottom: 50px;
+	   	margin-top: 10px;
 	}
 	.crudBtn button{
-	  margin-left: 10px;
-	  cursor: pointer;
-	  width: 60px;
-	  height: 35px;
-	  font-size: 14px;
-	  width: auto;
+	  	width: 70px;
+	  	height: 30px;
+	  	font-weight: bold;
+	  	font-size:13px;
+	  	background-color: white;
+	  	border: 1px solid #D6DAE2;
+	  	outline: none;
+	  	border-radius: 5px;
+	  	padding: 0 12px;
+	  	margin-right: 5px;
+	}
+	#memberSearchBtn{
+	  	width: 70px;
+	  	height: 32px;
+	  	font-weight: bold;
+	  	font-size:13px;
+	  	background-color: white;
+	  	border: 1px solid #D6DAE2;
+	  	outline: none;
+	  	border-radius: 5px;
+	  	padding: 0 12px;
+	  	margin-left: 9px;
 	}
 	
-	.content{
-	  border: 1px solid black;
-	  display: inline-block;
-	  width: 700px;
-	}
-	
-	.deptList{
-	  display: inline-block;
-	}
 	.filter {
-	  display: flex;
-	  flex-wrap: wrap;
-	  border: 1px solid black;
-	  margin-bottom: 10px;
+	  	display: flex;
+	  	flex-wrap: wrap;
+	  	margin-bottom: 10px;
 	}
 	
-	.form-data {
-	  flex: 0 0 auto;
-	  margin-right: 10px;
-	  margin-left: 10px;
-	  width: 120px;
-	  height: 2rem;
-	  text-align: center;
-	  border: 1px solid black;
-	
+	#filterDeptName, #filterMemberName{
+	  	height: 32px;
+	  	border: 1px solid black;
+	  	border-radius: 5px;
 	}
 	
-	table, td, th, tr{
-		border: 1px solid black;
+	.deptTableTitle, .form-data, .tableTitle{
+	  	margin-right: 10px;
+	  	width: 120px;
+	  	height: 2rem;
+	  	border: 1px solid black;
+	  	display: flex;
+	  	justify-content: center; /* 수평 가운데 정렬 */
+	  	align-items: center; /* 수직 가운데 정렬 */
+	  	border-radius: 5px;
+	  	font-weight: bold;
+	}
+	
+	#deptListTable td, th,
+	#memberSearchTable td, th{
+		margin: auto;
+		border : 1px solid black;
+		border-collapse: collapse;
+		text-align: center;
+		padding: 2px;
+		
+		
+	}
+	#deptListTable, td, input,
+	#memberSearchTable, td, input{
+		text-align: center;
+		font-size: 16px;
+	}
+	#deptListTable tr th,
+	#memberSearchTable tr th {
+		height: 40px;
+		background-color: #F6F6F6;
+		width: 10px;
+	}
+	
+	#deptListTable input[type="text"]:focus,
+	#memberSearchTable input[type="text"]:focus{
+	  	border: 1px solid #000; /* 나타낼 border 스타일 설정 */
+	  	background-color: white;
+	}
+	#deptListTable input,
+	#memberSearchTable input{
+		border: none;
+		outline: none;
+		
+	}
+	#deptListTable tr:hover td ,	
+	#deptListTable tr:hover td input	
+	{
+		background-color: #6799FF;
+	}
+	
+	.rowCount, .tableCheckBox{
+		width: 30px;
 	}
 	
 	.deptMember{
-	 margin-top: 20px;
-	 max-width: 500px; 
+	 	margin-top: 20px;
+	 	max-width: 500px; 
 	}
 	
-	#rn, #tableCheckBox{
-		width: 20px;
+	.deptListInfo {
+	  	margin-top: 10px;
+	  	height: auto;
+	  	overflow-y: auto;
+	  	overflow-x: auto;
 	}
-	.deptListTable {
-	  width: 79%;
-	  max-height: 100%;
-	  overflow-y: auto;
-	  margin-top: 20px;
+	.bg-yellow{
+		background-color: #ffffcc;
+		width: 200px;
+	}
+	.bg-gray{
+		background-color: #EAEAEA
 	}
 
 </style>
 </head>
 <body>
-	<div class = "container">
- 		<div class = "sideMenu">
- 			<ul>
- 				<li>기본정보</li>
- 				<li><a href="/standard/companyInfo/">회사정보</a></li>
- 				<li><a href="/standard/customerInfo/">거래처정보</a></li>
- 				<li>사용자관리</li>
- 				<li><a href="/standard/myPage/">개인정보수정</a></li>
- 				<li><a href="/standard/dept/">부서등록 및 확인</a></li>
- 				<li><a href="/standard/job/">직급등록 및 확인</a></li>
- 			</ul>
- 		</div>
- 		
- 		<div class = "crudBtn">
-			<button id = "searchBtn" onclick="searchDeptList()">조회</button>
-			<button id = "insertBtn" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">등록</button>
-			<button id = "saveBtn" onclick="modifyDeptList('1')">저장</button>
-			<button id = "deleteBtn" onclick="modifyDeptList('2')">삭제</button>
-			<button id = "resetBtn" onclick="resetDeptList()">초기화</button>
-		</div>
+	<div class = "deptListContainer">
+ 		<div class="side-bar">
+		      <!-- product/ds -->
+		      <a href="/product/status/defect">불량현황</a><p>
+		      <!-- product/ps -->
+		      <a href="/product/status/production">생산현황 검색</a><p>
+		      <!-- product/pr -->
+		      <!-- product -->
+		      <a href="/product/is/item">품목별 재고 현황</a><p>
+		      <a href="/product/is/bom">BOM별 재고 현황</a><p>
+		      <a href="/product/is/wh">창고별 재고 현황</a><p>
+		      <a href="/product/is/wh/">창고별 재고 현황 상세</a><p>
+		      <a href="/item/search">제품 검색</a><p>
+		      <a href="/product/sim">입고</a><p>
+		      <a href="/wo">제품 생산 지시</a><p>
+		      
+		      <!-- sales -->
+		      <a href="/sales/receive-order">수주서 관리</a><p>
+		      <a href="/sales/analysis-of-materials">자제요소분석</a><p>
+		      <a href="/sales/order">구매</a><p>
+		      <a href="/sales/stock-in">구매입고등록</a><p>
+		      
+		      <!-- standard -->
+		      <a href="/standard/login">로그인</a><p>
+		      <a href="/standard/user-admin">사용자 계정관리</a><p>
+		      <a href="/standard/imi">품목 관리 및 등록</a><p>
+		      <a href="/standard/ipi">품목 단가 관리</a><p>
+		      <a href="/standard/pmi">품목 관리 정보</a><p>
+		      
+		             기본정보<p>
+ 			  <a href="/standard/companyInfo/">회사정보</a><p>
+ 			  <a href="/standard/customerInfo/">거래처정보</a><p>
+ 			    사용자관리<p>
+ 			  <a href="/standard/myPage/">개인정보수정</a><p>
+ 			  <a href="/standard/dept/">부서등록 및 확인</a><p>
+ 			  <a href="/standard/job/">직급등록 및 확인</a><p>
+		      
+		      <!-- 로그아웃 -->
+		      <c:if test="${sessionScope.member != null}">
+		         <form action="/standard/logout" method="POST">
+		            <button type="submit">로그아웃</button>
+		         </form>
+		      </c:if>
+		      
+	    </div>
 		
 		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-scrollable">
@@ -138,25 +217,34 @@
 		  </div>
 		</div>
 		
-		<div class = "filter">
-
- 			<div class = "form-data">부서명</div>
- 			
- 			<div class = "form-content">
- 				<input type="text" name="deptName" id ="filterDeptName">
- 			</div>
- 			
- 		</div>
-		
 		<div class = "content">
+			<div class = "crudBtn">
+				<button id = "searchBtn" onclick="searchDeptList()">조회</button>
+				<button id = "insertBtn" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">등록</button>
+				<button id = "saveBtn" onclick="modifyDeptListBtn('1')">저장</button>
+				<button id = "deleteBtn" onclick="modifyDeptListBtn('2')">삭제</button>
+				<button id = "resetBtn" onclick="resetDeptList()">초기화</button>
+			</div>
+			
+			<div class = "filter">
+		
+				<div class = "form-data">부서명</div>
+				
+				<div class = "form-content">
+					<input type="text" name="deptName" id ="filterDeptName">
+				</div>
+					
+			</div>
+		
+		
 			<div class = "deptList">
 				<div class = "deptTableTitle">
-					<span>부서 리스트</span>
+					부서 리스트
 				</div>
-				<div class="deptListTable">
-					<table>
+				<div class="deptListInfo">
+					<table id = "deptListTable">
 						<tr>
-							<th></th>
+							<th id = "rowCount"></th>
 	 						<th><input type="checkbox" id="allCheck" onclick ="checkBoxAllCheck()"></th>	 						
 							<th>부서코드</th>
 							<th>부서이름</th>
@@ -170,17 +258,34 @@
 						<tbody id ="deptTableTbody">
 							<c:forEach var ="deptList" items ="${deptDepartmentDtoList }" varStatus="status">
 								<tr onclick="showMemberOfDept(${status.index})">
-									<td><input type="text" id="rn" name="rn" value="${rn }" disabled="disabled"></td>
-									<td><input type="checkbox" id="tableCheckBox${status.index }" name="tableCheckBox"></td>
-									<td><input type="text" id="deptCode${status.index }" name="deptCode" value="${deptList.deptCode }" disabled="disabled"></td>
-									<td><input type="text" id="deptName${status.index }" name="deptName" value="${deptList.deptName }"></td>
-									<td><input type="text" id="regDate${status.index }" name="regDate" value="${deptList.regDate }"></td>
-									<td><input type="text" id="regUser${status.index }" name="regUser" value="${deptList.regUser }"></td>
-									<td><input type="text" id="updateDate${status.index }" name="updateDate" value="${deptList.updateDate }"></td>
-									<td><input type="text" id="updateUser${status.index }" name="updateUser" value="${deptList.updateUser }"></td>
-									<td><input type="text" id="deptYn${status.index }" name="deptYn" value="${deptList.deptYn }" disabled="disabled"></td>					
+									<td>
+										<input type="text" class="rowCount" value="${status.count }" disabled="disabled">
+									</td>
+									<td>
+										<input type="checkbox" class="tableCheckBox" id="tableCheckBox${status.index }" name="tableCheckBox">
+									</td>
+									<td class ="bg-gray">
+									   <input type="text" class ="bg-gray" id="deptCode${status.index }" name="deptCode" value="${deptList.deptCode }" disabled="disabled">
+									</td>
+									<td class ="bg-yellow">
+										<input type="text" class ="bg-yellow" id="deptName${status.index }" name="deptName" value="${deptList.deptName }">
+									</td>
+									<td class ="bg-yellow">
+										<input type="text" class ="bg-yellow" id="regDate${status.index }" name="regDate" value="${deptList.regDate }">
+									</td>
+									<td class ="bg-yellow">
+										<input type="text" class ="bg-yellow" id="regUser${status.index }" name="regUser" value="${deptList.regUser }">
+									</td>
+									<td class ="bg-yellow">
+										<input type="text" class ="bg-yellow" id="updateDate${status.index }" name="updateDate" value="${deptList.updateDate }">
+									</td>
+									<td class ="bg-yellow">
+										<input type="text" class ="bg-yellow" id="updateUser${status.index }" name="updateUser" value="${deptList.updateUser }">
+									</td>
+									<td class ="bg-gray">
+										<input type="text" class ="bg-gray" id="deptYn${status.index }" name="deptYn" value="${deptList.deptYn }" disabled="disabled">
+									</td>					
 								</tr>
-								<c:set var="rn" value="${rn+1 }"/>
 							</c:forEach>
 						</tbody>
 					</table>
@@ -227,7 +332,7 @@
  	
  	// 가장 상단 체크박스 누르면 전부 체크되게 하기
  	function checkBoxAllCheck(){
- 		var checkBoxes = document.querySelectorAll("input[type='checkbox']");
+ 		var checkBoxes = document.querySelectorAll("input[name='tableCheckBox']");
  		var allCheck = document.getElementById("allCheck");
  		
  		for(var i = 0; i < checkBoxes.length; i++){
@@ -305,6 +410,28 @@
  			});
  		}
  	}
+ 	// 컨펌을 사용하기 위해 모듈화.
+	function modifyDeptListBtn(kindStatus){
+		// kindStatus 파라미터 1 = 수정
+		// kindStatus 파라미터 2 = 삭제
+		var result = false;
+		
+		if(kindStatus == 1){
+			result = confirm("수정하시겠습니까?");
+			if(result){
+				modifyDeptList(kindStatus);
+			}else{
+				return false;
+			}
+		}else if(kindStatus == 2){
+			result = confirm("삭제하시겠습니까?");
+			if(result){
+				modifyDeptList(kindStatus);
+			}else{
+				return false;
+			}
+		}
+	}
  	
  	function searchDeptList(){
  		/* alert("검색시작"); */
@@ -326,15 +453,15 @@
  				$(data).each(function(index){
  					html += "<tr onclick='showMemberOfDept("+index+")'>";
  				
- 					html += "<td><input type='text' name='rn' value ='"+ count++ +"' disabled='disabled'></td>";
+ 					html += "<td><input type='text' class='rowCount' name='rn' value ='"+ count++ +"' disabled='disabled'></td>";
  			        html += "<td><input type='checkbox' name='tableCheckBox' id='tableCheckBox"+index+"'></td>";
- 			        html += "<td><input type='text' name='deptCode' id='deptCode"+index+"' value='"+this.deptCode+"' disabled='disabled'></td>";
- 			        html += "<td><input type='text' name='deptName' id='deptName"+index+"' value='"+this.deptName+"' required='required'></td>";
- 			        html += "<td><input type='text' name='regDate' id='regDate"+index+"' value='"+this.regDate+"' required='required'></td>";
- 			        html += "<td><input type='text' name='regUser' id='regUser"+index+"' value='"+this.regUser+"' required='required'></td>";
- 			        html += "<td><input type='text' name='updateDate' id='updateDate"+index+"' value='"+this.updateDate+"' required='required'></td>";
- 			        html += "<td><input type='text' name='updateUser' id='updateUser"+index+"' value='"+this.updateUser+"' required='required'></td>";
- 			        html += "<td><input type='text' name='deptYn' id='deptYn"+index+"' value='"+this.deptYn+"' disabled='disabled'></td>";
+ 			        html += "<td class ='bg-gray'><input type='text' class ='bg-gray' name='deptCode' id='deptCode"+index+"' value='"+this.deptCode+"' disabled='disabled'></td>";
+ 			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='deptName' id='deptName"+index+"' value='"+this.deptName+"' required='required'></td>";
+ 			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='regDate' id='regDate"+index+"' value='"+this.regDate+"' required='required'></td>";
+ 			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='regUser' id='regUser"+index+"' value='"+this.regUser+"' required='required'></td>";
+ 			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='updateDate' id='updateDate"+index+"' value='"+this.updateDate+"' required='required'></td>";
+ 			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='updateUser' id='updateUser"+index+"' value='"+this.updateUser+"' required='required'></td>";
+ 			        html += "<td class ='bg-gray'><input type='text' class ='bg-gray' name='deptYn' id='deptYn"+index+"' value='"+this.deptYn+"' disabled='disabled'></td>";
  					html += "</tr>";
  				})
  				$("#deptTableTbody").html(html);
@@ -347,28 +474,34 @@
  	}
  	
  	function insertDeptList(){
- 		/* alert("등록시작"); */
- 		var deptName = $("#modalDeptName").val();
- 		/* console.log("등록할 부서이름-> "+deptName); */
+ 		var result = confirm("등록하시겠습니까?");
  		
- 		$.ajax({
- 			url : "/standard/dept/"+deptName,
- 			dataType : "json",
- 			type : "POST",
- 			data : {
- 				deptName : deptName
- 			},
- 			success : data =>{
- 				if(data == 1){
- 					alert("등록되었습니다.");
- 				}else if(data == 2){
- 					alert("같은 이름의 부서가 존재합니다.");
- 				}else{
- 					alert("등록에 실패하였습니다.");
- 				}
- 				location.reload();
- 			}
- 		})
+ 		if(result){
+ 			
+	 		var deptName = $("#modalDeptName").val();
+	 		/* console.log("등록할 부서이름-> "+deptName); */
+	 		
+	 		$.ajax({
+	 			url : "/standard/dept/"+deptName,
+	 			dataType : "json",
+	 			type : "POST",
+	 			data : {
+	 				deptName : deptName
+	 			},
+	 			success : data =>{
+	 				if(data == 1){
+	 					alert("등록되었습니다.");
+	 				}else if(data == 2){
+	 					alert("같은 이름의 부서가 존재합니다.");
+	 				}else{
+	 					alert("등록에 실패하였습니다.");
+	 				}
+	 				location.reload();
+	 			}
+	 		})
+ 		}else{
+ 			return false;
+ 		}
  	}
  	
  	function showMemberOfDept(index){
@@ -391,9 +524,9 @@
 	 				html += "<div class='filter'>";
 	 				html += "<div class='form-data'>직원명</div>";
 	 				html += "<div class='form-content'><input type='text' name='memberName' id = 'filterMemberName'>";
-	 				html += "<button name='memberSearch' onclick='memberSearch(\"" + deptCode + "\",1)'>조회</button></div>";
+	 				html += "<button name='memberSearch' id='memberSearchBtn' onclick='memberSearch(\"" + deptCode + "\",1)'>조회</button></div>";
 	 				html += "</div>";
-					html += "<table>";
+					html += "<table id ='memberSearchTable'>";
 					html += "<tr>";
 					html += "<th></th>";
 					html += "<th>이름</th>";
@@ -405,13 +538,12 @@
 	 				$(data).each(function(){
 	 					// 여기부터 tbody
 	 					html += "<tr>";
-	 					
-	 					html += "<td><input type='text' id='rn' name='rn' value='"+ count++ +"' disable='disable'></td>";
-	 					html += "<td><input type='text' id='memberName' name='memberName' value='"+this.memberName+"' disabled='disabled'></td>";
-	 					html += "<td><input type='text' id='memberId' name='memberId' value='"+this.memberId+"' disabled='disabled'></td>";
-	 					html += "<td><input type='text' id='deptName' name='deptName' value='"+this.deptName+"' disabled='disabled'></td>";
-	 					html += "<td><input type='text' id='jobName' name='jobName' value='"+this.jobName+"' disabled='disabled'></td>";
-	 					html += "<td><input type='text' id='tel' name='tel' value='"+this.tel+"' disabled='disabled'></td>";
+	 					html += "<td><input type='text' class='rowCount' id='rn' name='rn' value='"+ count++ +"' disable='disable'></td>";
+	 					html += "<td class ='bg-gray'><input type='text' class ='bg-gray' id='memberName' name='memberName' value='"+this.memberName+"' disabled='disabled'></td>";
+	 					html += "<td class ='bg-gray'><input type='text' class ='bg-gray' id='memberId' name='memberId' value='"+this.memberId+"' disabled='disabled'></td>";
+	 					html += "<td class ='bg-gray'><input type='text' class ='bg-gray' id='deptName' name='deptName' value='"+this.deptName+"' disabled='disabled'></td>";
+	 					html += "<td class ='bg-gray'><input type='text' class ='bg-gray' id='jobName' name='jobName' value='"+this.jobName+"' disabled='disabled'></td>";
+	 					html += "<td class ='bg-gray'><input type='text' class ='bg-gray' id='tel' name='tel' value='"+this.tel+"' disabled='disabled'></td>";
 	 					html += "</tr>";
 	 					
 	 				})
@@ -449,9 +581,9 @@
 	 				html += "<div class='filter'>";
 	 				html += "<div class='form-data'>직원명</div>";
 	 				html += "<div class='form-content'><input type='text' name='memberName' id = 'filterMemberName'>";
-	 				html += "<button name='memberSearch' onclick='memberSearch(\"" + deptCode + "\",1)'>조회</button></div>";
+	 				html += "<button name='memberSearch' id='memberSearchBtn' onclick='memberSearch(\"" + deptCode + "\",1)'>조회</button></div>";
 	 				html += "</div>";
-					html += "<table>";
+					html += "<table id ='memberSearchTable'>";
 					html += "<tr>";
 					html += "<th></th>";
 					html += "<th>이름</th>";
@@ -464,12 +596,12 @@
 	 					// 여기부터 tbody
 	 					html += "<tr>";
 	 					
-	 					html += "<td><input type='text' id='rn' name='rn' value='"+ count++ +"' disabled='disabled'></td>";
-	 					html += "<td><input type='text' id='memberName' name='memberName' value='"+this.memberName+"' disabled='disabled'></td>";
-	 					html += "<td><input type='text' id='memberId' name='memberId' value='"+this.memberId+"' disabled='disabled'></td>";
-	 					html += "<td><input type='text' id='deptName' name='deptName' value='"+this.deptName+"' disabled='disabled'></td>";
-	 					html += "<td><input type='text' id='jobName' name='jobName' value='"+this.jobName+"' disabled='disabled'></td>";
-	 					html += "<td><input type='text' id='tel' name='tel' value='"+this.tel+"' disabled='disable'></td>";
+	 					html += "<td><input type='text' class='rowCount' id='rn' name='rn' value='"+ count++ +"' disabled='disabled'></td>";
+	 					html += "<td class ='bg-gray'><input type='text' class ='bg-gray' id='memberName' name='memberName' value='"+this.memberName+"' disabled='disabled'></td>";
+	 					html += "<td class ='bg-gray'><input type='text' class ='bg-gray' id='memberId' name='memberId' value='"+this.memberId+"' disabled='disabled'></td>";
+	 					html += "<td class ='bg-gray'><input type='text' class ='bg-gray' id='deptName' name='deptName' value='"+this.deptName+"' disabled='disabled'></td>";
+	 					html += "<td class ='bg-gray'><input type='text' class ='bg-gray' id='jobName' name='jobName' value='"+this.jobName+"' disabled='disabled'></td>";
+	 					html += "<td class ='bg-gray'><input type='text' class ='bg-gray' id='tel' name='tel' value='"+this.tel+"' disabled='disable'></td>";
 	 					html += "</tr>";
 	 					
 	 				})
