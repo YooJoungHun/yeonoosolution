@@ -3,6 +3,8 @@ package com.choongang.yeonsolution.product.is.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import com.choongang.yeonsolution.product.is.domain.IsBomDto;
 import com.choongang.yeonsolution.product.is.domain.IsPaginationDto;
 import com.choongang.yeonsolution.product.is.domain.IsWhDto;
@@ -16,6 +18,8 @@ public interface ISService {
 	Map<String, Object> findIsWhListByWhCode(String whCode, IsPaginationDto paginationDto);
 
 	List<IsBomDto> findIsBomListByItemNameAndItemType(IsBomDto isBomDto);
+
+	Map<String, Object> findInfoForMainPage(HttpSession session);
 
 
 }

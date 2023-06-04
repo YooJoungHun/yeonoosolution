@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Service;
 
 import com.choongang.yeonsolution.product.is.dao.ISDao;
@@ -11,6 +13,8 @@ import com.choongang.yeonsolution.product.is.domain.IsBomDto;
 import com.choongang.yeonsolution.product.is.domain.IsPaginationDto;
 import com.choongang.yeonsolution.product.is.domain.IsWhDto;
 import com.choongang.yeonsolution.product.is.domain.IsWhStockDetailDto;
+import com.choongang.yeonsolution.product.is.domain.MainPageDto;
+import com.choongang.yeonsolution.standard.am.domain.MemberDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -86,6 +90,20 @@ public class ISServiceImpl implements ISService {
 		whDtoMap.put("whDtoList", whDtoList);
 		
 		return whDtoMap;
+	}
+
+
+	@Override
+	public Map<String, Object> findInfoForMainPage(HttpSession session) {
+		log.info("is main Service findInfoForMainPage() start");
+		Map<String, Object> mainPageMap = new HashMap<String, Object>();
+		List<MainPageDto> mainPageDtoList = isDao.selectInfoForMainPage();
+		
+		MemberDto memberDto = (MemberDto) session.getAttribute("member");
+		mainPageMap.put("memberDto", memberDto);
+		mainPageMap.put("mainPageDtoList", mainPageDtoList);
+		
+		return mainPageMap;
 	}
 
 	

@@ -3,6 +3,8 @@ package com.choongang.yeonsolution.product.is.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -89,5 +91,16 @@ public class ISController {
 		model.addAttribute("whDtoWhList", whDtoWhList);
 	  
 		return "/product/inventory-status-wh-detail";
+	}
+	
+	@GetMapping(value = "/main")
+	public String main(HttpSession session, Model model) {
+		log.info("main page start");
+		
+		Map<String, Object> mainPageMap = isService.findInfoForMainPage(session);
+		model.addAttribute("mainPageMap", mainPageMap);
+		log.info("mainPageMap : " + mainPageMap);
+		
+		return "/product/main";
 	}
 }

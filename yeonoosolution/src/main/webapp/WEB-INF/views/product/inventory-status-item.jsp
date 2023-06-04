@@ -29,7 +29,7 @@
 		border: 1px solid #ddd;
 		padding: 20px;
 		float: left;
-		height: 100vh;
+		height: auto;
 	}
 	
 	.whStockDetail th, td {

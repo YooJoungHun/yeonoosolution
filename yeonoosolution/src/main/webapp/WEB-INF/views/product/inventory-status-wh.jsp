@@ -27,7 +27,7 @@
 		border: 1px solid #ddd;
 		padding: 20px;
 		float: left;
-		height: 100vh;
+		height: auto;
 	}
 	
 	.container {
@@ -109,6 +109,11 @@
 	a {
 		text-decoration: none;
 	}
+	
+	.for-data:hover td {
+		background-color: navy;
+		color: white;
+	}
 </style>
 <title>Insert title here</title>
 </head>
@@ -155,6 +160,13 @@
 		<a href="/standard/myPage/">개인정보수정</a><p>
 		<a href="/standard/dept/">부서등록 및 확인</a><p>
 		<a href="/standard/job/">직급등록 및 확인</a><p>
+		
+		<!-- 로그아웃 -->
+		<c:if test="${sessionScope.member != null}">
+		   <form action="/standard/logout" method="POST">
+		      <button type="submit">로그아웃</button>
+		   </form>
+		</c:if> 
 	</div>
 	
 	<div class="content">

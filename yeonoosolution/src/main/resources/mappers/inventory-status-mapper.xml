@@ -70,4 +70,12 @@
 		and 		i.item_type = #{itemType}
 	</select>
 	
+	<select id="selectInfoForMainPage" resultType="MainPageDto">
+		select 		product_type, count(product_type) as work_order_count
+		from 		wo
+		where 		work_status = '확정'
+		and 		trunc(reg_date) = trunc(sysdate)
+		group by 	product_type
+	</select>
+	
 </mapper>

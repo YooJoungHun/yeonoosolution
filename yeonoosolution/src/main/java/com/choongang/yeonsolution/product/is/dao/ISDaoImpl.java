@@ -9,6 +9,7 @@ import com.choongang.yeonsolution.product.is.domain.IsBomDto;
 import com.choongang.yeonsolution.product.is.domain.IsPaginationDto;
 import com.choongang.yeonsolution.product.is.domain.IsWhDto;
 import com.choongang.yeonsolution.product.is.domain.IsWhStockDetailDto;
+import com.choongang.yeonsolution.product.is.domain.MainPageDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -129,5 +130,20 @@ public class ISDaoImpl implements ISDao {
 		return whDtoList;
 	}
 
+
+	@Override
+	public List<MainPageDto> selectInfoForMainPage() {
+		log.info("is main Dao selectInfoForMainPage() start");
+		List<MainPageDto> mainPageDtoList = null;
+		
+		try {
+			mainPageDtoList = sqlSession.selectList("selectInfoForMainPage");
+		} catch(Exception e) {
+			log.debug("is main Dao selectInfoForMainPage() Exception : " + e.getMessage());
+			e.printStackTrace();
+		}
+				
+		return mainPageDtoList;
+	}
 	
 }
