@@ -6,6 +6,17 @@
 <meta charset="UTF-8">
 <title>사용자 계정 관리</title>
 <style type="text/css">
+
+.user-admin-body{
+	display: flex;
+}
+
+.side-bar{
+	display: flex;
+    flex-direction: column;
+    margin: 5%;
+}
+
 #content {
 	border: 1px solid;
 	height: 1000px;
@@ -18,15 +29,55 @@
 }
 
 #search-div div {
-	margin: 5px;
+    margin: 5px;
+    font-size: larger;
+    font-weight: bold;
+    font-style: italic;
 }
 
 #btn-div{
-	margin-left: auto;
+	display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#btn-div button{
+	background-color: #F8F8FF !important;
+	color : black !important;
+	margin-right: 10px;
+	border: none !important;
+    font-weight: bold;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+#btn-div button:hover{
+	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
 }
 
 #btn-div, #search-div, #member-list {
 	margin: 10px;
+}
+
+.search-member{
+	position: relative;
+	width: 300px;
+}
+
+.search-member input{
+	width: 100%;
+	border: 1px solid #bbb;
+	border-radius: 8px;
+	padding: 10px 12px;
+	font-size: 14px;
+}
+
+.search-member img{
+	position : absolute;
+	width: 17px;
+	top: 12px;
+	right: 12px;
+	margin: 0;
 }
 
 #member-list{
@@ -37,7 +88,11 @@
 
 .tuigrid-header {
 	display: flex;
-	justify-content: center;
+    justify-content: flex-start;
+    margin-left: 1%;
+    font-weight: bold;
+    font-size: large;
+    font-style: italic;
 }
 
 .member-btn-group{
@@ -114,7 +169,7 @@ td > select{
 </style>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
 </head>
-<body>
+<body class="user-admin-body">
 <div class="side-bar">
       <!-- product/ds -->
       <a href="/product/status/defect">불량현황</a><p>
@@ -154,14 +209,20 @@ td > select{
 	<div id="contain">
 		<div id="content">
 			<div id="search-div">
-				<div>사용자명  <input type="text" class="form-control" id="search-member-name"></div>
-				<div>사용자 ID  <input type="text" class="form-control" id="search-member-id"></div>
-				<div id="btn-div">
-					<button id="member-save-btn">저장</button>
-					<button id="member-init-btn">초기화</button>
-					<button type="button" id="member-add">+</button>
-					<button type="button" id="member-delete">-</button>
+				<div class="search-member">
+					<input type="text" id="search-member-name" placeholder="사용자명으로 검색">
+					<img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png">
 				</div>
+				<div class="search-member">
+					<input type="text" id="search-member-id" placeholder="사용자 ID로 검색">
+					<img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png">
+				</div>
+			</div>
+			<div id="btn-div">
+				<button type="button" id="member-save-btn" class="btn btn-dark">저장</button>
+				<button type="button" id="member-init-btn" class="btn btn-dark">초기화</button>
+				<button type="button" id="member-add" class="btn btn-dark">사용자 추가</button>
+				<button type="button" id="member-delete"class="btn btn-dark">선택 사용자 삭제</button>
 			</div>
 			<div class="tuigrid-header">
 				<div>사용자목록</div>
