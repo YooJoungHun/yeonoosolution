@@ -46,7 +46,7 @@
 						<select id="orderType" name="orderType" onchange="orderTypeEvent(this)">
 							<option value="">선택</option>
 							<option value="1">구매입고</option>
-							<option value="0">기타입고</option>
+							<option value="2">기타입고</option>
 						</select>
 					</div>
 				</div>

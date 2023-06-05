@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.choongang.yeonsolution.product.sim.domain.CompanyDto;
 import com.choongang.yeonsolution.product.sim.domain.StInDto;
 
 import lombok.RequiredArgsConstructor;
@@ -36,5 +37,7 @@ public class SIMDaoImpl implements SIMDao {
 	public void updateStInFix(StInDto stInDto) {session.update("updateStInFix", stInDto);	}
 	@Override
 	public void updateStInCancel(StInDto stInDto) {session.update("updateStInCancel", stInDto);	}
+	@Override
+	public List<CompanyDto> findCompany() {return session.selectList("selectCompany");}
 
 }

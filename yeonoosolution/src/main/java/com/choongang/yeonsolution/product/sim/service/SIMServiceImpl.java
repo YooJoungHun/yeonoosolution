@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.choongang.yeonsolution.product.sim.dao.SIMDao;
+import com.choongang.yeonsolution.product.sim.domain.CompanyDto;
 import com.choongang.yeonsolution.product.sim.domain.StInDto;
 
 import lombok.RequiredArgsConstructor;
@@ -27,5 +28,9 @@ public class SIMServiceImpl implements SIMService {
 	public void modifyStInFix(StInDto stInDto) {simDao.updateStInFix(stInDto); }
 	@Override
 	public void modifyStInCancel(StInDto stInDto) {simDao.updateStInCancel(stInDto); }
+	@Override
+	public void addStIn(StInDto stInDto) {	}
+	@Override
+	public List<CompanyDto> companyList() {return simDao.findCompany(); }
 
 }

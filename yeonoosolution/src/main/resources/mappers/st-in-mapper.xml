@@ -146,36 +146,38 @@
 		LEFT OUTER JOIN WH_STOCK_DETAIL WSD ON SID.ITEM_CODE = WSD.ITEM_CODE
 		LEFT OUTER JOIN ITEM I              ON WSD.ITEM_CODE = I.ITEM_CODE
 		WHERE SI.DELETE_STATUS LIKE 'N'
-		<choose>
-			<when test="inCode != null and inCode != ''">
-				AND SI.IN_CODE LIKE '%'|| #{inCode} || '%'
-			</when>
-			<when test="orderCode != null and orderCode != ''">
-				AND SI.ORDER_CODE LIKE '%'|| #{orderCode} || '%'
-			</when>
-			<when test="customerCode != null and customerCode != ''">
-				AND SI.CUSTOMER_CODE LIKE '%'|| #{customerCode} || '%'
-			</when>
-			<when test="inDate != null and inDate != ''">
-				AND SI.IN_DATE = #{inDate}
-			</when>
-			<when test="regDate != null">
-				AND TO_DATE(SI.REG_DATE,'yyyy/MM/dd') = TO_DATE(#{regDate, jdbcType=DATE},'yyyy/MM/dd')
-			</when>
-			<when test="regUser != null and regUser != ''">
-				AND SI.REG_USER  LIKE '%'|| #{regUser} ||'%'
-			</when>
-			<when test="inType != null and inType != ''">
-				AND SI.IN_TYPE LIKE '%'|| #{inType} || '%'
-			</when>
-			<when test="memo != null and memo != ''">
-				AND SI.MEMO LIKE '%'|| #{memo} ||'%'
-			</when>
-			<when test="companyDto != null and companyDto != ''">
+		AND	SI.IN_DATE = COALESCE(#{inDate, jdbcType=VARCHAR}, SI.IN_DATE)
+		AND TO_DATE(SI.REG_DATE,'yyyy/MM/dd') = COALESCE(TO_DATE(#{regDate, jdbcType=DATE},'yyyy/MM/dd'), TO_DATE(SI.REG_DATE,'yyyy/MM/dd'))
+		
+		<if test="inCode != null and inCode != ''">
+		    AND SI.IN_CODE LIKE '%' || #{inCode} || '%'
+		</if>
+		<if test="orderCode != null and orderCode != ''">
+			AND SI.ORDER_CODE LIKE '%'|| #{orderCode} || '%'
+		</if>
+		<if test="orderType == 1">
+			AND SI.ORDER_CODE IS NOT NULL
+		</if>
+		<if test="orderType == 2">
+			AND SI.ORDER_CODE IS NULL
+		</if>
+		<if test="customerCode != null and customerCode != ''">
+			AND SI.CUSTOMER_CODE LIKE '%'|| #{customerCode} || '%'
+		</if>
+		<if test="regUser != null and regUser != ''">
+			AND SI.REG_USER  LIKE '%'|| #{regUser} ||'%'
+		</if>
+		<if test="inType != null and inType != ''">
+			AND SI.IN_TYPE LIKE '%'|| #{inType} || '%'
+		</if>
+		<if test="memo != null and memo != ''">
+			AND SI.MEMO LIKE '%'|| #{memo} ||'%'
+		</if>
+		<if test="companyDto != null">
+			<if test="companyDto.companyName != null and companyDto.companyName != ''">
 				AND C.COMPANY_NAME LIKE '%'|| #{companyDto.companyName} ||'%'
-			</when>
-			<otherwise></otherwise>
-		</choose>
+			</if>
+		</if>
 		ORDER BY TO_NUMBER(REPLACE(SI.IN_CODE, 'IN_CODE', ''))ASC, SID.SORDER ASC
 	</select>
 	<update id="updateStIn" parameterType="SIMStInDto">
@@ -206,6 +208,12 @@
 		SET 	IN_TYPE = '저장'
 		WHERE	IN_CODE = #{inCode}
 	</update>
+	
+	<select id="selectCompany" resultType="SIMCompanyDto">
+		SELECT 	*
+		FROM 	COMPANY
+		WHERE 	USE_YN = 'Y'
+	</select>
 <!-- 	<select id="selectStIn" resultMap="stInDtoMap">
 		SELECT  *
 		FROM    ST_IN

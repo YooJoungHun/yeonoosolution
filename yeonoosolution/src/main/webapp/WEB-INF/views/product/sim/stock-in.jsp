@@ -5,87 +5,60 @@
 <meta charset="UTF-8">
 <title>입고</title>
 </head>
+
+<script type="text/javascript" src="${pageContext.request.contextPath}/JS/product/sim/st-in-register.js"></script>
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+
 <body>
 	<main>
 		<section class="content-header">
 			<div class="content-btn">
 				<button onclick="btnEvent('register')">등록</button>
-				<button onclick="btnEvent('save')">저장</button>
 				<button onclick="btnEvent('reset')">초기화</button>
+			</div>
+			
+			
+			<div class="stock-in-list">
+				<div class="stock-in-item">
+
+					<div class="item-title"><label for="customerCode">거래처 번호</label></div>
+					<div class="item-content"><input id="customerCode" name="customerCode" placeholder="거래처 번호" readonly="readonly" data-toggle="modal" data-target="#myModal"></div>
+				</div>
+				<div class="stock-in-item">
+					<div class="item-title"><label for="companyName">거래처명</label></div>
+					<div class="item-content"><input id="companyName" placeholder="거래처명" readonly="readonly"></div>
+				</div>
+				<div class="stock-in-item">
+					<input id="updateDate" name="updateDate" type="date" hidden="1">
+					<input id="updateUser" name="updateUser" type="text" hidden="1">
+				</div>
 			</div>
 			
 			<div class="stock-in-list">
 				<div class="stock-in-item">
-					<input id="updateDate" name="updateDate" type="date" hidden="1">
-					<input id="updateUser" name="updateUser" type="text" hidden="1">
-					<div class="item-title"><label for="inCode">입고 번호</label></div>
-					<div class="item-content"><input id="inCode" name="inCode" placeholder="입고 번호"></div>
-				</div>
-				<div class="stock-in-item">
-					<div class="item-title"><label for="orderCode">수주 번호</label></div>
-					<div class="item-content"><input id="orderCode" name="orderCode" placeholder="수주 번호"></div>
+					<div class="item-title"><label for="orderType">입고 유형</label></div>
+					<div class="item-content"><input type="hidden" name="inType" id="inType">
+						<select id="orderType" name="orderType" disabled="disabled">
+							<option value="2" selected="selected">기타입고</option>
+						</select>
+					</div>
 				</div>
 				<div class="stock-in-item">
 					<div class="item-title"><label for="inDate">입고일</label>
 					</div><div class="item-content"><input id="inDate" name="inDate" type="date"></div>
-				</div>
-			</div>
-			
-			<div class="stock-in-list">
-				<div class="stock-in-item">
-					<div class="item-title"><label for="customerCode">거래처 번호</label></div>
-					<div class="item-content"><input id="customerCode" name="customerCode" placeholder="거래처 번호"></div>
-				</div>
-				<div class="stock-in-item">
-					<div class="item-title"><label for="companyName">거래처명</label></div>
-					<div class="item-content"><input id="companyName" placeholder="거래처명"></div>
-				</div>
-				<div class="stock-in-item">
-					<div class="item-title"><label for="orderType">입고 유형</label></div>
-					<div class="item-content"><input type="hidden" name="inType" id="inType">
-						<select id="orderType" name="orderType" onchange="orderTypeEvent(this)">
-							<option value="">선택</option>
-							<option value="1">구매입고</option>
-							<option value="0">기타입고</option>
-						</select>
-					</div>
-				</div>
-			</div>
-			
-			<div class="stock-in-list">
-				<div class="stock-in-item">
-					<div class="item-title"><label for="regUser">등록자</label></div>
-					<div class="item-content"><input id="regUser" name="regUser" placeholder="등록자"></div>
-				</div>
-				<div class="stock-in-item">
-					<div class="item-title"><label for="regDate">등록일</label></div>
-					<div class="item-content"><input id="regDate" name="regDate" type="date"></div>
 				</div>
 				<div class="stock-in-item">
 					<div class="item-title"><label for="memo">비고</label></div>
 					<div class="item-content"><input id="memo" name="memo" placeholder="비고"></div>
 				</div>
 			</div>
+			
 		</section>
 			
 			
 			
-			
-			
-			
-			
-			
-			
-			
-			
 		<section class="content-body">
-			<div class="content-btn">
-				<button onclick="btnEvent('find')">조회</button>
-				<button onclick="btnEvent('save')">저장</button>
-				<button onclick="btnEvent('delete')">삭제</button>
-				<button onclick="btnEvent('fix')">확정</button>
-				<button onclick="btnEvent('cancel')">확정 취소</button>
-			</div>
 			<div class="stock-in-table">
 				<table class="table-in table-content">
 					<thead>
@@ -96,7 +69,6 @@
 							<th><div class="item-title"><label for="orderType">입고 유형</label></div></th>
 							<th><div class="item-title"><label for="         inDate">입고일</label></div></th>
 							<th><div class="item-title"><label for="inCode">입고 번호</label></div></th>
-							<th><div class="item-title"><label for="inCode">수주 번호</label></div></th>
 							<th><div class="item-title"><label for="customerCode">거래처 번호</label></div></th>
 							<th><div class="item-title"><label for="companyName">거래처명</label></div></th>
 							<th><div class="item-title"><label for="regUser">등록자</label></div></th>
@@ -116,7 +88,6 @@
 								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="orderType" value="${stIn.orderCode != null? '구매입고':'기타입고'}" readonly="readonly"></td>
 								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="inDate" value="${stIn.inDate}"></td>
 								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="inCode" value="${stIn.inCode}"></td>
-								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="orderCode" value="${stIn.orderCode}"></td>
 								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="customerCode" value="${stIn.customerCode}"></td>
 								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="companyName" value="${stIn.companyDto.companyName}"></td>
 								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="regUser" value="${stIn.regUser}"></td>
@@ -130,11 +101,11 @@
 				</table>
 			</div>
 		</section>
+
+
+		<section>
 		
 		
-		
-		
-		<section class="content-footer">
 			<div class="stock-in-detail-table">
 				<table class="table-in-detail table-content">
 					<thead>
@@ -169,13 +140,10 @@
 					</tbody>
 				</table>
 				
-				
-				<table class="myModal">
-					<c:forEach var="stIn" items="${stInList}" varStatus="status">
-					<c:forEach var="sid" items="${stIn.stInDetailDto}">
-					<c:forEach var="wsd" items="${sid.whStockDetailDto}">
-						<tbody class="myModal-window">
-							<tr><th><th colspan="11">아이템 상세</th><th><button onclick="$('.myModal').css('display', 'none');">X</button></th></tr>
+				<div class="myModal">
+					<table id="company-modal" class="display" style="width: 100%">
+						<thead>
+							<tr><th><th colspan="11">거래처 목록</th><th><button onclick="$('.myModal').css('display', 'none');">X</button></th></tr>
 							<tr>
 								<th>코드</th>
 								<th>이름</th>
@@ -191,6 +159,11 @@
 								<th>수정일</th>
 								<th>메모</th>
 							</tr>
+						</thead>
+						<tbody>
+						<c:forEach var="stIn" items="${stInList}" varStatus="status">
+						<c:forEach var="sid" items="${stIn.stInDetailDto}">
+						<c:forEach var="wsd" items="${sid.whStockDetailDto}">
 							<tr>
 								<td>${wsd.itemDto.itemCode}</td>
 								<td>${wsd.itemDto.itemName}</td>
@@ -206,13 +179,47 @@
 								<td>${wsd.itemDto.updateDate}</td>
 								<td>${wsd.itemDto.memo}</td>
 							</tr>
+					</c:forEach>
+						</c:forEach>
+						</c:forEach>
 						</tbody>
-					</c:forEach>
-					</c:forEach>
-					</c:forEach>
-				</table>
-				
+					</table>
+				</div>
 			</div>
+			
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document" style="max-width: 80%; width: auto;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">회사 목록</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- DataTable goes here -->
+            <table id="modal-company" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>회사코드</th>
+                        <th>회사명</th>
+                        <th>발/수주 구분</th>
+                        <th>대표자명</th>
+                        <th>연락처</th>
+                        <th>주소</th>
+                    </tr>
+                </thead>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+			
 		</section>
 	</main>
 	

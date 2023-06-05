@@ -213,7 +213,7 @@ function orderTypeEvent(select){
 
 	if(selectValue == 1){
 		$('#orderCode').attr('disabled', true);
-	}else if(selectValue == 0){
+	}else if(selectValue == 2){
 		$('#orderCode').attr('disabled', true).removeAttr('placeholder').val('');
 	}
 }
@@ -221,24 +221,23 @@ function orderTypeEvent(select){
 
 
 // 파라미터 값
-// function getParams() {
-// 	const params = {
-		
-// 			inCode: $('#inCode').val(),
-// 			orderCode: $('#orderCode').val(),
-// 			orderType: $('#orderType').val(),
-// 			customerCode: $('#customerCode').val(),
-// 			inDate: $('#inDate').val(),
-// 			regDate: $('#regDate').val(),
-// 			regUser: $('#regUser').val(),
-// 			updateUser: $('#updateUser').val(),
-// 			updateDate: $('#updateDate').val(),
-// 			inType: $('#inType').val(),
-// 			companyName: $('#companyName').val(),
-// 			memo: $('#memo').val()
-// 	};
-// 	return params;
-// }
+function getParam() {
+	const params = {
+		inCode: $('#inCode').val(),
+		orderCode: $('#orderCode').val(),
+		orderType: $('#orderType').val(),
+		customerCode: $('#customerCode').val(),
+		inDate: $('#inDate').val(),
+		regDate: $('#regDate').val(),
+		regUser: $('#regUser').val(),
+		updateUser: $('#updateUser').val(),
+		updateDate: $('#updateDate').val(),
+		inType: $('#inType').val(),
+		companyName: $('#companyName').val(),
+		memo: $('#memo').val()
+	};
+	return params;
+}
 
 
 function getParams() {
@@ -295,30 +294,7 @@ function getParams() {
 
 
 
-// url 파라미터
-function findGet(url, method) {
-	// 파라미터 할당
-	let obj = getParams();
-	if (!obj) return;
-	console.log(obj);
 
-	// AJAX
-	let xhr = new XMLHttpRequest();
-	xhr.open(method, url);
-	xhr.setRequestHeader('Content-Type', 'application/json');
-	xhr.send(JSON.stringify(obj));
-	xhr.onload = function () {
-		if (xhr.status === 200) {
-			console.log('석세스')
-			// let result = JSON.parse(xhr.responseText);
-			// console.log(result);
-			// if (result.status === 'success') {
-			// 	console.log('success');
-			// }
-		
-		}
-	}
-}
 	// // JSON 변환
 	// let objJson = JSON.stringify(obj);
 	// // 객체 생성
@@ -326,24 +302,24 @@ function findGet(url, method) {
 	// data.append('params', objJson);
 
 
-// // url 파라미터
-// function findGet(url, method) {
-// 	let form = document.createElement('form');
-// 	form.setAttribute('method', method);
-// 	form.setAttribute('action', url);
-// 	params = getParams();
+// JavaScript로 form submit
+function findGet(url, method) {
+	let form = document.createElement('form');
+	form.setAttribute('method', method);
+	form.setAttribute('action', url);
+	params = getParam();
 
-// 	for (let key in params) {
-// 		let field = document.createElement('input');
-// 		field.setAttribute('type', 'hidden');
-// 		field.setAttribute('name', key);
-// 		field.setAttribute('value', params[key]);
-// 		form.appendChild(field);
-// 		console.log(field)
-// 	}
-// 	document.body.appendChild(form);
-// 	form.submit();
-// }
+	for (let key in params) {
+		let field = document.createElement('input');
+		field.setAttribute('type', 'hidden');
+		field.setAttribute('name', key);
+		field.setAttribute('value', params[key]);
+		form.appendChild(field);
+		console.log(field)
+	}
+	document.body.appendChild(form);
+	form.submit();
+}
 
 
 // 버튼 이벤트 맵
@@ -355,14 +331,39 @@ function findGet(url, method) {
 //     cancel: [`${contextPath}/product/sim/cancel`, 'patch'],
 // 	reset: resetEvent()
 // };
+
+// Ajax 이벤트
+function btnAction(url, method) {
+	let obj;
+	if(method == 'get'){
+		findGet(url, method);
+		return;
+	}else{
+		obj = getParams();
+	}
+	if (!obj) return;
+	console.log(obj);
+
+	// AJAX
+	let xhr = new XMLHttpRequest();
+	xhr.open(method, url);
+	xhr.setRequestHeader('Content-Type', 'application/json');
+	xhr.send(JSON.stringify(obj));
+	xhr.onload = function () {
+		if (xhr.status === 200) {
+			console.log(xhr.responseText);
+		}
+	}
+}
+
 const btnMap =  {
-	find: { url: `${contextPath}/product/sim/find`, method: 'get' },
-	save: { url: `${contextPath}/product/sim/save`, method: 'put' },
-	delete: { url: `${contextPath}/product/sim/delete`, method: 'delete' },
-	fix: { url: `${contextPath}/product/sim/fix`, method: 'patch' },
-	cancel: { url: `${contextPath}/product/sim/cancel`, method: 'patch' },
-	reset: { fn: resetEvent },
-	register: { url: `${contextPath}/product/sim/register`, method: 'post' },
+	find: { url: `${contextPath}/product/sim/find`, 		method: 'get' },
+	update: { url: `${contextPath}/product/sim/ajax/save`, 	method: 'put' },
+	delete: { url: `${contextPath}/product/sim/ajax/delete`,method: 'delete' },
+	fix: { url: `${contextPath}/product/sim/ajax/fix`, 		method: 'patch' },
+	cancel: { url: `${contextPath}/product/sim/ajax/cancel`,method: 'patch' },
+	save: { url: `${contextPath}/product/sim/ajax/register`,method: 'post' },
+	reset: { fn: resetEvent }
 	//register: { fn: regEvent }
 };
 
@@ -370,7 +371,7 @@ const btnMap =  {
 function btnEvent(event){
 	const btn = btnMap[event];
 	if(btn.url && btn.method)
-		findGet(btn.url,btn.method);
+		btnAction(btn.url,btn.method);
 	else if(btn.fn)
 		btn.fn();
 }

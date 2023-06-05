@@ -2,6 +2,7 @@ package com.choongang.yeonsolution.product.sim.service;
 
 import java.util.List;
 
+import com.choongang.yeonsolution.product.sim.domain.CompanyDto;
 import com.choongang.yeonsolution.product.sim.domain.StInDto;
 
 public interface SIMService {
@@ -13,4 +14,6 @@ public interface SIMService {
 	void removeStIn(StInDto stInDto);
 	void modifyStInFix(StInDto stInDto);
 	void modifyStInCancel(StInDto stInDto);
+	void addStIn(StInDto stInDto);
+	List<CompanyDto> companyList(); // 회사 목록 조회
 }
