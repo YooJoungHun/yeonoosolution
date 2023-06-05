@@ -8,7 +8,7 @@
 <title>구매 발주 관리</title>
 <style type="text/css">
 #search-div {
-	display: flex;
+	padding: 10px 0px;
 }
 #content {
 	display: flow-root;
@@ -16,8 +16,22 @@
 #content > div{
 	margin-left: 30px;
 }
+.search-div {
+	display: flex;
+}
 #search-div div {
-	margin: 5px;
+	display: flex;
+	margin: 5px 30px 5px 0px;
+}
+#search-div label{
+	line-height: 30px;
+	border: 1px solid #B3B3B3;
+    border-radius: 5px;
+    padding: 0 5px;
+    background-color: #F8F8F8;
+}
+.table-div { 
+	border: 1px solid #B3B3B3;
 }
 
 #btn-div, #search-div, #order-list, #order-detail {
@@ -35,8 +49,6 @@
 
 .tuigrid-header {
 	display: flex;
-	justify-content: space-between;
-	margin-right: 30px;
 }
 
 .order-tables td, .order-tables th {
@@ -191,8 +203,8 @@
 }
 
 .order-detail-memo {
-	min-width: 200px;
-	max-width: 200px;
+	min-width: 500px;
+	max-width: 500px;
 }
 
 .order-number {
@@ -241,15 +253,31 @@
 	background-color: #F8F8F8!important;
 }
 .order-btn-cl {
-	font-weight: bold;
 	border: 1px solid #B3B3B3;
 	border-radius: 7px;
-	width: 28px;
 	align-items: center;
-	background-color: white;
+	background-color: #F8F8F8;
+	font-size: 14px;
+    padding: 5px 10px;
 }
 .order-btn-cl:hover {
 	background-color: #ffffcc;
+}
+#btn-div button {
+	border: 1px solid #B3B3B3;
+    border-radius: 7px;
+    align-items: center;
+    background-color: #F8F8F8;
+    padding: 5px 10px;
+}
+#btn-div button:hover {
+	background-color: #ffffcc;
+}
+.tuigrid-header span {
+	line-height: 32.33px;
+}
+hr {
+	margin-left: 30px!important;
 }
 </style>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
@@ -313,43 +341,48 @@
 				<button id="order-init-btn">초기화</button>
 				<button id="order-confirm-btn" class="order-status-update-btn">발주 확정</button>
 				<button id="order-cancel-btn" class="order-status-update-btn">확정 취소</button>
-				<button id="order-stock_in-btn">입고</button>
 				<button id="order-close-btn" class="order-status-update-btn">발주 마감</button>
 			</div>
+			<hr>
 			<div id="search-div">
-				<div>
-					<p>조회 시작일</p>
-					<input type="date" id="search-start-day">
+				<div class="search-div">
+					<div>
+						<label>조회 시작일</label>
+						<input type="date" id="search-start-day">
+					</div>
+					<div>
+						<label>조회 종료일</label>
+						<input type="date" id="search-end-day">
+					</div>
+					<div>
+						<label>발주 일자</label>
+						<input type="date" id="search-order-day">
+					</div>
 				</div>
-				<div>
-					<p>조회 종료일</p>
-					<input type="date" id="search-end-day">
-				</div>
-				<div>
-					<p>발주 일자</p>
-					<input type="date" id="search-order-day">
-				</div>
-				<div>
-					<p>거래처 코드(검색)</p>
-					<input type="text" id="search-customer-code" autocomplete="off">
-				</div>
-				<div>
-					<p>거래처명</p>
-					<input type="text" id="search-customer-name" readonly>
-				</div>
-				<div>
-					<p>담당자명</p>
-					<input type="text" id="order-empid">
+				<div class="search-div">
+					<div>
+						<label>거래처 코드(검색)</label>
+						<input type="text" id="search-customer-code" autocomplete="off">
+					</div>
+					<div>
+						<label>거래처명</label>
+						<input type="text" id="search-customer-name" readonly>
+					</div>
+					<div>
+						<label>담당자명</label>
+						<input type="text" id="order-empid">
+					</div>
 				</div>
 			</div>
+			<hr>
 			<div class="tuigrid-header">
 				<span>구매발주</span>
 				<div>
-					<button type="button" class="order-btn-cl" id="order-add">+</button>
-					<button type="button" class="order-delete-btn order-status-update-btn order-btn-cl">-</button>
+					<button type="button" class="order-btn-cl" id="order-add">추가</button>
+					<button type="button" class="order-delete-btn order-status-update-btn order-btn-cl">삭제</button>
 				</div>
 			</div>
-			<div id="order-list">
+			<div id="order-list" class="table-div">
 				<table id="order-list-table-heder"
 					class="order-list-table order-tables order-tables-hearder">
 					<thead>
@@ -381,11 +414,11 @@
 			<div class="tuigrid-header">
 				<span>세부항목</span>
 				<div>
-					<button type="button" class="odrer-detail-btn order-btn-cl" id="odrer-detail-add-btn">+</button>
-					<button type="button" class="odrer-detail-btn order-btn-cl" id="odrer-detail-del-btn">-</button>
+					<button type="button" class="odrer-detail-btn order-btn-cl" id="odrer-detail-add-btn">추가</button>
+					<button type="button" class="odrer-detail-btn order-btn-cl" id="odrer-detail-del-btn">삭제</button>
 				</div>
 			</div>
-			<div id="order-detail">
+			<div id="order-detail" class="table-div">
 				<table id="order-detail-list-table-heder"
 					class="order-detail-list-table order-tables order-tables-hearder">
 					<thead>
