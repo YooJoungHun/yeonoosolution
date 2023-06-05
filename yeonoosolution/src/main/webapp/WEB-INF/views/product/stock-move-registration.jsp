@@ -10,16 +10,27 @@
 <title>stock-move-registration</title>
 <style type="text/css">
 	
+	body{
+		width: 80%;
+		margin: 0 auto !important;
+	}
+	
 	.stockMoveRegistrationTable, .stockMoveDetailTable{
 		display: black;
 		width: 100%;
 		border-collapse: collapse;
 		text-align: center;
+
 	}
 	
 	.divTable{
 		height: 184px;
-		overflow: auto;
+		overflow-y: auto;
+		overflow-x: auto;
+	}
+
+	.divTable td, .divTable, tr{
+		white-space: nowrap;
 	}
 	
 	.stockMoveRegistrationTable thead, .stockMoveDetailTable thead{
@@ -33,10 +44,15 @@
 		padding: 5px;
 	}
 	
-	.stockMoveDetailTable tr[data-status='add'] .itemCode{
-		cursor: pointer;
+	.stockMoveRegistrationTable tr[data-status='stMoveRegistrationAdd'] .moveDate,
+	.stockMoveDetailTable tr[data-status='stMoveDetailAdd'] .itemCode,
+	.stockMoveDetailTable tr[data-status='stMoveDetailAdd'] .whCodeIn,
+	.stockMoveDetailTable tr[data-status='stMoveDetailAdd'] .moveMemo,
+	.stockMoveDetailTable tr[data-status='stMoveDetailAdd'] .moveQuantity{
+   		cursor: pointer;
+   		background-color: #D4F4FA;
 	}
-	
+
 	#saveBtn, #moveConfirmationBtn{
 		cursor: pointer;
 	}
@@ -46,20 +62,33 @@
 	}
 	
 	.selected-row{
-		background-color: #D4F4FA;
+		background-color: rgba(240,240,221,0.4);
 	}
 	
-	.moveDate, .moveMemo, .itemCode, .whCodeIn, .moveQuantity{
+	.moveMemo{
 		background-color: #D4F4FA;
+		max-width: 150px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		cursor: pointer;
 	}
-	
-	#itemTable {
+
+	#itemCodeTable, #whCodeInTable { 
 		width: 100% !important;
 	}
 	
-	#itemTable tbody tr:hover {
-		background-color: #D4F4FA;
+	#itemCodeTable tbody tr:hover,
+	#whCodeInTable tbody tr:hover    {
+		background-color: rgba(240,240,221,0.5);
 		cursor: pointer;
+	}
+
+	.stockMoveRegistrationTable tr[data-delete-status='delete-registration'] td,
+	.stockMoveDetailTable tr[data-delete-status='delete-detail'] td {
+		background-color: darkgray;
+		opacity: 0.7;
+		text-decoration: line-through;
 	}
 </style>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -72,53 +101,14 @@
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>
 <body>
-	
-	<%-- <div class="side-bar">
-      <!-- product/ds -->
-      <a href="/product/status/defect">불량현황</a><p>
-      <!-- product/ps -->
-      <a href="/product/status/production">생산현황 검색</a><p>
-      <!-- product/pr -->
-      <!-- product -->
-      <a href="/product/is/item">품목별 재고 현황</a><p>
-      <a href="/product/is/bom">BOM별 재고 현황</a><p>
-      <a href="/product/is/wh">창고별 재고 현황</a><p>
-      <a href="/product/is/wh/">창고별 재고 현황 상세</a><p>
-      <a href="/item/search">제품 검색</a><p>
-      <a href="/product/sim">입고</a><p>
-      <a href="/wo">제품 생산 지시</a><p>
-      <a href="/product/stockMoveRegistration">재고 이동등록</a><p>
-      <a href="/product/stockMoveStatus">재고 이동현황</a><p>
-      
-      <!-- sales -->
-      <a href="/sales/analysis-of-materials">자제소요분석</a><p>
-      <a href="/sales/receive-order">수주서 관리</a><p>
-      <a href="/sales/order">구매</a><p>
-      <a href="/sales/stock-in">구매입고등록</a><p>
-      
-      <!-- standard -->
-      <a href="/standard/login">로그인</a><p>
-      <a href="/standard/user-admin">사용자 계정관리</a><p>
-      <a href="/standard/imi">품목 관리 및 등록</a><p>
-      <a href="/standard/ipi">품목 단가 관리</a><p>
-      <a href="/standard/pmi">품목 관리 정보</a><p>
-      
-      <!-- 로그아웃 -->
-      <c:if test="${sessionScope.member != null}">
-         <form action="/standard/logout" method="POST">
-            <button type="submit">로그아웃</button>
-         </form>
-      </c:if>
-      
-   </div> --%>
 
 	<div class="container">
-		<h4>재고이동 등록</h4>
 		<div class="buttons">
 			<button id="saveBtn">저장</button>
 			<button id="resetBtn">초기화</button>
 			<button id="moveConfirmationBtn">이동 확정</button>
 		</div>
+		<h4>재고이동 등록</h4>
 		<div id="registrationBtns">
 			<button class="plus"><i class="xi-plus"></i></button>
 			<button class="minus"><i class="xi-minus"></i></button>
@@ -136,7 +126,7 @@
 						<th>등록자</th>
 						<th>수정일자</th>
 						<th>수정자</th>
-						<th class="stockMoveMemoValue">비고</th>
+						<th>비고</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -183,19 +173,17 @@
 			</table>
 		</div>
 	</div>
-	<!-- itemList Modal  HTML-->
 	
-	
-	<!-- 부트스트랩 모달 -->
-	<div class="modal fade" id="itemModal" tabindex="-1" aria-hidden="true">
+	<!-- itemCodeTable 모달 -->
+	<div class="modal fade" id="itemCodeModal" tabindex="-1" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">제품코드</h5>
+					<h5 class="modal-title">제품 리스트</h5>
 				</div>
 				<div class="modal-body">
-					<div id="itemTableContainer">
-						<table id="itemTable">
+					<div id="itemCodeTableContainer">
+						<table id="itemCodeTable">
 							<thead>
 								<tr>
 									<th>제품코드</th>
@@ -211,6 +199,32 @@
 			</div>
 		</div>
 	</div>
+	
+	<!-- whCodeInTable 모달 -->
+	<div class="modal fade" id="whCodeModal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">창고 리스트</h5>
+				</div>
+				<div class="modal-body">
+					<div id="whCodeInTableContainer">
+						<table id="whCodeInTable">
+							<thead>
+								<tr>
+									<th>입고창고</th>
+									<th>입고창고 코드</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	<script type="text/javascript">
 		// "전체" 체크박스 클릭
 		function toggleCheckAll(tableId) {
@@ -276,6 +290,8 @@
 		                        row.append($("<td class='whCodeIn'>").text(item.whCodeIn));
 		                        row.append($("<td class='moveQuantity'>").text(item.moveQuantity));
 		                        row.append($("<td class='moveMemo'>").text(item.memo));
+								row.attr('data-move-code', item.moveCode);
+								row.attr('data-sorder', item.sorder);
 		                        row.append($("</tr>"));
 
 		                        $(".stockMoveDetailTable tbody").append(row);
@@ -286,7 +302,7 @@
 	        });
         }
         	
-      //스크롤처리
+        //스크롤처리
         function scrollToBottom(){
         	const divTable = document.querySelectorAll('.divTable');
         	divTable.forEach(divTable => {
@@ -309,14 +325,14 @@
 		        	let moveDateId = 'datepicker' + rowCount;
 		        	
 		        	$('.' + tableId + ' tbody').append(`
-	        			<tr data-status="add">
+	        			<tr data-status="stMoveRegistrationAdd">
 	        				<td>${rowCount}</td>
 							<td><input type="checkbox" class="checkItem" checked></td>
 							<td class="moveCode"></td> //이동번호
 							<td class="moveDate"><input type="text" id="${moveDateId}" value="${moveDate}"></td> //이동일자(달력)
 							<td class="moveType">저장</td> //이동상태
 							<td></td> //등록일자
-							<td>company1.admin@yeonoo.com</td> //등록자
+							<td></td> //등록자
 							<td></td>   //수정일자
 							<td></td>  //수정자
 							<td class="moveMemo"><input type="text"></td> //메모
@@ -328,8 +344,17 @@
 		        	}).attr("readonly", "readonly");
 		        	scrollToBottom();
 	        	} else if(btnId === 'detailBtns'){
+
+					let moveCode = $('.stockMoveRegistrationTable .selected-row').find('.moveCode').text();
+					
+					// 재고이동 선택안하고 세부내역 등록할 때
+					if(!moveCode){
+						alert('먼저 이동등록을 선택하세요');
+						return;
+					}
+
     	        	$('.' + tableId + ' tbody').append(`
-            			<tr data-status='add'>
+            			<tr data-status='stMoveDetailAdd'>
             				<td>${rowCount}</td>
     						<td><input type="checkbox" class="checkItem" checked></td>
     						<td class="itemCode"></td> //제품코드
@@ -337,8 +362,8 @@
     						<td class="stockQuantity"></td> //재고수량
     						<td class="whCodeOut"></td> //출고창고
     						<td class="whCodeIn"></td> //입고창고
-    						<td class="moveQuantity"></td> //이동수량
-    						<td class="moveMemo"></td> //비고
+    						<td class="moveQuantity"><input type="text"></td> //이동수량
+    						<td class="moveMemo"><input type="text"></td> //비고
             			</tr>
 					`);
 	        	}
@@ -361,27 +386,39 @@
 		// 마이너스 버튼
 		function removeButtonClick(tableId, btnId){
 			$(document).on('click', '#' + btnId + ' .minus', function(){
-	        	$('.' + tableId + ' tr').has('.checkItem:checked').remove();
+				if(btnId === 'registrationBtns'){
+		        	$('.' + tableId + ' tr').has('.checkItem:checked').each(function(){
+		        		if($(this).attr('data-delete-status') === 'delete-registration') {
+		        			$(this).removeAttr('data-delete-status');
+		        		} else{
+		        			$(this).attr('data-delete-status', 'delete-registration');
+		        		}
+		        	});
+				} else if(btnId === 'detailBtns') {
+		        	$('.' + tableId + ' tr').has('.checkItem:checked').each(function(){
+		        		if($(this).attr('data-delete-status') === 'delete-detail'){
+		        			$(this).removeAttr('data-delete-status');
+		        		} else{
+		        			$(this).attr('data-delete-status', 'delete-detail');
+		        		}
+		        	});
+				}
 	        });
 		}
 		
 		// 초기화 버튼
 		function resetBtn(){
-			$('.stockMoveRegistrationTable .checkAll, .stockMoveRegistrationTable .checkItem').prop('checked', false);
-			$('.stockMoveDetailTable .checkAll, .stockMoveDetailTable .checkItem').prop('checked', false);
-			$('.stockMoveRegistrationTable tr').removeClass('selected-row');
-			$('.stockMoveDetailTable tbody tr').remove();
-			$('tr[data-status="add"]').remove();
+			location.reload();
 		}
 		
-		// 이동등록 isnert
-		function stockMoveRegistrationInsert(){
-			let addedRows = $("tr[data-status='add']");
+		// 이동등록 등록
+		function insertStockMoveRegistration(){
+			let addedRows = $("tr[data-status='stMoveRegistrationAdd']");
 			let promises = []; // saveBtn 담을 배열
 			
 			addedRows.each(function(){
 				let moveDate = $(this).find('.moveDate input').val();
-				let moveMemo = $(this).find('.moveMemo input').val();
+				let moveMemo = $(this).find('.moveMemo').text();
 				
 				let ajaxReq = $.ajax({
 						url: '/product/stockMoveRegistrationAdd',
@@ -398,10 +435,171 @@
 		}
 		
 		
-		// 이동등록 update
-		// 이동등록 세부내역 insert
-		// 이동등록 세부내역 update
-		// 이동등록 세부내역 delete
+		// 세부내역 등록
+		function insertStockMoveDetail(moveCode){
+			let addedRows = $("tr[data-status='stMoveDetailAdd']");
+			let promises = []; // saveBtn 담을 배열
+			
+			addedRows.each(function(){
+				let itemCode = $(this).find('.itemCode').text();
+				let whCodeOut = $(this).find('.whCodeOut').text();
+				let whCodeIn = $(this).find('.whCodeIn').text();
+				let moveQuantity = $(this).find('.moveQuantity input').val();
+				let moveMemo = $(this).find('.moveMemo').text();
+				
+				let stMoveDetailDto = {
+					moveCode: moveCode,
+					itemCode: itemCode,
+				    whCodeOut: whCodeOut,
+				    whCodeIn: whCodeIn,
+				    moveQuantity: moveQuantity,
+				    memo: moveMemo
+				}
+				
+				let ajaxReq = $.ajax({
+						url: '/product/stockMoveDetailAdd',
+						type: 'POST',
+						contentType: 'application/json',
+						data: JSON.stringify(stMoveDetailDto), // JSON변환
+						success: function(data){
+							updateStockMoveRegistrationDateAndUser(moveCode);
+						}
+				});
+				promises.push(ajaxReq);
+			});
+			
+			return promises; 
+		}
+		
+		// 이동등록 비고수정
+		function updateStockMoveRegistration() {
+			let editRows = $("tr[data-edit-status='edit-registration']");
+			let promises = [];
+			
+			editRows.each(function(){
+				let moveCode = $(this).find('.moveCode').text();
+				let moveMemo = $(this).find('.moveMemo').text();
+
+				let ajaxReq = $.ajax({
+					url: '/product/stockMoveRegistrationModify',
+					type: 'PATCH',
+					data:{
+						moveCode: moveCode,
+						moveMemo: moveMemo
+					},
+					success: function(data){
+						updateStockMoveRegistrationDateAndUser(moveCode);
+					}
+				});
+				promises.push(ajaxReq);
+			});
+
+			return promises;
+			
+		}
+
+		// 이동등록 삭제 ('delYN' = 'Y' 수정)
+		function deleteStockMoveRegistration() {
+			let deleteRows = $("tr[data-delete-status='delete-registration']");
+			let promises = [];
+
+			deleteRows.each(function(){
+				let moveCode = $(this).find('.moveCode').text();
+
+				let ajaxReq = $.ajax({
+					url: '/product/stockMoveRegistrationDeleteStatusModify',
+					type: 'PATCH',
+					data: {
+						moveCode: moveCode
+					}
+				});
+				promises.push(ajaxReq);
+			});
+
+			return promises;
+		}
+
+		// 세부내역 비고수정
+		function updateStockMoveDetail() {
+			let editRows = $("tr[data-edit-status='edit-detail']");
+			let promises = [];
+			
+			editRows.each(function(){
+				let moveCode = $(this).data('move-code');
+				let sorder = $(this).data('sorder');
+				let moveMemo = $(this).find('.moveMemo').text();
+
+				let ajaxReq = $.ajax({
+					url: '/product/stockMoveDetailModify',
+					type: 'PATCH',
+					data:{
+						moveCode: moveCode,
+						sorder: sorder,
+						moveMemo: moveMemo
+					},
+					success: function(data){
+						updateStockMoveRegistrationDateAndUser(moveCode);
+					}
+				});
+				promises.push(ajaxReq);
+			});
+
+			return promises;
+			
+		}
+		// 세부내역 삭제
+		function deleteStockMoveDetail() {
+			let deleteRows = $("tr[data-delete-status='delete-detail']");
+			let promises = [];
+
+			deleteRows.each(function(){
+				let moveCode = $(this).data('move-code');
+				let sorder = $(this).data('sorder');
+
+				let ajaxReq = $.ajax({
+					url: '/product/stockMoveDetailRemove',
+					type: 'DELETE',
+					data: {
+						moveCode: moveCode,
+						sorder: sorder,
+					},
+					success: function(data){
+						updateStockMoveRegistrationDateAndUser(moveCode);
+					}
+				});
+				promises.push(ajaxReq);
+			});
+
+			return promises;
+		}
+		
+		// 세부내역 등록,수정,삭제 시 이동등록에 수정일자 및 수정자 변경 (모듈)
+		function updateStockMoveRegistrationDateAndUser(moveCode){
+			$.ajax({
+				url: '/product/stockMoveRegistrationDateAndUserModify',
+				type: 'PATCH',
+				data: {
+					moveCode: moveCode
+				}
+			});
+		}
+		
+		// memo 수정 시 data-edit-status 모듈
+		function moveMemoDataSetStatus(element, editStatus) {
+			let input = $('<input>', {type: 'text', value: $(element).text()});
+			$(element).html(input);
+			
+			// 해당 tr에 'edit' 추가
+			$(element).closest('tr').attr('data-edit-status', editStatus);
+			
+			// 입력 필드에 포커스를 설정하고 텍스트를 모두 선택
+			input.focus().select();
+			
+			// 포커스 벗어나면 입력한 텍스트 기입
+			input.on('focusout', function(){
+				$(this).parent().text($(this).val());
+			});
+		}
 		
 		$(document).ready(function(){
 			// 체크박스 클릭 시 이벤트 중복 방지
@@ -482,22 +680,28 @@
 				resetBtn();
 			});
 			
-			// 메모 더블클릭 수정
-			$(document).on('dblclick', 'tr .moveMemo', function(){
-			    let input = $('<input>', {type: 'text', value: $(this).text()});
-
-			    $(this).html(input).attr('data-status', 'edit');
-			    
-			    // 입력 필드에 포커스를 설정하고 텍스트를 모두 선택
-			    input.focus().select();
+			// 이동등록 비고 클릭(수정) 시
+			$(document).on('click', '.stockMoveRegistrationTable tr .moveMemo', function(){
+				moveMemoDataSetStatus(this, 'edit-registration');
+			});
+			
+			// 세부내역 비고 클릭(수정) 시
+			$(document).on('click', '.stockMoveDetailTable tr .moveMemo', function(){
+				moveMemoDataSetStatus(this, 'edit-detail');
 			});
 
 			// 저장 버튼 saveBtn
 			$(document).on('click', '#saveBtn', function(){
-				let hasEmptyMoveDate = false;
-				
+				let moveCode = $('.stockMoveRegistrationTable .selected-row').find('.moveCode').text(); //sorder 기입용 moveCode
+				let hasEmptyItemCode = false; // 제품코드 입력안했을때 종료시키는 변수
+				let hasEmptyWhCodeIn = false; // 입고창고 입력안했을때 종료시키는 변수
+				let hasEmptyMoveDate = false; // 이동일자 입력안했을때 종료시키는 변수
+				let hasEmptyMoveQuantity = false; // 이동일자 입력안했을때 종료시키는 변수
+				let hasExceededStockQuantity = false; // 재고수량보다 이동수량이 많을때 종료시키는 변수
+				let hasInvalidMoveQuantity = false; // 숫자가 아닌 이동수량 입력했을때 종료시키는 변수
+
 				// 이동일자 선택 안했을 때
-				$("tr[data-status='add']").each(function(){
+				$("tr[data-status='stMoveRegistrationAdd']").each(function(){
 					let moveDateValue = $(this).find('.moveDate input').val();
 					if(!moveDateValue) {
 						hasEmptyMoveDate = true;
@@ -510,22 +714,97 @@
 					return; // 함수 종료
 				}
 				
+				$("tr[data-status='stMoveDetailAdd']").each(function(){
+					let itemCodeValue = $(this).find('.itemCode').text();
+					let WhCodeInValue = $(this).find('.whCodeIn').text();
+					let stockQuantityValue = $(this).find('.stockQuantity').text();
+					let moveQuantityValue = $(this).find('.moveQuantity input').val();
+					let stockQuantity = parseInt(stockQuantityValue, 10);
+					let moveQuantity = parseInt(moveQuantityValue, 10);
+					
+					// 제품코드 선택 안했을 때
+					if(itemCodeValue.length === 0){
+						hasEmptyItemCode = true;
+						return;
+					}
+
+					// 입고창고 선택 안했을 때
+					if(WhCodeInValue.length === 0){
+						hasEmptyWhCodeIn = true;
+						return;
+					}
+					
+					// 이동수량 입력 안했을 때 (공백포함)
+					if(moveQuantityValue.trim().length === 0){
+						hasEmptyMoveQuantity = true;
+						return;
+					}
+					
+					// 재고수량보다 이동수량 많을 때
+					if(stockQuantity < moveQuantity){
+						hasExceededStockQuantity = true;
+						return;
+					}
+					
+					// 이동수량 숫자 아닌거 입력했을 때
+					if(isNaN(moveQuantityValue )){
+						hasInvalidMoveQuantity = true;
+						return;
+					}
+					
+
+				});
+				
+				if(hasExceededStockQuantity){
+					alert('재고수량보다 이동수량이 더 많습니다.');
+					return;
+				} 
+				
+				if(hasInvalidMoveQuantity){
+					alert('이동수량은 숫자만 입력할 수 있습니다.');
+					return;
+				} 
+				
+				if(hasEmptyMoveQuantity){
+					alert('이동수량을 입력하세요.');
+					return;
+				} 
+				
+				if(hasEmptyItemCode){
+					alert('제품코드를 입력하세요.');
+					return;
+				} 
+				
+				if(hasEmptyWhCodeIn){
+					alert('입고창고를 입력하세요.');
+					return;
+				}
+				
 			    Promise.allSettled([
-			    	...stockMoveRegistrationInsert()
+			    	...insertStockMoveRegistration(),    //이동등록 등록
+			    	...insertStockMoveDetail(moveCode),  //세부내역 등록
+					...updateStockMoveRegistration(),    //이동등록 수정
+					...deleteStockMoveRegistration(),    //이동등록 삭제
+					...updateStockMoveDetail(),          //세부내역 수정
+					...deleteStockMoveDetail()           //세부내역 삭제
 			    ]).then(() => {
-			    	location.reload();
+					location.reload();
+			    	alert("저장되었습니다.");
 			    }).catch((error) => {
-			        console.error(`saveBtn ${error}-> ${error}`);
+					alert('저장이 실패되었습니다.');
+			        console.error(`saveBtn ,${error}`);
 			    });
+			    
 			});
 			
-			// 제품코드 DataTable
-			let table = $('#itemTable').DataTable({
+			// 1. 제품코드 DataTable
+			let itemCodeTable = $('#itemCodeTable').DataTable({
 				ajax: {
 					url: '/product/itemCodeList',
 					type: 'GET',
 					dataSrc: ''
 				},
+				order: [[ 0, 'asc' ]],
 				columns: [
 					{data: 'itemCode' },
 					{data: 'itemName'},
@@ -533,19 +812,43 @@
 				]
 			});
 			
+			// 1. 입고창고 DataTable
+			let whCodeInTable = $('#whCodeInTable').DataTable({
+				ajax: {
+					url: '/product/whCodeList',
+					type: 'GET',
+					dataSrc: ''
+				},
+				order: [[ 1, 'asc' ]],
+				columns: [
+					{data: 'whName'},
+					{data: 'whCode'}
+				]
+			});
+			
 			// 선택한 행을 저장할 변수
-			let selectedRow;
-			// 제품코드 모달
-			$(document).on('dblclick', '.stockMoveDetailTable .itemCode', function(){
-				if($(this).parents('tr').data('status') === 'add'){
-					$('#itemModal').modal('show');
+			let selectedRow; 
+			// 2. 제품코드 모달
+			$(document).on('click', '.stockMoveDetailTable .itemCode', function(){
+				if($(this).parents('tr').data('status') === 'stMoveDetailAdd'){
+					$('#itemCodeModal').modal('show');
 					selectedRow = $(this).closest('tr');  // 선택한 행을 저장
 				}
 			});
 			
-			// 제품코드 클릭 시 행 기입
-			$(document).on('click', '#itemTable tbody tr', function(){
-				let data = table.row(this).data();
+			// 2. 입고창고코드 모달
+			$(document).on('click', '.stockMoveDetailTable .whCodeIn', function(){
+				if($(this).parents('tr').data('status') === 'stMoveDetailAdd'){
+					$('#whCodeModal').modal('show');
+					selectedRow = $(this).closest('tr');  // 선택한 행을 저장
+				}
+			});
+			
+			
+			
+			// 3. 제품코드 클릭 시 행 기입
+			$(document).on('click', '#itemCodeTable tbody tr', function(){
+				let data = itemCodeTable.row(this).data();
 				
 				$.ajax({
 					url: '/product/itemCodeRowDataList',
@@ -560,12 +863,23 @@
 						selectedRow.find('.whCodeOut').text(data[0].whCode);
 						selectedRow.find('.stockQuantity').text(data[0].stockQuantity);
 			
-			            $('#itemModal').modal('hide'); // 모달 닫기
+			            $('#itemCodeModal').modal('hide'); // 모달 닫기
 			        }
 				});
 			});
 			
-			// 입고창고 모달
+			// 3. 입고창고 클릭 시 행 기입
+			$(document).on('click', '#whCodeInTable tbody tr', function(){
+				let data = whCodeInTable.row(this).data();
+				
+				selectedRow.find('.whCodeIn').text(data.whCode);
+				
+	            $('#whCodeModal').modal('hide'); // 모달 닫기
+			});
+			
+
+			
+			
 			
 			
 		});

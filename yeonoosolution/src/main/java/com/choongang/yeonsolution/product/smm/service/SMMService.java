@@ -2,28 +2,41 @@ package com.choongang.yeonsolution.product.smm.service;
 
 import java.util.List;
 
-import com.choongang.yeonsolution.product.smm.domain.itemDto;
-import com.choongang.yeonsolution.product.smm.domain.stMoveDetailDto;
-import com.choongang.yeonsolution.product.smm.domain.stMoveDto;
+import com.choongang.yeonsolution.product.smm.domain.ItemDto;
+import com.choongang.yeonsolution.product.smm.domain.StMoveDetailDto;
+import com.choongang.yeonsolution.product.smm.domain.StMoveDto;
+import com.choongang.yeonsolution.product.smm.domain.WhDto;
 
 public interface SMMService {
 
-	List<stMoveDetailDto> findStockMoveStatusList();
+	List<StMoveDetailDto> findStockMoveStatusList();
 
-	List<stMoveDetailDto> findStockMoveSearchListByKeywordAndDate(String keyword, String startDate, String endDate);
+	List<StMoveDetailDto> findStockMoveSearchListByKeywordAndDate(String keyword, String startDate, String endDate);
 
-	List<stMoveDto> findStockMoveRegistrationList();
+	List<StMoveDto> findStockMoveRegistrationList();
 
-	void modifyStockMoveConfirmationBymoveCodes(String moveCode);
+	void modifyStockMoveConfirmationBymoveCode(String moveCode);
 
-	List<stMoveDetailDto> findStockMoveDetailListByMoveCode(String moveCode);
+	List<StMoveDetailDto> findStockMoveDetailListByMoveCode(String moveCode);
 
-	void addStockMoveRegistrationByMoveDateAndMoveMemo(String moveDate, String moveMemo);
+	void addStockMoveRegistrationByMemberUidAndMoveDateAndMoveMemo(String memberUid, String moveDate, String moveMemo);
 
-	List<itemDto> findItemCodeList();
+	List<ItemDto> findItemCodeList();
 
-	List<itemDto> findItemCodeRowDataListByItemCode(String itemCode);
+	List<WhDto> findWhCodeList();
+	
+	List<ItemDto> findItemCodeRowDataListByItemCode(String itemCode);
 
+	void addStockMoveDetailByStMoveDetailDto(StMoveDetailDto stMoveDetailDto);
 
+	void modifyStockMoveRegistrationByMoveCodeAndMoveMemo(String moveCode, String moveMemo);
+
+	void modifyStockMoveRegistrationDeleteStatusByMoveCode(String moveCode);
+
+	void modifyStockMoveDetailByMoveCodeAndSorderAndMoveMemo(String moveCode, String sorder, String moveMemo);
+
+	void removeStockMoveDetailByMoveCodeAndSorder(String moveCode, String sorder);
+
+	void modifyStockMoveRegistrationDateAndUserByMemberUidAndMoveCode(String memberUid, String moveCode);
 
 }
