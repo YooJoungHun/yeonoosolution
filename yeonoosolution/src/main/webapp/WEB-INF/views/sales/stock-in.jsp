@@ -197,6 +197,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
 </head>
 <body>
+
 	<div id="contain">
 			<input type="button" value="구매 발주" onclick="location.href='/pm/order'">
 			<input type="button" value="구매 입고 등록" onclick="location.href='/pm/stock-in'">

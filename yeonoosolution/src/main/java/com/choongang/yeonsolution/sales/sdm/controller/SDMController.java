@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONObject;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,12 +13,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.choongang.yeonsolution.sales.sdm.domain.SDMStOutDto;
 import com.choongang.yeonsolution.sales.sdm.service.SDMService;
+import com.choongang.yeonsolution.standard.am.domain.MemberDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +33,7 @@ public class SDMController {
 	@GetMapping("/sales/stock/") // 전체 행 조회 및 검색
 	public String outListBycustomerCode (SDMStOutDto stout, String customerCode,
 										 String outCode, Model model) {
+		
 		
 		
 		// 출고리스트 조회
@@ -61,18 +62,19 @@ public class SDMController {
 	
 	@ResponseBody
 	@GetMapping(value = "/sales/stock/{outCode}") // 품목리스트 조회
-	public Map<String, Object>  outListByOutCode (SDMStOutDto stout, 
-									@PathVariable("outCode") String outCode) {
+	public Map<String, Object>  outListByOutCode (SDMStOutDto stout, Model model,
+												  @PathVariable("outCode") String outCode) {
 
 		
 		List<SDMStOutDto> stOutDetailDtoList = ss.findStOutDetailDtoListByOutCode(outCode);
-		
 		Map<String , Object> outDetailList2 = new HashMap<String, Object>();
+		
 		
 		System.out.println("outCode -> "+outCode);
 		System.out.println("품목조회 -> "+stOutDetailDtoList);
 		
 		outDetailList2.put("outDetailList", stOutDetailDtoList);
+		
 		
 		return outDetailList2;
 		}
@@ -121,9 +123,14 @@ public class SDMController {
 	}
 	
 	@PostMapping(value = "/sales/stock") // 출고 저장(insert) 버튼
-	public String StOutAdd(SDMStOutDto stout) {
+	public String StOutAdd(SDMStOutDto stout, HttpSession session) {
+		
+		MemberDto memberDto = (MemberDto) session.getAttribute("member");
+		stout.setMemberName(memberDto.getMemberName());
+		log.info("stOutRemoveByOutCode -> {}", stout.toString());
 		ss.addStOut(stout);
 		
+
 		
 		return "redirect:/sales/stock/";
 	}
@@ -134,13 +141,16 @@ public class SDMController {
 		
 		ss.removeStOutByOutCode(outCode);
 		System.out.println("행 삭제 버튼 outCode -> "+outCode);
-		
+
 		return "";
 	}
 	
 	@ResponseBody
 	@PatchMapping(value = "/sales/stock/stout/{outCode}") // 출고리스트 열 수정 
-	public String stOutModifyByOutCode (@PathVariable String outCode, SDMStOutDto stout){
+	public String stOutModifyByOutCode (@PathVariable String outCode, SDMStOutDto stout, HttpSession session){
+		
+		MemberDto memberDto = (MemberDto) session.getAttribute("member");
+		stout.setMemberName(memberDto.getMemberName());
 		
 		ss.modifyStOutByOutCode(stout);
 		System.out.println("출고리스트 수정 된 값들 -> "+stout);
@@ -149,7 +159,7 @@ public class SDMController {
 	}
 	
 	@ResponseBody
-	@PatchMapping(value = "/sales/stock/item/{outCode}") // 출고리스트 열 수정 
+	@PatchMapping(value = "/sales/stock/item/{outCode}") // 품목리스트 열 수정 
 	public String stOutItemModifyByOutCodeAndSorder (SDMStOutDto stout) {
 		
 		ss.modifyStOutItemByOutCodeAndSorder(stout);
