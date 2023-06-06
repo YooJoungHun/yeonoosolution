@@ -16,7 +16,6 @@
 	}
 	
 	.side-bar {
-		/* flex: 1; */
 		flex: 0 0 210px; /* 사이드바의 너비를 고정값으로 설정 */
 		border: 1px solid #ddd;
 		padding: 20px;
@@ -26,22 +25,28 @@
 	}
 	
 	.analysis-of-materials-container {
-		/* flex: 9; */
-		/* flex: 0 0 calc(100% - 240px);  *//* 사이드바의 너비를 고려하여 남은 공간을 할당 */
-		border: 1px solid;
 		margin: 30px;
 		padding: 20px;
-	}
-	
-	.semi-manufactures-container {
-		width: 1000px;
+		
 	}
 	
 	/* 상위 버튼 */
 	.analysis-of-materials-container-btn {
 		margin: 10px;
-		border: 1px solid;
-		width: 800px;
+		width: 200px;
+		background-color: #F0F0F0;
+		border-radius: 5px;
+	}
+	
+	.analysis-of-materials-container-btn button {
+		background-color: white;
+		border-radius: 5px;
+		font-family: Arial, sans-serif; 
+		font-size: 16px; 
+		outline: none;
+		margin: 5px;
+		border: 1px solid #D6DAE2;
+		
 	}
 	
 	.receive-order-table-container {
@@ -50,10 +55,11 @@
 	}
 	
 	.semi-manufactures-container {
-		height: 470px;
+		height: 350px;
 		overflow: auto;
+		width: 1100px;
+		margin-top: 40px;
 	}
-	
 	
 	/* 테이블  */
 	#table-order-content {
@@ -94,6 +100,7 @@
 	
 	#table-order-content th {
 		border: 1px solid;			/* 각 셀에 테두리 추가 */
+		
 	}
 	
 	#table-order-content td {
@@ -116,11 +123,12 @@
 	#table-order-content th:nth-child(9),
 	#table-order-content th:nth-child(10) {
 		width: 100px;
-		height: 30px;
+		height: 40px;
 	}
 	
 	#table-order-content td:first-child {
-		width: 30px; 
+		width: 50px; 
+		height: 40px;
 	}
 	
 	#table-semi-manufactures-content th {
@@ -130,11 +138,13 @@
 	#table-semi-manufactures-content td {
 		width: 100px; 
 		border: 1px solid;			/* 각 셀에 테두리 추가 */
+		
 	}
 	
 	#table-semi-manufactures-content th:first-child {
 		width: 30px;
-		height: 30px;
+		height: 40px;
+		
 	}
 	#table-semi-manufactures-content th:nth-child(1),
 	#table-semi-manufactures-content th:nth-child(2),
@@ -144,7 +154,12 @@
 	#table-semi-manufactures-content th:nth-child(6),
 	#table-semi-manufactures-content th:nth-child(7) {
 		width: 170px;
-		height: 30px;
+		height: 40px;
+	}
+	
+	#table-semi-manufactures-content td {
+		height: 40px;
+		
 	}
 	
 	
@@ -193,14 +208,14 @@
 		
 		<div class="analysis-of-materials-container-btn">
 		
-			<button type="button" id="search-btn" value="조회">조회</button>
+			<button type="button" id="search-btn" value="조회" style="margin-left: 20px;">조회</button>
 			<button type="button" id="receive-order-btn" value="수주서 관리" onclick="location.href='/sales/receive-order'">수주서 관리</button>
 			
 		</div>
 		
 		<div class="receive-order-table-container">
 		
-			<h4>수주목록</h4>
+			<h4 style="margin-left: 30px;">수주목록</h4>
 			<table id="table-order-content" border="1">
 				<thead>
 					<tr>
@@ -226,7 +241,7 @@
 		
 		<div class="semi-manufactures-container">
 		
-			<h4>반제품 소요분석</h4>
+			<h4 style="margin-left: 30px;">반제품 요소분석</h4>
 			<table id="table-semi-manufactures-content" border="1">
 					<thead>
 						<tr>
@@ -319,8 +334,6 @@
 					table.empty();
 					semiManufacturesList.forEach(function(order){  
 						const row =$("<tr>");
-						/* row.append('<td><input type="radio" name="selectItemCodeRow" value = '+ order.itemCode +'></td>'); */
-						/* row.append('<td>' + order.itemCode + '</td>'); */
 						row.append('<td class="bg-gray">' + order.lowItemCode + '</td>');
 						row.append('<td class="bg-gray">' + order.itemName + '</td>');
 						row.append('<td class="bg-gray">' + order.itemType + '</td>');

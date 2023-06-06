@@ -17,7 +17,6 @@
 	}
 	
 	.side-bar {
-		/* flex: 1; */
 		flex: 0 0 210px; /* 사이드바의 너비를 고정값으로 설정 */
 		border: 1px solid #ddd;
 		padding: 20px;
@@ -27,25 +26,22 @@
 	}
 	
 	.receive-order-container {
-		/* flex: 9; */
-		/* flex: 0 0 calc(100% - 240px);  *//* 사이드바의 너비를 고려하여 남은 공간을 할당 */
 		width: 1500px;
 		height: 100vh;
-		border: 1px solid;
 		margin: 30px;
 		padding: 20px;
 	}
 	
 	.receive-order-table-content {
-		border: 1px solid;
 		width: 1400px;
 	}
 	
 	/* 상위 버튼 */
 	.receive-order-btn {
 		margin: 10px;
-		border: 1px solid;
 		width: 1000px;
+		background-color: #F0F0F0;
+		border-radius: 5px;
 	}
 	
 	.receive-order-btn button {
@@ -60,12 +56,14 @@
 	
 	.receive-order-top-content{
 		margin: 10px;
-		border: 1px solid;
 		width: 1000px;
+		background-color: #F0F0F0; 
+		border-radius: 5px;
 	}
 	
 	.receive-order-top-content span {
 		background-color: #F0F0F0; 
+		
 		padding: 5px;
 		font-family: Arial, sans-serif; 
 		font-size: 16px; 
@@ -83,7 +81,8 @@
 	}
 	
 	.receive-order-top-content input {
-		
+		border-radius: 5px;
+		border: 1px solid #D6DAE2;
 	}
 
 	/* 테이블  */
@@ -91,11 +90,6 @@
 		border:3px solid;
 		padding: 5px;
 		text-align: center;
-		/*white-space: nowrap;*/		/* 셀 내용이 넘칠 경우 줄바꿈 방지 */
-		/*overflow: hidden; */			/* 셀 내용이 넘칠 경우 가리기 */
-		/*text-overflow: ellipsis;*/	/* 셀 내용이 넘칠 경우 말줄임표(...) 표시 */
-		
-		
 	}
 	
 	#table-content tr:hover td {
@@ -103,7 +97,6 @@
 	}
 	
 	#table-content-div, #table-detail-content-div {
-		border: 1px solid;
 		height: 300px;
 		width: 1340px;
 		margin: 30px;
@@ -116,17 +109,11 @@
 		
 	}
 	
-	#table-content-body, #table-detail-content-body {
-		/* max-height: 280px; */
-		
-	}
-	
 	#table-content th {
 		border: 1px solid;			/* 각 셀에 테두리 추가 */
 	}
 	
 	#table-content td {
-		/* width: 100px; */ 
 		border: 1px solid;			/* 각 셀에 테두리 추가 */
 	}
 	
@@ -173,24 +160,27 @@
 	
 	.receive-order-detail-top-content{
 		margin: 10px;
-		border: 1px solid;
 		width: 1000px;
+		background-color: #F0F0F0;
+		border-radius: 5px; 
 	}
 	
 	.receive-order-detail-top-content span {
-		background-color: #F0F0F0; 
+		padding: 5px;
+		font-family: Arial, sans-serif; 
+		font-size: 16px; 
+		border-radius: 5px;
+	} 
+	
+	.receive-order-detail-top-content button {
 		padding: 5px;
 		font-family: Arial, sans-serif; 
 		font-size: 16px; 
 		border: 1px solid #D6DAE2;
 		border-radius: 5px;
-	} 
+	}
 	
-	.receive-order-detail-top-content button {
-		background-color: white; 
-		padding: 5px;
-		font-family: Arial, sans-serif; 
-		font-size: 16px; 
+	.receive-order-detail-top-content input {
 		border: 1px solid #D6DAE2;
 		border-radius: 5px;
 	}
@@ -202,7 +192,6 @@
 		white-space: nowrap; 
 		overflow: hidden; 
 		text-overflow: ellipsis; 
-	
 		overflow: auto;
 		white-space: nowrap;
 	}
@@ -253,18 +242,35 @@
 		width: 100px;
 	}
 	
-	
-	
-	
-	
 	#table-insert-receive-form-container {
 		margin: 30px;
 		width: 500px;
-		border: 1px solid;
+		border: 1px solid #ddd;
+		background-color: #EAEAEA; 
+		border-radius: 5px;
+	}
+	
+	#table-insert-receive-form {
+		margin: 15px;
+		margin-left: 25px;
+	}
+	
+	#table-insert-receive-form button {
+		background-color: white; 
+		padding: 5px;
+		font-family: Arial, sans-serif; 
+		font-size: 16px; 
+		border: 1px solid #D6DAE2;
+		border-radius: 5px;
+	}
+	
+	#table-insert-receive-form input {
+		border-radius: 5px;
+		border: 1px solid #D6DAE2;
 	}
 	
 	#table-insert-receive-form-container th {
-		background-color: skyblue; 
+		background-color: #F0F0F0; 
 		padding: 5px;
 		font-family: Arial, sans-serif; 
 		font-size: 16px; 
@@ -273,9 +279,41 @@
 	} 
 	
 	#table-insert-receive-detail-form-container {
-		border: 1px solid;
+		margin: 30px;
+		width: 500px;
+		border: 1px solid #ddd;
+		background-color: #EAEAEA; 
+		border-radius: 5px;
 	}
 	
+	#table-insert-receive-detail-form-container th {
+		background-color: #F0F0F0; 
+		padding: 5px;
+		font-family: Arial, sans-serif; 
+		font-size: 16px; 
+		border: 1px solid #D6DAE2;
+		border-radius: 5px;
+	}
+	
+	#table-insert-receive-detail-form {
+		margin: 15px;
+		margin-left: 25px;
+	}
+	
+	#table-insert-receive-detail-form button {
+		background-color: white; 
+		padding: 5px;
+		font-family: Arial, sans-serif; 
+		font-size: 16px; 
+		border: 1px solid #D6DAE2;
+		border-radius: 5px;
+	}
+	
+	#table-insert-receive-detail-form input,
+	#table-insert-receive-detail-form select {
+		border-radius: 5px;
+		border: 1px solid #D6DAE2;
+	}
 	
 </style>
 </head>
@@ -323,7 +361,7 @@
 		
 		<div class="receive-order-btn">
 			
-			<button type="button" id="search-btn" value="조회">조회</button>
+			<button type="button" id="search-btn" value="조회" style="margin-left: 15px;">조회</button>
 			<button type="button" id="delete-btn" value="삭제">삭제</button>
 			<button type="button" id="order-confirmation-btn" value="수주 확정">수주 확정</button>
 			<button type="button" id="confirmation-cancel-btn" value="확정 취소">확정 취소</button>
@@ -337,7 +375,7 @@
 	
 		<div class="receive-order-top-content">
 			<div >
-				<span>수주유형</span>
+				<span style="margin-left: 15px;">수주유형</span>
 				<select id="receive-order-type" name="receiveOrderType">
 					<option value="자체생산">자체생산</option>
 					<option value="OEM">OEM</option>
@@ -404,12 +442,8 @@
 							<td><input type="date" name="dueDate" required="required" ></td>
 						</tr>
 						<tr>
-							<th>수정자</th><td><input type="text" name="updateUser" ></td>
-						</tr>
-												
-						<tr>
 							<td colspan="2">
-							<input type="submit" value="확인"></td>
+							<input type="submit" value="확인" style="background-color: white;"></td>
 						</tr>
 					</table>
 				</form>	<!-- /action="/sales/om/insert-receive-order" -->
@@ -458,8 +492,8 @@
 						<div id="customer-code-list"></div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary">Save changes</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+						<button type="button" class="btn btn-primary">확인</button>
 					</div>
 					</div>
 				</div>
@@ -472,7 +506,7 @@
 		
 			<div >
 			
-				<span>제품코드</span>
+				<span style="margin-left: 15px;">제품코드</span>
 				<!-- <td> -->
 					<input type="text" id="modify-item-code" name="itemCode" required="required" readonly="readonly">
 				<!-- </td> -->
@@ -489,7 +523,7 @@
 				<span>금액</span>
 				<input type="number" id="modify-amount" name="modifyAmount" value="0" readonly="readonly"> 
 				<button type="button" id="modify-amount-btn" value="금액수정">금액수정</button><br>
-				<span>재고단위</span>
+				<span style="margin-left: 15px;">재고단위</span>
 				<select id="item-stock-unit" name="itemStockUnit">
 					<option value="EA">EA</option>
 					<option value="KG">KG</option>
@@ -517,8 +551,8 @@
 						<div id="modify-item-code-list"></div>
 					</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-primary">Save changes</button>
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+							<button type="button" class="btn btn-primary">확인</button>
 						</div>
 					</div>
 				</div>
@@ -530,7 +564,7 @@
 		
 			<div id="table-insert-receive-detail-form-container" style="display: none;">
 				<form id="table-insert-receive-detail-form" method="post" action="/sales/om/insert-receive-order-detail" name="frm-detail">
-					
+					<h5>세부항목 작성하기</h5>
 					<table id="table-insert-receive-detail">
 					
 						<tr>
@@ -584,7 +618,7 @@
 												
 						<tr>
 							<td colspan="2">
-							<input type="submit" value="확인"></td>
+							<input type="submit" value="확인" style="background-color: white;"></td>
 						</tr>
 					</table>
 		 			<!-- <input type="hidden" name="orderCodeHidden" id="order-code-hidden" value=""> --> 
@@ -631,8 +665,8 @@
 						<div id="item-code-list"></div>
 					</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-primary">Save changes</button>
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+							<button type="button" class="btn btn-primary">확인</button>
 						</div>
 					</div>
 				</div>
@@ -663,8 +697,6 @@
 					if(order.orderCode === checkedRowId){
 						radio.prop("checked", true); // 이전에 체크된 radio 선택
 					}
-					
-					//row.append('<td><input type="radio" name="selectRow" value = '+ order.orderCode +'></td>');	
 	
 					row.append($('<td>').append(radio));
 					row.append('<td class="bg-gray">' + order.orderStatus + '</td>');
@@ -708,13 +740,11 @@
 				alert("항목을 선택해주세요."); 
 				return; 
 			}
-			//console.log("orderCode" + orderCode);
 			if (confirm("수주를 확정하시겠습니까?")) {
 				$.ajax({
 					url: "/sales/receive-order/" + orderCode + "/confirm",
 					type: "PATCH",
 					success: function(data){
-						console.log("수주상태 확정" +data);
 						loadPlaceOrderList();
 					},
 					error: function(){
@@ -726,7 +756,6 @@
 		
 		$('#confirmation-cancel-btn').click(function(){
 			let orderCode = $("input[name='selectRow']:checked").val();
-			//console.log("orderCode" + orderCode);
 			
 			if (!orderCode) {
 				alert("항목을 선택해주세요."); 
@@ -738,7 +767,6 @@
 					url: "/sales/receive-order/" + orderCode + "/cancel",
 					type: "PATCH",
 					success: function(data){
-						console.log("수주상태 저장" +data);
 						loadPlaceOrderList();
 					},
 					error: function(){
@@ -753,7 +781,6 @@
 		$('#receive-order-type').change(function(){
 			let selectedType = $(this).val();
 			let orderCode = $("input[name='selectRow']:checked").val();
-			console.log("receive-order-type => " + selectedType);
 			
 			if (!orderCode) {
 				alert("항목을 선택해주세요."); 
@@ -766,7 +793,7 @@
 					data: { receiveOrderType : selectedType },
 					dataType: "text",
 					success: function(orderType){
-						console.log("수주유형 변경 성공" + orderType);
+						alert("수주유형이 변경되었습니다."); 
 						loadPlaceOrderList();
 					},
 					error: function(){
@@ -779,7 +806,6 @@
 		//삭제
 		$('#delete-btn').click(function(){
 			let orderCode = $("input[name='selectRow']:checked").val();
-			console.log("delete-btn orderCode => " + orderCode);
 			
 			if (!orderCode) {
 				alert("항목을 선택해주세요."); 
@@ -791,7 +817,7 @@
 					url: "/sales/receive-order/" + orderCode + "/delete",
 					type: "DELETE",
 					success: function(){
-						console.log("삭제되었습니다");
+						alert("삭제되었습니다."); 
 						loadPlaceOrderList();
 					},
 					error: function(){
@@ -806,7 +832,6 @@
 		$('#order-date').change(function(){
 			let selectedDate = $(this).val();
 			let orderCode = $("input[name='selectRow']:checked").val();
-			console.log("order-date => " + selectedDate);
 			
 			if (!orderCode) {
 				alert("항목을 선택해주세요."); 
@@ -819,7 +844,6 @@
 				data: { orderDate : selectedDate },
 				dataType: "text",
 				success: function(orderDate){
-					console.log("수주일 변경 성공" + orderDate);
 					alert("수주일이 변경되었습니다.");
 					loadPlaceOrderList();
 				},
@@ -835,7 +859,6 @@
 		$('#due-date').change(function(){
 			let selectedDate = $(this).val();
 			let orderCode = $("input[name='selectRow']:checked").val();
-			console.log("due-date => " + selectedDate);
 			
 			if (!orderCode) {
 				alert("항목을 선택해주세요."); 
@@ -848,7 +871,6 @@
 				data: { dueDate : selectedDate },
 				dataType: "text",
 				success: function(dueDate){
-					console.log("납기일 변경 성공" + dueDate);
 					alert("납기일이 변경되었습니다.");
 					loadPlaceOrderList();
 				},
@@ -874,9 +896,6 @@
 				return; 
 			}
 			
-			console.log("수주담당자 수정 orderCode -> " + orderCode);
-			console.log("수주담당자 수정 orderCode -> " + orderEmpid);
-			
 			$.ajax({
 				url: "/sales/receive-order/" + orderCode + "/modify-empid",
 				type: "PATCH",
@@ -886,7 +905,6 @@
 				contentType: 'application/JSON',						
 				dataType: "json",
 				success: function(data){
-					console.log("담당자 수정 성공" + data);
 					alert("담당자가 변경되었습니다.");
 					loadPlaceOrderList();
 				},
@@ -902,7 +920,6 @@
 	
 	// 회사코드 모달 창 
 	$(function() {
-	  	console.log('모달 콘솔')
 	  	
 	  	$.ajax({
 	  		url : '/sales/receive-order/customer-code-list',
@@ -933,8 +950,6 @@
 	  			let companyName = selectedCustomer.next('label').text().split(' - ')[1];
 	  			$('#customer-code').val(companyCode);
 	  			$('#company-name-modal').val(companyName);
-	  			console.log('selectedCustomer -> ' + companyCode);
-		  		console.log('selectedCustomer -> ' + companyName);
 	  		}
 	  		
 	  		$('#customer-code-modal').modal('hide');
@@ -942,21 +957,10 @@
 	  	});
 	});
 	
-	
-	
-	
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	
-	
 	// .receive-order-detail-content 출력
 	function loadPlaceOrderDetailList(){ 	
 		
 		let orderCode = $("input[name='selectRow']:checked").val();
-		//console.log("orderCode");
 		
 		if(orderCode){
 			
@@ -989,48 +993,6 @@
 				}
 			});
 			
-			//
-			
-			/*
-			$.ajax({
-				url: "/sales/receive-order/place-order-detail-list?orderCode=" + orderCode,
-				type: "GET",
-				dataType: "json",
-				success: function(placeOrderDetailList){
-					const table = $("#table-detail-content tbody");
-					const checkedRowId = $('input[name="selectDetailRow"]:checked').val(); // 이전에 체크된 radio의 값
-					
-					table.empty();
-					placeOrderDetailList.forEach(function(order){ 
-						
-						const row =$("<tr>");
-						const radio = $('<input type="radio" name="selectDetailRow">').val(order.sorder);
-						
-						if(order.orderDetailCode === checkedRowId){
-							radio.prop("checked", true); // 이전에 체크된 radio 선택
-						}
-						
-						row.append($('<td>').append(radio));
-						row.append('<td>' + order.itemCode + '</td>');
-						row.append('<td>' + order.itemName + '</td>');
-						row.append('<td>' + order.quantity + '</td>');
-						row.append('<td>' + order.price + '</td>');
-						row.append('<td>' + order.amount + '</td>');
-						row.append('<td>' + order.itemStockUnit + '</td>');
-						row.append('<td>' + order.memo + '</td>');
-						row.append('<td>' + order.endYn + '</td>');
-						
-						table.append(row);
-						console.log('detail radio -> '+ order.sorder) ;
-					});
-				},
-				error: function(){
-					console.log("place-order-detail-list Error");
-				}
-			});
-			*/
-			//
-			
 		} else {
 			const table = $("#table-detail-content tbody");
 			table.empty();
@@ -1053,7 +1015,6 @@
 			let price = $('#modify-price').val();
 			let amount = $('#modify-amount').val();
 			
-			console.log("금액수정 orderDetailCode " + orderDetailCode);
 			$.ajax({
 				url: "/sales/receive-order/" + orderDetailCode + "/modify-amount",
 				type: "PATCH",
@@ -1066,7 +1027,6 @@
 				contentType: 'application/JSON',						
 				dataType: "json",
 				success: function(data){
-					console.log("금액수정성공" + data);
 					alert("금액이 변경되었습니다.");
 					loadPlaceOrderDetailList();
 				},
@@ -1082,7 +1042,6 @@
 		$('#item-stock-unit').change(function(){
 			let selectedType = $(this).val();
 			let orderDetailCode = $("#order-detail-code").val();
-			console.log("item-stock-unit => " + selectedType);
 			
 			$.ajax({
 				url: "/sales/receive-order/" + orderDetailCode + "/modify-item-stock-unit",
@@ -1090,7 +1049,6 @@
 				data: { itemStockUnit : selectedType },
 				dataType: "text",
 				success: function(data){
-					console.log("재고단위 변경 성공" + data);
 					alert("재고단위가 변경되었습니다.");
 					loadPlaceOrderDetailList();
 				},
@@ -1106,7 +1064,6 @@
 		$('#end-yn').change(function(){
 			let selectedType = $(this).val();
 			let orderDetailCode = $("#order-detail-code").val();
-			console.log("end-yn => " + selectedType);
 			
 			$.ajax({
 				url: "/sales/receive-order/" + orderDetailCode + "/modify-end-yn",
@@ -1114,7 +1071,6 @@
 				data: { endYn : selectedType },
 				dataType: "text",
 				success: function(data){
-					console.log("마감여부 변경 성공" + data);
 					alert("마감여부가 변경되었습니다.");
 					loadPlaceOrderDetailList();
 				},
@@ -1131,22 +1087,16 @@
 			let itemCode = $('#modify-item-code').val();
 			let itemName = $('#modify-item-name').val();
 			
-			console.log("제품수정 orderDetailCode -> " + orderDetailCode);
-			console.log("제품수정 itemCode -> " + itemCode);
-			console.log("제품수정 itemName -> " + itemName);
-			
 			$.ajax({
 				url: "/sales/receive-order/" + orderDetailCode + "/modify-item",
 				type: "PATCH",
 				data: JSON.stringify({
-					//orderDetailCode	  : orderDetailCode,
 					itemCode : itemCode,
 					itemName : itemName
 				}),
 				contentType: 'application/JSON',						
 				dataType: "json",
 				success: function(data){
-					console.log("제품수정성공" + data);
 					alert("제품이 변경되었습니다.");
 					loadPlaceOrderDetailList();
 				},
@@ -1172,9 +1122,6 @@
 				return; 
 			}
 			
-			console.log("비고 수정 orderDetailCode -> " + orderDetailCode);
-			console.log("비고 수정 modifyMemo -> " + modifyMemo);
-			
 			$.ajax({
 				url: "/sales/receive-order/" + orderDetailCode + "/modify-memo",
 				type: "PATCH",
@@ -1184,7 +1131,6 @@
 				contentType: 'application/JSON',						
 				dataType: "json",
 				success: function(data){
-					console.log("담당자 수정 성공" + data);
 					alert("비고가 변경되었습니다.");
 					loadPlaceOrderDetailList();
 				},
@@ -1199,7 +1145,6 @@
 	
 	// 제품코드 수정 모달 창 
 	$(function() {
-	  	console.log('모달 콘솔')
 	  	
 	  	$.ajax({
 	  		url : '/sales/receive-order/item-code-list',
@@ -1230,8 +1175,6 @@
 	  			let itemName = selectedItem.next('label').text().split(' - ')[1];
 	  			$('#modify-item-code').val(itemCode);
 	  			$('#modify-item-name').val(itemName);
-	  			console.log('selectedItemCode -> ' + itemCode);
-		  		console.log('selectedItemName -> ' + itemName);
 	  		}
 	  		
 	  		$('#modify-item-code-modal').modal('hide');
@@ -1241,7 +1184,6 @@
 	
 	// 제품코드 삽입 모달 창 
 	$(function() {
-	  	console.log('모달 콘솔')
 	  	
 	  	$.ajax({
 	  		url : '/sales/receive-order/item-code-list',
@@ -1272,8 +1214,6 @@
 	  			let itemName = selectedItem.next('label').text().split(' - ')[1];
 	  			$('#item-code').val(itemCode);
 	  			$('#item-name-modal').val(itemName);
-	  			console.log('selectedItemCode -> ' + itemCode);
-		  		console.log('selectedItemName -> ' + itemName);
 	  		}
 	  		
 	  		$('#item-code-modal').modal('hide');
@@ -1284,9 +1224,7 @@
 	
 	// receive-order에서 선택된 radio의 orderCode를 detail의 hidden에 저장하는 함수 실행
 	$(document).on('change', "input[name='selectRow']", function(){
-		//console.log("change");
 		assignOrderCodeToHiddenInput();
-		console.log('radio실행');
 	});
 	
 	
@@ -1294,7 +1232,6 @@
 	function assignOrderCodeToHiddenInput() {
 	    const selectedOrderCode = $("input[name='selectRow']:checked").val();
 	    $("#order-detail-code").val(selectedOrderCode);
-	    console.log("order-detail-code value -> " + $("#order-detail-code").val());
 
 	}
 	
@@ -1319,7 +1256,6 @@
 		
 		$('#stock-out-reg-btn').click(function(){
 		    let orderCode = $("input[name='selectRow']:checked").val();
-		    console.log('stock-out-reg-btn orderCode -> ' + orderCode);
 		    
 		    // 주문 상태 확인 Ajax 호출
 		    $.ajax({
@@ -1327,23 +1263,24 @@
 		        type: "GET",
 		        dataType: "text",
 		        success: function(orderStatus){
-		            console.log('in success orderStatus' + orderStatus);
 		            
 		            // '확정'인 경우에만 insert Ajax 호출
 		            if (orderStatus === '확정') {
-		            	console.log('in if orderStatus' + orderStatus);
-		                $.ajax({
-		                    url: "/sales/receive-order/" + orderCode + "/stock-out-reg",
-		                    type: "POST",
-		                    dataType: "text",
-		                    success: function(data){
-		                        console.log("출하등록 성공" + data);
-		                        loadPlaceOrderDetailList();
-		                    },
-		                    error: function(){
-		                        console.log("출하등록 변경 Error");
-		                    }
-		                });
+		            	
+		            	if (confirm("출하등록을 하시겠습니까?")) {		
+			                $.ajax({
+			                    url: "/sales/receive-order/" + orderCode + "/stock-out-reg",
+			                    type: "POST",
+			                    dataType: "text",
+			                    success: function(data){
+			                        location.replace("/sales/stock/"); 	
+			                    },
+			                    error: function(){
+			                        console.log("출하등록 변경 Error");
+			                    }
+			                });
+		            	}    
+		                
 		            } else {
 		                alert("주문 상태가 '확정'이 아닙니다.");
 		            }
@@ -1357,7 +1294,6 @@
 		// 작업지시등록
 		$('#work-order-reg-btn').click(function(){
 		    let orderCode = $("input[name='selectRow']:checked").val();
-		    console.log('work-order-reg-btn orderCode -> ' + orderCode);
 		    
 		    // 주문 상태 확인 Ajax 호출
 		    $.ajax({
@@ -1365,23 +1301,22 @@
 		        type: "GET",
 		        dataType: "text",
 		        success: function(orderStatus){
-		            console.log('in success orderStatus' + orderStatus);
 		            
 		            // '확정'인 경우에만 insert Ajax 호출
 		            if (orderStatus === '확정') {
-		            	console.log('in if orderStatus' + orderStatus);
-		            	$.ajax({
-		    				url: "/sales/receive-order/" + orderCode + "/work-order-reg",
-		    				type: "POST",
-		    				dataType: "text",
-		    				success: function(data){
-		    					console.log("작업지시등록 성공" + data);
-		    					loadPlaceOrderDetailList();
-		    				},
-		    				error: function(){
-		    					console.log("작업지시등록 변경 Error");
-		    				}
-		    			});
+		            	if (confirm("작업 지시 등록을 하시겠습니까?")) {
+			            	$.ajax({
+			    				url: "/sales/receive-order/" + orderCode + "/work-order-reg",
+			    				type: "POST",
+			    				dataType: "text",
+			    				success: function(data){
+			    					location.replace("/wo"); 
+			    				},
+			    				error: function(){
+			    					console.log("작업지시등록 변경 Error");
+			    				}
+			    			});
+		            	}	
 		            } else {
 		                alert("주문 상태가 '확정'이 아닙니다.");
 		            }
@@ -1409,7 +1344,6 @@
 	document.getElementById("insert-receive-detail-form-button").addEventListener("click", function() {
 		
 		let orderCode = $("input[name='selectRow']:checked").val();
-		console.log("delete-btn orderCode => " + orderCode);
 		
 		if (!orderCode) {
 			alert("항목을 선택해주세요."); 
@@ -1437,7 +1371,6 @@
 		
 		// radio 변경시 checked value 변경
 		$(document).on('change', "input[name='selectRow']", function(){
-			//console.log("change");
 			loadPlaceOrderDetailList();
 		});
 		
