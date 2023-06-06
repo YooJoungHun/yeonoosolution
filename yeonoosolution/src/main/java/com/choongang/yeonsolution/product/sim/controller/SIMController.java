@@ -90,7 +90,7 @@ public class SIMController {
 	public ResponseEntity<Map<String, String>> inModify(@PathVariable(name = "action")String action,
 	                                                    @RequestBody(required = false)List<StInDetailDto> sidList) {
 	    Map<String, String> result = new HashMap<String, String>();
-
+	    System.out.println(sidList);
 	        switch (action) {
 	        case "update":
 	            //simService.modifyStIn(data); break;

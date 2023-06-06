@@ -413,15 +413,15 @@ function regEvent() {
 // 입고 상세 이벤트
 function getDetailMap(index, code){
 	const detailMap = {
-		sorder: 	`<td><input type="text" class="addSorder" value=${index}></td>`,
+		sorder: 	`<td><input type="text" 	class="addSorder" name="sorder" value=${index}></td>`,
 		dtCheckBox: `<td><input type="checkbox" class="addCheckBox"></td>`,
-		inCode: 	`<td><input type="text" class="inCode" readonly="readonly" value=${code}></td>`,
-		whCode: 	`<td><input type="text" class="addWhCode"></td>`,
-		itemCode: 	`<td><input type="text" class="addItemCode"></td>`,
-		inQuantity: `<td><input type="number" class="addInQuantity"></td>`,
-		inPrice: 	`<td><input type="text" class="addInPrice"></td>`,
-		whName: 	`<td><input type="text" class="addWhName"></td>`,
-		memo: 		`<td><input type="text" class="addMemo"></td>`
+		inCode: 	`<td><input type="text" 	class="inCode" name="inCode" readonly="readonly" value=${code}></td>`,
+		whCode: 	`<td><input type="text" 	class="addWhCode" name="whCode"></td>`,
+		itemCode: 	`<td><input type="text" 	class="addItemCode" name="itemCode"></td>`,
+		inQuantity: `<td><input type="number" 	class="addInQuantity" name="inQuantity"></td>`,
+		inPrice: 	`<td><input type="text" 	class="addInPrice" name="inPrice"></td>`,
+		whName: 	`<td><input type="text" 	class="addWhName" name="whName"></td>`,
+		memo: 		`<td><input type="text" 	class="addMemo" name="memo"></td>`
 	}
 	return detailMap;
 }
@@ -438,105 +438,169 @@ function addDetailEvent() {
 	// 객체 저장
 	detailData[rowIndex] = detailMap;
 	rowIndex++;
-
+	
 	// 인덱스 업데이트
 	updateIndex();
 	// 객체 업데이트
 	updateObject();
 }
 
-
-
-// 	for (let key in detailMap) {
-// 		addTr += detailMap[key];
-// 	}
-// 	addTr += `</tr>`;
-
-// 	$('.table-in-detail tbody').append(addTr);
-// 	rowIndex++;
-// }
-
 // 제거
 function removeDetailEvent() {
-	let checkRows = $('.table-in-detail input:checked').closest('tr');
+	let checkRows = $('.table-in-detail tbody input:checked').closest('tr');
 	if (checkRows.length == 0) return;
   
 	checkRows.each(function () {
-	  let removeIndex = $(this).attr('id');
+		let removeIndex = $(this).attr('id');
   
-	  // 객체에서 데이터 제거
-	  delete detailData[removeIndex];
-	  $(this).remove();
+		// status 확인
+		let status = getRowStatus(removeIndex);
+		if (status == 'add') {
+			delete detailData[removeIndex];
+		}else {
+			$(this).attr('data-status', 'delete');
+		}
+		$(this).css('display', 'none');
 	});
   
 	updateIndex();
 	updateObject();
-  }
+}
+
+// 행 상태 설정
+function setRowStatus(index, status) {
+	let row = $(`.table-in-detail tbody tr[id=${index}]`);
+	row.attr('data-status', status);
+}
+// 행 상태 리턴
+function getRowStatus(index) {
+	let row = $(`.table-in-detail tbody tr[id=${index}]`);
+	return row.attr('data-status');
+}
 
 // 저장
+// function saveDetailEvent() {
+// 	let obj = [];
+// 	let tbody = $('.table-in-detail tbody');
+
+// 	tbody.find('tr').each(function () {
+// 		let detailObj = {};
+// 		$(this).find('input').each(function () {
+// 			let key = $(this).attr('name');
+// 			let value = $(this).val();
+// 			detailObj[key] = value;
+// 		});
+// 		obj.push(detailObj);
+// 	});
+// 	console.log(obj);
+// 	// for (let index in detailData) {
+// 	// 	let detailMap = detailData[index];
+// 	// 	let detailObj = {};
+
+// 	// 	for (let key in detailMap) {
+// 	// 		let value = $(`#${index} .${key}`).text();
+// 	// 		detailObj[key] = value;
+// 	// 	}
+// 	// 	obj.push(detailObj);
+// 	// }
+// 	// console.log(obj);
+
+// 	// AJAX
+// 	let xhr = new XMLHttpRequest();
+// 	xhr.open('post', `${contextPath}/product/sim/ajax/save`);
+// 	xhr.setRequestHeader('Content-Type', 'application/json');
+// 	xhr.send(JSON.stringify(obj));
+// 	xhr.onload = function () {
+// 		if (xhr.status === 200) {
+// 			alert(xhr.responseText);
+// 			location.reload('div.stock-in-table');
+// 		}
+// 	}
+// }
 function saveDetailEvent() {
+	let checkInCode = $('.table-in input:checked');
+	if(checkInCode.length != 1) return alert('1개만 선택해 주세요');
+	let inCode = checkInCode.closest('tr').find('.inCode').val();
+
+	$('.table-in-detail tbody tr').each(function() {
+		if($(this).find('.inCode').val() == inCode){
+			console.log('inCode가 같음');
+		}
+	});
+
+	// 이어서 하기
+
 	let obj = [];
 	let tbody = $('.table-in-detail tbody');
 
 	tbody.find('tr').each(function () {
 		let detailObj = {};
 		$(this).find('input').each(function () {
-			let key = $(this).attr('class');
+			let key = $(this).attr('name');
 			let value = $(this).val();
 			detailObj[key] = value;
 		});
 		obj.push(detailObj);
 	});
 	console.log(obj);
-	// for (let index in detailData) {
-	// 	let detailMap = detailData[index];
-	// 	let detailObj = {};
 
-	// 	for (let key in detailMap) {
-	// 		let value = $(`#${index} .${key}`).text();
-	// 		detailObj[key] = value;
-	// 	}
-	// 	obj.push(detailObj);
-	// }
-	// console.log(obj);
 
-	// AJAX
-	let xhr = new XMLHttpRequest();
-	xhr.open('post', `${contextPath}/product/sim/ajax/save`);
-	xhr.setRequestHeader('Content-Type', 'application/json');
-	xhr.send(JSON.stringify(obj));
-	xhr.onload = function () {
-		if (xhr.status === 200) {
-			alert(xhr.responseText);
-			location.reload('div.stock-in-table');
-		}
-	}
 }
+
+
+
+// // 객체 업데이트
+// function updateObject() {
+// 	// 테이블 저장, 기존 요소 제거
+// 	let tbody = $('.table-in-detail tbody');
+// 	tbody.empty();
+
+// 	// 객체 저장
+// 	for (let index in detailData) {
+// 		let data = detailData[index]
+// 		let addTr  = `<tr class="addInDetail" id=${index}>`;
+// 		for (let key in data) {
+// 			addTr += data[key];
+// 		}
+// 		addTr += `</tr>`;
+// 		tbody.append(addTr);
+// 	}
+// }
 
 // 객체 업데이트
 function updateObject() {
-	// 테이블 저장, 기존 요소 제거
-	let tbody = $('.table-in-detail tbody');
-	tbody.empty();
-
-	// 객체 저장
-	for (let index in detailData) {
-		let data = detailData[index]
-		let addTr  = `<tr class="addInDetail" id=${index}>`;
-		for (let key in data) {
-			addTr += data[key];
-		}
-		addTr += `</tr>`;
-		tbody.append(addTr);
-	}
+    // 기존 행의 인덱스
+    let oldIndex = $(".table-in-detail tbody tr").map(function() { return $(this).attr('id'); }).get();
+    
+    // 객체 저장
+    for (let index in detailData) {
+        let data = detailData[index];
+        
+        // 존재하는 행은 업데이트
+        if(oldIndex.includes(index)) {
+            for(let key in data) {
+                $(`#${index} .${key}`).html(data[key]);
+            }
+        } else {
+			// 존재하지 않는 행이면 새로 추가
+            let addTr = `<tr class="addInDetail" id=${index} data-status="add">`;
+            for (let key in data) {
+                addTr += data[key];
+            }
+            addTr += `</tr>`;
+            $('.table-in-detail tbody').append(addTr);
+        }
+    }
 }
+
+
 
 // 인덱스 업데이트
 function updateIndex() {
 	let currentIndex = 1;
 	for (let index in detailData) {
 		let detailMap = detailData[index];
-		detailMap['sorder'] = `<td><input type="text" class="addSorder" disabled="disabled" value=${currentIndex}></td>`;
+		detailMap['sorder'] = `<td><input type="text" class="addSorder" name="sorder" disabled="disabled" value=${currentIndex}></td>`;
 		currentIndex++;
 	}
 }
