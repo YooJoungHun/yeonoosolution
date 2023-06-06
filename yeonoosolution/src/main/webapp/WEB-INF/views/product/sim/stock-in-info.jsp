@@ -9,41 +9,43 @@
 	<main>
 		<section class="content-header">
 			<div class="content-btn">
-				<button onclick="btnEvent('find')">조회</button>
-				<button onclick="btnEvent('save')">저장</button>
-				<button onclick="resetEvent()">초기화</button>
+				<button onclick="btnEvent('find')" class="btn custom-btn custom-btn-primary btn-white">조회</button>
+				<button onclick="btnEvent('save')" class="btn custom-btn custom-btn-primary btn-white">저장</button>
+				<button onclick="resetEvent()" class="btn custom-btn custom-btn-secondary btn-white">초기화</button>
 			</div>
+
 			
 			<div class="stock-in-list">
 				<div class="stock-in-item">
 					<input id="updateDate" name="updateDate" type="date" hidden="1">
 					<input id="updateUser" name="updateUser" type="text" hidden="1">
 					<div class="item-title"><label for="inCode">입고 번호</label></div>
-					<div class="item-content"><input id="inCode" name="inCode" placeholder="입고 번호"></div>
+					<div class="item-content"><input id="inCode" name="inCode" placeholder="입고 번호" class="form-control"></div>
 				</div>
 				<div class="stock-in-item">
 					<div class="item-title"><label for="orderCode">수주 번호</label></div>
-					<div class="item-content"><input id="orderCode" name="orderCode" placeholder="수주 번호"></div>
+					<div class="item-content"><input id="orderCode" name="orderCode" placeholder="수주 번호" class="form-control"></div>
 				</div>
 				<div class="stock-in-item">
-					<div class="item-title"><label for="inDate">입고일</label>
-					</div><div class="item-content"><input id="inDate" name="inDate" type="date"></div>
+					<div class="item-title"><label for="inDate">입고일</label></div>
+					<div class="item-content"><input id="inDate" name="inDate" type="date" class="form-control"></div>
 				</div>
 			</div>
-			
+		
 			<div class="stock-in-list">
 				<div class="stock-in-item">
 					<div class="item-title"><label for="customerCode">거래처 번호</label></div>
-					<div class="item-content"><input id="customerCode" name="customerCode" placeholder="거래처 번호"></div>
+					<div class="item-content"><input id="customerCode" name="customerCode" placeholder="거래처 번호" class="form-control"></div>
 				</div>
 				<div class="stock-in-item">
 					<div class="item-title"><label for="companyName">거래처명</label></div>
-					<div class="item-content"><input id="companyName" placeholder="거래처명"></div>
+					<div class="item-content"><input id="companyName" placeholder="거래처명" class="form-control"></div>
 				</div>
 				<div class="stock-in-item">
 					<div class="item-title"><label for="orderType">입고 유형</label></div>
-					<div class="item-content"><input type="hidden" name="inType" id="inType">
-						<select id="orderType" name="orderType" onchange="orderTypeEvent(this)">
+					<div class="item-content">
+						<input type="hidden" name="inType" id="inType">
+						<select id="orderType" name="orderType" onchange="orderTypeEvent(this)" class="form-control">
 							<option value="">선택</option>
 							<option value="1">구매입고</option>
 							<option value="2">기타입고</option>
@@ -51,19 +53,19 @@
 					</div>
 				</div>
 			</div>
-			
+		
 			<div class="stock-in-list">
 				<div class="stock-in-item">
 					<div class="item-title"><label for="regUser">등록자</label></div>
-					<div class="item-content"><input id="regUser" name="regUser" placeholder="등록자"></div>
+					<div class="item-content"><input id="regUser" name="regUser" placeholder="등록자" class="form-control"></div>
 				</div>
 				<div class="stock-in-item">
 					<div class="item-title"><label for="regDate">등록일</label></div>
-					<div class="item-content"><input id="regDate" name="regDate" type="date"></div>
+					<div class="item-content"><input id="regDate" name="regDate" type="date" class="form-control"></div>
 				</div>
 				<div class="stock-in-item">
 					<div class="item-title"><label for="memo">비고</label></div>
-					<div class="item-content"><input id="memo" name="memo" placeholder="비고"></div>
+					<div class="item-content"><input id="memo" name="memo" placeholder="비고" class="form-control"></div>
 				</div>
 			</div>
 		</section>
@@ -109,21 +111,21 @@
 					
 					<tbody>
 						<c:forEach var="stIn" items="${stInList}" varStatus="status">
-							<tr class="stInRow" class="row${status.index}">
-								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" value="${status.index+1}"></td>
-								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input class="checkBox" type="checkbox"></td>
-								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="inType" value="${stIn.inType}" readonly="readonly"></td>
-								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="orderType" value="${stIn.orderCode != null? '구매입고':'기타입고'}" readonly="readonly"></td>
-								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="inDate" value="${stIn.inDate}"></td>
-								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="inCode" value="${stIn.inCode}"></td>
-								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="orderCode" value="${stIn.orderCode}"></td>
-								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="customerCode" value="${stIn.customerCode}"></td>
-								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="companyName" value="${stIn.companyDto.companyName}"></td>
-								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="regUser" value="${stIn.regUser}"></td>
-								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="regDate" value=<fmt:formatDate value="${stIn.regDate}" pattern="yyyy/MM/dd"/>></td>
-								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="updateUser" value="${stIn.updateUser}"></td>
-								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="updateDate" value=<fmt:formatDate value="${stIn.updateDate}" pattern="yyyy/MM/dd"/>></td>
-								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="memo" value="${stIn.memo}"></td>
+							<tr class="stInRow" class="row${status.index}" ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}>
+								<td><input type="text" value="${status.index+1}"></td>
+								<td><input class="checkBox" type="checkbox"></td>
+								<td><input type="text" disabled="disabled" class="inType" value="${stIn.inType}" readonly="readonly"></td>
+								<td><input type="text" disabled="disabled" class="orderType" value="${stIn.orderCode != null? '구매입고':'기타입고'}" readonly="readonly"></td>
+								<td><input type="text" disabled="disabled" class="inDate" value="${stIn.inDate}"></td>
+								<td><input type="text" disabled="disabled" class="inCode" value="${stIn.inCode}"></td>
+								<td><input type="text" disabled="disabled" class="orderCode" value="${stIn.orderCode}"></td>
+								<td><input type="text" disabled="disabled" class="customerCode" value="${stIn.customerCode}"></td>
+								<td><input type="text" disabled="disabled" class="companyName" value="${stIn.companyDto.companyName}"></td>
+								<td><input type="text" disabled="disabled" class="regUser" value="${stIn.regUser}"></td>
+								<td><input type="text" disabled="disabled" class="regDate" value=<fmt:formatDate value="${stIn.regDate}" pattern="yyyy/MM/dd"/>></td>
+								<td><input type="text" disabled="disabled" class="updateUser" value="${stIn.updateUser}"></td>
+								<td><input type="text" disabled="disabled" class="updateDate" value=<fmt:formatDate value="${stIn.updateDate}" pattern="yyyy/MM/dd"/>></td>
+								<td><input type="text" disabled="disabled" class="memo" value="${stIn.memo}"></td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -140,7 +142,7 @@
 					<thead>
 						<tr>
 							<th><div class="item-title">순번</div></th>
-							<th><div class="item-title"><input type="checkbox" class="allCheck" onclick="$('.dtCheckBox').prop('checked', this.checked ? true : false);"></div></th>
+							<th><div class="item-title"><input type="checkbox" class="allCheck" onclick="$('.sidCheckBox').prop('checked', this.checked ? true : false);"></div></th>
 							<th><div class="item-title">입고 번호</div></th>
 							<th><div class="item-title">창고 코드</div></th>
 							<th><div class="item-title">아이템 코드</div></th>
@@ -153,16 +155,16 @@
 					<tbody>
 						<c:forEach var="stIn" items="${stInList}" varStatus="status">
 						<c:forEach var="sid" items="${stIn.stInDetailDto}">
-							<tr class="stInDetailRow">
-								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="sidSorder" value="${sid.sorder}" readonly="readonly"></td>
-								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="checkbox" class="dtCheckBox"></td>
-								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="inCode" value="${stIn.inCode}" readonly="readonly"></td>
-								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="sidWhCode" value="${sid.whCode}"></td>
-								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="sidItemCode" value="${sid.itemCode}"></td>
-								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="sidInQuantity" value="${sid.inQuantity}"></td>
-								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="sidInPrice" value="${sid.inPrice}"></td>
-								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="sidWhDtoWhName" value="${sid.whDto.whName}"></td>
-								<td ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}><input type="text" disabled="disabled" class="sidMemo" value="${sid.memo}"></td>
+							<tr class="stInDetailRow" ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}>
+								<td><input type="text" disabled="disabled" class="sidSorder" value="${sid.sorder}" readonly="readonly"></td>
+								<td><input type="checkbox" class="sidCheckBox"></td>
+								<td><input type="text" disabled="disabled" class="inCode" value="${stIn.inCode}" readonly="readonly"></td>
+								<td><input type="text" disabled="disabled" class="sidWhCode" value="${sid.whCode}"></td>
+								<td><input type="text" disabled="disabled" class="sidItemCode" value="${sid.itemCode}"></td>
+								<td><input type="number" disabled="disabled" class="sidInQuantity" value="${sid.inQuantity}"></td>
+								<td><input type="text" disabled="disabled" class="sidInPrice" value="${sid.inPrice}"></td>
+								<td><input type="text" disabled="disabled" class="sidWhDtoWhName" value="${sid.whDto.whName}"></td>
+								<td><input type="text" disabled="disabled" class="sidMemo" value="${sid.memo}"></td>
 							</tr>
 						</c:forEach>
 						</c:forEach>

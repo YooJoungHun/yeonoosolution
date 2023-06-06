@@ -4,6 +4,23 @@
 const contextPath = window.location.pathname.split('/')[0];
 //let inCode, orderType, orderCode, inDate, customerCode, companyName, regUser, regDate, memo;
 let previousRow, inRow, inDetailRow, previousCheckBox;
+
+// 버튼 클릭 이벤트 등록
+const btnMap =  {
+	find: { url: `${contextPath}/product/sim/find`, 		method: 'get' },
+	update: { url: `${contextPath}/product/sim/ajax/save`, 	method: 'put' },
+	delete: { url: `${contextPath}/product/sim/ajax/delete`,method: 'delete' },
+	fix: { url: `${contextPath}/product/sim/ajax/fix`, 		method: 'patch' },
+	cancel: { url: `${contextPath}/product/sim/ajax/cancel`,method: 'patch' },
+	save: { url: `${contextPath}/product/sim/ajax/register`,method: 'post' },
+	reset: { fn: resetEvent },
+	register: { fn: regEvent },
+	addDetail: { fn: addDetailEvent },
+	removeDetail: { fn: removeDetailEvent },
+	saveDetail: { fn: saveDetailEvent }
+};
+
+// 이벤트 등록
 $(()=> {
 	$(document).on('click', '.stInRow', tableRowClick);
 	$(document).on('click', '.stInDetailRow', detailTableRowClick);
@@ -11,13 +28,15 @@ $(()=> {
 	$(document).on('click', '.myModal', closeModal);
 
 	$(document).on('dblclick', '.stInRow', rowModify);
-	$(document).on('focusout', 'tbody input[type="text"]', inputFocusout);
-	$(document).on('keydown', 'tbody input', inputEnter);
+	$(document).on('focusout', 'content-header tbody input[type="text"]', inputFocusout);
+	$(document).on('keydown', 'content-header tbody input', inputEnter);
 	$(document).on('keyup', '#inCode', inCodeEvent);
 
 	$(document).on('change', '.checkBox', checkBoxEvent);
-	$(document).on('change', '.allCheck', checkBoxEvent);
+	$(document).on('change', '.allCheck', allCheckEvent);
+	
 });
+
 
 // 입고 번호 입력
 function inCodeEvent(){
@@ -65,7 +84,10 @@ function closeModal(e){
 	}
 }
 
-
+// ALL 체크 이벤트
+function allCheckEvent(e){
+	$(e.target).is(':checked') ? $('.stInDetailRow').show() : resetEvent();
+}
 
 // 테이블 행 클릭 이벤트
 function tableRowClick(e){
@@ -134,7 +156,7 @@ function tableRowClick(e){
 // 상세 페이지 클릭 이벤트
 function detailTableRowClick(e){
 	if(e.target.type != 'checkbox')
-		$(e.target).closest('tr').find('.dtCheckBox').prop('checked', (_, checked)=> {return !checked;});
+		$(e.target).closest('tr').find('.sidCheckBox').prop('checked', (_, checked)=> {return !checked;});
 }
 
 // 체크시 값 입력
@@ -198,14 +220,11 @@ function resetEvent(){
 	$('#inType').val('');
 	$('#companyName').val('');
 	$('#memo').val('');
-	$('.checkBox').prop('checked', false);
+	$('input:checked').prop('checked', false);
 	$('.stInDetailRow').css('display', '');
 	//Event.stopPropagation();
 }
-// 등록 버튼
-function regEvent(){
-	console.log('d');
-}
+
 
 // 입고 유형
 function orderTypeEvent(select){
@@ -220,7 +239,7 @@ function orderTypeEvent(select){
 
 
 
-// 파라미터 값
+// 단일 파라미터 값
 function getParam() {
 	const params = {
 		inCode: $('#inCode').val(),
@@ -239,7 +258,7 @@ function getParam() {
 	return params;
 }
 
-
+// 다중 파라미터 값
 function getParams() {
 	if ($('.stInRow input:checked').length > 0) {
 		const paramsList = [];
@@ -302,7 +321,7 @@ function getParams() {
 	// data.append('params', objJson);
 
 
-// JavaScript로 form submit
+// JavaScript로 form submit (검색)
 function findGet(url, method) {
 	let form = document.createElement('form');
 	form.setAttribute('method', method);
@@ -356,17 +375,6 @@ function btnAction(url, method) {
 	}
 }
 
-const btnMap =  {
-	find: { url: `${contextPath}/product/sim/find`, 		method: 'get' },
-	update: { url: `${contextPath}/product/sim/ajax/save`, 	method: 'put' },
-	delete: { url: `${contextPath}/product/sim/ajax/delete`,method: 'delete' },
-	fix: { url: `${contextPath}/product/sim/ajax/fix`, 		method: 'patch' },
-	cancel: { url: `${contextPath}/product/sim/ajax/cancel`,method: 'patch' },
-	save: { url: `${contextPath}/product/sim/ajax/register`,method: 'post' },
-	reset: { fn: resetEvent }
-	//register: { fn: regEvent }
-};
-
 // 버튼 이벤트
 function btnEvent(event){
 	const btn = btnMap[event];
@@ -375,9 +383,163 @@ function btnEvent(event){
 	else if(btn.fn)
 		btn.fn();
 }
-// 	findGet(btn[0],btn[1]);
+
+// 입고 등록 이벤트
+function regEvent() {
+	let obj = {
+		'customerCode':$('#customerCode').val(),
+		'inDate':$('#inDate').val(),
+		'memo':$('#memo').val()
+	};
+
+	if(!obj.customerCode || !obj.inDate) return alert('값을 입력해주세요');
+
+	// AJAX
+	// let xhr = new XMLHttpRequest();
+	// xhr.open('post', `${contextPath}
+	$.ajax({
+		url: `${contextPath}/product/sim/ajax/register`,
+		type: 'post',
+		dataType: 'text',
+		contentType: 'application/json;',
+		data: JSON.stringify(obj),
+		success: (data)=>{
+			alert(data);
+			location.reload('div.stock-in-table');
+		}
+	});
+}
+
+// 입고 상세 이벤트
+function getDetailMap(index, code){
+	const detailMap = {
+		sorder: 	`<td><input type="text" class="addSorder" value=${index}></td>`,
+		dtCheckBox: `<td><input type="checkbox" class="addCheckBox"></td>`,
+		inCode: 	`<td><input type="text" class="inCode" readonly="readonly" value=${code}></td>`,
+		whCode: 	`<td><input type="text" class="addWhCode"></td>`,
+		itemCode: 	`<td><input type="text" class="addItemCode"></td>`,
+		inQuantity: `<td><input type="number" class="addInQuantity"></td>`,
+		inPrice: 	`<td><input type="text" class="addInPrice"></td>`,
+		whName: 	`<td><input type="text" class="addWhName"></td>`,
+		memo: 		`<td><input type="text" class="addMemo"></td>`
+	}
+	return detailMap;
+}
+let rowIndex = 1;
+let detailData = {};
+
+// 추가
+function addDetailEvent() {
+	let checkInCode = $('.table-in input:checked');
+	if(checkInCode.length != 1) return alert('1개만 선택해 주세요');
+	let code = checkInCode.closest('tr').find('.inCode').val();
+	let detailMap = getDetailMap(rowIndex, code);
+	
+	// 객체 저장
+	detailData[rowIndex] = detailMap;
+	rowIndex++;
+
+	// 인덱스 업데이트
+	updateIndex();
+	// 객체 업데이트
+	updateObject();
+}
+
+
+
+// 	for (let key in detailMap) {
+// 		addTr += detailMap[key];
+// 	}
+// 	addTr += `</tr>`;
+
+// 	$('.table-in-detail tbody').append(addTr);
+// 	rowIndex++;
 // }
 
+// 제거
+function removeDetailEvent() {
+	let checkRows = $('.table-in-detail input:checked').closest('tr');
+	if (checkRows.length == 0) return;
+  
+	checkRows.each(function () {
+	  let removeIndex = $(this).attr('id');
+  
+	  // 객체에서 데이터 제거
+	  delete detailData[removeIndex];
+	  $(this).remove();
+	});
+  
+	updateIndex();
+	updateObject();
+  }
+
+// 저장
+function saveDetailEvent() {
+	let obj = [];
+	let tbody = $('.table-in-detail tbody');
+
+	tbody.find('tr').each(function () {
+		let detailObj = {};
+		$(this).find('input').each(function () {
+			let key = $(this).attr('class');
+			let value = $(this).val();
+			detailObj[key] = value;
+		});
+		obj.push(detailObj);
+	});
+	console.log(obj);
+	// for (let index in detailData) {
+	// 	let detailMap = detailData[index];
+	// 	let detailObj = {};
+
+	// 	for (let key in detailMap) {
+	// 		let value = $(`#${index} .${key}`).text();
+	// 		detailObj[key] = value;
+	// 	}
+	// 	obj.push(detailObj);
+	// }
+	// console.log(obj);
+
+	// AJAX
+	let xhr = new XMLHttpRequest();
+	xhr.open('post', `${contextPath}/product/sim/ajax/save`);
+	xhr.setRequestHeader('Content-Type', 'application/json');
+	xhr.send(JSON.stringify(obj));
+	xhr.onload = function () {
+		if (xhr.status === 200) {
+			alert(xhr.responseText);
+			location.reload('div.stock-in-table');
+		}
+	}
+}
+
+// 객체 업데이트
+function updateObject() {
+	// 테이블 저장, 기존 요소 제거
+	let tbody = $('.table-in-detail tbody');
+	tbody.empty();
+
+	// 객체 저장
+	for (let index in detailData) {
+		let data = detailData[index]
+		let addTr  = `<tr class="addInDetail" id=${index}>`;
+		for (let key in data) {
+			addTr += data[key];
+		}
+		addTr += `</tr>`;
+		tbody.append(addTr);
+	}
+}
+
+// 인덱스 업데이트
+function updateIndex() {
+	let currentIndex = 1;
+	for (let index in detailData) {
+		let detailMap = detailData[index];
+		detailMap['sorder'] = `<td><input type="text" class="addSorder" disabled="disabled" value=${currentIndex}></td>`;
+		currentIndex++;
+	}
+}
 
 // Date 포멧
 function formatDateMinus(date) {

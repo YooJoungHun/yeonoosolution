@@ -1,5 +1,6 @@
 package com.choongang.yeonsolution.product.sim.controller;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.choongang.yeonsolution.product.sim.domain.CompanyDto;
+import com.choongang.yeonsolution.product.sim.domain.StInDetailDto;
 import com.choongang.yeonsolution.product.sim.domain.StInDto;
 import com.choongang.yeonsolution.product.sim.service.SIMService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -41,7 +44,7 @@ public class SIMController {
 	   // 기타입고 등록
 	    if(requestURI.endsWith("/register")) stInDto.setOrderType("2");
 	    
-	    List<StInDto> stInList = simService.stInList(stInDto);
+	    List<StInDto> stInList = simService.findStIn(stInDto);
 	    model.addAttribute("stInList", stInList);
 	    System.out.println(requestURI);
 	    
@@ -85,41 +88,65 @@ public class SIMController {
 	/** Ajax 등록, 수정, 삭제 */
 	@RequestMapping(value = "/ajax/{action}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Map<String, String>> inModify(@PathVariable(name = "action")String action,
-														@RequestBody(required = false)List<Map<String, Object>> dataList) {
-		ObjectMapper om = new ObjectMapper();
-		om.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
-		om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		
-		StInDto stInDto = null;
-		CompanyDto companyDto = null;
-		Map<String, String> result = new HashMap<String, String>();
-		
-		for(Map<String, Object> data : dataList) {
-			stInDto = om.convertValue(data, StInDto.class);
-			companyDto = om.convertValue(data, CompanyDto.class);
-			
-			String inDate = stInDto.getInDate();
-			stInDto.setInDate(inDate.replace("-", "/"));
-			stInDto.setCompanyDto(companyDto);
-			
-			System.out.println(stInDto);
-			// 수정, 삭제, 확정, 확정취소, 등록
-			switch (action) {
-			case "update":
-				simService.modifyStIn(stInDto); break;
-			case "delete":
-				simService.removeStIn(stInDto); break;
-			case "fix":
-				simService.modifyStInFix(stInDto); break;
-			case "cancel":
-				simService.modifyStInCancel(stInDto); break;
-			case "save":
-				simService.addStIn(stInDto); break;
-			}
-		}
-		
-		return ResponseEntity.ok(result);
+	                                                    @RequestBody(required = false)List<StInDetailDto> sidList) {
+	    Map<String, String> result = new HashMap<String, String>();
+
+	        switch (action) {
+	        case "update":
+	            //simService.modifyStIn(data); break;
+	        case "delete":
+	            //simService.removeStIn(data); break;
+	        case "fix":
+	            //simService.modifyStInFix(data); break;
+	        case "cancel":
+	            //simService.modifyStInCancel(data); break;
+	        case "save":
+	            simService.addStInDetail(sidList);
+	            break;
+	        }
+	    return ResponseEntity.ok(result);
 	}
+
+//	/** Ajax 등록, 수정, 삭제 */
+//	@RequestMapping(value = "/ajax/{action}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//	public ResponseEntity<Map<String, String>> inDetail(@PathVariable(name = "action")String action,
+//			@RequestBody(required = false)List<Map<String, Object>> dataList) {
+//		ObjectMapper om = new ObjectMapper();
+//		om.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+//		om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//		
+//		StInDto stInDto = null;
+////		CompanyDto companyDto = null;
+//		
+//		List<StInDetailDto> sid = null;
+//		Map<String, String> result = new HashMap<String, String>();
+//		
+//		for(Map<String, Object> data : dataList) {
+////			stInDto = om.convertValue(data, StInDto.class);
+////			companyDto = om.convertValue(data, CompanyDto.class);
+////			String inDate = stInDto.getInDate();
+////			stInDto.setInDate(inDate.replace("-", "/"));
+////			stInDto.setCompanyDto(companyDto);
+////			System.out.println(stInDto);
+//			
+//			// 수정, 삭제, 확정, 확정취소, 등록
+//			switch (action) {
+//			case "update":
+//				simService.modifyStIn(stInDto); break;
+//			case "delete":
+//				simService.removeStIn(stInDto); break;
+//			case "fix":
+//				simService.modifyStInFix(stInDto); break;
+//			case "cancel":
+//				simService.modifyStInCancel(stInDto); break;
+//			case "save":
+//				sid = om.convertValue(data, StInDetailDto.class);
+//				simService.addStInDetail(sid);
+//				break;
+//			}
+//		}
+//		return ResponseEntity.ok(result);
+//	}
 	
 
 	
@@ -131,10 +158,46 @@ public class SIMController {
 		return ResponseEntity.ok("등록 완료");
 	}
 	
-	/** Ajax 회사 목록 */
-	@GetMapping(value = "/findCompany")
+	/** Ajax Modal의 테이블  목록 */
+	@GetMapping(value = "/modal/{find}")
 	@ResponseBody
-	public List<CompanyDto> getCompany() {
-		return simService.companyList();
+	public ResponseEntity<?> modalList(@PathVariable(name =  "find") String find) {
+		List<?> findList = Collections.EMPTY_LIST;
+		HttpStatus status = HttpStatus.OK;
+		
+		switch (find) {
+		case "findCompany":
+			findList = simService.findCompany(); break;
+		case "findWh":
+			findList = simService.findWh(); break;
+		case "findItem":
+			findList = simService.findItem(); break;
+		}
+		return new ResponseEntity<>(findList, status);
 	}
+	
+	/** Ajax 입고 등록 */
+	@PostMapping(value = "/ajax/register")
+	@ResponseBody
+	public ResponseEntity<String> stInSave(@RequestBody(required = false) Map<String, Object> data) {
+		ObjectMapper om = new ObjectMapper();
+		om.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+		om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		
+		StInDto stInDto = null;
+		stInDto = om.convertValue(data, StInDto.class);
+		
+		String inDate = stInDto.getInDate();
+		stInDto.setInDate(inDate.replace("-", "/"));		
+
+		System.out.println(data);
+		simService.addStIn(stInDto);
+		
+		// 상세
+		List<StInDetailDto> stInDetailDtoList = null;
+		simService.addStInDtail(stInDetailDtoList);
+		
+		return ResponseEntity.ok("등록 완료");
+	}
+	
 }

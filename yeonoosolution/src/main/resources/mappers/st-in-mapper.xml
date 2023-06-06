@@ -126,7 +126,7 @@
 	</resultMap>
 	
 	
-	
+<!-- 입고 목록 조회 -->	
 	<select id="selectStIn" resultMap="stInDtoMap" parameterType="SIMStInDto">
 		SELECT
 		SI.*,
@@ -178,8 +178,10 @@
 				AND C.COMPANY_NAME LIKE '%'|| #{companyDto.companyName} ||'%'
 			</if>
 		</if>
-		ORDER BY TO_NUMBER(REPLACE(SI.IN_CODE, 'IN_CODE', ''))ASC, SID.SORDER ASC
+		<!-- ORDER BY TO_NUMBER(REPLACE(SI.IN_CODE, 'IN_CODE', ''))ASC, SID.SORDER ASC -->
+		ORDER BY SI.REG_DATE DESC, SID.SORDER ASC
 	</select>
+<!-- 입고 수정 -->
 	<update id="updateStIn" parameterType="SIMStInDto">
 		UPDATE 	ST_IN
 		SET 	ORDER_CODE 			= #{orderCode, 			jdbcType=VARCHAR},
@@ -193,27 +195,75 @@
 				MEMO 				= #{memo, 				jdbcType=VARCHAR}
 		WHERE	IN_CODE = #{inCode}
 	</update>
+<!-- 입고 확정 -->
 	<update id="updateStInFix" parameterType="SIMStInDto">
 		UPDATE	ST_IN
 		SET 	IN_TYPE = '확정'
 		WHERE	IN_CODE = #{inCode}
 	</update>
+<!-- 입고 확정 취소 -->
 	<update id="updateStInCancel" parameterType="SIMStInDto">
 		UPDATE	ST_IN
 		SET 	IN_TYPE = '저장'
 		WHERE	IN_CODE = #{inCode}
 	</update>
+<!-- 입고 삭제 -->
 	<update id="deleteStIn" parameterType="SIMStInDto">
 		UPDATE	ST_IN
 		SET 	IN_TYPE = '저장'
 		WHERE	IN_CODE = #{inCode}
 	</update>
-	
-	<select id="selectCompany" resultType="SIMCompanyDto">
-		SELECT 	*
-		FROM 	COMPANY
-		WHERE 	USE_YN = 'Y'
+
+<!-- 입고 등록 -->	
+	<insert id="insertStIn" parameterType="SIMStInDto">
+		INSERT	INTO ST_IN(IN_CODE, COMPANY_CODE, CUSTOMER_CODE, BEGIN_END_INVENTORY, IN_DATE, REG_DATE, REG_USER, IN_TYPE, MEMO)
+		VALUES(	CONCAT('IN_CODE', (SELECT NVL(MAX(TO_NUMBER(SUBSTR(IN_CODE, 8)))+1 , 1) FROM ST_IN)),
+				'COMPANY1',
+				#{customerCode, jdbcType=VARCHAR},
+				1,
+				#{inDate, jdbcType=VARCHAR},
+				sysdate,
+				#{regUser, jdbcType=VARCHAR},
+				'저장',
+				#{memo, jdbcType=VARCHAR})
+	</insert>
+<!-- 입고 상세 등록 -->
+	<insert id="insertStInDtail" parameterType="List">
+		<foreach item="sid" collection="List" separator=";">
+			INSERT INTO ST_IN_DETAIL(IN_CODE, SORDER, WH_CODE, ITEM_CODE, IN_QUANTITY, IN_PRICE, MEMO)
+			VALUES( #{inCode},
+					#{sorder},
+					#{whCode},
+					#{itemCode},
+					#{inQuantity},
+					#{inPrice},
+					#{memo})
+		</foreach>
+	</insert>
+<!-- 회사 목록 조회 -->
+	<select id="selectStInCompany" resultType="SIMCompanyDto">
+		SELECT * FROM COMPANY
 	</select>
+<!-- 창고 목록 조회 -->
+	<select id="selectStInWh" resultType="SIMWhDto">
+		SELECT * FROM WH
+	</select>
+<!-- 아이템 목록 조회 -->
+	<select id="selectStInItem" resultType="SIMItemDto">
+		SELECT * FROM ITEM
+	</select>
+<!-- 	<insert id="insertStIn" parameterType="SIMStInDto">
+		INSERT	INTO ST_IN(IN_CODE, COMPANY_CODE, CUSTOMER_CODE, BEGIN_END_INVENTORY, IN_DATE, REG_DATE, REG_USER, IN_TYPE, MEMO)
+		VALUES(	(SELECT NVL(MAX(IN_CODE)+1 , 1) FROM ST_IN),
+				'COMPANY1',
+				COALESCE(#{customerCode}, 'default_value'),
+				1,
+				COALESCE(#{inDate}, 'default_value'),
+				sysdate,
+				COALESCE(#{regUser}, 'default_value'),
+				'저장',
+				COALESCE(#{memo}, 'default_value'))
+	</insert> -->
 <!-- 	<select id="selectStIn" resultMap="stInDtoMap">
 		SELECT  *
 		FROM    ST_IN

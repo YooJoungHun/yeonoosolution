@@ -28,7 +28,7 @@ tbody tr, th, td {
 	padding: 0;
 
 }
-tbody input[type="text"] {
+tbody input[type="text"], input[type="number"] {
 	width: 100px;
 	height: 30px;
 	border: none;
@@ -60,8 +60,13 @@ tbody td[disabled] {
 
 
 
-
-
+/* 버튼 */
+.content-btn {
+	margin-bottom: 20px;
+}
+.custom-btn {
+	margin-right: 10px;
+}
 
 
 
