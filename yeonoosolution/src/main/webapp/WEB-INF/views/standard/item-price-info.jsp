@@ -17,7 +17,7 @@
 }
 
 .btn-group1 {
-	width: 320px;
+	width: 520px;
 	margin: 3px;
 }
 
@@ -160,7 +160,6 @@
 	<div class="input-info">
 		<span style="font-weight: bold;">제품 단가 입력</span> <br>
 		<br>
-		<span style="font-size: 11px; color: gray;">(*)입력 필수 </span><br>
 		<label>거래처 코드</label><input id="company-code" readonly style="background-color: #D9D9D9">
 		<label>제품 코드</label><input id="item-code" readonly style="background-color: #D9D9D9">
 		<label>품명</label><input id="item-name" readonly style="background-color: #D9D9D9">
@@ -168,11 +167,12 @@
 		<label>*매출 단가</label><input id="sales-price" type="number" placeholder="숫자만 입력" style="background-color: #E6F2FF"><br>
 		<label>시작일</label><input id="start-date" type="date" style="background-color: #FFFFCC">
 		<label>종료일</label><input id="end-date" type="date" style="background-color: #FFFFCC">
-		<label>비고</label><input id="memo">
+		<label>비고</label><input id="memo"><br>
 		<label>*등록/수정자</label><input id="reg-user" placeholder="필수 입력 정보" style="background-color: #E6F2FF">
-		<label>등록/수정일자</label><input id="reg-date" readonly style="background-color: #D9D9D9"><br>
-		<br>
+		<label>등록/수정일자</label><input id="reg-date" readonly style="background-color: #D9D9D9">
+		<span style="font-size: 11px; color: gray;">(*)입력 필수 </span><br>
 		<div class="btn-group1">
+			<input type="text" id="search-input" placeholder="제품명 검색"><button id="search-btn">검색</button>
 			<button id="item-update">단가 등록/수정</button>
 			<button id="reset-btn">초기화</button>
 		</div>
@@ -181,25 +181,28 @@
 	
 	<div class="main-content">
 		<table id="content-table">
-			<tr>
-				<th> </th>
-				<th> </th>
-				<th>창고</th>
-				<th>거래처코드</th>
-				<th>구분</th>
-				<th>제품코드</th>
-				<th>품명</th>
-				<th>매입단가</th>
-				<th>매출단가</th>
-				<th>시작일</th>
-				<th>종료일</th>
-				<th>재고단위</th>
-				<th>비고</th>
-				<th>등록자</th>
-				<th>등록일자</th>
-				<th>수정자</th>
-				<th>수정일자</th>
-			</tr>
+			<thead>
+				<tr>
+					<th> </th>
+					<th> </th>
+					<th>창고</th>
+					<th>거래처코드</th>
+					<th>구분</th>
+					<th>제품코드</th>
+					<th>품명</th>
+					<th>매입단가</th>
+					<th>매출단가</th>
+					<th>시작일</th>
+					<th>종료일</th>
+					<th>재고단위</th>
+					<th>비고</th>
+					<th>등록자</th>
+					<th>등록일자</th>
+					<th>수정자</th>
+					<th>수정일자</th>
+				</tr>
+			</thead>
+			<tbody></tbody>		
 		</table>
 	</div>
 	
@@ -326,6 +329,71 @@
 	}
 	
 	
+	// 검색
+	function search() {
+		let searchKeyWord = $('#search-input').val();
+		let table = $('#content-table');
+		let tbody = table.find('tbody');
+		if (searchKeyWord === "") {
+			tbody.empty();
+			defaultItemList();
+		} else {
+			$.ajax({
+				url : '/standard/imi/search/' + searchKeyWord,
+				type : 'GET',
+				data : { searchKeyWord: searchKeyWord },
+				success : function (searchResultList) {
+					if (!tbody.length) {
+					  tbody = $('<tbody></tbody>');
+					  table.append(tbody);
+					}
+			        tbody.empty();
+			        console.log(searchResultList);
+
+					for (var i = 0; i < searchResultList.length; i++) {
+						let item = searchResultList[i];
+						let row =
+					    '<tr>' +
+					    '<td>' + (i + 1) + '</td>' +
+					    '<td><input type="radio" name="item-radio"></td>' +
+					    '<td style="background-color: #D9D9D9">' + item.whCode + '</td>' +
+					    '<td style="background-color: #D9D9D9">' + item.companyCode + '</td>' +
+					    '<td style="background-color: #D9D9D9">' + item.itemType + '</td>' +
+					    '<td style="background-color: #D9D9D9">' + item.itemCode + '</td>' +
+					    '<td style="background-color: #D9D9D9">' + item.itemName + '</td>' +
+					    '<td style="background-color: #E6F2FF">' + formatNumber(item.purchasePrice) + '</td>' +
+					    '<td style="background-color: #E6F2FF">' + formatNumber(item.salesPrice) + '</td>' +
+					    '<td style="background-color: #FFFFCC">' + item.startDate.substring(0, 10) + '</td>' +
+					    '<td style="background-color: #FFFFCC">' + item.endDate.substring(0, 10) + '</td>' +
+					    '<td style="background-color: #D9D9D9">' + item.stockUnit + '</td>' +
+					    '<td>' + item.memo + '</td>' +
+					    '<td style="background-color: #E6F2FF">' + item.regUser + '</td>' +
+					    '<td style="background-color: #D9D9D9">' + item.regDate.substring(0, 10) + '</td>' +
+					    '<td style="background-color: #E6F2FF">' + item.updateUser + '</td>' +
+					    '<td style="background-color: #D9D9D9">' + item.updateDate.substring(0, 10) + '</td>' +
+					    '</tr>';
+					    table.append(row);
+					}
+				},
+				error: function (xhr, status, error) {
+				    console.log('Error:', error);
+				}
+		    });
+		}
+	}
+
+	$(document).on('click', '#search-btn', function () {
+		search();
+	});
+
+	$(document).on('keydown', '#search-input', function (event) {
+		if (event.keyCode === 13) {
+			event.preventDefault();
+			search();
+		}
+	});
+
+	
 	// 체크 된 아이템 정보 가져오기
 	function updateInputFields(selectedRow) {
 		let companyCode = selectedRow.find('td:eq(3)').text();
@@ -355,26 +423,7 @@
 		
 	}
 
-	$(document).on('click', '#content-table input[type="radio"]', function () {
-	  	let selectedRow = $(this).closest('tr');
-	  	updateInputFields(selectedRow);
-	});
-	
-	$(document).on('input', '#company-code', function () {
-	  	let selectedRow = $('#content-table tr input[type="radio"]:checked').closest('tr');
-	  	selectedRow.find('td:eq(3)').text($(this).val());
-	});
-	
-	$(document).on('input', '#item-code', function () {
-	  	let selectedRow = $('#content-table tr input[type="radio"]:checked').closest('tr');
-	  	selectedRow.find('td:eq(5)').text($(this).val());
-	});
-	
-	$(document).on('input', '#item-name', function () {
-	  	let selectedRow = $('#content-table tr input[type="radio"]:checked').closest('tr');
-	  	selectedRow.find('td:eq(6)').text($(this).val());
-	});
-	
+	// 입력 폼에서 값 수정 시  리스트 값 실시간 변동
 	$(document).on('input', '#purchase-price', function () {
 	  	let selectedRow = $('#content-table tr input[type="radio"]:checked').closest('tr');
 	  	selectedRow.find('td:eq(7)').text($(this).val());
@@ -399,13 +448,9 @@
 	  	let selectedRow = $('#content-table tr input[type="radio"]:checked').closest('tr');
 	  	selectedRow.find('td:eq(12)').text($(this).val());
 	});
+
 	
-	$(document).on('input', '#reg-user', function () {
-	  	let selectedRow = $('#content-table tr input[type="radio"]:checked').closest('tr');
-	  	selectedRow.find('td:eq(13)').text($(this).val());
-	});
-	
-	
+	// 체크 된 값 입력폼 업데이트
 	$(document).on('click', '#content-table tr', function () {
 		let radioInput = $(this).find('td:eq(1) input[type="radio"]');
 		radioInput.prop('checked', true);
@@ -428,6 +473,13 @@
 		$('#reg-user').val('');
 		$('#content-table tr input[type="radio"]:checked').prop('checked', false);
 		$('#content-table tr.checked-row').removeClass('checked-row');
+		if ($('#search-input').val() !== '') {
+			let table = $('#content-table');
+			let tbody = table.find('tbody');
+			tbody.empty();
+			defaultItemList();
+			$('#search-input').val('');
+		}
 	});
 
 

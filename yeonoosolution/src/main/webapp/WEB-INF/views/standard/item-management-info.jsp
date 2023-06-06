@@ -18,7 +18,7 @@
 }
 
 .btn-group1 {
-	width: 320px;
+	width: 520px;
 	margin: 3px;
 }
 
@@ -322,6 +322,7 @@
 		<label>등록/수정일자</label><input id="reg-date" readonly style="background-color: #D9D9D9"> <span style="font-size: 11px; color: gray;">(*)입력 필수 </span>
 		<br>
 		<div class="btn-group1">
+			<input type="text" id="search-input" placeholder="제품명 검색"><button id="search-btn">검색</button>
 			<button id="item-insert">제품 등록</button>
 			<button id="item-update" data-action="update">수정 완료</button>
 			<button id="item-delete" data-action="delete">삭제</button> 
@@ -332,23 +333,26 @@
 	
 	<div class="main-content">
 		<table id="content-table">
-			<tr>
-				<th class="content-table-num"> </th>
-				<th class="content-table-radio"> </th>
-				<th class="content-table-wh">창고</th>
-				<th class="content-table-company">거래처코드</th>
-				<th class="content-table-item-code">제품코드</th>
-				<th class="content-table-item-name">품명</th>
-				<th class="content-table-item-type">구분</th>
-				<th class="content-table-item-type">재고단위</th>
-				<th class="content-table-memo">비고</th>
-				<th class="content-table-start-date">시작일</th>
-				<th class="content-table-end-date">종료일</th>
-				<th class="content-table-reg-user">등록자</th>
-				<th class="content-table-reg-date">등록일자</th>
-				<th class="content-table-update-user">수정자</th>
-				<th class="content-table-update-date">수정일자</th>
-			</tr>
+			<thead>
+				<tr>
+					<th> </th>
+					<th> </th>
+					<th>창고</th>
+					<th>거래처코드</th>
+					<th>제품코드</th>
+					<th>품명</th>
+					<th>구분</th>
+					<th>재고단위</th>
+					<th>비고</th>
+					<th>시작일</th>
+					<th>종료일</th>
+					<th>등록자</th>
+					<th>등록일자</th>
+					<th>수정자</th>
+					<th>수정일자</th>
+				</tr>
+			</thead>
+			<tbody></tbody>			
 		</table>
 	</div>
 	
@@ -412,6 +416,70 @@
 	};
 	
 	
+	// 검색
+	function search() {
+		let searchKeyWord = $('#search-input').val();
+		let table = $('#content-table');
+		let tbody = table.find('tbody');
+		if (searchKeyWord === "") {
+			tbody.empty();
+			defaultItemList();
+		} else {
+			$.ajax({
+				url : '/standard/imi/search/' + searchKeyWord,
+				type : 'GET',
+				data : { searchKeyWord: searchKeyWord },
+				success : function (searchResultList) {
+					if (!tbody.length) {
+					  tbody = $('<tbody></tbody>');
+					  table.append(tbody);
+					}
+			        tbody.empty();
+			        console.log(searchResultList);
+
+					for (var i = 0; i < searchResultList.length; i++) {
+						let item = searchResultList[i];
+						let row =
+							'<tr>' +
+							'<td>' + (i + 1) + '</td>' +
+							'<td><input type="radio" name="item-radio"></td>' +
+					        '<td style="background-color: #FFFFCC">' + item.whCode	 + '</td>' +
+					        '<td style="background-color: #FFFFCC">' + item.companyCode + '</td>' +
+					        '<td style="background-color: #D9D9D9">' + item.itemCode + '</td>' +
+					        '<td style="background-color: #E6F2FF">' + item.itemName + '</td>' +
+					        '<td style="background-color: #E6F2FF">' + item.itemType + '</td>' +
+					        '<td style="background-color: #E6F2FF">' + item.stockUnit + '</td>' +
+					        '<td>' + item.memo + '</td>' +
+					        '<td style="background-color: #FFFFCC">' + item.startDate.substring(0, 10) + '</td>' +
+					        '<td style="background-color: #FFFFCC">' + item.endDate.substring(0, 10) + '</td>' +
+					        '<td style="background-color: #E6F2FF">' + item.regUser + '</td>' +
+					        '<td style="background-color: #D9D9D9">' + item.regDate.substring(0, 10) + '</td>' +
+					        '<td style="background-color: #E6F2FF">' + item.updateUser + '</td>' +
+					        '<td style="background-color: #D9D9D9">' + item.updateDate.substring(0, 10) + '</td>' +
+					        '</tr>';
+							table.append(row);
+					}
+				},
+				error: function (xhr, status, error) {
+				    console.log('Error:', error);
+				}
+		    });
+		}
+	}
+
+	$(document).on('click', '#search-btn', function () {
+		search();
+	});
+
+	$(document).on('keydown', '#search-input', function (event) {
+		if (event.keyCode === 13) {
+			event.preventDefault();
+			search();
+		}
+	});
+	
+	
+	
 	// 창고 모달 창 
 	$(document).on('dblclick', '#wh-code', function() {
 	  	$('#wh-modal').show();
@@ -426,7 +494,8 @@
 
 				for (var i = 0; i < whList.length; i++) {
 					let wh = whList[i];
-					let row = '<tr>' +
+					let row = 
+					'<tr>' +
 				  	'<td>' + wh.whCode2 + '</td>' +
 				  	'<td>' + wh.whName + '</td>' +
 				  	'</tr>';
@@ -467,7 +536,8 @@
 
 				for (var i = 0; i < companyList.length; i++) {
 					let company = companyList[i];
-					let row = '<tr>' +
+					let row = 
+					'<tr>' +
 				  	'<td>' + company.companyCode + '</td>' +
 				  	'<td>' + company.orderType + '</td>' +
 				  	'<td>' + company.companyName + '</td>' +
@@ -496,7 +566,7 @@
 	
 	// 제품 등록
 	$(document).on('click', '#item-insert', function(){
-		if  ($('#reg-user').val() === "" || $('#company-code').val() === "" || $('#start-date').val() === "" || $('#end-date').val() === "") {
+		if  ($('#reg-user').val() === "" || $('#company-code').val() === "" || $('#start-date').val() === "" || $('#end-date').val() === "" || $('#item-name').val() === "") {
 			alert("필수 정보를 입력해주세요.");
 		} else {
 			$.ajax({
@@ -521,8 +591,10 @@
 				success : function(itemInsert){
 					if(itemInsert == 1){
 						alert("제품 등록이 완료되었습니다.");
+					} else if (itemInsert == -1 ){
+						alert("중복 아이템은 등록 불가능합니다. 제품명을 확인해주세요.");
 					} else {
-						alert("제품 등록이 실패하였습니다. 잠시 후 다시 시도해주세요.");
+						alert("제품 등록에 실패하였습니다. 잠시 후 다시 시도해주세요.")
 					}
 					location.reload();
 				},
@@ -607,7 +679,8 @@
 	
 		      for (var i = 0; i < itemList.length; i++) {
 			      let item = itemList[i];
-			      let row = '<tr>' +
+			      let row = 
+			      '<tr>' +
 			      '<td>' + (i + 1) + '</td>' +
 		          '<td><input type="radio" name="item-radio"></td>' +
 		          '<td style="background-color: #FFFFCC">' + item.whCode	 + '</td>' +
@@ -664,37 +737,12 @@
 		let selectedItemType = selectedRow.find('td:eq(6) select').val();
 		$('#item-type > select').val(selectedItemType).trigger('change');
 	}
-
-	$(document).on('click', '#content-table input[type="radio"]', function () {
-	  	let selectedRow = $(this).closest('tr');
-	  	updateInputFields(selectedRow);
-	});
 	
-	$(document).on('input', '#wh-code', function () {
-	  	let selectedRow = $('#content-table tr input[type="radio"]:checked').closest('tr');
-	  	selectedRow.find('td:eq(2)').text($(this).val());
-	});
 	
-	$(document).on('input', '#company-code', function () {
-	  	let selectedRow = $('#content-table tr input[type="radio"]:checked').closest('tr');
-	  	selectedRow.find('td:eq(3)').text($(this).val());
-	});
-	
-	$(document).on('input', '#item-code', function () {
-	  	let selectedRow = $('#content-table tr input[type="radio"]:checked').closest('tr');
-	  	selectedRow.find('td:eq(4)').text($(this).val());
-	});
-	
+	// 입력 폼에서 값 수정 시  리스트 값 실시간 변동
 	$(document).on('input', '#item-name', function () {
 	  	let selectedRow = $('#content-table tr input[type="radio"]:checked').closest('tr');
 	  	selectedRow.find('td:eq(5)').text($(this).val());
-	});
-	
-	$(document).on('change', '#item-type + select', function () {
-		let selectedRow = $('#content-table tr input[type="radio"]:checked').closest('tr');
-		let itemType = $(this).val();
-		selectedRow.find('td:eq(6) select').val(itemType);
-		$('#item-type > select').val(itemType).trigger('change');
 	});
 	
 	$(document).on('input', '#stock-unit', function () {
@@ -717,12 +765,7 @@
 	  	selectedRow.find('td:eq(10)').text($(this).val());
 	});
 	
-	$(document).on('input', '#reg-user', function () {
-	  	let selectedRow = $('#content-table tr input[type="radio"]:checked').closest('tr');
-	  	selectedRow.find('td:eq(11)').text($(this).val());
-	});
-	
-	
+	// 체크 된 값 입력폼 업데이트
 	$(document).on('click', '#content-table tr', function () {
 		let radioInput = $(this).find('td:eq(1) input[type="radio"]');
 		radioInput.prop('checked', true);
@@ -745,6 +788,13 @@
 		$('#reg-user').val('');
 		$('#content-table tr input[type="radio"]:checked').prop('checked', false);
 		$('#content-table tr.checked-row').removeClass('checked-row');
+		if ($('#search-input').val() !== '') {
+			let table = $('#content-table');
+			let tbody = table.find('tbody');
+			tbody.empty();
+			defaultItemList();
+			$('#search-input').val('');
+		}
 	});
 
 

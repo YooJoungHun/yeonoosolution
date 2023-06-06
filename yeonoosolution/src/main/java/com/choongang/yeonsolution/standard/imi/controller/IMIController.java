@@ -107,6 +107,16 @@ public class IMIController {
 		return resultMap;
 	}
 	
+	@ResponseBody
+	@GetMapping("/imi/search/{searchKeyWord}")
+	public List<IMIItemDto> itemSearchList(@PathVariable("searchKeyWord") String searchKeyWord) {
+		log.info("Item SearchList Controller Start");
+		log.info("Controller searchKeyWord -> " + searchKeyWord);
+		List<IMIItemDto> searchResultList = imiService.findItemListBySearchKeyWord(searchKeyWord);
+		
+		return searchResultList;
+	}
+	
 
 	
 	
