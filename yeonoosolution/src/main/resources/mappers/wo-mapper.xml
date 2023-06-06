@@ -93,10 +93,17 @@
 		ORDER BY TO_NUMBER(REPLACE(wo.WORK_ORDER_CODE, 'WORK', '')) DESC
 	</select>
 	<select id="selectWoSearch" parameterType="WOWo" resultMap="WoResultMap">
-		SELECT wo.*, wh.*, orders.*, item.*
+		SELECT wo.*, wh.*, orders.*, item.*,
+				  NVL(wd.GOODQUANTITY, 0) GOODQUANTITY, NVL(wd.BADQUANTITY, 0) BADQUANTITY
 		FROM WO wo LEFT OUTER JOIN WH wh ON (wo.WH_CODE = wh.WH_CODE)
 						   LEFT OUTER JOIN ORDERS orders ON (wo.ORDER_CODE = orders.ORDER_CODE)
 						   LEFT OUTER JOIN ITEM item ON (wo.ITEM_CODE = item.ITEM_CODE)
+						   LEFT OUTER JOIN (SELECT WORK_ORDER_CODE,
+						   									COUNT(CASE WHEN GOOD_YN = 'Y' THEN 1 END) GOODQUANTITY,
+						   									COUNT(CASE WHEN GOOD_YN = 'N' THEN 1 END) BADQUANTITY
+						   						   FROM WO_DETAIL
+						   						   GROUP BY WORK_ORDER_CODE
+						   						  ) wd ON (wo.WORK_ORDER_CODE = wd.WORK_ORDER_CODE)
 		WHERE wo.DELETE_STATUS = 'N' AND wo.WORK_STATUS != '마감'
 			  <if test="startDate != null">
 			  	<![CDATA[

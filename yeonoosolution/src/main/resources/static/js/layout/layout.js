@@ -99,7 +99,7 @@ var menuList = [
 			{
 				name: '실적등록',
 				value: [
-					{ name: '생산실적등록-OFFICE MODE', value: '' }
+					{ name: '생산실적등록-OFFICE MODE', value: '/product/productResult' }
 				]
 			},
 			{
