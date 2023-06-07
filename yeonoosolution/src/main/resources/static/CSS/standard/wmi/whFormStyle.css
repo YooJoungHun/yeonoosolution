@@ -8,11 +8,11 @@
 		margin: 30px;
 	}
 	
-	input {
+	.WhFormDiv input {
 		height: 1.6rem;
 	}
 	
-	select {
+	.WhFormDiv select {
 		height: 1.9rem;
 	}
 	
@@ -74,7 +74,7 @@
 		margin-right: 30px;
 	}
 	
-	button {
+	.WhFormDiv button {
 		background-color: #F5F5F5;
 		border: 1px solid #D6DAE2;
 		outline: none;
@@ -83,10 +83,10 @@
 		height: 32px;
 	}
 	
-	button:not(:last-child) {
+	.WhFormDiv button:not(:last-child) {
 		margin-right: 4px;
 	}
 	
-	button:hover {
+	.WhFormDiv button:hover {
 		background-color: #8EA8DB;
 	}
