@@ -86,7 +86,6 @@
 	</div>
 	
 	<script type="text/javascript">
-	
 		$(document).ready(function() {
 			$("#searchDateStart").datepicker({
 				dateFormat: "yy-mm-dd",

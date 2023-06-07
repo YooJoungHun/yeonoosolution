@@ -27,6 +27,7 @@
 		height: 184px;
 		overflow-y: auto;
 		overflow-x: auto;
+		position: relative;
 	}
 
 	.divTable td, .divTable, tr{
@@ -57,12 +58,35 @@
 		cursor: pointer;
 	}
 	
-	.buttons{
-		display: block;
+	.buttons button, 
+	#registrationBtns button, 
+	#detailBtns button{
+		background-color: white;
+		border: 1px solid #D6DAE2;
+		outline: none;
+		border-radius: 5px;
+		padding: 0 12px;
+		height: 32px;
 	}
 	
+	.buttons button:not(:last-child) {
+		margin-right: 4px;
+	}
+	
+	.buttons button:hover,
+	#registrationBtns button:hover, 
+	#detailBtns button:hover {
+		background-color: #FFFFCC;
+	}
+	
+	#registrationBtns, #detailBtns {
+		text-align: right;
+		margin: 10px auto;
+	}
+	
+	
 	.selected-row{
-		background-color: rgba(240,240,221,0.4);
+		background-color: #FFFFCC;
 	}
 	
 	.moveMemo{
@@ -87,7 +111,7 @@
 	.stockMoveRegistrationTable tr[data-delete-status='delete-registration'] td,
 	.stockMoveDetailTable tr[data-delete-status='delete-detail'] td {
 		background-color: darkgray;
-		opacity: 0.7;
+		opacity: 0.9;
 		text-decoration: line-through;
 	}
 </style>
@@ -434,7 +458,6 @@
 			return promises; 
 		}
 		
-		
 		// 세부내역 등록
 		function insertStockMoveDetail(moveCode){
 			let addedRows = $("tr[data-status='stMoveDetailAdd']");
@@ -752,7 +775,6 @@
 						return;
 					}
 					
-
 				});
 				
 				if(hasExceededStockQuantity){
@@ -844,8 +866,6 @@
 				}
 			});
 			
-			
-			
 			// 3. 제품코드 클릭 시 행 기입
 			$(document).on('click', '#itemCodeTable tbody tr', function(){
 				let data = itemCodeTable.row(this).data();
@@ -876,10 +896,6 @@
 				
 	            $('#whCodeModal').modal('hide'); // 모달 닫기
 			});
-			
-
-			
-			
 			
 			
 		});
