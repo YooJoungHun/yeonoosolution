@@ -95,7 +95,6 @@ public class SMMServiceImpl implements SMMService {
 	    	StMoveDetailDto lastSorder = sorders.get(sorders.size() - 1); // sorders 의 마지막 요소
 	    	stMoveDetailDto.setSorder(lastSorder.getSorder() + 1); // 마지막요소에 +1 (max)
 	    }
-
 	    smmDao.insertStockMoveDetailByStMoveDetailDto(stMoveDetailDto);
 	}
 

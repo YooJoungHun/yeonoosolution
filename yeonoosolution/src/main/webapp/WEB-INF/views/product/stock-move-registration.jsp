@@ -295,6 +295,12 @@
 	        	
 	        	// 세부내역
 	        	if(tableId === 'stockMoveRegistrationTable'){
+	        		
+	        		//새로운 행에 대해서 AJAX요청 보내지 않음
+	        		if(!moveCode){
+	        			return;
+	        		}
+	        		
 	        		$.ajax({
 						url: '/product/stockMoveDetailList/' + moveCode,
 						type: 'GET',
@@ -343,17 +349,15 @@
 	        	
 	        	// rowCount
 	        	let rowCount = $('.' + tableId + ' tr').length;
-	        	console.log("row카운터->",rowCount);
 	        	
 	        	if(btnId === 'registrationBtns'){
-		        	let moveDateId = 'datepicker' + rowCount;
 		        	
 		        	$('.' + tableId + ' tbody').append(`
 	        			<tr data-status="stMoveRegistrationAdd">
 	        				<td>${rowCount}</td>
 							<td><input type="checkbox" class="checkItem" checked></td>
 							<td class="moveCode"></td> //이동번호
-							<td class="moveDate"><input type="text" id="${moveDateId}" value="${moveDate}"></td> //이동일자(달력)
+							<td class="moveDate"><input type="text"></td> //이동일자(달력)
 							<td class="moveType">저장</td> //이동상태
 							<td></td> //등록일자
 							<td></td> //등록자
@@ -363,9 +367,6 @@
 	        			</tr>
 					`);
 		        	
-		        	$('#' + moveDateId).datepicker({
-		        		dateFormat: "yy-mm-dd"
-		        	}).attr("readonly", "readonly");
 		        	scrollToBottom();
 	        	} else if(btnId === 'detailBtns'){
 
@@ -461,7 +462,7 @@
 		// 세부내역 등록
 		function insertStockMoveDetail(moveCode){
 			let addedRows = $("tr[data-status='stMoveDetailAdd']");
-			let promises = []; // saveBtn 담을 배열
+			let promise = Promise.resolve(); // 프로미스 선언
 			
 			addedRows.each(function(){
 				let itemCode = $(this).find('.itemCode').text();
@@ -479,19 +480,23 @@
 				    memo: moveMemo
 				}
 				
-				let ajaxReq = $.ajax({
-						url: '/product/stockMoveDetailAdd',
-						type: 'POST',
-						contentType: 'application/json',
-						data: JSON.stringify(stMoveDetailDto), // JSON변환
-						success: function(data){
-							updateStockMoveRegistrationDateAndUser(moveCode);
-						}
+				promise = promise.then(function() {
+					return new Promise(function(resolve) {
+						$.ajax({
+							url: '/product/stockMoveDetailAdd',
+							type: 'POST',
+							contentType: 'application/json',
+							data: JSON.stringify(stMoveDetailDto), // JSON변환
+							success: function(data){
+								updateStockMoveRegistrationDateAndUser(moveCode);
+								resolve();
+							}
+						});
+					});
 				});
-				promises.push(ajaxReq);
 			});
 			
-			return promises; 
+			return promise; 
 		}
 		
 		// 이동등록 비고수정
@@ -502,7 +507,7 @@
 			editRows.each(function(){
 				let moveCode = $(this).find('.moveCode').text();
 				let moveMemo = $(this).find('.moveMemo').text();
-
+				
 				let ajaxReq = $.ajax({
 					url: '/product/stockMoveRegistrationModify',
 					type: 'PATCH',
@@ -548,10 +553,10 @@
 			let promises = [];
 			
 			editRows.each(function(){
-				let moveCode = $(this).data('move-code');
-				let sorder = $(this).data('sorder');
+				let moveCode = $(this).data('move-code') || "";  // data값 null이면 빈공백 전송
+				let sorder = $(this).data('sorder') || "";
 				let moveMemo = $(this).find('.moveMemo').text();
-
+				
 				let ajaxReq = $.ajax({
 					url: '/product/stockMoveDetailModify',
 					type: 'PATCH',
@@ -570,14 +575,15 @@
 			return promises;
 			
 		}
+		
 		// 세부내역 삭제
 		function deleteStockMoveDetail() {
 			let deleteRows = $("tr[data-delete-status='delete-detail']");
 			let promises = [];
 
 			deleteRows.each(function(){
-				let moveCode = $(this).data('move-code');
-				let sorder = $(this).data('sorder');
+				let moveCode = $(this).data('move-code') || ""; // data값 null이면 빈공백 전송
+				let sorder = $(this).data('sorder') || "";
 
 				let ajaxReq = $.ajax({
 					url: '/product/stockMoveDetailRemove',
@@ -804,7 +810,7 @@
 				
 			    Promise.allSettled([
 			    	...insertStockMoveRegistration(),    //이동등록 등록
-			    	...insertStockMoveDetail(moveCode),  //세부내역 등록
+			    	insertStockMoveDetail(moveCode),  //세부내역 등록
 					...updateStockMoveRegistration(),    //이동등록 수정
 					...deleteStockMoveRegistration(),    //이동등록 삭제
 					...updateStockMoveDetail(),          //세부내역 수정
