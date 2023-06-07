@@ -17,7 +17,8 @@ var menuList = [
               value: [
                  { name: '개인정보수정', value: '/standard/myPage/' },
                  { name: '부서등록 및 조회', value: '/standard/dept/' },
-                 { name: '직급등록 및 조회', value: '/standard/job/' }
+                 { name: '직급등록 및 조회', value: '/standard/job/' },
+                 { name: '사용자 계정 관리', value: '/standard/user-admin' }
               ]
            },
            {
