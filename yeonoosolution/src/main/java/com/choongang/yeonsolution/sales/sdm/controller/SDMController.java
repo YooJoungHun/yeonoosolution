@@ -57,7 +57,7 @@ public class SDMController {
 		model.addAttribute("itemCodeList", itemCodeList);
 
 		
-		return "/sales/stock-search";
+		return "/sales/stock-search.layout";
 	}
 	
 	@ResponseBody
@@ -90,6 +90,30 @@ public class SDMController {
 	}
 	
 	@ResponseBody
+	@GetMapping(value = "/sales/stock/confirmCancelYN/{outCode}") // 출고상태가 확정인지 아닌지 체크
+	public String confirmCancleYNByOutCode (SDMStOutDto stout, @PathVariable String outCode, Model model) {
+		
+		System.out.println("out코드 hahaha -> "+stout.getOutCode());
+		// 일단 없다는 가정하에 진행	
+		String resultStr = "";
+				
+//		System.out.println("confirmCancleYNByOutCode outType -> "+stout.getOutType());
+				 
+		String outTypeYN = ss.outTypeCCYNDetails(outCode); 
+		System.out.println("해당 행의 출고유형 -> "+outTypeYN);
+		model.addAttribute("outTypeYN", outTypeYN);
+				
+		//저장일 경우 1을 리턴 아니면 0을 리턴
+		if(outTypeYN.equals("저장") ) {
+				resultStr = "1";
+			} else {
+				resultStr = "0"; 
+			}
+		
+		return resultStr;
+	}
+	
+	@ResponseBody
 	@PatchMapping(value = "/sales/stock/cancel/{outCode}") // 출고확정 취소 버튼
 	public String stockConfirmCancleByOutCode (@PathVariable String outCode) {
 		
@@ -97,29 +121,6 @@ public class SDMController {
 		System.out.println("확정취소outCode -> "+outCode);
 		
 		return "";
-	}
-	
-	@ResponseBody
-	@GetMapping(value = "/confirmCancleYN") // 출고상태가 확정인지 아닌지 체크
-	public String confirmCancleYNByOutCode (SDMStOutDto stout, String outCode, Model model) {
-		
-		// 일단 없다는 가정하에 진행	
-		String resultStr = "";
-				
-//		System.out.println("confirmCancleYNByOutCode outType -> "+stout.getOutType());
-				 
-		String outTypeYN = ss.outTypeCCYNDetails(stout); 
-		System.out.println("해당 행의 출고유형 -> "+outTypeYN);
-		model.addAttribute("outTypeYN", outTypeYN);
-				
-		//저장일 경우 1을 리턴 아니면 0을 리턴
-		if(outTypeYN == "저장" ) {
-				resultStr = "1";
-			} else {
-				resultStr = "0"; 
-			}
-		
-		return resultStr;
 	}
 	
 	@PostMapping(value = "/sales/stock") // 출고 저장(insert) 버튼
@@ -202,7 +203,7 @@ public class SDMController {
 		System.out.println("조회페이지 -> "+outListWithDetailByCustomerCode);
 		System.out.println("조회페이지 customerCode -> "+stout.getCustomerCode());
 		
-		return "/sales/stock-detail-search";
+		return "/sales/stock-detail-search.layout";
 	}
 	
 	

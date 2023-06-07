@@ -10,7 +10,7 @@ public interface SDMService {
 	List<SDMStOutDto> 		findStOutDetailDtoListByOutCode(String outCode);
 	void                	outTypeConfirmModify(String outCode);
 	void                	outTypeConfirmCancelModify(String outCode);
-	String              	outTypeCCYNDetails(SDMStOutDto stout);
+	String              	outTypeCCYNDetails(String outCode);
 	void                	addStOut(SDMStOutDto stout);
 	void                	removeStOutByOutCode(String outCode);
 	void                	modifyStOutByOutCode(SDMStOutDto stout);

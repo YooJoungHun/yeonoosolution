@@ -15,7 +15,6 @@ public class OMOrdersAOMDto {
 	private String	orderDate;
 	private String	orderEmpid;
 	private String	orderStatus;
-	
 	private String	stockUnit;
 	private Long	goodQuantity;
 	private Long	workOrderQuantity;

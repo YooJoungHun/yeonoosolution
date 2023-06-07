@@ -154,10 +154,10 @@ public class UmServiceImpl implements UmService {
 		// 검증용
 		String memberUid = memberDto.getMemberUid();
 		String dbPassword = umDao.selectDbPasswordByMemberUid(memberUid);
-		System.out.println("dbpassword -> "+dbPassword);
-		System.out.println("memberDto.getPassword();-> "+passwordEncoder.encode(memberDto.getPassword()));
+		log.info("dbpassword -> {} ", dbPassword);
+		log.info("memberDto.getPassword();-> {} ", passwordEncoder.encode(memberDto.getPassword()));
 		Boolean pwdBool = passwordEncoder.matches(memberDto.getPassword(), dbPassword);
-		System.out.println("비번 체크 "+pwdBool);
+		log.info("비번 체크-> {} ", pwdBool);
 		if(pwdBool) {
 			result = umDao.updateMyInfoByMemberUid(memberDto);
 		} else {
@@ -275,6 +275,7 @@ public class UmServiceImpl implements UmService {
 	public List<JobDto> findjobListByJobName(String jobName) {
 		
 		return umDao.selectJobListByJobName(jobName);
+	
 	}
 
 	@Override

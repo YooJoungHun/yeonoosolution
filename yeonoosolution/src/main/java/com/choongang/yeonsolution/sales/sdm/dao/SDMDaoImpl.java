@@ -24,6 +24,7 @@ public class SDMDaoImpl implements SDMDao {
 		try {
 			findOut = session.selectList("sdmSelectOutList",customerCode);
 		} catch (Exception e) {
+			log.error("daoimpl selectOutList -> {} ",e.getMessage());
 			e.printStackTrace();
 		}
 		return findOut;
@@ -37,7 +38,7 @@ public class SDMDaoImpl implements SDMDao {
 		try {
 			findDetailOut = session.selectList("sdmSelectStOutDetailDtoListByOutCode",outCode);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("daoimpl selectStOutDetailDtoListByOutCode -> {} ",e.getMessage());
 		}
 		return findDetailOut;
 	}
@@ -52,8 +53,7 @@ public class SDMDaoImpl implements SDMDao {
 				session.update("sdmUpdateWhStockDatilMiu",ssd);
 			}
 		} catch (Exception e) {
-		System.out.println("daoImpl modifyOutType error -> "+e.getMessage());
-			e.printStackTrace();
+			log.error("daoimpl updateOutTypeConfirm -> {} ",e.getMessage());
 		}
 		
 		
@@ -70,14 +70,13 @@ public class SDMDaoImpl implements SDMDao {
 				session.update("sdmUpdateWhStockDatilPlus",ssd);
 			}
 		} catch (Exception e) {
-		System.out.println("daoImpl modifyOutType2 error -> "+e.getMessage());
-			e.printStackTrace();
+			log.error("daoimpl updateOutTypeConfirmCancel -> {} ",e.getMessage());
 		}		
 	}
 
 	@Override
-	public String findOutTypeCCYN(SDMStOutDto stout) {
-		return session.selectOne("JHOutTypeCCYN",stout);
+	public String findOutTypeCCYN(String outCode) {
+		return session.selectOne("JHOutTypeCCYN",outCode);
 
 	}
 
@@ -86,7 +85,7 @@ public class SDMDaoImpl implements SDMDao {
 		try {
 			session.insert("sdmInsertStOut",stout);
 		} catch (Exception e) {
-			System.out.println("daoImpl insertStOut error -> "+e.getMessage());
+			log.error("daoimpl insertStOut -> {} ",e.getMessage());
 		}
 	}
 
@@ -95,7 +94,7 @@ public class SDMDaoImpl implements SDMDao {
 		try {
 			session.update("sdmDeleteStOut",outCode);
 		} catch (Exception e) {
-			System.out.println("daoImpl removeStOut error -> "+e.getMessage());
+			log.error("daoimpl deleteStOutByOutCode -> {} ",e.getMessage());
 		}
 	}
 
@@ -104,7 +103,7 @@ public class SDMDaoImpl implements SDMDao {
 		try {
 			session.update("sdmUpdateStOut",stout);
 		} catch (Exception e) {
-			System.out.println("daoImpl modifyStOut error -> "+e.getMessage());
+			log.error("daoimpl updateStOutByOutCode -> {} ",e.getMessage());
 		}
 	}
 
@@ -113,7 +112,7 @@ public class SDMDaoImpl implements SDMDao {
 		try {
 			session.update("sdmUpdateStOutItemByOutCodeAndSorder",stout);
 		} catch (Exception e) {
-			System.out.println("daoImpl modifyStOutItem error -> "+e.getMessage());
+			log.error("daoimpl updateStOutItemByOutCodeAndSorder -> {} ",e.getMessage());
 		}
 	}
 	
@@ -123,7 +122,7 @@ public class SDMDaoImpl implements SDMDao {
 		try {
 			findCompanyCodeList = session.selectList("sdmCompanyCodeList");
 		} catch (Exception e) {
-			System.out.println("daoImpl findCompanyCodeList error -> "+e.getMessage());
+			log.error("daoimpl selectCompanyCodeList -> {} ",e.getMessage());
 		}
 		return findCompanyCodeList;
 	}
@@ -134,7 +133,7 @@ public class SDMDaoImpl implements SDMDao {
 		try {
 			findOutCodeList = session.selectList("sdmOutCodeList");
 		} catch (Exception e) {
-			System.out.println("daoImpl findCompanyCodeList error -> "+e.getMessage());
+			log.error("daoimpl selectfindOutCodeList -> {} ",e.getMessage());
 		}
 		return findOutCodeList;
 	}
@@ -145,7 +144,7 @@ public class SDMDaoImpl implements SDMDao {
 		try {
 			findWhCodeList = session.selectList("sdmWhCodeList");
 		} catch (Exception e) {
-			System.out.println("daoImpl findWhCodeList error -> "+e.getMessage());
+			log.error("daoimpl selectfindWhCodeList -> {} ",e.getMessage());
 		}
 		return findWhCodeList;
 	}
@@ -156,7 +155,7 @@ public class SDMDaoImpl implements SDMDao {
 		try {
 			findItemCodeList = session.selectList("sdmItemCodeList");
 		} catch (Exception e) {
-			System.out.println("daoImpl findItemCodeList error -> "+e.getMessage());
+			log.error("daoimpl selectfindItemCodeList -> {} ",e.getMessage());
 		}
 		return findItemCodeList;
 	}
@@ -166,7 +165,7 @@ public class SDMDaoImpl implements SDMDao {
 		try {
 			session.update("sdmDeleteStOutItemByOutCodeAndSorder",stout);
 		} catch (Exception e) {
-			System.out.println("daoImpl removeStOutItem error -> "+e.getMessage());
+			log.error("daoimpl deleteStOutItemByOutCodeAndSorder -> {} ",e.getMessage());
 		}		
 	}
 
@@ -177,7 +176,7 @@ public class SDMDaoImpl implements SDMDao {
 		try {
 			session.insert("sdmInsertStOutItem",stout);
 		} catch (Exception e) {
-			System.out.println("daoImpl addInsertStOutDetail error -> "+e.getMessage());
+			log.error("daoimpl insertStOutItem -> {} ",e.getMessage());
 		}
 	}
 
@@ -188,7 +187,7 @@ public class SDMDaoImpl implements SDMDao {
 		try {
 			findOutListWithDetail = session.selectList("sdmSelectStOutWithDetailByCustomerCode",customerCode);
 		} catch (Exception e) {
-			System.out.println("daoImpl findOutListWithDetailByCustomerCode error -> "+e.getMessage());
+			log.error("daoimpl selectStOutWithDetailByCustomerCode -> {} ",e.getMessage());
 		}
 		return findOutListWithDetail;
 	}
@@ -200,7 +199,7 @@ public class SDMDaoImpl implements SDMDao {
 		try {
 			findCompanyCodeList2 = session.selectList("sdmSelectCompanyCodeList2");
 		} catch (Exception e) {
-			System.out.println("daoImpl findCompanyCodeList2 error -> "+e.getMessage());
+			log.error("daoimpl selectCompanyCodeList2 -> {} ",e.getMessage());
 		}
 		return findCompanyCodeList2;
 	}

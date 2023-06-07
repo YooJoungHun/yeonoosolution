@@ -39,8 +39,8 @@ public class SDMServiceImpl implements SDMService {
 	}
 
 	@Override
-	public String outTypeCCYNDetails(SDMStOutDto stout) {
-		return sd.findOutTypeCCYN(stout);
+	public String outTypeCCYNDetails(String outCode) {
+		return sd.findOutTypeCCYN(outCode);
 	}
 
 	@Override

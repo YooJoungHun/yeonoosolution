@@ -10,7 +10,7 @@ public interface SDMDao {
 	List<SDMStOutDto> 		selectStOutDetailDtoListByOutCode(String outCode);
 	void                	updateOutTypeConfirm(String outCode);
 	void                	updateOutTypeConfirmCancel(String outCode);
-	String              	findOutTypeCCYN(SDMStOutDto stout);
+	String              	findOutTypeCCYN(String outCode);
 	void                	insertStOut(SDMStOutDto stout);
 	void                	deleteStOutByOutCode(String outCode);
 	void                	updateStOutByOutCode(SDMStOutDto stout);
