@@ -102,6 +102,9 @@
 		margin-right: 5px;
 	  
 	}
+	#customerInfoTable{
+		min-width: 977px;
+	}
 	
 	#customerInfoTable td, th{
 		margin: auto;
@@ -136,6 +139,11 @@
 	  	border: 1px solid #000; /* 나타낼 border 스타일 설정 */
 	  	background-color: white;
 	}
+	#customerInfoTable select:focus option{
+	  	appearance: auto;
+	  	border: 1px solid #000; /* 나타낼 border 스타일 설정 */
+	  	background-color: white;
+	}
 	#customerInfoTable select{
 		appearance: none;
 		border: none;
@@ -163,6 +171,15 @@
 	#customerInfoTbody tr:hover td select	
 	{
 		background-color: #6799FF;
+	}
+	#searchName{
+		font-size: 18px;
+		font-weight: bold;
+	}
+	#searchOrderType{
+		font-size: 18px;
+		font-weight: bold;
+		color: red;
 	}
 </style>
 </head>
@@ -625,8 +642,8 @@
 		  var html = "";
 		  var companyName = $("#filterCompanyName").val().trim();
 		  var orderType = $("#filterOrderType").val();
-		  alert("회사이름-> " + companyName);
-		  alert("수발주-> " + orderType);
+		  /* alert("회사이름-> " + companyName);
+		  alert("수발주-> " + orderType); */
 
 		  if (companyName == null || companyName == "") {
 		    companyName = "";
@@ -634,9 +651,6 @@
 		  if (orderType == "--") {
 		    orderType = null;
 		  }
-
-		  alert("회사이름-> " + companyName);
-		  alert("수발주-> " + orderType);
 
 		  $.ajax({
 		    url: "/standard/customerInfo/search/",
@@ -647,29 +661,37 @@
 		      orderType		: orderType
 		    },
 		    success: function(data) {
-		      $(data).each(function(index) {
-		        html += "<tr>";
-		        html += "<td id='rowCount'>"+(index+1)+"</td>";
-		        html += "<td><input type='checkbox' name='tableCheckBox' id='tableCheckBox"+index+"'></td>";
-		        html += "<td class ='bg-gray'><input type='text' class ='bg-gray' name='companyCode' id='companyCode"+index+"' value='"+this.companyCode+"' disabled='disabled'></td>";
-		        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='companyName' id='companyName"+index+"' value='"+this.companyName+"' required='required'></td>";
-		        html += "<td class ='bg-yellow'><select id='businessType"+index+"' class ='bg-yellow' name='businessType' required='required'>";
-		        html += "<option value='' " + (this.businessType == null ? "selected='selected'" : "") + ">--";
-		        html += "<option value='개인' " + (this.businessType == '개인' ? "selected='selected'" : "") + ">개인사업자";
-		        html += "<option value='법인' " + (this.businessType == '법인' ? "selected='selected'" : "") + ">법인사업자";
-		        html += "</select></td>";
-		        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='address' id='address"+index+"' value='"+this.address+"' required='required'</td>";
-		        html += "<td class ='bg-yellow'><select id='orderType"+index+"' class ='bg-yellow' name='orderType' required='required'>";
-		        html += "<option value='' " + (this.orderType == null ? "selected='selected'" : "") + ">--";
-		        html += "<option value='수주' " + (this.orderType == '수주' ? "selected='selected'" : "") + ">수주";
-		        html += "<option value='발주' " + (this.orderType == '발주' ? "selected='selected'" : "") + ">발주";
-		        html += "</select></td>"; 
-		        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='businessCode' id='businessCode"+index+"' value='"+this.businessCode+"' required='required'</td>";
-		        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='tel' id='tel"+index+"' value='"+this.tel+"' required='required'</td>";
-		        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='ownerName' id='ownerName"+index+"' value='"+this.ownerName+"' required='required'</td>";
-		        html += "<td class ='bg-gray'><input type='text' class ='bg-gray' name='useYn' id='useYn"+index+"' value='"+this.useYn+"' required='required'</td>";
-		        html += "</tr>";
-		      });
+		    	/* 없는 이름으로 검색한 경우에만 데이터가 없다는 것을 표시하기 위함.  */
+		    	if(companyName != "" && data == null || data.length == 0){
+		    		html += "<tr><td colspan = '11'><span id='searchName'>'"+companyName+"',</span>";
+		    		html += "<span id = 'searchOrderType'> '"+(orderType || "--")+"'</span> 검색결과가 없습니다.</td></tr>";
+		    		$("#customerInfoTbody").html(html);
+		    	}else{
+		    		
+			      $(data).each(function(index) {
+			        html += "<tr>";
+			        html += "<td class ='rowCount'><input type='text' class ='rowCount' value='"+(index+1)+"'></td>";
+			        html += "<td><input type='checkbox' name='tableCheckBox' id='tableCheckBox"+index+"'></td>";
+			        html += "<td class ='bg-gray'><input type='text' class ='bg-gray' name='companyCode' id='companyCode"+index+"' value='"+this.companyCode+"' disabled='disabled'></td>";
+			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='companyName' id='companyName"+index+"' value='"+this.companyName+"' required='required'></td>";
+			        html += "<td class ='bg-yellow'><select id='businessType"+index+"' class ='bg-yellow' name='businessType' required='required'>";
+			        html += "<option value='' " + (this.businessType == null ? "selected='selected'" : "") + ">--";
+			        html += "<option value='개인' " + (this.businessType == '개인' ? "selected='selected'" : "") + ">개인사업자";
+			        html += "<option value='법인' " + (this.businessType == '법인' ? "selected='selected'" : "") + ">법인사업자";
+			        html += "</select></td>";
+			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='address' id='address"+index+"' value='"+this.address+"' required='required'</td>";
+			        html += "<td class ='bg-yellow'><select id='orderType"+index+"' class ='bg-yellow' name='orderType' required='required'>";
+			        html += "<option value='' " + (this.orderType == null ? "selected='selected'" : "") + ">--";
+			        html += "<option value='수주' " + (this.orderType == '수주' ? "selected='selected'" : "") + ">수주";
+			        html += "<option value='발주' " + (this.orderType == '발주' ? "selected='selected'" : "") + ">발주";
+			        html += "</select></td>"; 
+			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='businessCode' id='businessCode"+index+"' value='"+this.businessCode+"' required='required'</td>";
+			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='tel' id='tel"+index+"' value='"+this.tel+"' required='required'</td>";
+			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='ownerName' id='ownerName"+index+"' value='"+this.ownerName+"' required='required'</td>";
+			        html += "<td class ='bg-gray'><input type='text' class ='bg-gray' name='useYn' id='useYn"+index+"' value='"+this.useYn+"' required='required'</td>";
+			        html += "</tr>";
+			      });
+		    	}
 		      $("#customerInfoTbody").html(html);
 		    }
 		  });

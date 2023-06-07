@@ -12,41 +12,102 @@
 	height: 615px;
 	margin: 0px auto;
 	overflow: auto;
+	border: 1px solid #ddd;
+	margin-top: 8px;
 }
 
 .btn-group1 {
-	width: 280px;
+	width: 320px;
 	margin: 3px;
 }
 
 .input-info {
 	width: 1305px;
-	height: 130px;
+	height: 210px;
 	margin: 0px auto;
+	padding: 16px;
+    border-radius: 10px;
+    margin-top: 8px;
+    background-color: #F8F8F8;
+    margin-right: 175px;
 	
 }
 
-#content-table table {
-	width: 100%;
-	border-collapse: collapse;
-	border: 1px solid #ddd;
+.input-info label {
+	display: inline-block;
+    width: 100px;
+    border-radius: 5px;
+    border: 1px solid #E8EBF0;
+    padding: 0;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 30px;
+    background-color: #9BABB8;
+    margin-bottom: 15px;
 }
 
-#content-table th, td {
-	padding: 8px;
-	text-align: center;
+.input-info input {
+	display: inline-block;
+    width: 150px;
+    border-radius: 5px;
+    border: 1px solid #E8EBF0;
+    padding: 0px;
+    font-size: 14px;
+    text-align: center;
+    line-height: 30px;
+}
+
+.btn-group1 button {
+	display: inline-block;
+	border: 1px solid #D6DAE2;
+    outline: none;
+    border-radius: 5px;
+    padding: 0 12px;
+    height: 30px;
+	
+}
+
+.input-info button:hover {
+	background-color: #D6D2C4;
+}
+
+.side-bar {
 	border: 1px solid #ddd;
-	white-space: nowrap;
+	padding: 20px;
+	float: left;
+	height: 100vh;
 }
 
 #content-table th {
-	background-color: #ddd;
+	background-color: #9BABB8;
 	font-weight: bold;
 }
+
+#content-table th, #content-table td {
+	white-space: nowrap;
+	padding: 8px;
+	text-align: center;
+	border: 1px solid #B3B3B3;
+}
+
+
+#content-table tr {
+	height: 24px;
+}
+
+#content-table {
+	width: 1305px;
+	border-collapse: collapse;
+	white-space: nowrap;
+	font-size: 15px;
+}
+
 
 #content-table tr:hover {
   	background-color: #f5f5f5;
 }
+
 
 #content-table input[type="checkbox"] {
  	margin: 0;
@@ -58,42 +119,63 @@
 <title>품목 단가 관리</title>
 </head>
 <body>
-
+	
 	<div class="side-bar">
-		<ul class="side-bar">
-		    <li class="category">
-		        <a href="#" class="category-link">
-		            기준 정보
-		        </a>
-		        <ul class="categories">
-		            <li><a href="#">사용자 관리</a></li>
-		            <li><a href="/standard/imi">품목 관리 및 등록</a></li>
-		            <li><a href="/standard/ipi">품목 단가 관리</a></li>
-		            <li><a href="#">창고 관리 정보</a></li>
-		            <li><a href="/standard/pmi">생산 관리 BOM 등록</a></li>
-		        </ul>
-		    </li>
-		</ul>
-	</div>
+      <!-- product/ds -->
+      <a href="/product/status/defect">불량현황</a><p>
+      <!-- product/ps -->
+      <a href="/product/status/production">생산현황 검색</a><p>
+      <!-- product/pr -->
+      <!-- product -->
+      <a href="/product/is/item">품목별 재고 현황</a><p>
+      <a href="/product/is/bom">BOM별 재고 현황</a><p>
+      <a href="/product/is/wh">창고별 재고 현황</a><p>
+      <a href="/product/is/wh/">창고별 재고 현황 상세</a><p>
+      <a href="/item/search">제품 검색</a><p>
+      <a href="/product/sim">입고</a><p>
+      <a href="/wo">제품 생산 지시</a><p>
+      
+      <!-- sales -->
+      <a href="/sales/analysis-of-materials">자제소요분석</a><p>
+      <a href="/sales/receive-order">수주서 관리</a><p>
+      <a href="/sales/order">구매</a><p>
+      <a href="/sales/stock-in">구매입고등록</a><p>
+      
+      <!-- standard -->
+      <a href="/standard/login">로그인</a><p>
+      <a href="/standard/user-admin">사용자 계정관리</a><p>
+      <a href="/standard/imi">품목 관리</a><p>
+      <a href="/standard/ipi">품목 단가 관리</a><p>
+      <a href="/standard/pmi">BOM 등록</a><p>
+      
+      <!-- 로그아웃 -->
+      <c:if test="${sessionScope.member != null}">
+         <form action="/standard/logout" method="POST">
+            <button type="submit">로그아웃</button>
+         </form>
+      </c:if>
+   </div>
 	
 	
 	<div class="input-info">
+		<span style="font-weight: bold;">제품 단가 입력</span> <br>
+		<br>
+		<span style="font-size: 11px; color: gray;">(*)입력 필수 </span><br>
+		<label>거래처 코드</label><input id="company-code" readonly style="background-color: #D9D9D9">
+		<label>제품 코드</label><input id="item-code" readonly style="background-color: #D9D9D9">
+		<label>품명</label><input id="item-name" readonly style="background-color: #D9D9D9">
+		<label>*매입 단가</label><input id="purchase-price" type="number"placeholder="숫자만 입력" style="background-color: #E6F2FF">
+		<label>*매출 단가</label><input id="sales-price" type="number" placeholder="숫자만 입력" style="background-color: #E6F2FF"><br>
+		<label>시작일</label><input id="start-date" type="date" style="background-color: #FFFFCC">
+		<label>종료일</label><input id="end-date" type="date" style="background-color: #FFFFCC">
+		<label>비고</label><input id="memo">
+		<label>*등록/수정자</label><input id="reg-user" placeholder="필수 입력 정보" style="background-color: #E6F2FF">
+		<label>등록/수정일자</label><input id="reg-date" readonly style="background-color: #D9D9D9"><br>
+		<br>
 		<div class="btn-group1">
 			<button id="item-update">단가 등록/수정</button>
 			<button id="reset-btn">초기화</button>
 		</div>
-		
-		제품 단가 입력<br>
-		<span>거래처 코드</span><input id="company-code" readonly>
-		<span>제품 코드</span><input id="item-code" readonly>
-		<span>품명</span><input id="item-name" readonly>
-		<span>*매입 단가</span><input id="purchase-price">
-		<span>*매출 단가</span><input id="sales-price"><br>
-		<span>시작일</span><input id="start-date" type="date">
-		<span>종료일</span><input id="end-date" type="date">
-		<span>비고</span><input id="memo">
-		<span>*등록/수정자</span><input id="reg-user" placeholder="필수 입력 정보">
-		<span>등록/수정일자</span><input id="reg-date" readonly>
 	</div>
 	
 	
@@ -125,6 +207,17 @@
 </body>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script>
+
+	// 숫자 형식 변환
+	function formatNumber(number) {
+		return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+	
+	// 원래 숫자 형식으로 되돌리기
+	function defaultNumber(numberString) {
+		  return numberString.replace(/,/g, '');
+	}
+
 	
 	$(document).ready(function () {
 		defaultItemList();
@@ -179,9 +272,9 @@
 				}),
 				success : function(updateResult){
 					if (updateResult === 1) {
-						alert("단가 등록 완료.");
-					} else {
-						alert("단가 등록 실패.");
+						alert("단가 등록이 완료되었습니다.");
+					} else { 
+						alert("단가 등록에 실패하였습니다. 잠시 후 다시 시도해주세요.");
 					}
 					location.reload();
 				},
@@ -207,21 +300,21 @@
 			      let row = '<tr>' +
 			      '<td>' + (i + 1) + '</td>' +
 		          '<td><input type="radio" name="item-radio"></td>' +
-		          '<td>' + item.whCode	 + '</td>' +
-		          '<td>' + item.companyCode	 + '</td>' +
-		          '<td>' + item.itemType + '</td>' +
-		          '<td>' + item.itemCode + '</td>' +
-		          '<td>' + item.itemName + '</td>' +
-		          '<td>' + item.purchasePrice + '</td>' +
-		          '<td>' + item.salesPrice + '</td>' +
-		          '<td>' + item.startDate.substring(0, 10) + '</td>' +
-		          '<td>' + item.endDate.substring(0, 10) + '</td>' +
-		          '<td>' + item.stockUnit + '</td>' +
+		          '<td style="background-color: #D9D9D9">' + item.whCode	 + '</td>' +
+		          '<td style="background-color: #D9D9D9">' + item.companyCode	 + '</td>' +
+		          '<td style="background-color: #D9D9D9">' + item.itemType + '</td>' +
+		          '<td style="background-color: #D9D9D9">' + item.itemCode + '</td>' +
+		          '<td style="background-color: #D9D9D9">' + item.itemName + '</td>' +
+		          '<td style="background-color: #E6F2FF">' + formatNumber(item.purchasePrice) + '</td>' +
+		          '<td style="background-color: #E6F2FF">' + formatNumber(item.salesPrice) + '</td>' +
+		          '<td style="background-color: #FFFFCC">' + item.startDate.substring(0, 10) + '</td>' +
+		          '<td style="background-color: #FFFFCC">' + item.endDate.substring(0, 10) + '</td>' +
+		          '<td style="background-color: #D9D9D9">' + item.stockUnit + '</td>' +
 		          '<td>' + item.memo + '</td>' +
-		          '<td>' + item.regUser + '</td>' +
-		          '<td>' + item.regDate.substring(0, 10) + '</td>' +
-		          '<td>' + item.updateUser + '</td>' +
-		          '<td>' + item.updateDate.substring(0, 10) + '</td>' +
+		          '<td style="background-color: #E6F2FF">' + item.regUser + '</td>' +
+		          '<td style="background-color: #D9D9D9">' + item.regDate.substring(0, 10) + '</td>' +
+		          '<td style="background-color: #E6F2FF">' + item.updateUser + '</td>' +
+		          '<td style="background-color: #D9D9D9">' + item.updateDate.substring(0, 10) + '</td>' +
 		          '</tr>';
 		      	  table.append(row);
 		      }
@@ -249,8 +342,8 @@
 		$('#company-code').val(companyCode);
 		$('#item-code').val(itemCode);
 		$('#item-name').val(itemName);
-		$('#purchase-price').val(purchasePrice);
-		$('#sales-price').val(salesPrice);
+		$('#purchase-price').val(defaultNumber(purchasePrice));
+		$('#sales-price').val(defaultNumber(salesPrice));
 		$('#start-date').val(startDate);
 		$('#end-date').val(endDate);
 		$('#stock-unit').val(stockUnit);

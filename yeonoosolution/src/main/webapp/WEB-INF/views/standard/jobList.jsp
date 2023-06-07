@@ -83,6 +83,10 @@
 	  	font-weight: bold;
 	}
 	
+	#jobListTable{
+		min-width: 740px;
+	}
+	
 	#jobListTable td, th,
 	#memberSearchTable td, th{
 		margin: auto;
@@ -142,7 +146,11 @@
 	{
 		background-color: #6799FF;
 	}
-
+	
+	#searchName{
+		font-size: 18px;
+		font-weight: bold;
+	}
 </style>
 </head>
 <body>
@@ -231,7 +239,7 @@
 	 			<div class = "form-data">직급명</div>
 	 			
 	 			<div class = "form-content">
-	 				<input type="text" name="jobName" id ="filterJobName">
+	 				<input type="text" name="jobName" id ="filterJobName" value="">
 	 			</div>
 	 			
 	 		</div>
@@ -437,13 +445,17 @@
  	function searchJobList(){
  		/* alert("검색시작"); */
  		
- 		var jobName = $("#filterjobName").val();
- 		alert("jobName ->"+jobName);
+ 		var jobName = $("#filterJobName").val().trim();
+ 		/* alert("jobName ->"+jobName); */
+ 		
+ 		if (jobName == null || jobName == "") {
+ 			jobName = "";
+		  }
  		
  		var html = "";
  		 
  		$.ajax({
- 			url : "/standard/job/search/"+jobName,
+ 			url : "/standard/job/search/",
  			dataType : "json",
  			type : "GET",
  			data : {
@@ -451,19 +463,26 @@
  			},
  			success : function(data){
  				var count = 1;
- 				$(data).each(function(index){
- 					html += "<tr onclick='showMemberOfJob("+index+")'>";
- 					html += "<td><input type='text' name='rn' value ='"+ count++ +"' disabled='disabled'></td>";
- 			        html += "<td><input type='checkbox' name='tableCheckBox' id='tableCheckBox"+index+"'></td>";
- 			        html += "<td class ='bg-gray'><input type='text class ='bg-gray'' name='jobCode' id='jobCode"+index+"' value='"+this.jobCode+"' disabled='disabled'></td>";
- 			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='jobName' id='jobName"+index+"' value='"+this.jobName+"' required='required'></td>";
- 			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='regDate' id='regDate"+index+"' value='"+this.regDate+"' required='required'></td>";
- 			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='regUser' id='regUser"+index+"' value='"+this.regUser+"' required='required'></td>";
- 			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='updateDate' id='updateDate"+index+"' value='"+this.updateDate+"' required='required'></td>";
- 			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='updateUser' id='updateUser"+index+"' value='"+this.updateUser+"' required='required'></td>";
- 			        html += "<td class ='bg-gray'><input type='text class ='bg-gray'' name='jobYn' id='jobYn"+index+"' value='"+this.jobYn+"' disabled='disabled'></td>";
- 					html += "</tr>";
- 				})
+ 				/* 없는 이름으로 검색한 경우에만 데이터가 없다는 것을 표시하기 위함.  */
+ 				if(jobName != "" && data == null || data.length == 0){
+ 					html += "<tr><td colspan = '9'><span id='searchName'>'"+jobName+"'</span> 검색결과가 없습니다.</td></tr>";
+	 				$(".jobTableTbody").html(html);
+ 				}else{
+ 					
+	 				$(data).each(function(index){
+	 					html += "<tr onclick='showMemberOfJob("+index+")'>";
+	 					html += "<td><input type='text' class='rowCount' name='rn' value ='"+ count++ +"' disabled='disabled'></td>";
+	 			        html += "<td><input type='checkbox' name='tableCheckBox' id='tableCheckBox"+index+"'></td>";
+	 			        html += "<td class ='bg-gray'><input type='text class ='bg-gray'' name='jobCode' id='jobCode"+index+"' value='"+this.jobCode+"' disabled='disabled'></td>";
+	 			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='jobName' id='jobName"+index+"' value='"+this.jobName+"' required='required'></td>";
+	 			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='regDate' id='regDate"+index+"' value='"+(this.regDate || "")+"' required='required'></td>";
+	 			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='regUser' id='regUser"+index+"' value='"+(this.regUser || "")+"' required='required'></td>";
+	 			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='updateDate' id='updateDate"+index+"' value='"+(this.updateDate || "")+"' required='required'></td>";
+	 			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='updateUser' id='updateUser"+index+"' value='"+(this.updateUser || "")+"' required='required'></td>";
+	 			        html += "<td class ='bg-gray'><input type='text class ='bg-gray'' name='jobYn' id='jobYn"+index+"' value='"+this.jobYn+"' disabled='disabled'></td>";
+	 					html += "</tr>";
+	 				})
+ 				}
  				$("#jobTableTbody").html(html);
  			}
  		}); 
@@ -478,8 +497,13 @@
  		
  		if(result){
  			
-	 		var jobName = $("#modalJobName").val();
+	 		var jobName = $("#modalJobName").val().trim();
 	 		/* console.log("등록할 직급이름-> "+jobName); */
+	 		
+	 		if(jobName == "" || jobName == null){
+	 			alert("직급이름은 필수 입력값 입니다.");
+	 			return false;
+	 		}
 	 		
 	 		$.ajax({
 	 			url : "/standard/job/"+jobName,

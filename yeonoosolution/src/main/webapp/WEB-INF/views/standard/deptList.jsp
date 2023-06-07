@@ -81,7 +81,9 @@
 	  	border-radius: 5px;
 	  	font-weight: bold;
 	}
-	
+	#deptListTable{
+		min-width: 740px;
+	}
 	#deptListTable td, th,
 	#memberSearchTable td, th{
 		margin: auto;
@@ -143,7 +145,10 @@
 	.bg-gray{
 		background-color: #EAEAEA
 	}
-
+	#searchName{
+		font-size: 18px;
+		font-weight: bold;
+	}
 </style>
 </head>
 <body>
@@ -368,7 +373,7 @@
  		
  		// 체크박스가 2개 체크되어있으면 length가 2
  		var checkBoxes = document.querySelectorAll('input[name="tableCheckBox"]:checked');
- 		console.log("몇개선택함?-> "+ checkBoxes.length);
+ 		/* console.log("몇개선택함?-> "+ checkBoxes.length); */
  		
  		if(checkBoxes.length == 0){
  			alert("품목을 선택해 주세요");
@@ -436,8 +441,12 @@
  	function searchDeptList(){
  		/* alert("검색시작"); */
  		
- 		var deptName = $("#filterDeptName").val();
+ 		var deptName = $("#filterDeptName").val().trim();
  		/* console.log("deptName ->"+deptName); */
+ 		
+ 		if (deptName == null || deptName == "") {
+ 			deptName = "";
+		  }
  		
  		var html = "";
  		
@@ -450,20 +459,27 @@
  			},
  			success : function(data){
  				var count = 1;
- 				$(data).each(function(index){
- 					html += "<tr onclick='showMemberOfDept("+index+")'>";
- 				
- 					html += "<td><input type='text' class='rowCount' name='rn' value ='"+ count++ +"' disabled='disabled'></td>";
- 			        html += "<td><input type='checkbox' name='tableCheckBox' id='tableCheckBox"+index+"'></td>";
- 			        html += "<td class ='bg-gray'><input type='text' class ='bg-gray' name='deptCode' id='deptCode"+index+"' value='"+this.deptCode+"' disabled='disabled'></td>";
- 			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='deptName' id='deptName"+index+"' value='"+this.deptName+"' required='required'></td>";
- 			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='regDate' id='regDate"+index+"' value='"+this.regDate+"' required='required'></td>";
- 			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='regUser' id='regUser"+index+"' value='"+this.regUser+"' required='required'></td>";
- 			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='updateDate' id='updateDate"+index+"' value='"+this.updateDate+"' required='required'></td>";
- 			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='updateUser' id='updateUser"+index+"' value='"+this.updateUser+"' required='required'></td>";
- 			        html += "<td class ='bg-gray'><input type='text' class ='bg-gray' name='deptYn' id='deptYn"+index+"' value='"+this.deptYn+"' disabled='disabled'></td>";
- 					html += "</tr>";
- 				})
+ 				/* 없는 이름으로 검색한 경우에만 데이터가 없다는 것을 표시하기 위함.  */
+ 				if(deptName != "" && data == null || data.length == 0){
+ 					html += "<tr><td colspan = '9'><span id='searchName'>'"+deptName+"'</span> 검색결과가 없습니다.</td></tr>";
+	 				$(".deptTableTbody").html(html);
+ 				}else{
+ 					
+	 				$(data).each(function(index){
+	 					html += "<tr onclick='showMemberOfDept("+index+")'>";
+	 				
+	 					html += "<td><input type='text' class='rowCount' name='rn' value ='"+ count++ +"' disabled='disabled'></td>";
+	 			        html += "<td><input type='checkbox' class='tableCheckBox' name='tableCheckBox' id='tableCheckBox"+index+"'></td>";
+	 			        html += "<td class ='bg-gray'><input type='text' class ='bg-gray' name='deptCode' id='deptCode"+index+"' value='"+this.deptCode+"' disabled='disabled'></td>";
+	 			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='deptName' id='deptName"+index+"' value='"+this.deptName+"' required='required'></td>";
+	 			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='regDate' id='regDate"+index+"' value='"+(this.regDate || "")+"' required='required'></td>";
+	 			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='regUser' id='regUser"+index+"' value='"+(this.regUser || "")+"' required='required'></td>";
+	 			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='updateDate' id='updateDate"+index+"' value='"+(this.updateDate || "")+"' required='required'></td>";
+	 			        html += "<td class ='bg-yellow'><input type='text' class ='bg-yellow' name='updateUser' id='updateUser"+index+"' value='"+(this.updateUser || "")+"' required='required'></td>";
+	 			        html += "<td class ='bg-gray'><input type='text' class ='bg-gray' name='deptYn' id='deptYn"+index+"' value='"+this.deptYn+"' disabled='disabled'></td>";
+	 					html += "</tr>";
+	 				})
+ 				}
  				$("#deptTableTbody").html(html);
  			}
  		});
@@ -478,7 +494,11 @@
  		
  		if(result){
  			
-	 		var deptName = $("#modalDeptName").val();
+	 		var deptName = $("#modalDeptName").val().trim();
+	 		if(deptName == "" || deptName == null){
+	 			alert("부서이름은 필수 입력값 입니다.");
+	 			return false;
+	 		}
 	 		/* console.log("등록할 부서이름-> "+deptName); */
 	 		
 	 		$.ajax({

@@ -5,46 +5,194 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>수주서 관리</title>
 <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
 <style type="text/css">
+
+	.receive-order-body-container{
+		display: flex;
+	}
+	
+	.side-bar {
+		/* flex: 1; */
+		flex: 0 0 210px; /* 사이드바의 너비를 고정값으로 설정 */
+		border: 1px solid #ddd;
+		padding: 20px;
+		float: left;
+		height: 100vh;
+		background-color: #D9D9D9;
+	}
+	
+	.receive-order-container {
+		/* flex: 9; */
+		/* flex: 0 0 calc(100% - 240px);  *//* 사이드바의 너비를 고려하여 남은 공간을 할당 */
+		width: 1500px;
+		height: 100vh;
+		border: 1px solid;
+		margin: 30px;
+		padding: 20px;
+	}
+	
+	.receive-order-table-content {
+		border: 1px solid;
+		width: 1400px;
+	}
+	
+	/* 상위 버튼 */
+	.receive-order-btn {
+		margin: 10px;
+		border: 1px solid;
+		width: 1000px;
+	}
+	
+	.receive-order-btn button {
+		background-color: white;
+		border-radius: 5px;
+		font-family: Arial, sans-serif; 
+		font-size: 16px; 
+		outline: none;
+		margin: 5px;
+		border: 1px solid #D6DAE2;
+	}
+	
+	.receive-order-top-content{
+		margin: 10px;
+		border: 1px solid;
+		width: 1000px;
+	}
+	
+	.receive-order-top-content span {
+		background-color: #F0F0F0; 
+		padding: 5px;
+		font-family: Arial, sans-serif; 
+		font-size: 16px; 
+		border: 1px solid #D6DAE2;
+		border-radius: 5px;
+	}
+	
+	.receive-order-top-content button {
+		background-color: white; 
+		padding: 5px;
+		font-family: Arial, sans-serif; 
+		font-size: 16px; 
+		border: 1px solid #D6DAE2;
+		border-radius: 5px;
+	}
+	
+	.receive-order-top-content input {
+		
+	}
+
+	/* 테이블  */
 	#table-content {
 		border:3px solid;
 		padding: 5px;
 		text-align: center;
-		white-space: nowrap;		/* 셀 내용이 넘칠 경우 줄바꿈 방지 */
-		overflow: hidden;			/* 셀 내용이 넘칠 경우 가리기 */
-		text-overflow: ellipsis;	/* 셀 내용이 넘칠 경우 말줄임표(...) 표시 */
+		/*white-space: nowrap;*/		/* 셀 내용이 넘칠 경우 줄바꿈 방지 */
+		/*overflow: hidden; */			/* 셀 내용이 넘칠 경우 가리기 */
+		/*text-overflow: ellipsis;*/	/* 셀 내용이 넘칠 경우 말줄임표(...) 표시 */
+		
+		
+	}
 	
+	#table-content tr:hover td {
+		background-color: #8C8C8C;
+	}
+	
+	#table-content-div, #table-detail-content-div {
+		border: 1px solid;
+		height: 300px;
+		width: 1340px;
+		margin: 30px;
 		overflow: auto;
+	}
+	
+	#table-content {
+		height: 450px;
 		white-space: nowrap;
 		
 	}
+	
+	#table-content-body, #table-detail-content-body {
+		/* max-height: 280px; */
+		
+	}
+	
 	#table-content th {
 		border: 1px solid;			/* 각 셀에 테두리 추가 */
 	}
+	
 	#table-content td {
-		width: 100px; 
+		/* width: 100px; */ 
 		border: 1px solid;			/* 각 셀에 테두리 추가 */
 	}
+	
 	#table-content td:first-child {
-		width: 30px; 
-	}
-	#table-content td:nth-child(2) {
 		width: 50px; 
+	}
+	
+	#table-content td:nth-child(2) {
+		width: 70px; 
+	}
+	
+	#table-detail-content th:first-child {
+		width: 30px;
+		height: 30px;
+	}
+	
+	#table-content th:nth-child(3)
+	#table-content th:nth-child(4),
+	#table-content th:nth-child(5),
+	#table-content th:nth-child(6),
+	#table-content th:nth-child(7),
+	#table-content th:nth-child(8),
+	#table-content th:nth-child(9),
+	#table-content th:nth-child(10),
+	#table-content th:nth-child(11),
+	#table-content th:nth-child(12),
+	#table-content th:nth-child(13),
+	#table-content th:nth-child(14) {
+		width: 100px;
+		height: 30px;
 	}
 	
 	.bg-gray {
 		background-color: #D9D9D9;
 	}
+	
 	.bg-orange {
 		background-color: #FFFFCC;
 	}
+	
 	.bg-blue {
 		background-color: #E6F2FF;
+	}
+	
+	.receive-order-detail-top-content{
+		margin: 10px;
+		border: 1px solid;
+		width: 1000px;
+	}
+	
+	.receive-order-detail-top-content span {
+		background-color: #F0F0F0; 
+		padding: 5px;
+		font-family: Arial, sans-serif; 
+		font-size: 16px; 
+		border: 1px solid #D6DAE2;
+		border-radius: 5px;
+	} 
+	
+	.receive-order-detail-top-content button {
+		background-color: white; 
+		padding: 5px;
+		font-family: Arial, sans-serif; 
+		font-size: 16px; 
+		border: 1px solid #D6DAE2;
+		border-radius: 5px;
 	}
 	
 	#table-detail-content {
@@ -58,349 +206,440 @@
 		overflow: auto;
 		white-space: nowrap;
 	}
+	
 	#table-detail-content th {
 		border: 1px solid;			/* 각 셀에 테두리 추가 */
 	}
+	
 	#table-detail-content td {
-		width: 70px; 
 		border: 1px solid;			/* 각 셀에 테두리 추가 */
 	}
+	
+	#table-detail-content tr:hover td {
+		background-color: #8C8C8C;
+	}
+	
+	#table-detail-content th:first-child {
+		width: 30px;
+		height: 30px;
+	}
+	
+	#table-detail-content th:nth-child(2),
+	#table-detail-content th:nth-child(3),
+	#table-detail-content th:nth-child(4),
+	#table-detail-content th:nth-child(5),
+	#table-detail-content th:nth-child(6),
+	#table-detail-content th:nth-child(7),
+	#table-detail-content th:nth-child(8),
+	#table-detail-content th:nth-child(9) {
+		width: 100px;
+		height: 30px;
+	}
+	
 	#table-detail-content td:first-child {
 		width: 30px; 
 	}
-	#table-detail-content td:nth-child(2),
-	#table-detail-content td:nth-child(3),
-	#table-detail-content td:nth-child(4),
-	#table-detail-content td:nth-child(5),
-	#table-detail-content td:nth-child(8) {
-		background-color: #FFFFCC;
+
+	#order-empid,
+	#modify-item-code,
+	#modify-quantity,
+	#modify-price {
+		width: 80px;
+	}
+	
+	#modify-item-name,
+	#modify-amount,
+	#modify-memo {
+		width: 100px;
 	}
 	
 	
 	
+	
+	
+	#table-insert-receive-form-container {
+		margin: 30px;
+		width: 500px;
+		border: 1px solid;
+	}
+	
+	#table-insert-receive-form-container th {
+		background-color: skyblue; 
+		padding: 5px;
+		font-family: Arial, sans-serif; 
+		font-size: 16px; 
+		border: 1px solid #D6DAE2;
+		border-radius: 5px;
+	} 
+	
+	#table-insert-receive-detail-form-container {
+		border: 1px solid;
+	}
 	
 	
 </style>
 </head>
 <body>
-	
-<div class="receive-order-container">
-
-	<div class="receive-order-btn">
+<div class="receive-order-body-container">
+	<div class="side-bar">
+		<!-- product/ds -->
+		<a href="/product/status/defect">불량현황</a><p>
+		<!-- product/ps -->
+		<a href="/product/status/production">생산현황 검색</a><p>
+		<!-- product/pr -->
+		<!-- product -->
+		<a href="/product/is/item">품목별 재고 현황</a><p>
+		<a href="/product/is/bom">BOM별 재고 현황</a><p>
+		<a href="/product/is/wh">창고별 재고 현황</a><p>
+		<a href="/product/is/wh/">창고별 재고 현황 상세</a><p>
+		<a href="/item/search">제품 검색</a><p>
+		<a href="/product/sim">입고</a><p>
+		<a href="/wo">제품 생산 지시</a><p>
 		
-		<button type="button" id="search-btn" value="조회">조회</button>
-		<button type="button" id="delete-btn" value="삭제">삭제</button>
-		<button type="button" id="order-confirmation-btn" value="수주 확정">수주 확정</button>
-		<button type="button" id="confirmation-cancel-btn" value="확정 취소">확정 취소</button>
-		<button type="button" id="stock-out-reg-btn" value="출하 등록">출하 등록</button>
-		<button type="button" id="work-order-reg-btn" value="작업 지시 등록">작업 지시 등록</button>
-		<button type="button" id="analysis-bom-btn" value="작업 지시 등록" onclick="location.href='/sales/analysis-of-materials'">자재 요소 분석</button>
+		<!-- sales -->
+		<a href="/sales/receive-order">수주서 관리</a><p>
+		<a href="/sales/analysis-of-materials">자제요소분석</a><p>
+		<a href="/sales/order">구매</a><p>
+		<a href="/sales/stock-in">구매입고등록</a><p>
 		
-	</div>
-
-	<div class="receive-order-top-content">
-	
-		<div >
+		<!-- standard -->
+		<a href="/standard/login">로그인</a><p>
+		<a href="/standard/user-admin">사용자 계정관리</a><p>
+		<a href="/standard/imi">품목 관리 및 등록</a><p>
+		<a href="/standard/ipi">품목 단가 관리</a><p>
+		<a href="/standard/pmi">품목 관리 정보</a><p>
 		
-			<!-- <span>수주번호</span>
-			<input type="text" id="order-code" name="orderCode"> -->
-			<span>수주유형</span>
-			<select id="receive-order-type" name="receiveOrderType">
-				<option value="자체생산">자체생산</option>
-				<option value="OEM">OEM</option>
-				<option value="ODM">ODM</option>
-			</select>
-			<span>수주일</span>
-			<input type="date" id="order-date" name="orderDate"> 
-			<span>수주담당자</span>
-			<input type="text" id="order-empid" name="orderEmpid">
-			<button type="button" id="modify-order-empid-btn" value="수정">수정</button>
-			<span>납기일</span>
-			<input type="date" id="due-date" name="dueDate">
+		<!-- 로그아웃 -->
+		<c:if test="${sessionScope.member != null}">
+			<form action="/standard/logout" method="POST">
+				<button type="submit">로그아웃</button>
+			</form>
+		</c:if>
+	      
+	</div>	<!-- /class="side-bar" -->
+		
+	<div class="receive-order-container">
+			
+		
+		<div class="receive-order-btn">
+			
+			<button type="button" id="search-btn" value="조회">조회</button>
+			<button type="button" id="delete-btn" value="삭제">삭제</button>
+			<button type="button" id="order-confirmation-btn" value="수주 확정">수주 확정</button>
+			<button type="button" id="confirmation-cancel-btn" value="확정 취소">확정 취소</button>
+			<button type="button" id="stock-out-reg-btn" value="출하 등록">출하 등록</button>
+			<button type="button" id="work-order-reg-btn" value="작업 지시 등록">작업 지시 등록</button>
+			<button type="button" id="analysis-bom-btn" value="작업 지시 등록" onclick="location.href='/sales/analysis-of-materials'">자재 요소 분석</button>
+			<button id="insert-receive-form-button">새 수주서 작성</button>
+			<button id="insert-receive-detail-form-button">세부항목 작성</button>
 			
 		</div>
 	
-	</div>	<!-- /class="receive-order-top-content" -->
-	
-	<div class="receive-order-table-content">
-	
-		<table id="table-content">
-			<caption>수주서</caption>
-			<thead>
-				<tr>
-					<td></td>
-					<th>상태</th>
-					<th>수주번호</th>
-					<th>거래처코드</th>
-					<th>수주유형</th>
-					<th>거래처명</th>
-					<th>수주일</th>
-					<th>수주담당자</th>
-					<th>인도조건</th>
-					<th>납기일</th>
-					<th>등록일자</th>
-					<th>등록자</th>
-					<th>수정일자</th>
-					<th>수정자</th>
-				</tr>
-			</thead>
-			
-			<tbody id="table-content-body">
-			</tbody>
-			
-		</table>
-		
-		<form method="post" action="/sales/om/insert-receive-order" name="frm">
-			<table id="table-insert-receive">
-				<tr>
-					<th>거래처코드</th>
-					<td>
-						<input type="text" id="customer-code" name="customerCode" required="required" readonly="readonly">
-						<button id="customer-code-modal-btn" data-bs-toggle="modal" data-bs-target="#customer-code-modal" value="조회">조회</button>
-					</td>
-				</tr>
-				<tr>
-					<th>수주유형</th>
-					<td>
-						<select name="receiveOrderType" required="required">
-							<option value="자체생산">자체생산</option>
-							<option value="ODM">ODM</option>
-							<option value="OEM">OEM</option>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<th>거래처명</th>
-					<td>
-						<input type="text" id="company-name-modal" name="companyName" required="required" readonly="readonly">
-					</td>
-				</tr>
-				<tr>
-					<th>수주일</th>
-					<td><input type="date" name="orderDate" required="required"></td>
-				</tr>
-				<tr>
-					<th>수주담당자</th>
-					<td><input type="text" name="orderEmpid" ></td>
-				</tr>	
-				<tr>
-					<th>인도조건</th>
-					<td>
-					<select name="deliveryPlan">
-						<option value="">없음</option>
-						<option value="DDM">DDM</option>
-					</select>
-					</td>
-				</tr>
-				<tr>
-					<th>납기일</th>
-					<td><input type="date" name="dueDate" required="required" ></td>
-				</tr>
-				<tr>
-					<th>등록자</th>
-					<td><input type="text" name=regUser ></td>
-				</tr>
-				<tr>
-					<th>수정자</th><td><input type="text" name="updateUser" ></td>
-				</tr>
-										
-				<tr>
-					<td colspan="2">
-					<input type="submit" value="확인"></td>
-				</tr>
-			</table>
-		</form>	<!-- /action="/sales/om/insert-receive-order" -->
-		
-		<!-- 회사코드 모달 창 -->
-		<div class="modal fade" id="customer-code-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">거래처 선택</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<div id="customer-code-list"></div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
-				</div>
-				</div>
+		<div class="receive-order-top-content">
+			<div >
+				<span>수주유형</span>
+				<select id="receive-order-type" name="receiveOrderType">
+					<option value="자체생산">자체생산</option>
+					<option value="OEM">OEM</option>
+					<option value="ODM">ODM</option>
+				</select>
+				<span>수주일</span>
+				<input type="date" id="order-date" name="orderDate"> 
+				<span>수주담당자</span>
+				<input type="text" id="order-empid" name="orderEmpid" width="50px;">
+				<button type="button" id="modify-order-empid-btn" value="수정">수정</button>
+				<span>납기일</span>
+				<input type="date" id="due-date" name="dueDate">
 			</div>
-		</div>
+		</div>	<!-- /class="receive-order-top-content" -->
+		
+		<div class="receive-order-table-content">
+			
+			<div id="table-insert-receive-form-container" style="display: none;">
+				<form id="table-insert-receive-form" method="post" action="/sales/om/insert-receive-order" name="frm">
+					<h5>수주서 작성하기</h5>
+					<table id="table-insert-receive">
+						<tr>
+							<th>거래처코드</th>
+							<td>
+								<input type="text" id="customer-code" name="customerCode" required="required" readonly>
+								<button id="customer-code-modal-btn" data-bs-toggle="modal" data-bs-target="#customer-code-modal" value="조회">조회</button>
+							</td>
+						</tr>
+						<tr>
+							<th>수주유형</th>
+							<td>
+								<select name="receiveOrderType" required="required">
+									<option value="자체생산">자체생산</option>
+									<option value="ODM">ODM</option>
+									<option value="OEM">OEM</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>거래처명</th>
+							<td>
+								<input type="text" id="company-name-modal" name="companyName" required="required" readonly="readonly">
+							</td>
+						</tr>
+						<tr>
+							<th>수주일</th>
+							<td><input type="date" name="orderDate" required="required"></td>
+						</tr>
+						<tr>
+							<th>수주담당자</th>
+							<td><input type="text" name="orderEmpid" ></td>
+						</tr>	
+						<tr>
+							<th>인도조건</th>
+							<td>
+							<select name="deliveryPlan">
+								<option value="">없음</option>
+								<option value="DDM">DDM</option>
+							</select>
+							</td>
+						</tr>
+						<tr>
+							<th>납기일</th>
+							<td><input type="date" name="dueDate" required="required" ></td>
+						</tr>
+						<tr>
+							<th>수정자</th><td><input type="text" name="updateUser" ></td>
+						</tr>
+												
+						<tr>
+							<td colspan="2">
+							<input type="submit" value="확인"></td>
+						</tr>
+					</table>
+				</form>	<!-- /action="/sales/om/insert-receive-order" -->
+			</div>	<!-- /id="table-insert-receive-form-container" -->
+			
+			<div id="table-content-div">
+				<h4>수주서</h4>
+				<table id="table-content">
 					
-	
-	</div>	<!-- /class="receive-order-table-content" -->
-	
-	
-	<div class="receive-order-detail-top-content">
-	
-		<div >
+					<thead>
+						<tr>
+							<th></th>
+							<th>상태</th>
+							<th>수주번호</th>
+							<th>거래처코드</th>
+							<th>수주유형</th>
+							<th>거래처명</th>
+							<th>수주일</th>
+							<th>수주담당자</th>
+							<th>인도조건</th>
+							<th>납기일</th>
+							<th>등록일자</th>
+							<th>등록자</th>
+							<th>수정일자</th>
+							<th>수정자</th>
+						</tr>
+					</thead>
 		
-			<span>제품코드</span>
-			<!-- <td> -->
-				<input type="text" id="modify-item-code" name="itemCode" required="required" readonly="readonly">
-			<!-- </td> -->
-			<span>품명</span>
-			<!-- <td> -->
-				<input type="text" id="modify-item-name" name="itemName" required="required" readonly="readonly">
-				<button type="button" id="modify-item-code-modal-btn" data-bs-toggle="modal" data-bs-target="#modify-item-code-modal" value="제품조회">제품조회</button>
-				<button type="button" id="modify-item-btn" value="제품수정">제품수정</button>
-			<!-- </td> -->
-			<span>수량</span>
-			<input type="number" id="modify-quantity" name="modifyQuantity" value="0">
-			<span>단가</span>
-			<input type="number" id="modify-price" name="modifyPrice" value="0"> 
-			<span>금액</span>
-			<input type="number" id="modify-amount" name="modifyAmount" value="0" readonly="readonly"> 
-			<button type="button" id="modify-amount-btn" value="금액수정">금액수정</button>
-			<span>재고단위</span>
-			<select id="item-stock-unit" name="itemStockUnit">
-				<option value="EA">EA</option>
-				<option value="KG">KG</option>
-			</select>
-			<span>비고</span>
-			<input type="text" id="modify-memo" name="modifyMemo">
-			<button type="button" id="modify-memo-btn" value="수정">수정</button>
-			<span>마감여부</span>
-			<select id="end-yn" name="endYn">
-				<option value="N">N</option>
-				<option value="Y">Y</option>
-			</select>
-		</div>
-		
-		<!-- 제품코드 수정 모달 창 -->
-		<div class="modal fade" id="modify-item-code-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">제품 선택</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<div id="modify-item-code-list"></div>
-				</div>
+					<tbody id="table-content-body">
+					</tbody>
+					
+				</table>
+			</div>	<!-- /id="table-content-div" -->
+			
+			
+			
+			<!-- 회사코드 모달 창 -->
+			<div class="modal fade" id="customer-code-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">거래처 선택</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div id="customer-code-list"></div>
+					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 						<button type="button" class="btn btn-primary">Save changes</button>
 					</div>
-				</div>
-			</div>
-		</div>
-		
-	</div>	<!-- /class="receive-order-detail-top-content" -->
-	
-	<div class="receive-order-detail-content">
-	
-		<table id="table-detail-content">
-			<caption>수주서 세부항목</caption>
-			<thead>
-				<tr>
-					<td></td>
-					<th>제품코드</th>
-					<th>품명</th>
-					<th>수량</th>
-					<th>단가</th>
-					<th>금액</th>
-					<th>재고단위</th>
-					<th>비고</th>
-					<th>마감여부</th>
-				</tr>
-			</thead>
-			
-			<tbody id="table-detaili-content-body">
-			</tbody>
-			
-		</table>
-	
-		<form method="post" action="/sales/om/insert-receive-order-detail" name="frm-detail">
-			
-			<table id="table-insert-receive-detail">
-			
-				<tr>
-					<th>제품코드</th>
-					<td>
-						<input type="text" id="item-code" name="itemCode" required="required" readonly="readonly">
-						<button type="button" id="item-code-modal-btn" data-bs-toggle="modal" data-bs-target="#item-code-modal" value="제품조회">제품조회</button>
-					</td>
-				</tr>
-				<tr>
-					<th>품명</th>
-					<td>
-						<input type="text" id="item-name-modal" name="itemName" required="required" readonly="readonly">
-					</td>
-				</tr>
-				<tr>
-					<th>수량</th>
-					<td><input type="number" id="quantity" name="quantity" value="0">
-					</td>
-				</tr>
-				<tr>
-					<th>단가</th>
-					<td><input type="number" id="price" name="price" value="0"></td>
-				</tr>
-				<tr>
-					<th>금액</th>
-					<td><input type="number" id="amount" name="amount" value="0" readonly="readonly" ></td>
-				</tr>	
-				<tr>
-					<th>재고단위</th>
-					<td>
-					<select name="itemStockUnit">
-						<option value="EA">EA</option>
-						<option value="KG">KG</option>
-					</select>
-					</td>
-				</tr>
-				<tr>
-					<th>비고</th>
-					<td><input type="text" name="memo" ></td>
-				</tr>
-				<tr>
-					<th>마감여부</th>
-					<td>
-					<select name="endYn">
-						<option value="N">N</option>
-						<option value="Y">Y</option>
-					</select>
-					</td>
-				</tr>
-										
-				<tr>
-					<td colspan="2">
-					<input type="submit" value="확인"></td>
-				</tr>
-			</table>
- 			<!-- <input type="hidden" name="orderCodeHidden" id="order-code-hidden" value=""> --> 
-			<input type="hidden" name="orderDetailCode" id="order-detail-code" value=""> 
-			<input type="hidden" name="sorder" id="sorder" value=""> 
-			
-		</form>	<!-- /action="/sales/om/insert-receive-order-detail" -->
-		
-		<!-- 제품코드 모달 창 -->
-		<div class="modal fade" id="item-code-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">제품 선택</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<div id="item-code-list"></div>
-				</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary">Save changes</button>
 					</div>
 				</div>
 			</div>
-		</div>
 		
-	</div>	<!-- /class="receive-order-detail-content" -->
-
-</div>	<!-- /class="receive-order-container" -->
-
+		</div>	<!-- /class="receive-order-table-content" -->
+		
+		
+		<div class="receive-order-detail-top-content">
+		
+			<div >
+			
+				<span>제품코드</span>
+				<!-- <td> -->
+					<input type="text" id="modify-item-code" name="itemCode" required="required" readonly="readonly">
+				<!-- </td> -->
+				<span>품명</span>
+				<!-- <td> -->
+					<input type="text" id="modify-item-name" name="itemName" required="required" readonly="readonly">
+					<button type="button" id="modify-item-code-modal-btn" data-bs-toggle="modal" data-bs-target="#modify-item-code-modal" value="제품조회">제품조회</button>
+					<button type="button" id="modify-item-btn" value="제품수정">제품수정</button>
+				<!-- </td> -->
+				<span>수량</span>
+				<input type="number" id="modify-quantity" name="modifyQuantity" value="0">
+				<span>단가</span>
+				<input type="number" id="modify-price" name="modifyPrice" value="0"> 
+				<span>금액</span>
+				<input type="number" id="modify-amount" name="modifyAmount" value="0" readonly="readonly"> 
+				<button type="button" id="modify-amount-btn" value="금액수정">금액수정</button><br>
+				<span>재고단위</span>
+				<select id="item-stock-unit" name="itemStockUnit">
+					<option value="EA">EA</option>
+					<option value="KG">KG</option>
+				</select>
+				<span>비고</span>
+				<input type="text" id="modify-memo" name="modifyMemo">
+				<button type="button" id="modify-memo-btn" value="수정">수정</button>
+				<span>마감여부</span>
+				<select id="end-yn" name="endYn">
+					<option value="N">N</option>
+					<option value="Y">Y</option>
+				</select>
+				
+			</div>
+			
+			<!-- 제품코드 수정 모달 창 -->
+			<div class="modal fade" id="modify-item-code-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">제품 선택</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div id="modify-item-code-list"></div>
+					</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary">Save changes</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>	<!-- /class="receive-order-detail-top-content" -->
+		
+		<div class="receive-order-detail-content">
+		
+			<div id="table-insert-receive-detail-form-container" style="display: none;">
+				<form id="table-insert-receive-detail-form" method="post" action="/sales/om/insert-receive-order-detail" name="frm-detail">
+					
+					<table id="table-insert-receive-detail">
+					
+						<tr>
+							<th>제품코드</th>
+							<td>
+								<input type="text" id="item-code" name="itemCode" required="required" readonly="readonly">
+								<button type="button" id="item-code-modal-btn" data-bs-toggle="modal" data-bs-target="#item-code-modal" value="제품조회">제품조회</button>
+							</td>
+						</tr>
+						<tr>
+							<th>품명</th>
+							<td>
+								<input type="text" id="item-name-modal" name="itemName" required="required" readonly="readonly">
+							</td>
+						</tr>
+						<tr>
+							<th>수량</th>
+							<td><input type="number" id="quantity" name="quantity" value="0">
+							</td>
+						</tr>
+						<tr>
+							<th>단가</th>
+							<td><input type="number" id="price" name="price" value="0"></td>
+						</tr>
+						<tr>
+							<th>금액</th>
+							<td><input type="number" id="amount" name="amount" value="0" readonly="readonly" ></td>
+						</tr>	
+						<tr>
+							<th>재고단위</th>
+							<td>
+							<select name="itemStockUnit">
+								<option value="EA">EA</option>
+								<option value="KG">KG</option>
+							</select>
+							</td>
+						</tr>
+						<tr>
+							<th>비고</th>
+							<td><input type="text" name="memo" ></td>
+						</tr>
+						<tr>
+							<th>마감여부</th>
+							<td>
+							<select name="endYn">
+								<option value="N">N</option>
+								<option value="Y">Y</option>
+							</select>
+							</td>
+						</tr>
+												
+						<tr>
+							<td colspan="2">
+							<input type="submit" value="확인"></td>
+						</tr>
+					</table>
+		 			<!-- <input type="hidden" name="orderCodeHidden" id="order-code-hidden" value=""> --> 
+					<input type="hidden" name="orderDetailCode" id="order-detail-code" value=""> 
+					<input type="hidden" name="sorder" id="sorder" value=""> 
+					
+				</form>	<!-- /action="/sales/om/insert-receive-order-detail" -->
+			</div>	<!-- /id="table-insert-receive-detail-form-container" -->
+		
+			<div id="table-detail-content-div">
+				<h5>수주서 세부항목</h5>
+				<table id="table-detail-content">
+					<thead>
+						<tr>
+							<th></th>
+							<th>제품코드</th>
+							<th>품명</th>
+							<th>수량</th>
+							<th>단가</th>
+							<th>금액</th>
+							<th>재고단위</th>
+							<th>비고</th>
+							<th>마감여부</th>
+						</tr>
+					</thead>
+					
+					<tbody id="table-detaili-content-body">
+					</tbody>
+					
+				</table>
+			</div>	<!-- /id="table-detail-content-div" -->
+			
+			
+			
+			<!-- 제품코드 모달 창 -->
+			<div class="modal fade" id="item-code-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">제품 선택</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div id="item-code-list"></div>
+					</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-primary">Save changes</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	<!-- /class="receive-order-detail-content" -->
+	</div>	<!-- /class="receive-order-container" -->
+</div>	<!-- /class="receive-order-body-container" -->
 </body>
 
 <script type="text/javascript">
@@ -434,7 +673,7 @@
 					row.append('<td	class="bg-orange">' + order.receiveOrderType + '</td>');
 					row.append('<td class="bg-gray">' + order.companyName + '</td>');
 					row.append('<td class="bg-blue">' + order.orderDate.substring(0, 10) + '</td>');
-					row.append('<td class="bg-blue">' + order.orderEmpid + '</td>');
+					row.append('<td class="bg-blue">' + (order.orderEmpid ? order.orderEmpid : '') + '</td>');
 					row.append('<td class="bg-orange">' + (order.deliveryPlan ? order.deliveryPlan : '') + '</td>');
 					row.append('<td class="bg-blue">' + order.dueDate.substring(0, 10) + '</td>');
 					row.append('<td class="bg-blue">' + order.regDate.substring(0, 10) + '</td>');
@@ -453,6 +692,12 @@
 		
 	}
 	
+	$(document).on("click", "#table-content tbody tr", function() {
+		const radio = $(this).find("input[name='selectRow']");
+		radio.prop("checked", true).trigger("change");
+	});
+	
+	
 	//receive-order CRUD 변경 , 삭제
 	$(function(){
 		
@@ -464,18 +709,19 @@
 				return; 
 			}
 			//console.log("orderCode" + orderCode);
-			$.ajax({
-				url: "/sales/receive-order/" + orderCode + "/confirm",
-				type: "PATCH",
-				success: function(data){
-					console.log("수주상태 확정" +data);
-					loadPlaceOrderList();
-				},
-				error: function(){
-					console.log("confirm Error");
-				}
-			});
-			
+			if (confirm("수주를 확정하시겠습니까?")) {
+				$.ajax({
+					url: "/sales/receive-order/" + orderCode + "/confirm",
+					type: "PATCH",
+					success: function(data){
+						console.log("수주상태 확정" +data);
+						loadPlaceOrderList();
+					},
+					error: function(){
+						console.log("confirm Error");
+					}
+				});
+			}
 		});
 		
 		$('#confirmation-cancel-btn').click(function(){
@@ -487,18 +733,19 @@
 				return; 
 			}
 			
-			$.ajax({
-				url: "/sales/receive-order/" + orderCode + "/cancel",
-				type: "PATCH",
-				success: function(data){
-					console.log("수주상태 저장" +data);
-					loadPlaceOrderList();
-				},
-				error: function(){
-					console.log("confirm Error");
-				}
-			});
-			
+			if (confirm("수주 확정을 취소하시겠습니까?")) {
+				$.ajax({
+					url: "/sales/receive-order/" + orderCode + "/cancel",
+					type: "PATCH",
+					success: function(data){
+						console.log("수주상태 저장" +data);
+						loadPlaceOrderList();
+					},
+					error: function(){
+						console.log("confirm Error");
+					}
+				});
+			}
 		});
 		
 		
@@ -512,21 +759,21 @@
 				alert("항목을 선택해주세요."); 
 				return; 
 			}
-			
-			$.ajax({
-				url: "/sales/receive-order/" + orderCode + "/modify-type",
-				type: "PATCH",
-				data: { receiveOrderType : selectedType },
-				dataType: "text",
-				success: function(orderType){
-					console.log("수주유형 변경 성공" + orderType);
-					loadPlaceOrderList();
-				},
-				error: function(){
-					console.log("수주유형 변경 Error");
-				}
-			});
-			
+			if (confirm("수주유형을 변경하시겠습니까?")) {
+				$.ajax({
+					url: "/sales/receive-order/" + orderCode + "/modify-type",
+					type: "PATCH",
+					data: { receiveOrderType : selectedType },
+					dataType: "text",
+					success: function(orderType){
+						console.log("수주유형 변경 성공" + orderType);
+						loadPlaceOrderList();
+					},
+					error: function(){
+						console.log("수주유형 변경 Error");
+					}
+				});
+			}
 		});
 		
 		//삭제
@@ -539,18 +786,19 @@
 				return; 
 			}
 			
-			$.ajax({
-				url: "/sales/receive-order/" + orderCode + "/delete",
-				type: "DELETE",
-				success: function(){
-					console.log("삭제되었습니다");
-					loadPlaceOrderList();
-				},
-				error: function(){
-					console.log("DELETE Error");
-				}
-			});
-			
+			if (confirm("해당 수주서를 삭제하시겠습니까?")) {
+				$.ajax({
+					url: "/sales/receive-order/" + orderCode + "/delete",
+					type: "DELETE",
+					success: function(){
+						console.log("삭제되었습니다");
+						loadPlaceOrderList();
+					},
+					error: function(){
+						console.log("DELETE Error");
+					}
+				});
+			}
 		});
 		
 		
@@ -572,6 +820,7 @@
 				dataType: "text",
 				success: function(orderDate){
 					console.log("수주일 변경 성공" + orderDate);
+					alert("수주일이 변경되었습니다.");
 					loadPlaceOrderList();
 				},
 				error: function(){
@@ -600,6 +849,7 @@
 				dataType: "text",
 				success: function(dueDate){
 					console.log("납기일 변경 성공" + dueDate);
+					alert("납기일이 변경되었습니다.");
 					loadPlaceOrderList();
 				},
 				error: function(){
@@ -637,6 +887,7 @@
 				dataType: "json",
 				success: function(data){
 					console.log("담당자 수정 성공" + data);
+					alert("담당자가 변경되었습니다.");
 					loadPlaceOrderList();
 				},
 				error: function(){
@@ -787,6 +1038,11 @@
 		
 	}
 	
+	$(document).on("click", "#table-detail-content tbody tr", function() {
+		const radio = $(this).find("input[name='selectDetailRow']");
+		radio.prop("checked", true);
+	});
+	
 	//receive-order-detail CRUD 변경 , 삭제
 	$(function(){
 		
@@ -811,6 +1067,7 @@
 				dataType: "json",
 				success: function(data){
 					console.log("금액수정성공" + data);
+					alert("금액이 변경되었습니다.");
 					loadPlaceOrderDetailList();
 				},
 				error: function(){
@@ -834,6 +1091,7 @@
 				dataType: "text",
 				success: function(data){
 					console.log("재고단위 변경 성공" + data);
+					alert("재고단위가 변경되었습니다.");
 					loadPlaceOrderDetailList();
 				},
 				error: function(){
@@ -857,6 +1115,7 @@
 				dataType: "text",
 				success: function(data){
 					console.log("마감여부 변경 성공" + data);
+					alert("마감여부가 변경되었습니다.");
 					loadPlaceOrderDetailList();
 				},
 				error: function(){
@@ -888,6 +1147,7 @@
 				dataType: "json",
 				success: function(data){
 					console.log("제품수정성공" + data);
+					alert("제품이 변경되었습니다.");
 					loadPlaceOrderDetailList();
 				},
 				error: function(){
@@ -925,6 +1185,7 @@
 				dataType: "json",
 				success: function(data){
 					console.log("담당자 수정 성공" + data);
+					alert("비고가 변경되었습니다.");
 					loadPlaceOrderDetailList();
 				},
 				error: function(){
@@ -1053,10 +1314,8 @@
 		$('#modify-amount').val(amount);
 	}
 	
-	
 	// 출하등록 작업지시등록
 	$(function(){
-		
 		
 		$('#stock-out-reg-btn').click(function(){
 		    let orderCode = $("input[name='selectRow']:checked").val();
@@ -1135,6 +1394,36 @@
 		
 	});
 		
+	
+	// '수주서 작성' 버튼 클릭 시 폼 보이기
+	document.getElementById("insert-receive-form-button").addEventListener("click", function() {
+		document.getElementById("table-insert-receive-form-container").style.display = "block";
+	});
+	
+	// 폼 제출 시 폼 숨기기
+	document.getElementById("table-insert-receive-form").addEventListener("submit", function() {
+		document.getElementById("table-insert-receive-form-container").style.display = "none";
+	});
+	
+	// '수주서 상세 작성' 버튼 클릭 시 폼 보이기
+	document.getElementById("insert-receive-detail-form-button").addEventListener("click", function() {
+		
+		let orderCode = $("input[name='selectRow']:checked").val();
+		console.log("delete-btn orderCode => " + orderCode);
+		
+		if (!orderCode) {
+			alert("항목을 선택해주세요."); 
+			return; 
+		}
+		
+		document.getElementById("table-insert-receive-detail-form-container").style.display = "block";
+	});
+	
+	// 폼 제출 시 폼 숨기기
+	document.getElementById("table-insert-receive-detail-form").addEventListener("submit", function() {
+		document.getElementById("table-insert-receive-detail-form-container").style.display = "none";
+	});
+	
 	///////////////////////////////////////////////
 	///////////////////////////////////////////////
 	

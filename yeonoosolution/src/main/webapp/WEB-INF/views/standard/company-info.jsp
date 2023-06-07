@@ -9,92 +9,95 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style type="text/css">
 	.container {
-	  display: flex;
-	  flex-direction: row;
-	  justify-content: space-between;
+	  	display: flex;
+	  	flex-direction: row;
+	  	justify-content: space-between;
 	}
 	
 	.side-bar {
-	  width: 200px;
-	  background-color: #f2f2f2;
-	  border: 1px solid #ddd;
-	  padding: 20px;
-	  float: left;
-	  height: auto;
+	  	width: 200px;
+	  	background-color: #f2f2f2;
+	  	border: 1px solid #ddd;
+	  	padding: 20px;
+	  	float: left;
+	  	height: auto;
 	}
 	
 	.content {
-	  flex: 1;
-	  margin-left: 20px;
-	  display: inline-block;
+	  	flex: 1;
+	  	margin-left: 20px;
+	  	display: inline-block;
 	
 	}
 	
 	.saveBtn {
-	  margin-bottom: 20px;
+	  	margin-bottom: 20px;
 	}
 	#companyInfoSaveBtn{
-	  width: 70px;
-	  height: 30px;
-	  font-weight: bold;
-	  background-color: white;
-	  border: 1px solid #D6DAE2;
-	  outline: none;
-	  border-radius: 5px;
-	  padding: 0 12px;
+	  	width: 70px;
+	  	height: 30px;
+	  	font-weight: bold;
+	  	background-color: white;
+	  	border: 1px solid #D6DAE2;
+	  	outline: none;
+	  	border-radius: 5px;
+	  	padding: 0 12px;
 	}
 	
 	.companyInfoTable {
-	  border-collapse: collapse;
-	  background-color: #F8F8F8;
-	  /* width: 100%; */
+	  	border-collapse: collapse;
+	  	background-color: #F8F8F8;
 	}
 	
 	.companyInfoTable th,
 	.companyInfoTable td,
 	.companyInfoTable tr{
-	  padding: 8px;
-	  border: 1px solid #ddd;
-	  text-align: left;
+	  	padding: 8px;
+	  	border: 1px solid #ddd;
+	  	text-align: left;
 	}
 	
 	.companyInfoTable .tableTitle {
-	  width: 190px;
-	  height: 50px;
-	  border: 1px solid #ddd;
-	  font-size: 18px;
+	  	width: 190px;
+	  	height: 50px;
+	  	border: 1px solid #ddd;
+	  	font-size: 18px;
 	 
 	}
 	
 	.companyInfoTable tr input, #businessType {
-	  height: 29px;
-	  font-size: 18px;
-	  border: 1px solid #ddd;
-	  border-radius: 5px;
+	  	height: 29px;
+	  	font-size: 18px;
+	  	border: 1px solid #ddd;
+	  	border-radius: 5px;
+	}
+	
+	.companyInfoTable img{
+		width: 340px;
 	}
 	
 	#companyCode{
-	  background-color: #EAEAEA;
+	  	background-color: #EAEAEA;
 	}
 	
 	#businessType{
-	  width: 225px;
+	  	width: 225px;
 	}
 	
 	#companyLogo{
-	  height: 31px;
+	  	height: 31px;
 	}
 	
 	.companyLogoImg {
-	  max-width: 200px;
-	  max-height: 200px;
+	  	max-width: 200px;
+	  	max-height: 200px;
 	} 
 	.highLight{
-	  font-size: 22px;
-	  color: red;
+	  	font-size: 22px;
+	  	color: red;
 	}
 	#saveInfo{
-	  font-size: 12px;
+	  	font-size: 12px;
 	}
 </style>
 </head>

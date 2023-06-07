@@ -171,9 +171,9 @@ public class UmController {
 		 return result;
 	 }
 	 
-	 @GetMapping("/standard/job/search/{jobName}")
+	 @GetMapping("/standard/job/search/")
 	 @ResponseBody
-	 public List<JobDto> jobListByjobName(@PathVariable("jobName") String jobName){
+	 public List<JobDto> jobListByjobName(@RequestParam("jobName") String jobName){
 		 List<JobDto> jobDto = umService.findjobListByJobName(jobName);
 		 return jobDto;
 	 }

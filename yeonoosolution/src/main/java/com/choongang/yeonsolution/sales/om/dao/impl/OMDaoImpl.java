@@ -43,24 +43,24 @@ public class OMDaoImpl implements OMDao {
 	}
 
 	@Override
-	public int updateStatusToConfirmByorderCode(String orderCode) {
+	public int updateStatusToConfirmByOrderCode(OMOrdersDto ordersDto) {
 
 		int orderStatus = 0;
 		
 		try {
-			orderStatus = sqlSession.update("updateStatusToConfirmByorderCode", orderCode);
+			orderStatus = sqlSession.update("updateStatusToConfirmByOrderCode", ordersDto);
 		} catch (Exception e) {
-			log.info("[updateorderStatusByorderCode] orderStatus Exception -> {}", e.getMessage());
+			log.info("[updateStatusToConfirmByOrderCode] orderStatus Exception -> {}", e.getMessage());
 		}
 		return orderStatus;
 	}
 
 	@Override
-	public int updateStatusToCancelByorderCode(String orderCode) {
+	public int updateStatusToCancelByOrderCode(OMOrdersDto ordersDto) {
 		int orderStatus = 0;
 		
 		try {
-			orderStatus = sqlSession.update("updateStatusToCancelByorderCode", orderCode);
+			orderStatus = sqlSession.update("updateStatusToCancelByorderCode", ordersDto);
 		} catch (Exception e) {
 			log.info("[updateStatusToCancelByorderCode] orderStatus Exception -> {}", e.getMessage());
 		}
@@ -68,14 +68,12 @@ public class OMDaoImpl implements OMDao {
 	}
 
 	@Override
-	public int updateOrderTypeByorderCode(String orderCode, OMOrdersDto ordersDto) {
+	public int updateOrderTypeByorderCode(OMOrdersDto ordersDto) {
 		int orderType = 0;
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("orderCode", orderCode);
-		params.put("ordersDto", ordersDto);
+		
 		
 		try {
-			orderType = sqlSession.update("updateOrderTypeByorderCode", params);
+			orderType = sqlSession.update("updateOrderTypeByorderCode", ordersDto);
 		} catch (Exception e) {
 			log.info("[updateOrderTypeByorderCode] orderStatus Exception -> {}", e.getMessage());
 		}
