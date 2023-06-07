@@ -2,14 +2,26 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<table id="stOutDetailTable" border="1">
+<style>
+
+	#stOutDetailTable2 {
+    		border-collapse: collapse;
+			background-color: #F8F8F8;
+			padding: 20px;
+			width: 100%;
+			text-align: center;
+	}
+	
+</style>
+
+<table id="stOutDetailTable2" border="1">
 	<tr>
-		<td>순번</td>
-		<td>제품코드</td>
-		<td>제품명</td>
-		<td>창고코드</td>
-		<td>출고수량</td>
-		<td>비고</td>
+		<th>순번</th>
+		<th>제품코드</th>
+		<th>제품명</th>
+		<th>창고코드</th>
+		<th>출고수량</th>
+		<th>비고</th>
 	</tr>
 	<c:forEach var="stOutDetail" items="${stOutDetailList }" varStatus="status">
 		<tr>
