@@ -3,8 +3,8 @@
 		var selWh_code = $('#wh_code_search').val();
 		var selWh_name = $('#wh_name_search').val();
 		
-		alert("코드 -> "+ selWh_code);
-		alert("이름 -> "+ selWh_name);
+		// alert("코드 -> "+ selWh_code);
+		// alert("이름 -> "+ selWh_name);
 		
 		var whDto = {
 				whCode : selWh_code, whName : selWh_name
@@ -17,10 +17,10 @@
 				data :  whDto,
 				dataType : 'html',
 				success : function(SearchR){
-					alert(SearchR);
+					// alert(SearchR);
 					
 					var tableUpdate = $('#warehouseTable').html(SearchR);
-					alert(tableUpdate);
+					// alert(tableUpdate);
 					
 				}
 			}

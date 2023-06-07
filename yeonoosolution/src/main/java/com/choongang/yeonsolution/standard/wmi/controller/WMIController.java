@@ -37,7 +37,7 @@ public class WMIController {
 		
 		model.addAttribute("listWarehouse", listWarehouse);
 		
-		return "standard/wmi/whForm";
+		return "standard/wmi/whForm.layout";
 		
 	}
 	
