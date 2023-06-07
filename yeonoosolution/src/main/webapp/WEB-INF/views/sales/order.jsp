@@ -5,24 +5,22 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>구매</title>
+<title>구매 발주 관리</title>
 <style type="text/css">
-#content {
-	border: 1px solid;
-	height: 1000px;
-	margin-top: 30px;
-}
-
 #search-div {
 	display: flex;
 }
-
+#content {
+	display: flow-root;
+}
+#content > div{
+	margin-left: 30px;
+}
 #search-div div {
 	margin: 5px;
 }
 
 #btn-div, #search-div, #order-list, #order-detail {
-	border: 1px solid;
 	margin: 10px;
 }
 
@@ -37,10 +35,12 @@
 
 .tuigrid-header {
 	display: flex;
+	justify-content: space-between;
+	margin-right: 30px;
 }
 
 .order-tables td, .order-tables th {
-	border: 1px solid;
+	border: 1px solid #B3B3B3;
 	padding: 5px;
 	text-align: center;
 	white-space: nowrap; /* 셀 내용이 넘칠 경우 줄바꿈 방지 */
@@ -77,118 +77,234 @@
 
 .order-radio {
 	min-width: 50px;
+	max-width: 50px;
 }
 
 .order-status {
 	min-width: 70px;
+	max-width: 70px;
 }
 
 .order-code {
 	min-width: 100px;
+	max-width: 100px;
 }
 
 .receive-order-type {
 	min-width: 110px;
+	max-width: 110px;
 }
 
 .order-date {
 	min-width: 120px;
+	max-width: 120px;
 }
 
 .customer-code {
 	min-width: 130px;
+	max-width: 130px;
 }
 
 .customer-name {
 	min-width: 220px;
+	max-width: 220px;
 }
 
 .due-date {
 	min-width: 120px;
+	max-width: 120px;
 }
 
 .order-empid {
 	min-width: 80px;
+	max-width: 80px;
 }
 
 .delivery-plan {
 	min-width: 100px;
+	max-width: 100px;
 }
 
 .reg-date {
 	min-width: 170px;
+	max-width: 170px;
 }
 
 .reg-user {
 	min-width: 80px;
+	max-width: 80px;
 }
 
 .update-date {
 	min-width: 170px;
+	max-width: 170px;
 }
 
 .update-user {
 	min-width: 80px;
+	max-width: 80px;
 }
 
 .order-memo {
 	min-width: 200px;
+	max-width: 200px;
 }
 
 .item-sorder {
 	min-width: 60px;
+	max-width: 60px;
 }
 
 .item-checkbox {
 	min-width: 60px;
+	max-width: 60px;
 }
 
 .item-code {
 	min-width: 120px;
+	max-width: 120px;
 }
 
 .item-name {
 	min-width: 300px;
+	max-width: 300px;
 }
 
 .item-stock-unit {
 	min-width: 100px;
+	max-width: 100px;
 }
 
 .quantity {
 	min-width: 100px;
+	max-width: 100px;
 }
 
 .item-price {
 	min-width: 110px;
+	max-width: 110px;
 }
 
 .amount {
 	min-width: 150px;
+	max-width: 150px;
 }
 
 .order-detail-memo {
 	min-width: 200px;
+	max-width: 200px;
 }
 
 .order-number {
 	min-width: 60px;
-}
-#customer-list-table{
-	board : 1px solid;
-	border-collapse: collapse;
+	max-width: 60px;
 }
 .td-hidden {
 	visibility: hidden;
+}
+
+.side-bar {
+	border: 1px solid #ddd;
+	padding: 20px;
+	float: left;
+	height: 100vh;
+	min-width: 200px;
+}
+#btn-div {
+	display: inline-block;
+}
+.non-change {
+	background-color: #e6e6e6!important;
+}
+.non-modal-change {
+	background-color: #e6f2ff!important;
+}
+.modal-change {
+    background-color: #ffffcc!important;
+}
+.modal-body table tr:hover td:not(.hidden) {
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	background-color: #e6e6e6;
+}
+.customer-list-tr td{
+	padding: 3px 5px;
+}
+.modal-body table {
+	margin: 0 auto;
+	display: flex;
+    flex-direction: column;
+}
+#wh-list-table{
+	margin: 0 auto !important;
+}
+.order-tables thead{
+	background-color: #F8F8F8!important;
+}
+.order-btn-cl {
+	font-weight: bold;
+	border: 1px solid #B3B3B3;
+	border-radius: 7px;
+	width: 28px;
+	align-items: center;
+	background-color: white;
+}
+.order-btn-cl:hover {
+	background-color: #ffffcc;
 }
 </style>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
 </head>
 <body>
 	<div id="contain">
-			<input type="button" value="구매 발주" onclick="location.href='/pm/order'">
-			<input type="button" value="구매 입고 등록" onclick="location.href='/pm/stock-in'">
-			<input type="button" value="구매 내역조회">
+		<div class="side-bar">
+			<!-- product/ds -->
+			<a href="/product/status/defect">불량현황</a><p>
+			<!-- product/ps -->
+			<a href="/product/status/production">생산현황 검색</a><p>
+			<!-- product/pr -->
+			<!-- product -->
+			<a href="/product/is/item">품목별 재고 현황</a><p>
+			<a href="/product/is/bom">BOM별 재고 현황</a><p>
+			<a href="/product/is/wh">창고별 재고 현황</a><p>
+			<a href="/product/is/wh/">창고별 재고 현황 상세</a><p>
+			<a href="/item/search">제품 검색</a><p>
+			<a href="/product/sim">입고</a><p>
+			<a href="/wo">제품 생산 지시</a><p>
+			
+			<!-- product/smm -->
+			<a href="/product/stockMoveRegistration">재고 이동등록</a><p>
+			<a href="/product/stockMoveStatus">재고 이동현황</a><p>
+			
+			<!-- sales -->
+			<a href="/sales/receive-order">수주서 관리</a><p>
+			<a href="/sales/analysis-of-materials">자제요소분석</a><p>
+			<a href="/sales/order">구매</a><p>
+			<a href="/sales/stock-in">구매입고등록</a><p>
+			
+			<!-- standard -->
+			<a href="/standard/login">로그인</a><p>
+			<a href="/standard/user-admin">사용자 계정관리</a><p>
+			<a href="/standard/imi">품목 관리 및 등록</a><p>
+			<a href="/standard/ipi">품목 단가 관리</a><p>
+			<a href="/standard/pmi">품목 관리 정보</a><p>
+		   
+			<!-- standard bi -->
+			 기본정보<p>
+		    <a href="/standard/companyInfo/">회사정보</a><p>
+		    <a href="/standard/customerInfo/">거래처정보</a><p>
+		    <!-- standard um -->
+			사용자관리<p>
+		    <a href="/standard/myPage/">개인정보수정</a><p>
+		    <a href="/standard/dept/">부서등록 및 확인</a><p>
+		    <a href="/standard/job/">직급등록 및 확인</a><p>
+		   
+			<!-- 로그아웃 -->
+			<c:if test="${sessionScope.member != null}">
+		      	<form action="/standard/logout" method="POST">
+		         	<button type="submit">로그아웃</button>
+		      	</form>
+			</c:if>
+	    </div>
 		<div id="content">
 			<div id="btn-div">
 				<button id="order-search-btn">조회</button>
@@ -228,8 +344,10 @@
 			</div>
 			<div class="tuigrid-header">
 				<span>구매발주</span>
-				<button type="button" id="order-add">+</button>
-				<button type="button" class="order-delete-btn order-status-update-btn">-</button>
+				<div>
+					<button type="button" class="order-btn-cl" id="order-add">+</button>
+					<button type="button" class="order-delete-btn order-status-update-btn order-btn-cl">-</button>
+				</div>
 			</div>
 			<div id="order-list">
 				<table id="order-list-table-heder"
@@ -247,11 +365,11 @@
 							<th class="due-date">납기일자</th>
 							<th class="order-empid">담당자명</th>
 							<th class="delivery-plan">인도장소</th>
+							<th class="order-memo">비고</th>
 							<th class="reg-date">등록일자</th>
 							<th class="reg-user">등록자</th>
 							<th class="update-date">수정일자</th>
 							<th class="update-user">수정자</th>
-							<th class="order-memo">비고</th>
 						</tr>
 					</thead>
 				</table>
@@ -262,8 +380,10 @@
 			</div>
 			<div class="tuigrid-header">
 				<span>세부항목</span>
-				<button type="button" class="odrer-detail-btn" id="odrer-detail-add-btn">+</button>
-				<button type="button" class="odrer-detail-btn" id="odrer-detail-del-btn">-</button>
+				<div>
+					<button type="button" class="odrer-detail-btn order-btn-cl" id="odrer-detail-add-btn">+</button>
+					<button type="button" class="odrer-detail-btn order-btn-cl" id="odrer-detail-del-btn">-</button>
+				</div>
 			</div>
 			<div id="order-detail">
 				<table id="order-detail-list-table-heder"
@@ -288,106 +408,107 @@
 					</tbody>
 				</table>
 			</div>
-		</div>
-	</div>
-	<!-- Modal -->
-	<div class="modal fade" id="modal-order-delete-status-update">
-    	<div class="modal-dialog">
-      		<div class="modal-content" id="order-delete-status-update-content">
-        		<div class="modal-header">
-          			<h5 class="modal-title" >삭제하시겠습니까?</h5>
-          			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        		</div>
-        		<div class="modal-body">
-          			<span>저장하지 않은 발주서는 사라집니다.</span>
-        		</div>
-        		<div class="modal-footer modal-btn-div">
-          			<button type="button" class="btn btn-primary modal-confirm-btn" data-bs-dismiss="modal">확인</button>
-          			<button type="button" class="btn btn-secondary modal-close-btn" data-bs-dismiss="modal">취소</button>
-        		</div>
-      		</div>
-    	</div>
-  	</div>
-	<div class="modal fade" id="modal-order-status-update">
-    	<div class="modal-dialog">
-      		<div class="modal-content" id="order-status-update-content">
-        		<div class="modal-header">
-          			<h5 class="modal-title" id="modal-order-status-update-title"></h5>
-          			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        		</div>
-        		<div class="modal-body"><p></p></div>
-        		<div class="modal-footer modal-btn-div">
-          			<button type="button" class="btn btn-primary modal-confirm-btn" data-bs-dismiss="modal">확인</button>
-          			<button type="button" class="btn btn-secondary modal-close-btn" data-bs-dismiss="modal">취소</button>
-        		</div>
-      		</div>
-    	</div>
-  	</div>
-	<div class="modal fade" id="modal-order-status-update-msg">
-    	<div class="modal-dialog">
-      		<div class="modal-content" id="order-delete-content">
-        		<div class="modal-header">
-          			<h5 class="modal-title" id="modal-order-status-update-title-msg"></h5>
-          			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        		</div>
-        		<div class="modal-body"><p></p></div>
-        		<div class="modal-footer modal-btn-div">
-          			<button type="button" class="btn btn-primary modal-confirm-btn" data-bs-dismiss="modal">확인</button>
-        		</div>
-      		</div>
-    	</div>
-  	</div>
-  	<!-- 회사 검색 모달 -->
-	<div class="modal fade" id="modal-select-customer-code">
-    	<div class="modal-dialog">
-      		<div class="modal-content" id="select-customer-code-content">
-        		<div class="modal-header">
-          			<h5 class="modal-title" id="modal-select-customer-code-title-msg"></h5>
-          			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        		</div>
-        		<div class="modal-body">
-        		<table id="customer-list-table">
-        			<thead>
-        				<tr>
-        					<th>회사코드</th>
-        					<th>회사명</th>
-        				</tr>
-					</thead>
-        			<tbody></tbody>
-        		</table>
-        		</div>
-        		<div class="modal-footer modal-btn-div">
-          			<button type="button" class="btn btn-primary modal-confirm-btn" data-bs-dismiss="modal">확인</button>
-        		</div>
-      		</div>
-    	</div>
-  	</div>
-  	<!-- 세부항목 추가 모달 -->
-	<div class="modal fade" id="modal-select-item-code">
-    	<div class="modal-dialog">
-      		<div class="modal-content" id="select-item-code-content">
-        		<div class="modal-header">
-          			<h5 class="modal-title" id="modal-select-item-code-title-msg"></h5>
-          			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        		</div>
-        		<div class="modal-body">
-        		<table id="item-list-table">
-        			<thead>
-        				<tr>
-        					<th>제품코드</th>
-        					<th>제품명</th>
-        				</tr>
-					</thead>
-        			<tbody></tbody>
-        		</table>
-        		</div>
-        		<div class="modal-footer modal-btn-div">
-          			<button type="button" class="btn btn-primary modal-confirm-btn" data-bs-dismiss="modal">확인</button>
-        		</div>
-      		</div>
-    	</div>
-  	</div>
-	<!-- contain -->
+			<!-- Modal -->
+			<div class="modal fade" id="modal-order-delete-status-update">
+		    	<div class="modal-dialog">
+		      		<div class="modal-content" id="order-delete-status-update-content">
+		        		<div class="modal-header">
+		          			<h5 class="modal-title" >삭제하시겠습니까?</h5>
+		          			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		        		</div>
+		        		<div class="modal-body">
+		          			<span>저장하지 않은 발주서는 사라집니다.</span>
+		        		</div>
+		        		<div class="modal-footer modal-btn-div">
+		          			<button type="button" class="btn btn-primary modal-confirm-btn" data-bs-dismiss="modal">확인</button>
+		          			<button type="button" class="btn btn-secondary modal-close-btn" data-bs-dismiss="modal">취소</button>
+		        		</div>
+		      		</div>
+		    	</div>
+		  	</div>
+			<div class="modal fade" id="modal-order-status-update">
+		    	<div class="modal-dialog">
+		      		<div class="modal-content" id="order-status-update-content">
+		        		<div class="modal-header">
+		          			<h5 class="modal-title" id="modal-order-status-update-title"></h5>
+		          			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		        		</div>
+		        		<div class="modal-body"><p></p></div>
+		        		<div class="modal-footer modal-btn-div">
+		          			<button type="button" class="btn btn-primary modal-confirm-btn" data-bs-dismiss="modal">확인</button>
+		          			<button type="button" class="btn btn-secondary modal-close-btn" data-bs-dismiss="modal">취소</button>
+		        		</div>
+		      		</div>
+		    	</div>
+		  	</div>
+			<div class="modal fade" id="modal-order-status-update-msg">
+		    	<div class="modal-dialog">
+		      		<div class="modal-content" id="order-delete-content">
+		        		<div class="modal-header">
+		          			<h5 class="modal-title" id="modal-order-status-update-title-msg"></h5>
+		          			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		        		</div>
+		        		<div class="modal-body"><p></p></div>
+		        		<div class="modal-footer modal-btn-div">
+		          			<button type="button" class="btn btn-primary modal-confirm-btn" data-bs-dismiss="modal">확인</button>
+		        		</div>
+		      		</div>
+		    	</div>
+		  	</div>
+			  	<!-- 회사 검색 모달 -->
+				<div class="modal fade" id="modal-select-customer-code">
+			    	<div class="modal-dialog">
+			      		<div class="modal-content" id="select-customer-code-content">
+			        		<div class="modal-header">
+			          			<h5 class="modal-title" id="modal-select-customer-code-title-msg">거래처를 선택해 주세요.</h5>
+			          			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			        		</div>
+			        		<div class="modal-body">
+			        		<table id="customer-list-table">
+			        			<thead>
+			        				<tr>
+			        					<th class="customer-code">회사코드</th>
+        								<th class="customer-name">회사명</th>
+			        				</tr>
+								</thead>
+			        			<tbody></tbody>
+			        		</table>
+			        		</div>
+			        		<div class="modal-footer modal-btn-div">
+			        		</div>
+			      		</div>
+			    	</div>
+			  	</div>
+			  	<!-- 세부항목 추가 모달 -->
+				<div class="modal fade" id="modal-select-item-code">
+			    	<div class="modal-dialog">
+			      		<div class="modal-content" id="select-item-code-content">
+			        		<div class="modal-header">
+			          			<h5 class="modal-title" id="modal-select-item-code-title-msg">제품을 선택해 주세요.</h5>
+			          			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			        		</div>
+			        		<div class="modal-body">
+			        		<table id="item-list-table">
+			        			<thead>
+			        				<tr>
+			        					<th class="item-code">제품코드</th>
+			        					<th class="item-name">제품명</th>
+			        					<th></th>
+			        					<th></th>
+			        				</tr>
+								</thead>
+			        			<tbody></tbody>
+			        		</table>
+			        		</div>
+			        		<div class="modal-footer modal-btn-div">
+			        		</div>
+			      		</div>
+			    	</div>
+			  	</div>
+			  	
+			</div>
+		</div><!-- contain -->
+	
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 	<script>
@@ -408,7 +529,7 @@
 			saveOrderTr.find('.change-td').each(function() {
 			  	let text = $(this).text().trim();
 				let hasMemoClass = $(this).hasClass('order-memo');
-			  	if (text === '' && !hasMemoClass) {
+			  	if ((text === '' && !hasMemoClass) || (text === '' && !$(this).hasClass('delivery-plan'))) {
 			  		ordernullCheck = false;
 			    	return false;
 		  		}
@@ -418,16 +539,13 @@
 			  	return;
 			}
 			let order = {
-				companyCode : "COMPANY1",
 				customerCode : saveOrderTr.find('.customer-code').text(),
 				receiveOrderType : saveOrderTr.find('.receive-order-type').text(),
 				orderDate : saveOrderTr.find('.order-date').text(),
-				orderEmpid : "bsm",
+				orderEmpid : saveOrderTr.find('.order-empid').text(),
 				deliveryPlan : saveOrderTr.find('.delivery-plan').text(),
 				dueDate : saveOrderTr.find('.due-date').text(),
-				memo : saveOrderTr.find('.memo').text(),
-				regUser : "bsm",
-				updateUser : "bsm"
+				memo : saveOrderTr.find('.memo').text()
 			};
 			console.log(order);
 			
@@ -440,7 +558,7 @@
 						quantity : $(this).find('.quantity').text(),
 						price : $(this).find('.item-price').text(),
 						amount : $(this).find('.amount').text(),
-						memo : $(this).find('.memo').text(),
+						memo : $(this).find('.order-memo').text(),
 						itemStockUnit : $(this).find('.item-stock-unit').text()
 				};
 				orderDetailTr.find('.change-td').each(function() {
@@ -460,7 +578,7 @@
 			console.log(orderDetails);
 			
 			$.ajax({
-				url : "/pm/order-add",
+				url : "/sales/order-add",
 				type : "POST",
 				dataType : "TEXT",
 				contentType: "application/json",
@@ -478,10 +596,10 @@
 			let ordernullCheck = true;
 			saveOrderTr.find('.change-td').each(function() {
 			  	let text = $(this).text().trim();
-				let hasMemoClass = $(this).hasClass('order-memo');
-			  	if (text === '' && !hasMemoClass) {
-			  		ordernullCheck = false;
-			    	return false;
+				let nullable = $(this).hasClass('nullable');
+			  	if (text === '' && !nullable) {
+				  		ordernullCheck = false;
+				    	return false;
 		  		}
 			});
 			if (!ordernullCheck) {
@@ -490,16 +608,13 @@
 			}
 			let order = {
 				orderCode : saveOrderTr.find('.order-code').text(),
-				companyCode : "COMPANY1",
 				customerCode : saveOrderTr.find('.customer-code').text(),
 				receiveOrderType : saveOrderTr.find('.receive-order-type').text(),
 				orderDate : saveOrderTr.find('.order-date').text(),
-				orderEmpid : "bsm",
+				orderEmpid : saveOrderTr.find('.order-empid').text(),
 				deliveryPlan : saveOrderTr.find('.delivery-plan').text(),
 				dueDate : saveOrderTr.find('.due-date').text(),
-				memo : saveOrderTr.find('.memo').text(),
-				regUser : "bsm",
-				updateUser : "bsm"
+				memo : saveOrderTr.find('.order-memo').text()
 			};
 			console.log(order);
 			
@@ -518,8 +633,8 @@
 				};
 				orderDetailTr.find('.change-td').each(function() {
 				  	let text = $(this).text().trim();
-					let hasMemoClass = $(this).hasClass('order-detail-memo');
-				  	if (text === '' && !hasMemoClass) {
+					let nullable = $(this).hasClass('nullable');
+				  	if (text === '' && !nullable) {
 				  		ordernullCheck = false;
 				    	return false;
 			  		}
@@ -533,7 +648,7 @@
 			console.log(orderDetails);
 			
 			$.ajax({
-				url : "/pm/order-modify",
+				url : "/sales/order-modify",
 				type : "POST",
 				dataType : "TEXT",
 				contentType: "application/json",
@@ -552,7 +667,7 @@
 	// 제품 검색 데이터 받기
 	function itemSearch(search){
 		$.ajax({
-			url : "/pm/item-list",
+			url : "/sales/item-list",
 			type : "GET",
 			dataType : "JSON",
 			data : {search :search.toUpperCase()},
@@ -561,13 +676,12 @@
 				itemListTable.empty();
 				itemList.forEach(function(item){
 					let itemListRow = $('<tr>').addClass('item-list-tr');
-					let checkBox = $('<td>').addClass('item-radio').append($("<input type='radio' class='item-radio' name='customer-radio'>"));
 					let itemCode = $('<td>').addClass('item-code').text(item.itemCode);
 					let itemName = $('<td>').addClass('item-name').text(item.itemName);
 					let stockUnit = $('<td>').addClass('item-stock-unit td-hidden').text(item.stockUnit);
 					let purchasePrice = $('<td>').addClass('item-price td-hidden').text(item.purchasePrice);
 					
-					itemListRow.append(checkBox).append(itemCode).append(itemName).append(stockUnit).append(purchasePrice);
+					itemListRow.append(itemCode).append(itemName).append(stockUnit).append(purchasePrice);
 					itemListTable.append(itemListRow);
 				});
 				$('#modal-select-item-code').modal('show');
@@ -577,7 +691,7 @@
 	// 회사 검색 데이터 받기
 	function companySearch(search){
 		$.ajax({
-			url : "/pm/customer-list",
+			url : "/sales/customer-list",
 			type : "GET",
 			dataType : "JSON",
 			data : {search :search.toUpperCase()},
@@ -587,11 +701,10 @@
 				customerList.forEach(function(customer){
 					console.log("customer -> " + customer.companyCode + "   " + customer.companyName);
 					let customerListRow = $('<tr>').addClass('customer-list-tr');
-					let radio = $('<td>').addClass('customer-radio').append($("<input type='radio' class='customer-radio' name='customer-radio'>"));
 					let customerCode = $('<td>').addClass('customer-code').text(customer.companyCode);
 					let customerName = $('<td>').addClass('customer-name').text(customer.companyName);
 					
-					customerListRow.append(radio).append(customerCode).append(customerName);
+					customerListRow.append(customerCode).append(customerName);
 					customerListTable.append(customerListRow);
 				});
 				$('#modal-select-customer-code').modal('show');
@@ -613,13 +726,13 @@
 		let orderDetailRow = $('<tr>').addClass('order-detail-table-tr-area');
 		let Sorder = $('<td>').addClass('item-sorder').text(rowNumber);
 		let Checkbox = $('<td>').addClass('item-checkbox').append($("<input type='checkbox' class='order-detail-checkbox'>"));
-		let itemCode = $('<td>').addClass('item-code change-td').text(orderDetail.itemCode);
-		let itemName = $('<td>').addClass('item-name').text(orderDetail.itemName);
-		let itemStockUnit = $('<td>').addClass('item-stock-unit').text(orderDetail.itemStockUnit);
-		let quantity = $('<td>').addClass('quantity change-td').text(orderDetail.quantity);
-		let price = $('<td>').addClass('item-price change-td').text(orderDetail.price);
-		let amount = $('<td>').addClass('amount').text(orderDetail.amount);
-		let memo = $('<td>').addClass('order-detail-memo change-td').text(orderDetail.memo);
+		let itemCode = $('<td>').addClass('item-code change-td modal-change').text(orderDetail.itemCode);
+		let itemName = $('<td>').addClass('item-name non-change').text(orderDetail.itemName);
+		let itemStockUnit = $('<td>').addClass('item-stock-unit non-change').text(orderDetail.itemStockUnit);
+		let quantity = $('<td>').addClass('quantity change-td non-modal-change').text(orderDetail.quantity);
+		let price = $('<td>').addClass('item-price change-td non-modal-change').text(orderDetail.price);
+		let amount = $('<td>').addClass('amount non-change').text(orderDetail.amount);
+		let memo = $('<td>').addClass('order-detail-memo change-td nullable').text(orderDetail.memo);
 		orderDetailRow.append(Sorder).append(Checkbox).append(itemCode).append(itemName).append(itemStockUnit).append(quantity)
 				.append(price).append(amount).append(memo);
 		$('#order-detail-list-table tbody').append(orderDetailRow);
@@ -635,7 +748,7 @@
 			return;
 		}
 		$.ajax({
-			url: "/pm/order/" + orderCode +"/details",
+			url: "/sales/order/" + orderCode +"/details",
 			type : "GET",
 			dataType : "JSON",
 			success : function(orderDetailList){
@@ -669,23 +782,23 @@
 		let orderRow = $('<tr>').addClass('order-table-tr-area');
 		let orderNumber = $('<td>').addClass('order-number').text(index);
 		let orderRadio = $('<td>').addClass('order-radio').append($("<input type='radio' class='order-radio-select' value='" + order.orderCode +"' name='chk_info'>"));
-		let orderStatus = $('<td>').addClass('order-status').text(order.orderStatus);
-		let orderCode = $('<td>').addClass('order-code').text(order.orderCode);
-		let receiveOrderType = $('<td>').addClass('receive-order-type change-td').text(order.receiveOrderType);
-		let orderDate = $('<td>').addClass('order-date change-td').text(order.orderDate);
-		let customerCode = $('<td>').addClass('customer-code change-td').text(order.customerCode);
-		let customerName = $('<td>').addClass('customer-name').text(order.customerName);
-		let dueDate = $('<td>').addClass('due-date change-td').text(order.dueDate);
+		let orderStatus = $('<td>').addClass('order-status non-change').text(order.orderStatus);
+		let orderCode = $('<td>').addClass('order-code non-change').text(order.orderCode);
+		let receiveOrderType = $('<td>').addClass('receive-order-type change-td non-modal-change').text(order.receiveOrderType);
+		let orderDate = $('<td>').addClass('order-date change-td non-modal-change').text(order.orderDate);
+		let customerCode = $('<td>').addClass('customer-code change-td modal-change').text(order.customerCode);
+		let customerName = $('<td>').addClass('customer-name non-change').text(order.customerName);
+		let dueDate = $('<td>').addClass('due-date change-td non-modal-change').text(order.dueDate);
 		let orderEmpid = $('<td>').addClass('order-empid').text(order.orderEmpid);
-		let deliveryPlan = $('<td>').addClass('delivery-plan change-td').text(order.deliveryPlan);
-		let regDate = $('<td>').addClass('reg-date').text(order.regDate);
-		let regUser = $('<td>').addClass('reg-user').text(order.regUser);
-		let updateDate = $('<td>').addClass('update-date').text(order.updateDate);
-		let updateUser = $('<td>').addClass('update-user').text(order.updateUser);
-		let memo = $('<td>').addClass('order-memo change-td').text(order.memo);
+		let deliveryPlan = $('<td>').addClass('delivery-plan change-td nullable').text(order.deliveryPlan);
+		let regDate = $('<td>').addClass('reg-date non-change').text(order.regDate);
+		let regUser = $('<td>').addClass('reg-user non-change').text(order.regUser);
+		let updateDate = $('<td>').addClass('update-date non-change').text(order.updateDate);
+		let updateUser = $('<td>').addClass('update-user non-change').text(order.updateUser);
+		let memo = $('<td>').addClass('order-memo change-td nullable').text(order.memo);
 		orderRow.append(orderNumber).append(orderRadio).append(orderStatus).append(orderCode).append(receiveOrderType).append(orderDate)
-				.append(customerCode).append(customerName).append(dueDate).append(orderEmpid).append(deliveryPlan).append(regDate)
-				.append(regUser).append(updateDate).append(updateUser).append(memo);
+				.append(customerCode).append(customerName).append(dueDate).append(orderEmpid).append(deliveryPlan).append(memo)
+				.append(regDate).append(regUser).append(updateDate).append(updateUser);
 		$('#order-list-table tbody').append(orderRow);
 		// 발주서 추가시 포커스 이동
 		if(order.orderCode == null){
@@ -759,6 +872,8 @@
 		if(elementClass.includes('date')){
 			dbclickTd.append($('<input type="date">').addClass('change-text-input-td').val(value).css('width', tdWidth+'px'));
 			$('.change-text-input-td').focus();
+		}else if(elementClass.includes('quantity')){
+			dbclickTd.append($('<input type="number">').addClass('change-text-input-td').val(value).css('width', tdWidth+'px'));
 		} else if(elementClass.includes('receive-order-type')) {
 			dbclickTd.append($('<select>').addClass('change-text-input-td').val(value).css('width', tdWidth+'px')
 					 .append($("<option>").val('일반구매').text('일반구매'))
@@ -784,11 +899,9 @@
 			}else if($(this).parent().attr('class').includes('item-code')){
 				itemSearch($(this).val());		
 			}else if($(this).parent().attr('class').includes('quantity')){
-				console.log("아까 그놈이오!");
 				let  amount = parseInt($(this).val())*parseInt($(this).closest('tr').find('.item-price').text());
 				$(this).closest('tr').find('.amount').text(amount);
 			}else if($(this).parent().attr('class').includes('item-price')){
-				console.log("아까 그놈이오!");
 				let  amount = parseInt($(this).val())*parseInt($(this).closest('tr').find('.quantity').text());
 				$(this).closest('tr').find('.amount').text(amount);
 			}
@@ -816,7 +929,7 @@
 		let customerCode = $('#search-customer-code').val();
 		let orderEmpid = $('#order-empid').val();
 		$.ajax({
-			url: "/pm/order-list",
+			url: "/sales/order-list",
 			type : "GET",
 			dataType : "JSON",
 			data : { startDate : startDate,
@@ -890,10 +1003,12 @@
 	function orderUpdate(column, data){
 		let orderCode = radioOrderCode;
 		$.ajax({
-			url: "/pm/order/" + orderCode,
+			url: "/sales/order/" + orderCode,
 			type : "PATCH",
-			data : {column : column,
-					data : data},
+			data : {
+				orderCode : orderCode,
+				column : column,
+				data : data},
 			dataType : "TEXT",
 			success : function(msg){
 				console.log(msg);
@@ -907,7 +1022,53 @@
 				
 			}
 		});
-	}// 모달 확인 버튼 클릭
+	}
+	
+	// 모달창 값 선택
+	$(document).on('click', '.customer-list-tr', function() {
+		let customerCode = $(this).find('.customer-code').text();
+		let customerName = $(this).find('.customer-name').text();
+		console.log("customerCode -> " + customerCode + " customerName -> " + customerName);
+		$('#search-customer-code').val(customerCode);
+		$('#search-customer-name').removeAttr('readonly');
+		$('#search-customer-name').val(customerName);
+		$('#search-customer-name').attr('readonly', 'readonly');
+		
+		// 발주서 체크된 놈 값 변경
+		let radioChecked = $('.order-radio input[type="radio"]:checked').val();
+		console.log("radioChecked -> " + radioChecked);
+		$('.order-radio input[type="radio"]:checked').closest('tr').find('.customer-code').text(customerCode);
+		$('.order-radio input[type="radio"]:checked').closest('tr').find('.customer-name').removeAttr('readonly');
+		$('.order-radio input[type="radio"]:checked').closest('tr').find('.customer-name').text(customerName);
+		$('.order-radio input[type="radio"]:checked').closest('tr').find('.customer-name').attr('readonly', 'readonly');
+		$('#modal-select-customer-code').modal('hide');
+	});
+	
+	$(document).on('click', '.item-list-tr', function() {
+		let itemCode = $(this).find('.item-code').text();
+		let itemName = $(this).find('.item-name').text();
+		let itemStockUnit = $(this).find('.item-stock-unit').text();
+		let itemPrice = $(this).find('.item-price').text();
+		
+		// 세부항목 클릭된 놈 값 변경
+		let changeTr = $('.item-sorder').filter(function() {
+			return parseInt($(this).text()) == changeItemRow;
+		}).closest('tr');
+		changeTr.find('.item-code').text(itemCode);
+		changeTr.find('.item-name').removeAttr('readonly');
+		changeTr.find('.item-name').text(itemName);
+		changeTr.find('.item-name').attr('readonly', 'readonly');
+		changeTr.find('.item-stock-unit').removeAttr('readonly');
+		changeTr.find('.item-stock-unit').text(itemStockUnit);
+		changeTr.find('.item-stock-unit').attr('readonly', 'readonly');
+		changeTr.find('.quantity').text('');
+		changeTr.find('.item-price').text(itemPrice);
+		changeTr.find('.amount').text('');
+		$('#modal-select-item-code').modal('hide');
+		
+	});
+	
+	// 모달 확인 버튼 클릭
 	$('.modal-confirm-btn').click(function(){
 		
 		let modal = $(this).closest('.modal');
@@ -922,41 +1083,6 @@
 			}else{
 				orderUpdate('orderStatus', '확정');
 			}
-		}else if(modalId.includes('modal-select-customer-code')){
-			let customer = modal.find('input[type="radio"]:checked');
-			console.log("customer" + customer.attr('class'));
-			let customerCode = customer.parent().siblings().filter('.customer-code').text();
-			let customerName = customer.parent().siblings().filter('.customer-name').text();
-			console.log("customerCode -> " + customerCode + " customerName -> " + customerName);
-			$('#search-customer-code').val(customerCode);
-			$('#search-customer-name').removeAttr('readonly');
-			$('#search-customer-name').val(customerName);
-			$('#search-customer-name').attr('readonly', 'readonly');
-			
-			let radioChecked = $('.order-radio input[type="radio"]:checked').val();
-			console.log("radioChecked -> " + radioChecked);
-			$('.order-radio input[type="radio"]:checked').closest('tr').find('.customer-code').text(customerCode);
-			$('.order-radio input[type="radio"]:checked').closest('tr').find('.customer-name').removeAttr('readonly');
-			$('.order-radio input[type="radio"]:checked').closest('tr').find('.customer-name').text(customerName);
-			$('.order-radio input[type="radio"]:checked').closest('tr').find('.customer-name').attr('readonly', 'readonly');
-		}else if(modalId.includes('modal-select-item-code')){
-			let item = modal.find('input[type="radio"]:checked');
-			let changeTr = $('.item-sorder').filter(function() {
-				return parseInt($(this).text()) == changeItemRow;
-			}).closest('tr');
-			changeTr.find('.item-code').text(item.parent().siblings().filter('.item-code').text());
-			changeTr.find('.item-name').removeAttr('readonly');
-			changeTr.find('.item-name').text(item.parent().siblings().filter('.item-name').text());
-			changeTr.find('.item-name').attr('readonly', 'readonly');
-			changeTr.find('.item-stock-unit').removeAttr('readonly');
-			changeTr.find('.item-stock-unit').text(item.parent().siblings().filter('.item-stock-unit').text());
-			changeTr.find('.item-stock-unit').attr('readonly', 'readonly');
-			changeTr.find('.quantity').text('');
-			changeTr.find('.item-price').text(item.parent().siblings().filter('.item-price').text());
-			changeTr.find('.amount').text('');
-			
-			console.log("item.parent().siblings().filter('.item-stock-unit td-hidden').text() -> " + item.parent().siblings().filter('.item-stock-unit').text());
-			console.log("item.parent().siblings().filter('.item-price td-hidden').text() -> " + item.parent().siblings().filter('.item-price').text());
 		}
 	});
 	// 페이지 로드 시 전체 발주서 불러오기

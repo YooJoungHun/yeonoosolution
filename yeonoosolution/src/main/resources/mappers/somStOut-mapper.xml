@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 위를 통해 mapper 사용 가능 -->
+
+<mapper namespace="com.choongang.yeonsolution.somStOut-mapper">
+	
+	<select id="SOMStOutList" resultType="SOMStOutDto">
+		Select	*
+		From	st_out
+		Where   delete_status = 'N'
+	</select>
+	
+	<select id="SOMStOutListDetail" parameterType="String" resultType="SOMStOutDto">
+		Select	sod.sorder, sod.item_code, i.item_name as itemName, sod.wh_code, sod.out_quantity, sod.memo as memo2
+		From	st_out_detail sod, item i
+		Where	sod.out_code = #{outCode}
+		And		sod.item_code = i.item_code	
+	</select>
+	
+	<select id="SOMStOUtDtoWhList" resultType="SOMStOutDto">
+		SELECT	wh_code, wh_name
+        FROM	wh
+        Where	use_yn = 'Y'
+	</select>
+	
+	<select id="SOMStOUtDtoInfoList" resultType="SOMStOutDto">
+		SELECT	item_code, item_name
+        FROM	item
+        Where	use_yn = 'Y'
+	</select>
+	
+	<insert id="SOMStOutInsert" parameterType="SOMStOutDto">
+		Insert	into
+		st_out	(
+				out_code, 
+				reg_date,
+				reg_user,
+				update_date,
+				update_user,
+				out_date,
+				memo
+				)
+		values	(
+				'OUT_CODE' || out_code_seq.nextval,
+                sysdate,
+                'KYG',
+                sysdate,
+                'KYG',
+                #{outDate},
+                #{memo , jdbcType=VARCHAR}
+				)		
+		
+	</insert>
+	
+	<insert id="SOMStOutDetailInsert" parameterType="SOMStOutDto">
+		<selectKey keyProperty="outCode" resultType="String" order="BEFORE">
+			SELECT 'OUT_CODE' || out_code_seq.currval FROM DUAL
+		</selectKey>
+		Insert	into
+		st_out_detail	(
+						out_code,
+						sorder,
+						wh_code,
+						item_code,
+						out_quantity
+						)
+		values			(
+						#{outCode},
+						(SELECT COALESCE(MAX(sorder), 0) + 1 FROM st_out_detail Where out_code = #{outCode}),
+						#{whCode},
+						#{itemCode},
+						#{outQuantity}
+						)
+	</insert>
+	
+	
+	<update id="SOMStOutDelete" parameterType="String">
+		Update  st_out
+		Set     delete_status = 'Y'
+		Where   out_code = #{outCode}
+	</update>
+	
+</mapper>

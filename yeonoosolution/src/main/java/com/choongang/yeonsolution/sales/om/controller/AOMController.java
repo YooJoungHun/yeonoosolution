@@ -24,17 +24,23 @@ public class AOMController {
 		this.aomService = aomService;
 	}
 	
+	/*
+	 * 자재요소분석 메인 페이지
+	 * @return	sales/analysis-of-materials
+	 */
 	@GetMapping("/sales/analysis-of-materials")
 	public String analysisOfMaterials() {
 		
 		log.info("[analysisOfMaterials]");
 		
-		return "sales/analysis-of-materials";
+		return "sales/analysis-of-materials.layout";
 	}
 	
 	
 	/*
-	 * 수주 content List
+	 * 수주목록 
+	 * analysis-of-materials.jsp에서 ajax 요청 및 수주 목록 출력
+	 * @return	List 
 	 */
 	@GetMapping("/sales/analysis-of-materials/receive-order-list")
 	@ResponseBody
@@ -43,13 +49,14 @@ public class AOMController {
 		log.info("[recieveOrderList]");
 		
 		List<OMOrdersAOMDto> recieveOrderList = aomService.findRecieveOrderListByCompanyCode();
-		//model.addAttribute("placeOrderList", placeOrderList);
 		
 		return recieveOrderList;
 	}
 	
 	/*
-	 * semi-manufactures List
+	 * 반재품 요소분석 출력
+	 * analysis-of-materials.jsp에서 ajax 요청 및 수주 목록 출력
+	 * @return	List
 	 */
 	@ResponseBody
 	@GetMapping("/sales/analysis-of-materials/semi-manufactures-list")

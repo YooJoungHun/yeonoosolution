@@ -13,5 +13,6 @@ public interface WoService {
 	public int addWo(Wo wo);
 	public int modifyWo(Wo wo);
 	public Wo findOneWo(String workOrderCode);
+	public int modifyWoClose(String workOrderCode);
 	
 }

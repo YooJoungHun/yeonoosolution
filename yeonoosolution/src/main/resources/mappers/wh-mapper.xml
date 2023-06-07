@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 위를 통해 mapper 사용 가능 -->
+
+<mapper namespace="com.choongang.yeonsolution.Wh-Mapper">
+	
+	<select id="WareHouseList" resultType="WMIWhDto">
+		Select	rownum rn, a.*
+		From	(
+				Select	w.*, m.member_name as reguser_name, m.member_name as updateuser_name
+				From	wh w, member m
+				Where	w.reg_user = m.member_uid
+				And     w.update_user = m.member_uid
+				And		w.use_yn != 'X'
+				) a
+	</select>
+	
+	<select id="WareHouseSearchList" parameterType="WMIWhDto" resultType="WMIWhDto">
+		Select	rownum rn, a.*
+		From	(
+				Select	w.*, m.member_name as regUserName, m.member_name as updateUserName
+				From	wh w, member m
+				Where	w.reg_user = m.member_uid
+				And     w.update_user = m.member_uid
+				And		w.use_yn != 'X'
+		        <if test="whCode != null and whCode != ''">
+		            And w.wh_code = #{whCode}
+		        </if>
+		        <if test="whName != null and whName != ''">
+		        	And w.wh_name like '%' || #{whName} || '%'
+		        </if>
+				) a
+	</select>
+	
+	<update id="WareHouseUpdate" parameterType="WMIWhDto">
+		Update	wh
+		Set		wh_name = #{whName},
+				use_yn	= #{useYn},
+				update_date = sysdate,
+				update_user = #{updateUser},
+				memo = #{memo}
+		Where	wh_code = #{whCode}
+	</update>
+	
+	<update id="WareHouseDeleteUpdate" parameterType="WMIWhDto">
+		Update	wh
+		Set		use_yn = 'X',
+				update_date = sysdate,
+				update_user = #{updateUser}
+		Where	wh_code = #{whCode}
+	</update>
+	
+	<insert id="WareHouseInsert" parameterType="WMIWhDto">
+		Insert into wh
+		values	(
+			('WH' || wh_code_seq.nextval),
+			'COMPANY1',
+			#{whName},
+			'COMPANY1.dczuh@yeonoo.com',
+			#{regDate},
+			'COMPANY1.dczuh@yeonoo.com',
+			#{regDate},
+			#{useYn},
+			#{memo}
+		)
+	</insert>
+	
+</mapper>

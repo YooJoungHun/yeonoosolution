@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +20,7 @@ import com.choongang.yeonsolution.sales.pm.domain.PmStInDataDto;
 import com.choongang.yeonsolution.sales.pm.domain.PmStInDetailDto;
 import com.choongang.yeonsolution.sales.pm.domain.PmStockInDto;
 import com.choongang.yeonsolution.sales.pm.domain.PmWhDto;
+import com.choongang.yeonsolution.standard.am.domain.MemberDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,20 +52,17 @@ public class PmServiceImpl implements PmService{
 	}
 
 	@Override
-	public String modifyOrdersByOrderCode(String orderCode, String column, String data) {
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("orderCode", orderCode);
-		map.put("column", column);
-		map.put("data", data);
-		int result = pmDao.updateOrdersByOrderCode(map);
+	public String modifyOrdersByOrderCode(PmOrdersDto pmOrdersDto, HttpSession session) {
+		pmOrdersDto.setUpdateUser(((MemberDto) session.getAttribute("member")).getMemberName());
+		int result = pmDao.updateOrdersByOrderCode(pmOrdersDto);
 		String msg = "";
 		log.info("result -> {}",result);
-		if(column.equals("deleteStatus")) {
+		if(pmOrdersDto.getColumn().equals("deleteStatus")) {
 			msg += "삭제 ";
-		}else if(column.equals("orderStatus")) {
-			if(data.equals("확정")) {
+		}else if(pmOrdersDto.getColumn().equals("orderStatus")) {
+			if(pmOrdersDto.getData().equals("확정")) {
 				msg += "발주확정 ";
-			}else if(data.equals("저장")) {
+			}else if(pmOrdersDto.getData().equals("저장")) {
 				msg += "확정취소 ";
 			}else {
 				msg += "발주마감 ";
@@ -87,8 +87,14 @@ public class PmServiceImpl implements PmService{
 	}
 
 	@Override
-	public String addOrder(PmOrdersDataDto orderData) {
+	public String addOrder(PmOrdersDataDto orderData, HttpSession session) {
+		String companyCode = ((MemberDto) session.getAttribute("member")).getCompanyCode();
+		String loginUserName = ((MemberDto) session.getAttribute("member")).getMemberName();
 		PmOrdersDto order = orderData.getOrder();
+		order.setCompanyCode(companyCode);
+		order.setRegUser(loginUserName);
+		order.setUpdateUser(loginUserName);
+		
         List<PmOrdersDetailDto> orderDetails = orderData.getOrderDetails();
         String orderCode = pmDao.insertOrder(order);
         int insertRow = 0;
@@ -104,13 +110,19 @@ public class PmServiceImpl implements PmService{
 	}
 
 	@Override
-	public String modifyOrder(PmOrdersDataDto orderData) {
+	public String modifyOrder(PmOrdersDataDto orderData, HttpSession session) {
+		String companyCode = ((MemberDto) session.getAttribute("member")).getCompanyCode();
+		String loginUserName = ((MemberDto) session.getAttribute("member")).getMemberName();
 		PmOrdersDto order = orderData.getOrder();
+		order.setCompanyCode(companyCode);
+		order.setRegUser(loginUserName);
+		order.setUpdateUser(loginUserName);
+		
         List<PmOrdersDetailDto> orderDetails = orderData.getOrderDetails();
         int insertRow = 0;
 		int orderUpdateResult = pmDao.updateOrder(order);
 		if(orderUpdateResult > 0) {
-			int orderDetailDel = pmDao.deleteOrderDetailByOrderCode(order.getOrderCode());
+			pmDao.deleteOrderDetailByOrderCode(order.getOrderCode());
 			for(PmOrdersDetailDto orderDetail : orderDetails) {
 				insertRow += pmDao.insertOrdersDetail(orderDetail);
 			}
@@ -129,6 +141,7 @@ public class PmServiceImpl implements PmService{
 	
 	@Override
 	public List<PmStockInDto> findStockInListBySearch(PmSearch search) {
+		search.setOrderDate(search.getOrderDate().replaceAll("-", "/"));
 		List<PmStockInDto> stockInList = pmDao.selectStockInListBySearch(search);
 		for(PmStockInDto stockIn : stockInList) {
 			if(stockIn.getInDate() != null && stockIn.getInDate().length() > 9) {
@@ -144,37 +157,37 @@ public class PmServiceImpl implements PmService{
 	}
 
 	@Override
-	public String modifyStockInByInCode(String inCode, String column, String data) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("inCode", inCode);
-		map.put("column", column);
-		map.put("data", data);
-		int result = pmDao.updateStockInByInCode(map);
+	public String modifyStockInByInCode(PmStockInDto pmStockInDto, HttpSession session) {
+		String loginUserName = ((MemberDto) session.getAttribute("member")).getMemberName();
+		pmStockInDto.setUpdateUser(loginUserName);
+		
+		int result = pmDao.updateStockInByInCode(pmStockInDto);
 		String msg = "";
-		if(data.equals("확정") && result > 0) {
-			List<PmStInDetailDto> stInDetailList = pmDao.selectStockInDetailByInCode(inCode);
+		if(pmStockInDto.getData().equals("확정") && result > 0) {
+			List<PmStInDetailDto> stInDetailList = pmDao.selectStockInDetailByInCode(pmStockInDto.getInCode());
 			for(PmStInDetailDto stInDetail : stInDetailList) {
-				map = new HashMap<String, Object>();
+				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("whCode", stInDetail.getWhCode());
 				map.put("itemCode", stInDetail.getItemCode());
 				map.put("inQuantity", stInDetail.getInQuantity());
-				map.put("updateUser", "bsm");			// 추후 세센에서 받아올 값
+				map.put("updateUser", loginUserName);			// 추후 세센에서 받아올 값
 				pmDao.updateWhStockDetailBystInDetail(map);
 			}
 			
-		}else if(data.equals("저장") && result > 0) {
-			List<PmStInDetailDto> stInDetailList = pmDao.selectStockInDetailByInCode(inCode);
+		}else if(pmStockInDto.getData().equals("저장") && result > 0) {
+			List<PmStInDetailDto> stInDetailList = pmDao.selectStockInDetailByInCode(pmStockInDto.getInCode());
 			for(PmStInDetailDto stInDetail : stInDetailList) {
+					stInDetail.setUpdateUser(loginUserName);
 				pmDao.updateWhStockDetailBystInDetail(stInDetail);
 			}
 		}
 			
-		if(column.equals("deleteStatus")) {
+		if(pmStockInDto.getColumn().equals("deleteStatus")) {
 			msg += "삭제 ";
-		}else if(column.equals("orderStatus")) {
-			if(data.equals("확정")) {
+		}else if(pmStockInDto.getColumn().equals("orderStatus")) {
+			if(pmStockInDto.getData().equals("확정")) {
 				msg += "입고확정 ";
-			}else if(data.equals("저장")) {
+			}else if(pmStockInDto.getData().equals("저장")) {
 				msg += "확정취소 ";
 			}else {
 				msg += "발주마감 ";
@@ -194,8 +207,15 @@ public class PmServiceImpl implements PmService{
 	}
 
 	@Override
-	public String addStIn(PmStInDataDto stInData) {
+	public String addStIn(PmStInDataDto stInData, HttpSession session) {
+		String companyCode = ((MemberDto) session.getAttribute("member")).getCompanyCode();
+		String loginUserName = ((MemberDto) session.getAttribute("member")).getMemberName();
 		PmStockInDto stIn = stInData.getStockIn();
+		stIn.setInDate(stIn.getInDate().replaceAll("-", "/"));
+		stIn.setCompanyCode(companyCode);
+		stIn.setRegUser(loginUserName);
+		stIn.setUpdateUser(loginUserName);
+		
 		List<PmStInDetailDto> stInDetails = stInData.getStInDetails();
 		String stInCode = pmDao.insertStIn(stIn);
 		log.info("stIn -> {}", stIn);
@@ -214,8 +234,15 @@ public class PmServiceImpl implements PmService{
 	}
 
 	@Override
-	public String modifyStIn(PmStInDataDto stInData) {
+	public String modifyStIn(PmStInDataDto stInData, HttpSession session) {
+		String companyCode = ((MemberDto) session.getAttribute("member")).getCompanyCode();
+		String loginUserName = ((MemberDto) session.getAttribute("member")).getMemberName();
 		PmStockInDto stIn = stInData.getStockIn();
+		stIn.setInDate(stIn.getInDate().replaceAll("-", "/"));
+		stIn.setCompanyCode(companyCode);
+		stIn.setRegUser(loginUserName);
+		stIn.setUpdateUser(loginUserName);
+		
 		List<PmStInDetailDto> stInDetails = stInData.getStInDetails();
 		log.info("stIn -> {}", stIn);
 		log.info("stInDetails -> {}", stInDetails);
