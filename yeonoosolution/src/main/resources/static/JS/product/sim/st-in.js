@@ -286,40 +286,6 @@ function getParams() {
 	}
 }
 
-// // 파라미터 값
-// function getParams() {
-//     if ($('.stInRow input:checked').length > 0) {
-//         const params = {
-//             inCode: $('.inCode').val(),
-//             orderCode: $('.orderCode').val(),
-//             orderType: $('.orderType').val(),
-//             customerCode: $('.customerCode').val(),
-//             inDate: formatDateMinus(new Date($('.inDate').val())),
-//             regDate: formatDateMinus(new Date($('.regDate').val())),
-//             regUser: $('.regUser').val(),
-//             updateUser: $('.updateUser').val(),
-//             updateDate: formatDateMinus(new Date($('.updateDate').val())),
-//             inType: $('.inType').val(),
-//             companyName: $('.companyName').val(),
-//             memo: $('.memo').val()
-//         };
-//         return params;
-//     } else {
-//         console.log("값 없음");
-//         return null;
-//     }
-// }
-
-
-
-
-
-	// // JSON 변환
-	// let objJson = JSON.stringify(obj);
-	// // 객체 생성
-	// let data = new FormData();
-	// data.append('params', objJson);
-
 
 // JavaScript로 form submit (검색)
 function findGet(url, method) {
@@ -341,15 +307,6 @@ function findGet(url, method) {
 }
 
 
-// 버튼 이벤트 맵
-// const btnMap = {
-//     find: [`${contextPath}/product/sim/find`, 'get'],
-//     save: [`${contextPath}/product/sim/save`, 'put'],
-//     delete: [`${contextPath}/product/sim/delete`, 'delete'],
-//     fix: [`${contextPath}/product/sim/fix`, 'patch'],
-//     cancel: [`${contextPath}/product/sim/cancel`, 'patch'],
-// 	reset: resetEvent()
-// };
 
 // Ajax 이벤트
 function btnAction(url, method) {
@@ -540,6 +497,14 @@ function getNextSorder(inCode) {
 
   return sorder;
 }
+
+
+
+
+
+
+
+
 
 // // sorder 추출 함수
 // function getMaxSorder() {
@@ -758,7 +723,7 @@ function getNextSorder(inCode) {
 
 
 
-// 저장
+// 상세 페이지 저장
 function saveDetailEvent() {
   $('.table-in-detail input').prop('disabled', false).prop('readonly', false);
 
@@ -769,6 +734,7 @@ function saveDetailEvent() {
 	let addData = [];
 	let deleteData = [];
 
+	// 추가, 삭제 분리
   $('.table-in-detail tbody tr').each(function() {
     if($(this).find('.inCode').val() == inCode) {
       let dataStatus = $(this).attr('data-status');
@@ -788,6 +754,7 @@ function saveDetailEvent() {
       }
     }
   });
+	// 추가 Ajax
 	if(addData.length > 0) {
 		$.ajax({
 			url: `${contextPath}/product/sim/ajax/add`,
@@ -799,6 +766,7 @@ function saveDetailEvent() {
 			}
 		});
 	}
+	// 삭제 Ajax
 	if(deleteData.length > 0) {
 		$.ajax({
 			url: `${contextPath}/product/sim/ajax/delete`,
@@ -806,35 +774,11 @@ function saveDetailEvent() {
 			data: JSON.stringify(deleteData),
 			contentType: 'application/json; charset=utf-8',
 			success: function(data) {
-				console.log(data);
+				alert(data);
 			}
 		});
 	}
 }
-
-
-
-
-
-// // 객체 업데이트
-// function updateObject() {
-// 	// 테이블 저장, 기존 요소 제거
-// 	let tbody = $('.table-in-detail tbody');
-// 	tbody.empty();
-
-// 	// 객체 저장
-// 	for (let index in detailData) {
-// 		let data = detailData[index]
-// 		let addTr  = `<tr class="addInDetail" id=${index}>`;
-// 		for (let key in data) {
-// 			addTr += data[key];
-// 		}
-// 		addTr += `</tr>`;
-// 		tbody.append(addTr);
-// 	}
-// }
-
-
 
 // Date 포멧
 function formatDateMinus(date) {
