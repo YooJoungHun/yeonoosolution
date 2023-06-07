@@ -57,7 +57,7 @@
 .itemName,
 .stockQuantity,
 .whCodeOut{
-	background-color: #e6e6e6;	/* 회색 */
+	background-color: #d9d9d9;	/* 회색 */
 }
 
 .moveDate,
@@ -109,7 +109,7 @@
 
 
 .selected-row{
-	background-color: lightgray;
+	background-color: #d9d9d9;
 }
 
 #itemCodeTable, #whCodeInTable { 
@@ -118,7 +118,7 @@
 
 #itemCodeTable tbody tr:hover,
 #whCodeInTable tbody tr:hover    {
-	background-color: rgba(240,240,221,0.5);
+	background-color: #F0F0DD;
 	cursor: pointer;
 }
 

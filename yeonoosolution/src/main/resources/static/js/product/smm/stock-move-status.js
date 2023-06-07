@@ -36,7 +36,7 @@ $(document).ready(function() {
 	            /* tbody append */
 	            $.each(data, function(index, item) {
 	                var row = $("<tr>");
-	                row.append($("<td class="moveCount">").text(index + 1));
+	                row.append($("<td class='moveCount'>").text(index + 1));
 	                row.append($("<td class='moveCode'>").text(item.moveCode));
 	                row.append($("<td class='moveDate'>").text(item.moveDate));
 	                row.append($("<td class='itemCode'>").text(item.itemCode));
