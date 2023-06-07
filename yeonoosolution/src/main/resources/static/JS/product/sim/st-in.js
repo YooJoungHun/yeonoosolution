@@ -7,12 +7,11 @@ let previousRow, inRow, inDetailRow, previousCheckBox;
 
 // 버튼 클릭 이벤트 등록
 const btnMap =  {
-	find: { url: `${contextPath}/product/sim/find`, 		method: 'get' },
-	update: { url: `${contextPath}/product/sim/ajax/save`, 	method: 'put' },
-	delete: { url: `${contextPath}/product/sim/ajax/delete`,method: 'delete' },
-	fix: { url: `${contextPath}/product/sim/ajax/fix`, 		method: 'patch' },
-	cancel: { url: `${contextPath}/product/sim/ajax/cancel`,method: 'patch' },
-	save: { url: `${contextPath}/product/sim/ajax/register`,method: 'post' },
+	find: { url: `${contextPath}/product/sim/find`, 		method: 'GET' },
+	update: { url: `${contextPath}/product/sim/btn/save`, 	method: 'PUT' },
+	delete: { url: `${contextPath}/product/sim/btn/delete`,	method: 'DELETE' },
+	fix: { url: `${contextPath}/product/sim/btn/fix`, 		method: 'PATCH' },
+	cancel: { url: `${contextPath}/product/sim/btn/cancel`,	method: 'PATCH' },
 	reset: { fn: resetEvent },
 	register: { fn: regEvent },
 	addDetail: { fn: addDetailEvent },
