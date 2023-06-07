@@ -265,10 +265,11 @@
 	                #{sid.memo, jdbcType=VARCHAR})
 	    </foreach>
 	</delete> -->
-	<delete id="deleteStInDetail" parameterType="java.util.List">
-	    <foreach collection="list" item="sid" open="DELETE FROM ST_IN_DETAIL WHERE IN_CODE = (" close=")" separator=",">
-	        #{sid.inCode, jdbcType=VARCHAR}
-	    </foreach>
+	<delete id="deleteStInDetail" parameterType="SIMStInDetailDto">
+		DELETE
+		FROM 	ST_IN_DETAIL
+        WHERE 	IN_CODE = #{inCode, jdbcType=VARCHAR}
+        AND		SORDER = #{sorder, jdbcType=BIGINT}
 	</delete>
 
 <!-- 	<insert id="insertStIn" parameterType="SIMStInDto">

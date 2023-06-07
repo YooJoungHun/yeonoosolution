@@ -163,49 +163,6 @@
 					</tbody>
 				</table>
 				
-				
-				<table class="myModal">
-					<c:forEach var="stIn" items="${stInList}" varStatus="status">
-					<c:forEach var="sid" items="${stIn.stInDetailDto}">
-					<c:forEach var="wsd" items="${sid.whStockDetailDto}">
-						<tbody class="myModal-window">
-							<tr><th><th colspan="11">아이템 상세</th><th><button onclick="$('.myModal').css('display', 'none');">X</button></th></tr>
-							<tr>
-								<th>코드</th>
-								<th>이름</th>
-								<th>타입</th>
-								<th>단위</th>
-								<th>단가</th>
-								<th>판매가</th>
-								<th>시작일</th>
-								<th>마감일</th>
-								<th>등록자</th>
-								<th>등록일</th>
-								<th>수정자</th>
-								<th>수정일</th>
-								<th>메모</th>
-							</tr>
-							<tr>
-								<td>${wsd.itemDto.itemCode}</td>
-								<td>${wsd.itemDto.itemName}</td>
-								<td>${wsd.itemDto.itemType}</td>
-								<td>${wsd.itemDto.stockUnit}</td>
-								<td>${wsd.itemDto.purchasePrice}</td>
-								<td>${wsd.itemDto.salesPrice}</td>
-								<td>${wsd.itemDto.startDate}</td>
-								<td>${wsd.itemDto.endDate}</td>
-								<td>${wsd.itemDto.regUser}</td>
-								<td>${wsd.itemDto.regDate}</td>
-								<td>${wsd.itemDto.updateUser}</td>
-								<td>${wsd.itemDto.updateDate}</td>
-								<td>${wsd.itemDto.memo}</td>
-							</tr>
-						</tbody>
-					</c:forEach>
-					</c:forEach>
-					</c:forEach>
-				</table>
-				
 			</div>
 		</section>
 	</main>

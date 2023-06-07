@@ -143,7 +143,7 @@
 			</div>
 		</section>
 			
-		<section>
+<%-- 		<section>
 			<div class="myModal">
 				<table id="company-modal" class="display" style="width: 100%">
 					<thead>
@@ -192,7 +192,7 @@
 
 
 			
-		</section>
+		</section> --%>
 	</main>
 	
 </body>

@@ -55,6 +55,10 @@ public class SIMDaoImpl implements SIMDao {
 	public void insertStInDetail(List<StInDetailDto> sidList) {session.insert("insertStInDetail", sidList);}
 	/** 입고 상세 삭제 */
 	@Override
-	public void deleteStInDetail(List<StInDetailDto> sidList) {session.insert("deleteStInDetail", sidList);}
+	public void deleteStInDetail(List<StInDetailDto> sidList) {
+		for(StInDetailDto sid : sidList) {
+			session.insert("deleteStInDetail", sid);
+		}
+	}
 
 }

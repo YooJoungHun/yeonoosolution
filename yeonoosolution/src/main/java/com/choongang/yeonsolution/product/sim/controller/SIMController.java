@@ -90,11 +90,11 @@ public class SIMController {
 	public ResponseEntity<Map<String, String>> inModify(@PathVariable(name = "action")String action,
 	                                                    @RequestBody(required = false)List<StInDetailDto> sidList) {
 		Map<String, String> result = new HashMap<String, String>();
+		String resultStr = null;
 	        switch (action) {
 	        case "add":
 	        	System.out.println("\n저장\n"+sidList);
 	        	simService.addStInDetail(sidList);
-	        	
 	        	break;
 	        case "update":
 	            //simService.modifyStIn(data); break;
@@ -102,12 +102,8 @@ public class SIMController {
 	        	System.out.println("\n삭제\n"+sidList);
 	        	simService.removeStInDetail(sidList);
 	        	break;
-	            //simService.removeStIn(data); break;
-	        case "fix":
-	            //simService.modifyStInFix(data); break;
-	        case "cancel":
-	            //simService.modifyStInCancel(data); break;
 	        }
+	    result.put("result", resultStr);
 	    return ResponseEntity.ok(result);
 	}
 
