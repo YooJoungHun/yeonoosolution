@@ -61,9 +61,8 @@ var menuList = [
 			{
 				name: '수주관리',
 				value: [
-					{ name: '견적서 등록', value: '' },
-					{ name: '수주서 관리', value: '' },
-					{ name: '자재소요분석', value: '' }
+					{ name: '수주서 관리', value: '/sales/receive-order' },
+					{ name: '자재요소분석', value: '/sales/analysis-of-materials' }
 				]
 			},
 			{
