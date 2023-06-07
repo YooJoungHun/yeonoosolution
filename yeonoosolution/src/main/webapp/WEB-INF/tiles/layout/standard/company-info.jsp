@@ -8,26 +8,16 @@
 	  	flex-direction: row;
 	  	justify-content: space-between;
 	}
-	
-	.side-bar {
-	  	width: 200px;
-	  	background-color: #f2f2f2;
-	  	border: 1px solid #ddd;
-	  	padding: 20px;
-	  	float: left;
-	  	height: auto;
-	}
-	
 	.content {
 	  	flex: 1;
 	  	margin-left: 20px;
 	  	display: inline-block;
 	
 	}
-	
 	.saveBtn {
 	  	margin-bottom: 20px;
 	}
+	
 	#companyInfoSaveBtn{
 	  	width: 70px;
 	  	height: 30px;
