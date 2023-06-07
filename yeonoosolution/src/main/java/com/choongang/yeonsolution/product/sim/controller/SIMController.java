@@ -65,25 +65,32 @@ public class SIMController {
 //	}
 //	
 	/** 검색 조회 */
-	@RequestMapping(value = "/find")
-	public String inFind(@RequestParam(required = false)Map<String, Object> data, RedirectAttributes redirectAttributes) {
-		
+	@RequestMapping(value = "/btn/{action}")
+	public String find(	@PathVariable(name = "action")String action,
+						@RequestParam(required = false)Map<String, Object> data,
+						RedirectAttributes redirectAttributes) {
 		ObjectMapper om = new ObjectMapper();
 		om.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
 		om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		
 		StInDto stInDto = null;
-		CompanyDto companyDto = null;
 		stInDto = om.convertValue(data, StInDto.class);
-		companyDto = om.convertValue(data, CompanyDto.class);
-		System.out.println(stInDto);
-		
 		String inDate = stInDto.getInDate();
 		stInDto.setInDate(inDate.replace("-", "/"));
-		stInDto.setCompanyDto(companyDto);
-		redirectAttributes.addFlashAttribute("stInDto", stInDto);
 		
-		return "redirect:/product/sim/status";
+		switch (action) {
+		case "find":
+			redirectAttributes.addFlashAttribute("stInDto", stInDto); break;
+		case "save":
+			simService.modifyStIn(stInDto); break;
+		case "delete":
+			simService.removeStIn(stInDto); break;
+		case "fix":
+			simService.modifyStInFix(stInDto); break;
+		case "cancel":
+			simService.modifyStInCancel(stInDto); break;
+		}
+		return "product/sim/in-status";
 	}
 	
 	/** Ajax 등록, 수정, 삭제 */
@@ -108,44 +115,44 @@ public class SIMController {
 	    return ResponseEntity.ok(result);
 	}
 
-	/** 수정, 삭제 */
-	@RequestMapping(value = "/btn/{action}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> inDetail(	@PathVariable(name = "action")
-											String action,
-											@RequestBody(required = false)Map<String, Object> data) {
-		ObjectMapper om = new ObjectMapper();
-		om.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
-		om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		
-		StInDto stInDto = null;
-		stInDto = om.convertValue(data, StInDto.class);
-		
-		
-		if(stInDto.getInDate() != null) {
-			String inDate = stInDto.getInDate();
-			stInDto.setInDate(inDate.replace("-", "/"));
-		}
-
-//		List<StInDetailDto> sid = null;
-		CompanyDto companyDto = null;
-//		companyDto = om.convertValue(data, CompanyDto.class);
-//		stInDto.setCompanyDto(companyDto);
-//		System.out.println(stInDto);
-		
-		// 수정, 삭제, 확정, 확정취소, 등록
-		switch (action) {
-		case "update":
-			simService.modifyStIn(stInDto); break;
-		case "delete":
-			simService.removeStIn(stInDto); break;
-		case "fix":
-			simService.modifyStInFix(stInDto); break;
-		case "cancel":
-			simService.modifyStInCancel(stInDto); break;
-		}
-		return ResponseEntity.ok("성공");
-	}
-	
+//	/** 수정, 삭제 */
+//	@RequestMapping(value = "/btn/{action}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//	public ResponseEntity<String> inDetail(	@PathVariable(name = "action")
+//											String action,
+//											@RequestBody(required = false)Map<String, Object> data) {
+//		ObjectMapper om = new ObjectMapper();
+//		om.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+//		om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//		
+//		StInDto stInDto = null;
+//		stInDto = om.convertValue(data, StInDto.class);
+//		
+//		
+//		if(stInDto.getInDate() != null) {
+//			String inDate = stInDto.getInDate();
+//			stInDto.setInDate(inDate.replace("-", "/"));
+//		}
+//
+////		List<StInDetailDto> sid = null;
+//		CompanyDto companyDto = null;
+////		companyDto = om.convertValue(data, CompanyDto.class);
+////		stInDto.setCompanyDto(companyDto);
+////		System.out.println(stInDto);
+//		
+//		// 수정, 삭제, 확정, 확정취소, 등록
+//		switch (action) {
+//		case "update":
+//			simService.modifyStIn(stInDto); break;
+//		case "delete":
+//			simService.removeStIn(stInDto); break;
+//		case "fix":
+//			simService.modifyStInFix(stInDto); break;
+//		case "cancel":
+//			simService.modifyStInCancel(stInDto); break;
+//		}
+//		return ResponseEntity.ok("성공");
+//	}
+//	
 
 	
 //	@RequestMapping(value = "/register/save",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
