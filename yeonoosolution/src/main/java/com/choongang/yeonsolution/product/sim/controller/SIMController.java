@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -107,56 +108,53 @@ public class SIMController {
 	    return ResponseEntity.ok(result);
 	}
 
-//	/** Ajax 등록, 수정, 삭제 */
-//	@RequestMapping(value = "/ajax/{action}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-//	public ResponseEntity<Map<String, String>> inDetail(@PathVariable(name = "action")String action,
-//			@RequestBody(required = false)List<Map<String, Object>> dataList) {
-//		ObjectMapper om = new ObjectMapper();
-//		om.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
-//		om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-//		
-//		StInDto stInDto = null;
-////		CompanyDto companyDto = null;
-//		
+	/** 수정, 삭제 */
+	@RequestMapping(value = "/btn/{action}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> inDetail(	@PathVariable(name = "action")
+											String action,
+											@RequestBody(required = false)Map<String, Object> data) {
+		ObjectMapper om = new ObjectMapper();
+		om.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+		om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		
+		StInDto stInDto = null;
+		stInDto = om.convertValue(data, StInDto.class);
+		
+		
+		if(stInDto.getInDate() != null) {
+			String inDate = stInDto.getInDate();
+			stInDto.setInDate(inDate.replace("-", "/"));
+		}
+
 //		List<StInDetailDto> sid = null;
-//		Map<String, String> result = new HashMap<String, String>();
-//		
-//		for(Map<String, Object> data : dataList) {
-////			stInDto = om.convertValue(data, StInDto.class);
-////			companyDto = om.convertValue(data, CompanyDto.class);
-////			String inDate = stInDto.getInDate();
-////			stInDto.setInDate(inDate.replace("-", "/"));
-////			stInDto.setCompanyDto(companyDto);
-////			System.out.println(stInDto);
-//			
-//			// 수정, 삭제, 확정, 확정취소, 등록
-//			switch (action) {
-//			case "update":
-//				simService.modifyStIn(stInDto); break;
-//			case "delete":
-//				simService.removeStIn(stInDto); break;
-//			case "fix":
-//				simService.modifyStInFix(stInDto); break;
-//			case "cancel":
-//				simService.modifyStInCancel(stInDto); break;
-//			case "save":
-//				sid = om.convertValue(data, StInDetailDto.class);
-//				simService.addStInDetail(sid);
-//				break;
-//			}
-//		}
-//		return ResponseEntity.ok(result);
-//	}
+		CompanyDto companyDto = null;
+//		companyDto = om.convertValue(data, CompanyDto.class);
+//		stInDto.setCompanyDto(companyDto);
+//		System.out.println(stInDto);
+		
+		// 수정, 삭제, 확정, 확정취소, 등록
+		switch (action) {
+		case "update":
+			simService.modifyStIn(stInDto); break;
+		case "delete":
+			simService.removeStIn(stInDto); break;
+		case "fix":
+			simService.modifyStInFix(stInDto); break;
+		case "cancel":
+			simService.modifyStInCancel(stInDto); break;
+		}
+		return ResponseEntity.ok("성공");
+	}
 	
 
 	
-	@RequestMapping(value = "/register/save",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public ResponseEntity<String> receiveData(@RequestBody(required = false) List<Map<String, Object>> data){
-		System.out.println(data);
-			
-		return ResponseEntity.ok("등록 완료");
-	}
+//	@RequestMapping(value = "/register/save",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//	@ResponseBody
+//	public ResponseEntity<String> receiveData(@RequestBody(required = false) List<Map<String, Object>> data){
+//		System.out.println(data);
+//			
+//		return ResponseEntity.ok("등록 완료");
+//	}
 	
 	/** Ajax Modal의 테이블  목록 */
 	@GetMapping(value = "/modal/{find}")

@@ -69,9 +69,10 @@
 			
 		<section class="content-body">
 			<div class="content-btn">
-				<button onclick="btnEvent('find')" class="btn custom-btn custom-btn-primary btn-white">조회</button>
-				<button onclick="btnEvent('save')" class="btn custom-btn custom-btn-primary btn-white">저장</button>
-				<button onclick="resetEvent()" class="btn custom-btn custom-btn-secondary btn-white">초기화</button>
+				<button onclick="btnEvent('find')">조회</button>
+				<button onclick="btnEvent('update')">저장</button>
+				<button onclick="btnEvent('delete')">삭제</button>
+				<button onclick="resetEvent()">초기화</button>
 			</div>
 			<div class="stock-in-table">
 				<table class="table-in table-content">
@@ -125,7 +126,6 @@
 			<div class="content-btn">
 				<button onclick="btnEvent('find')">조회</button>
 				<button onclick="btnEvent('save')">저장</button>
-				<button onclick="btnEvent('delete')">삭제</button>
 				<button onclick="btnEvent('fix')">확정</button>
 				<button onclick="btnEvent('cancel')">확정 취소</button>
 			</div>
