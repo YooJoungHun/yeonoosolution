@@ -11,8 +11,9 @@
 	}
 	.content{
 		margin:0 auto;
-		width: 75%;
+		width: 100%;
 		display: inline-block;
+		margin-left: 30px;
 	}
 	.side-bar {
 	   	width: 200px;
@@ -362,7 +363,7 @@
 	 				if(data == 1){
 	 					alert("등록되었습니다.");
 	 				}else if(data == 2){
-	 					alert("같은 이름의 부서가 존재합니다.");
+	 					alert("같은 이름의 직급이 존재합니다.");
 	 				}else{
 	 					alert("등록에 실패하였습니다.");
 	 				}

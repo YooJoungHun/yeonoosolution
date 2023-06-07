@@ -3,7 +3,7 @@ package com.choongang.yeonsolution.product.smm.domain;
 import lombok.Data;
 
 @Data
-public class stMoveDetailDto {
+public class StMoveDetailDto {
 	
 	private String moveCode;    	//이동번호
 	private Long sorder;				//순번

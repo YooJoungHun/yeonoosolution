@@ -23,8 +23,9 @@
 	
 	.content{
 		margin:0 auto;
-		width: 75%;
+		width: 100%;
 		display: inline-block;
+		margin-left: 30px;
 	}
 	
 	.filter {

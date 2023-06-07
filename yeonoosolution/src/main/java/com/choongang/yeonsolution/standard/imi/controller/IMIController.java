@@ -33,7 +33,7 @@ public class IMIController {
 	public String imi() {
 		log.info("Imi Controller Start");
 		
-		return "standard/item-management-info";
+		return "standard/item-management-info.layout";
 	}
 	
 	@ResponseBody
@@ -107,9 +107,14 @@ public class IMIController {
 		return resultMap;
 	}
 	
-
-	
-	
-	
+	@ResponseBody
+	@GetMapping("/imi/search/{searchKeyWord}")
+	public List<IMIItemDto> itemSearchList(@PathVariable("searchKeyWord") String searchKeyWord) {
+		log.info("Item SearchList Controller Start");
+		log.info("Controller searchKeyWord -> " + searchKeyWord);
+		List<IMIItemDto> searchResultList = imiService.findItemListBySearchKeyWord(searchKeyWord);
+		
+		return searchResultList;
+	}
 	
 }
