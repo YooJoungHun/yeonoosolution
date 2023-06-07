@@ -54,7 +54,7 @@ public class AMController {
 	 */
 	@GetMapping("/user-admin")
 	public String userAdminPage() {
-		return "standard/user-admin";
+		return "standard/user-admin.layout";
 	}
 	
 	/**

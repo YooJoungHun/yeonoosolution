@@ -20,7 +20,7 @@ var menuList = [
 	  				{ name: '부서등록', value: '' },
 	  				{ name: '직급코드', value: '' },
 	  				{ name: '조직도', value: '' },
-	  				{ name: '사용자계정관리', value: '' }
+	  				{ name: '사용자계정관리', value: '/standard/user-admin' }
 	  			]
 	  		},
 	  		{
