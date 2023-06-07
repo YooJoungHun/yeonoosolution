@@ -205,6 +205,10 @@ const arrangeMenu = (menuData, depth = 0) => {
 	return $(virtual).html();
 };
 
+$(document).on('click', 'button.logout-button', e => {
+	location.href = location.protocol + '//' + location.host + '/standard/logout';
+});
+
 $(document).on('click', 'button.list-header', e => {
 	let elem = $(e.target).closest('button.list-header');
 	let target = $(elem).attr('data-target');
@@ -264,14 +268,15 @@ $(() => {
 	$('datalist#menu-search-list').html($(virtualDataList).html());
 	
 	// 현재 페이지에 맞는 메뉴 오픈
-	// menuList 배열 데이터 내에 데이터가 없을 경우 무한루프 발생함...
 	let currentMenu = $('button.list-button[data-path="' + location.pathname + '"]');
-	$(currentMenu).css('background-color', '#FFFFCC');
-	while (true) {
-		currentMenu = $(currentMenu).closest('div.menu-list-section');
-		let section = $(currentMenu).attr('data-section');
-		currentMenu = $('button.list-header[data-target="' + section + '"]');
-		$(currentMenu).click();
-		if ($(currentMenu).attr('data-depth') == '0') break;
+	if (currentMenu.toArray().length > 0) {
+		$(currentMenu).css('background-color', '#FFFFCC');
+		while (true) {
+			currentMenu = $(currentMenu).closest('div.menu-list-section');
+			let section = $(currentMenu).attr('data-section');
+			currentMenu = $('button.list-header[data-target="' + section + '"]');
+			$(currentMenu).click();
+			if ($(currentMenu).attr('data-depth') == '0') break;
+		}
 	}
 });

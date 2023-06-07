@@ -79,9 +79,31 @@
 		<result		property="regDate"			column="reg_date"/>
 		<result		property="updateUser"		column="update_user"/>
 		<result		property="updateDate"		column="update_date"/>
+		<!-- just for Java -->
+		<result		property="goodQuantity"		column="goodQuantity"/>
+		<result		property="badQuantity"		column="badQuantity"/>
+		<result		property="workedQuantity"	column="workedQuantity"/>
+		<!-- jfj end -->
 		<collection	property="wh"					resultMap="WhResultMap"/>
 		<collection	property="orders"				resultMap="OrdersResultMap"/>
 		<collection	property="item"				resultMap="ItemResultMap"/>
+	</resultMap>
+	<resultMap type="WOWoDetail" id="WoDetailResultMap">
+		<id			property="sorder"				column="sorder"/>
+		<result		property="worker"				column="worker"/>
+		<result		property="workDate"				column="work_date"/>
+		<result		property="workOrderQuantity"	column="work_order_quantity"/>
+		<result		property="workerCount"			column="worker_count"/>
+		<result		property="goodYn"				column="good_yn"/>
+		<result		property="memo"					column="memo"/>
+		<collection property="wo"					resultMap="WoResultMap"/>
+		<collection property="item"					resultMap="ItemResultMap"/>
+	</resultMap>
+	<resultMap type="WOBom" id="BomResultMap">
+		<id				property="highItemCode"			column="high_item_code"/>
+		<id				property="lowItemCode"		column="low_item_code"/>
+		<result			property="materialQuantity"		column="material_quantity"/>
+		<collection		property="lowItem"				resultMap="ItemResultMap"/>
 	</resultMap>
 	<!-- WO mapper -->
 	<select id="selectWo" resultMap="WoResultMap">
@@ -94,7 +116,8 @@
 	</select>
 	<select id="selectWoSearch" parameterType="WOWo" resultMap="WoResultMap">
 		SELECT wo.*, wh.*, orders.*, item.*,
-				  NVL(wd.GOODQUANTITY, 0) GOODQUANTITY, NVL(wd.BADQUANTITY, 0) BADQUANTITY
+				  NVL(wd.GOODQUANTITY, 0) GOODQUANTITY, NVL(wd.BADQUANTITY, 0) BADQUANTITY,
+				  NVL(wd.GOODQUANTITY, 0) + NVL(wd.BADQUANTITY, 0) WORKEDQUANTITY
 		FROM WO wo LEFT OUTER JOIN WH wh ON (wo.WH_CODE = wh.WH_CODE)
 						   LEFT OUTER JOIN ORDERS orders ON (wo.ORDER_CODE = orders.ORDER_CODE)
 						   LEFT OUTER JOIN ITEM item ON (wo.ITEM_CODE = item.ITEM_CODE)
@@ -191,5 +214,20 @@
 	<!-- Item mapper -->
 	<select id="selectItem" parameterType="java.lang.String" resultMap="ItemResultMap">
 		SELECT * FROM ITEM WHERE ITEM_CODE = #{itemCode}
+	</select>
+	<!-- WoDetail mapper -->
+	<select id="selectWoDetail" parameterType="java.lang.String" resultMap="WoDetailResultMap">
+		SELECT WOD.*, WO.*, IT.*
+		FROM WO_DETAIL WOD LEFT OUTER JOIN WO WO ON (WOD.WORK_ORDER_CODE = WO.WORK_ORDER_CODE)
+						   LEFT OUTER JOIN ITEM IT ON (WOD.ITEM_CODE = IT.ITEM_CODE)
+		WHERE WOD.WORK_ORDER_CODE = #{workOrderCode}
+		ORDER BY WOD.SORDER ASC
+	</select>
+	<!-- BOM mapper -->
+	<select id="selectBomWithQuantity" parameterType="WOWoDetail" resultMap="BomResultMap">
+		SELECT B.HIGH_ITEM_CODE, B.LOW_ITEM_CODE, IT.*, WH.*, B.MATERIAL_QUANTITY * #{workOrderQuantity} MATERIAL_QUANTITY
+		FROM BOM B LEFT OUTER JOIN ITEM IT ON (B.LOW_ITEM_CODE = IT.ITEM_CODE)
+				   LEFT OUTER JOIN WH WH ON (IT.WH_CODE = WH.WH_CODE)
+		WHERE HIGH_ITEM_CODE = #{item.itemCode}
 	</select>
 </mapper>

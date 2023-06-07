@@ -2,7 +2,8 @@
  * 
  */
 var tableData;
-var compareData;
+var subData;
+var thirdData;
  
 // date 타입 input 값 초기화 버튼
 $(document).on('click', '.reset-input', e => {
@@ -33,14 +34,29 @@ $(document).on('change', 'table.data-table input[type="radio"]', e => {
 		return;
 	}
 	let tbody = $(e.target).closest('tbody');
-	let data = {
-		code: $(tbody).find('th input[type="radio"]').closest(':checked').closest('tr').find('input[name="workOrderCode"]').val(),
+	let dat = {
+		code: $(tbody).find('th input[type="radio"]').closest(':checked').closest('tr').find('td[role="workOrderCode"]').text(),
 		startDate: $(tbody).find('th input[type="radio"]').closest(':checked').closest('tr').find('input[name="startDate"]').val(),
 		endDate: $(tbody).find('th input[type="radio"]').closest(':checked').closest('tr').find('input[name="endDate"]').val()
 	};
-	$('.wo-header-value').find('input[name="workOrderCode"]').val(data.code)
-				   .end().find('input[name="startDate"]').val(data.startDate)
-				   .end().find('input[name="endDate"]').val(data.endDate);
+	$('.wo-header-value').find('input[name="workOrderCode"]').val(dat.code)
+				   .end().find('input[name="startDate"]').val(dat.startDate)
+				   .end().find('input[name="endDate"]').val(dat.endDate);
+	// Ajax 이용한 woDetail, bom 테이블 데이터 뽑아오기
+	$.ajax({
+		url: location.protocol + '//' + location.host + '/product/getWoDetails',
+		type: 'post',
+		data: JSON.stringify({ 'workOrderCode': dat.code }),
+		dataType: 'json',
+		contentType: 'application/json',
+		success: data => {
+			$('table.data-table[role="wo-detail"]').find('tbody').html(createTemplate(subtable, data.detail));
+			subData = data.detail;
+			$('table.data-table[role="wo-bom"]').find('tbody').html(createTemplate(thirdtable, data.bom));
+			thirdData = data.bom;
+			rowNumbering();
+		}
+	});
 });
 
 // 테이블 셀 값 변경 시 더블클릭으로
@@ -59,10 +75,11 @@ $(document).on('blur', 'table.data-table th *, table.data-table td *', e => {
 
 // 테이블 행 넘버링
 const rowNumbering = () => {
-	let table = $('table.data-table');
-	let tbody = $(table).find('tbody');
-	$(tbody).find('th.numbering').each((index, item) => {
-		$(item).find('div').text(index + 1);
+	let table = $('table.data-table').each((index, item) => {
+		let tbody = $(item).find('tbody');
+		$(tbody).find('th.numbering').each((ind, it) => {
+			$(it).find('div').text(ind + 1);
+		});
 	});
 };
 
@@ -90,6 +107,22 @@ var tableLayout = [
 	{ header: '양품실적', name: 'goodQuantity', width: '50px', compType: 'readonly', dataType: 'number', data: null, styles: [], compare: true },
 	{ header: '불량실적', name: 'badQuantity', width: '50px', compType: 'readonly', dataType: 'number', data: null, styles: [], compare: true },
 	{ header: '입고창고', name: 'wh.whName', width: '91px', compType: 'readonly', dataType: null, data: null, styles: [], compare: false }
+];
+var subtable = [
+	{ header: 'numbering', name: null, width: '50px', compType: 'numbering', dataType: 'numbering', data: null, styles: [], compare: false },
+	{ header: 'checkbox', name: null, width: '50px', compType: 'checkbox', dataType: 'checkbox', data: null, styles: [], compare: false },
+	{ header: '작업순번', name: 'sorder', width: '60px', compType: 'readonly', dataType: 'number', data: null, styles: [], compare: false },
+	{ header: '수량', name: 'workOrderQuantity', width: '100px', compType: 'readonly', dataType: 'number', data: null, styles: [], compare: false },
+	{ header: '작업자', name: 'worker', width: '120px', compType: 'readonly', dataType: 'text', data: null, styles: [], compare: false },
+	{ header: '불량여부', name: 'goodYn', width: '60px', compType: 'readonly', dataType: 'select', data: [{value: 'Y', text: 'Y'}, {value: 'N', text: 'N'}], styles: [], compare: false }
+];
+var thirdtable = [
+	{ header: 'numbering', name: null, width: '50px', compType: 'numbering', dataType: 'numbering', data: null, styles: [], compare: false },
+	{ header: 'checkbox', name: null, width: '50px', compType: 'checkbox', dataType: 'checkbox', data: null, styles: [], compare: false },
+	{ header: 'ITEM코드', name: 'lowItem.itemCode', width: '140px', compType: 'readonly', dataType: 'text', data: null, styles: [], compare: false },
+	{ header: '품명', name: 'lowItem.itemName', width: '290px', compType: 'readonly', dataType: 'text', data: null, styles: [], compare: false },
+	{ header: '자재창고', name: 'lowItem.wh.whName', width: '140px', compType: 'readonly', dataType: 'text', data: null, styles: [], compare: false },
+	{ header: '수량', name: 'materialQuantity', width: '110px', compType: 'readonly', dataType: 'number', data: null, styles: [], compare: false }
 ];
 
 // data 구조에 맞게 템플릿화해서 보여주는 함수
@@ -249,189 +282,32 @@ $(document).on('click', 'button.select-item', e => {
 		success: data => {
 			$('table.data-table[role="wo-list"]').find('tbody').html(createTemplate(tableLayout, data));
 			tableData = data;
-			compareData = data;
 			rowNumbering();
 		}
 	});
 });
 
-// 데이터 테이블 값 비교
-const comparison = (obj1, obj2) => {
-	let dataObj1 = {};
-	let dataObj2 = {};
-	let props = tableLayout.filter(data => data.name != null && data.compare).map(data => data.name);
-	for (let prop of props) {
-		let isDate = tableLayout.filter(data => data.name == prop)[0].dataType == 'date';
-		let temp1;
-		let temp2;
-		let split = prop.split('.');
-		if (prop.includes('.')) {
-			[temp1, temp2] = [obj1, obj2];
-			for (let key of split) [temp1, temp2] = [temp1[key], temp2[key]];
-		} else [temp1, temp2] = [obj1[prop], obj2[prop]];
-		if (isDate) {
-			if (typeof temp1 == 'number') {
-				tt1 = new Date(temp1);
-				let [yyyy, MM, dd] = [tt1.getFullYear(), tt1.getMonth() + 1, tt1.getDate()];
-				temp1 = yyyy + '-' + (MM < 10 ? '0' + MM : MM) + '-' + (dd < 10 ? '0' + dd : dd);
-			}
-			if (typeof temp2 == 'number') {
-				tt2 = new Date(temp2);
-				let [yyyy, MM, dd] = [tt2.getFullYear(), tt2.getMonth() + 1, tt2.getDate()];
-				temp2 = yyyy + '-' + (MM < 10 ? '0' + MM : MM) + '-' + (dd < 10 ? '0' + dd : dd);
-			}
-		} else {
-			[temp1, temp2] = [isNaN(parseFloat(temp1)) ? temp1 : parseFloat(temp1), isNaN(parseFloat(temp2)) ? temp2 : parseFloat(temp2)];
-		}
-		if (temp1 != null) dataObj1[prop] = temp1;
-		if (temp2 != null) dataObj2[prop] = temp2;
-	}
-	// Comparison algorithm required change
-	let result = JSON.stringify(dataObj1) == JSON.stringify(dataObj2);
-	return result;
-};
-
-const nestedToObject = data => {
-	let result = {};
-	let keys = Object.keys(data);
-	for (let key of keys) {
-		if (!key.includes('.')) {
-			result[key] = data[key];
-		} else {
-			let split = key.split('.');
-			let first = split[0];
-			let rest = split.slice(1).join('.');
-			let param = {};
-			param[rest] = data[key];
-			result[first] = nestedToObject(param);
-		}
-	}
-	return result;
-};
-
-const rowToData = (elem) => {
-	let form = $('<form></form>');
-	let cloneElem = $(elem);
-	$(form).append(cloneElem);
-	let serializedArray = $(form).serializeArray();
-	let rawData = {};
-	for (let item of serializedArray) rawData[item.name] = item.value == null ? null : item.value;
-	let workOrderCode = !$(cloneElem).find('td[role="workOrderCode"]').text() ? null : $(cloneElem).find('td[role="workOrderCode"]').text();
-	let workStatus = !$(cloneElem).find('td[role="workStatus"]').text() ? null : $(cloneElem).find('td[role="workStatus"]').text();
-	if (workOrderCode != null) rawData['workOrderCode'] = workOrderCode;
-	if (workStatus != null) rawData['workStatus'] = workStatus;
-	return nestedToObject(rawData);
-};
-
-// 저장 버튼
-$(document).on('click', 'button.update-item', e => {
-	let table = $('table.data-table');
-	let tbody = $(table).find('tbody');
-	let elem = $(e.target).closest('button.update-item');
-	// 여기에 현재 입력된 데이터들 업데이트해주는 과정
-	let cloneRow = $(tbody).find('tr');
-	
-	let reqs = $(cloneRow).find('th.required, td.required');
-	let check = false;
-	$(reqs).each((index, item) => check |= !$(item).find('select, input').val());
-	if (check) return;
-	
-	let rows = $(cloneRow).toArray();
-	let replacer = [];
-	for (let row of rows) {
-		replacer[replacer.length] = rowToData(row);
-	}
-	tableData = replacer;
-	// 변경 사항 체크
-	let diff = tableData.filter(data => {
-		if (!data.workOrderCode) return true;
-		let compData = compareData.filter(cd => cd.workOrderCode == data.workOrderCode)[0];
-		let aggregation = !comparison(data, compData) && (data.workStatus == '저장');
-		return aggregation;
-	});
-	let news = diff.filter(data => data.workOrderCode == null);
-	let olds = diff.filter(data => data.workOrderCode != null);
-	// 신규아이템 추가
-	let newData = { 'data' : news };
-	let newCount = 0;
-	$.ajax({
-		url: location.protocol + '//' + location.host + '/product/wo/insertWoList',
-		type: 'post',
-		data: JSON.stringify(newData),
-		dataType: 'json',
-		contentType: 'application/json',
-		success: data => {
-			newCount = data.result;
-		}
-	});
-	// 기존아이템 수정
-	let oldData = { 'data' : olds };
-	let oldCount = 0;
-	$.ajax({
-		url: location.protocol + '//' + location.host + '/product/wo/updateWoList',
-		type: 'post',
-		data: JSON.stringify(oldData),
-		dataType: 'json',
-		contentType: 'application/json',
-		success: data => {
-			oldCount = data.result;
-		}
-	});
-	[newCount, oldCount] = [news.length, olds.length];
-	alert(`저장되었습니다.\r\n신규: ${newCount}\r\n수정: ${oldCount}`);
-	$('button.select-item').click();
-});
-
 // 초기화 버튼
 $(document).on('click', 'button.reset-search', e => {
-	let table = $('table.data-table');
-	$(table).find('th input[type="checkbox"]').prop('checked', false);
-	let box = $('.wo-header-search');
+	/*let table = $('table.data-table');
+	$(table).find('th input[type="checkbox"]').prop('checked', false);*/
+	let box = $('.wo-header-value');
 	$(box).find('input').val(null);
 });
 
-// 작업지시확정 버튼
-$(document).on('click', 'button.confirm-item', e => {
-	let isConfirm = confirm('확정 하시겠습니까?');
-	if (!isConfirm) return;
-	let table = $('table.data-table');
-	let tbody = $(table).find('tbody');
-	let elem = $(e.target).closest('button.confirm-item');
-	let realDataList = $(tbody).find('th input[type="checkbox"]').closest(':checked').closest('tr').find('td[role="workStatus"]:not(:empty)').closest('tr');
-	realDataList = $(realDataList).toArray().filter(row => !(!$(row).find('td[role="workStatus"]').text()));
-	let codeList = realDataList.map(row => $(row).find('td[role="workOrderCode"]').text());
-	$.ajax({
-		url: location.protocol + '//' + location.host + '/product/wo/woConfirm',
-		type: 'post',
-		data: JSON.stringify({ workOrderCode: codeList }),
-		dataType: 'json',
-		contentType: 'application/json',
-		success: data => {
-			$('button.select-item').click();
-		}
-	});
-});
-
-// 확정취소 버튼
+// 실적취소 버튼
 $(document).on('click', 'button.cancel-item', e => {
-	let isConfirm = confirm('확정취소 하시겠습니까?');
+	let isConfirm = confirm('실적취소 하시겠습니까?');
 	if (!isConfirm) return;
-	let table = $('table.data-table');
+	let table = $('table.data-table[role="wo-detail"]');
 	let tbody = $(table).find('tbody');
 	let elem = $(e.target).closest('button.confirm-item');
-	let realDataList = $(tbody).find('th input[type="checkbox"]').closest(':checked').closest('tr').find('td[role="workStatus"]:not(:empty)').closest('tr');
-	realDataList = $(realDataList).toArray().filter(row => !(!$(row).find('td[role="workStatus"]').text()));
-	let codeList = realDataList.map(row => $(row).find('td[role="workOrderCode"]').text());
-	$.ajax({
-		url: location.protocol + '//' + location.host + '/product/wo/woCancel',
-		type: 'post',
-		data: JSON.stringify({ workOrderCode: codeList }),
-		dataType: 'json',
-		contentType: 'application/json',
-		success: data => {
-			$('button.select-item').click();
-		}
-	});
+	// 필요한 변수들 나열할 공간
+	
+	//
+	// AJAX 구문 들어갈 공간
+	
+	//
 });
 
 // 데이터 ROW 선택
@@ -440,33 +316,34 @@ $(document).on('click', 'table.data-table tbody tr th:not([class="checkbox"]), t
 	$(elem).closest('tbody').find('th input[type="checkbox"]').closest(':checked').not($(elem).find('input[type="checkbox"]')).prop('checked', false);
 	$(elem).find('input[type="checkbox"]').prop('checked', true);
 });
-$(document).on('click', 'table.data-table tbody tr th:not([class="radio"]), table.data-table tbody tr td', e => {
-	let elem = $(e.target).closest('table.data-table tbody tr');
+$(document).on('click', 'table.data-table[role="wo-list"] tbody tr th:not([class="radio"]), table.data-table[role="wo-list"] tbody tr td', e => {
+	let elem = $(e.target).closest('table.data-table[role="wo-list"] tbody tr');
 	$(elem).closest('tbody').find('th input[type="radio"]').closest(':checked').not($(elem).find('input[type="radio"]')).prop('checked', false);
 	$(elem).find('input[type="radio"]').prop('checked', true);
 	let tbody = $(e.target).closest('tbody');
 	let data = {
-		code: $(tbody).find('th input[type="radio"]').closest(':checked').closest('tr').find('input[name="workOrderCode"]').val(),
+		code: $(tbody).find('th input[type="radio"]').closest(':checked').closest('tr').find('td[role="workOrderCode"]').text(),
 		startDate: $(tbody).find('th input[type="radio"]').closest(':checked').closest('tr').find('input[name="startDate"]').val(),
 		endDate: $(tbody).find('th input[type="radio"]').closest(':checked').closest('tr').find('input[name="endDate"]').val()
 	};
 	$('.wo-header-value').find('input[name="workOrderCode"]').val(data.code)
 				   .end().find('input[name="startDate"]').val(data.startDate)
 				   .end().find('input[name="endDate"]').val(data.endDate);
-});
-
-// 선택된 항목 모두 변경
-$(document).on('change', '.wo-header-value select[name="productType"]', e => {
-	let value = $(e.target).closest('.wo-header-value select[name="productType"]').val();
-	let table = $('table.data-table');
-	let tbody = $(table).find('tbody');
-	$(tbody).find('th input[type="checkbox"]').closest(':checked').closest('tr').find('select[name="productType"]').val(value);
-});
-$(document).on('change', '.wo-header-value input[name="workOrderDate"]', e => {
-	let value = $(e.target).closest('.wo-header-value input[name="workOrderDate"]').val();
-	let table = $('table.data-table');
-	let tbody = $(table).find('tbody');
-	$(tbody).find('th input[type="checkbox"]').closest(':checked').closest('tr').find('input[name="workOrderDate"]').val(value);
+	// Ajax 이용한 woDetail, bom 테이블 데이터 뽑아오기
+	$.ajax({
+		url: location.protocol + '//' + location.host + '/product/getWoDetails',
+		type: 'post',
+		data: JSON.stringify({ 'workOrderCode': data.code }),
+		dataType: 'json',
+		contentType: 'application/json',
+		success: dat => {
+			$('table.data-table[role="wo-detail"]').find('tbody').html(createTemplate(subtable, dat.detail));
+			subData = dat.detail;
+			$('table.data-table[role="wo-bom"]').find('tbody').html(createTemplate(thirdtable, dat.bom));
+			thirdData = dat.bom;
+			rowNumbering();
+		}
+	});
 });
 
 // 아이템 코드 입력값에 따라 type, name 자동 입력
@@ -520,7 +397,6 @@ $(document).on('mousedown', 'input[type="radio"]:checked', e => {
 	e.preventDefault();
 	let elem = $(e.target).closest('input[type="radio"]');
 	$(elem).prop('checked', false);
-	$(elem).unbind('mouseup');
 });
 
 $(() => {
