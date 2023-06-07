@@ -7,7 +7,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -40,35 +39,34 @@ public class OMController {
 
 	
 	/*
-	 * 수주서 관리
+	 * 수주서 관리 메인 페이지
+	 * @return	sales/receive-order
 	 */
 	@GetMapping("/sales/receive-order")
 	public String placeOrder() {
 		
-		//log.info("[placeOrder] -> {}", companyCode);
-		
-		
-		return "sales/receive-order";
+		return "sales/receive-order.layout";
 	}
 	
 	/*
-	 * 수주 content List
+	 * 수주서 List 출력
+	 * receive-order.jsp에서 ajax 요청
+	 * @return List
 	 */
 	@GetMapping("/sales/receive-order/place-order-list")
 	@ResponseBody
 	public List<OMOrdersDto> placeOrderList() {
 		
-		
-		
 		List<OMOrdersDto> placeOrderList = omService.findPlaceOrderListByCompanyCode();
-		//model.addAttribute("placeOrderList", placeOrderList);
 		
 		return placeOrderList;
 	}
 	
 	/*
 	 * 수주상태 확정
-	 * 
+	 * ajax를 통해 전달받은 param을 통해 update, 성공시 int를 return
+	 * @param	orderCode, session
+	 * @return	int
 	 */
 	@PatchMapping("/sales/receive-order/{orderCode}/confirm")
 	@ResponseBody
@@ -77,7 +75,6 @@ public class OMController {
 		MemberDto memberDto = (MemberDto) session.getAttribute("member");
 		OMOrdersDto ordersDto = new OMOrdersDto();
 		
-		//ordersDto.setOrderEmpid(memberDto.getMemberName());
 		ordersDto.setUpdateUser(memberDto.getMemberName());
 		ordersDto.setOrderCode(orderCode);
 		
@@ -92,6 +89,9 @@ public class OMController {
 	
 	/*
 	 * 수주상태 저장 
+	 * ajax를 통해 전달받은 param을 통해 update, 성공시 int를 return
+	 * @param	orderCode, session
+	 * @return	int
 	 */
 	@PatchMapping("/sales/receive-order/{orderCode}/cancel")
 	@ResponseBody
@@ -101,7 +101,6 @@ public class OMController {
 		MemberDto memberDto = (MemberDto) session.getAttribute("member");
 		OMOrdersDto ordersDto = new OMOrdersDto();
 		
-		//ordersDto.setOrderEmpid(memberDto.getMemberName());
 		ordersDto.setUpdateUser(memberDto.getMemberName());
 		ordersDto.setOrderCode(orderCode);
 		
@@ -114,6 +113,9 @@ public class OMController {
 	
 	/*
 	 * 수주유형 변경 
+	 * ajax를 통해 전달받은 param을 통해 update, 성공시 String을 return
+	 * @param	orderCode, receiveOrderType, session
+	 * @return	String
 	 */
 	@PatchMapping("/sales/receive-order/{orderCode}/modify-type")
 	@ResponseBody
@@ -122,7 +124,6 @@ public class OMController {
 		
 		MemberDto memberDto = (MemberDto) session.getAttribute("member");
 		OMOrdersDto ordersDto = new OMOrdersDto();
-		//ordersDto.setOrderEmpid(memberDto.getMemberName());
 		ordersDto.setUpdateUser(memberDto.getMemberName());
 		ordersDto.setReceiveOrderType(receiveOrderType);
 		ordersDto.setOrderCode(orderCode);
@@ -138,6 +139,9 @@ public class OMController {
 	
 	/*
 	 * 수주일 변경 
+	 * ajax를 통해 전달받은 param을 통해 update, 성공시 int를 return
+	 * @param	orderCode, orderDate, session
+	 * @return	int
 	 */
 	@PatchMapping("/sales/receive-order/{orderCode}/change-order-date")
 	@ResponseBody
@@ -148,7 +152,6 @@ public class OMController {
 		
 		MemberDto memberDto = (MemberDto) session.getAttribute("member");
 		OMOrdersDto ordersDto = new OMOrdersDto();
-		//ordersDto.setOrderEmpid(memberDto.getMemberName());
 		ordersDto.setUpdateUser(memberDto.getMemberName());
 		ordersDto.setOrderDate(orderDate);
 		ordersDto.setOrderCode(orderCode);
@@ -163,6 +166,9 @@ public class OMController {
 	
 	/*
 	 * 납기일 변경 
+	 *  ajax를 통해 전달받은 param을 통해 update, 성공시 int를 return
+	 * @param	orderCode, dueDate, session
+	 * @return	int
 	 */
 	@PatchMapping("/sales/receive-order/{orderCode}/change-due-date")
 	@ResponseBody
@@ -173,7 +179,6 @@ public class OMController {
 		
 		MemberDto memberDto = (MemberDto) session.getAttribute("member");
 		OMOrdersDto ordersDto = new OMOrdersDto();
-		//ordersDto.setOrderEmpid(memberDto.getMemberName());
 		ordersDto.setUpdateUser(memberDto.getMemberName());
 		ordersDto.setDueDate(dueDate);
 		ordersDto.setOrderCode(orderCode);
@@ -188,6 +193,9 @@ public class OMController {
 	
 	/*
 	 * 수주담당자 변경 
+	 * ajax를 통해 전달받은 param을 통해 update, 성공시 int를 return
+	 * @param	orderCode, session
+	 * @return	int
 	 */
 	@PatchMapping("/sales/receive-order/{orderCode}/modify-empid")
 	@ResponseBody
@@ -200,7 +208,6 @@ public class OMController {
 		log.info("[modifyEmpidByOrderCode] orderCode -> {}", ordersDto.getOrderCode());
 		log.info("[modifyEmpidByOrderCode] ordersDto.getOrderEmpid() -> {}", ordersDto.getOrderEmpid());
 		MemberDto memberDto = (MemberDto) session.getAttribute("member");
-		//ordersDto.setOrderEmpid(memberDto.getMemberName());
 		ordersDto.setUpdateUser(memberDto.getMemberName());
 		log.info("[modifyEmpidByOrderCode] ordersDto.toString -> {}", ordersDto.toString());
 		int modifiedEmpid = omService.modifyEmpidByOrderCode(ordersDto);
@@ -211,10 +218,11 @@ public class OMController {
 		return modifiedEmpid;
 	}
 	
-	
-	
 	/*
-	 * receive-opder-insert
+	 * 수주서 내용 저장
+	 * form 통해 전달받은 값을 통해 insert, 성공시 String를 return
+	 * @param	ordersDto, session
+	 * @return	String
 	 */
 	@PostMapping(value = "/sales/om/insert-receive-order")
 	public String receiveOrderAdd(OMOrdersDto ordersDto, HttpSession session) {
@@ -228,9 +236,10 @@ public class OMController {
 		return "redirect:/sales/receive-order";
 	}
 	
-	
 	/*
-	 * delete
+	 * ajax를 통해 전달받은 param을 통해 delete, 성공시 String를 return
+	 * @param	orderCode
+	 * @return	String
 	 */
 	@DeleteMapping("/sales/receive-order/{orderCode}/delete")
 	public ResponseEntity<String> receiveOrderRemoveByOrderCode(@PathVariable String orderCode) {
@@ -246,7 +255,9 @@ public class OMController {
 	}
 	
 	/*
-	 * modal customer List
+	 * 거래처 코드 조회 modal customer List
+	 * ajax를 통해 customer List를 client로 retrun
+	 * @return	List
 	 */
 	@GetMapping("/sales/receive-order/customer-code-list")
 	@ResponseBody
@@ -258,11 +269,10 @@ public class OMController {
 		return customerList;
 	}
 	
-	
-	////
 	/*
-	 * 수주 detail-content List
-	 * 
+	 * 수주 세부항목 출력
+	 * receive-order.jsp에서 ajax 요청
+	 * @return List
 	 */
 	@GetMapping("/sales/receive-order/place-order-detail-list")
 	@ResponseBody
@@ -276,7 +286,10 @@ public class OMController {
 	}
 	
 	/*
-	 * receive-opder-detail-insert
+	 * 수주서 내용 저장	receive-opder-detail-insert
+	 * form 통해 전달받은 값을 통해 insert, 성공시 String를 return
+	 * @param	ordersDetailDto, session
+	 * @return	String
 	 */
 	@PostMapping(value = "/sales/om/insert-receive-order-detail")
 	public String receiveOrderDetailAdd(OMOrdersDetailDto ordersDetailDto, HttpSession session) {
@@ -291,7 +304,10 @@ public class OMController {
 	}
 	
 	/*
-	 * 제품 변경 
+	 * 제품 변경
+	 * ajax를 통해 전달받은 param을 통해 update, 성공시 int를 return
+	 * @param	orderDetailCode, ordersItemDto
+	 * @return	int
 	 */
 	@ResponseBody
 	@PatchMapping("/sales/receive-order/{orderDetailCode}/modify-item")
@@ -311,6 +327,9 @@ public class OMController {
 
 	/*
 	 * 금액 변경 
+	 * ajax를 통해 전달받은 param을 통해 update, 성공시 int를 return
+	 * @param	orderDetailCode, ordersDetailDto
+	 * @return	int
 	 */
 	@ResponseBody
 	@PatchMapping("/sales/receive-order/{orderDetailCode}/modify-amount")
@@ -322,16 +341,17 @@ public class OMController {
 		log.info("[modifyAmountByOrderDetailCode] ordersDetailDto.toString() -> {}", ordersDetailDto.toString());
 		
 		int modifiedAmount = omService.modifyAmountByordersDetailDto(ordersDetailDto);
-		//String orderTypeStr =  Integer.toString(orderType);
 		
 		log.info("[modifyAmountByOrderDetailCode] modifiedDueDate -> {}", modifiedAmount);
 		
 		return modifiedAmount;
 	}
 	
-	
 	/*
-	 * 재고단위 변경 
+	 * 재고단위 변경
+	 * ajax를 통해 전달받은 param을 통해 update, 성공시 int를 return
+	 * @param	orderDetailCode, itemStockUnit
+	 * @return	int 
 	 */
 	@PatchMapping("/sales/receive-order/{orderDetailCode}/modify-item-stock-unit")
 	@ResponseBody
@@ -352,6 +372,9 @@ public class OMController {
 	
 	/*
 	 * 마감여부 변경 
+	 * ajax를 통해 전달받은 param을 통해 update, 성공시 int를 return
+	 * @param	orderDetailCode, endYn
+	 * @return	int
 	 */
 	@PatchMapping("/sales/receive-order/{orderDetailCode}/modify-end-yn")
 	@ResponseBody
@@ -373,6 +396,9 @@ public class OMController {
 	
 	/*
 	 * 저장 확인 검증
+	 * ajax를 통해 전달받은 param을 이용하여 저장상태를 검증
+	 * @param	orderCode
+	 * @return	String
 	 */
 	@ResponseBody
 	@GetMapping("/sales/receive-order/{orderCode}/order-status")
@@ -388,6 +414,9 @@ public class OMController {
 	
 	/*
 	 * 비고 변경 
+	 * ajax를 통해 전달받은 param을 통해 update, 성공시 int를 return
+	 * @param	orderDetailCode, ordersDetailDto
+	 * @return	int
 	 */
 	@PatchMapping("/sales/receive-order/{orderDetailCode}/modify-memo")
 	@ResponseBody
@@ -408,9 +437,10 @@ public class OMController {
 		return modifiedMemo;
 	}
 	
-	
 	/*
-	 * item List
+	 * 제품 코드 조회 
+	 * ajax를 통해 전달받은 item List를 조회 후 출력
+	 * @return	List
 	 */
 	@GetMapping("/sales/receive-order/item-code-list")
 	@ResponseBody
@@ -422,9 +452,11 @@ public class OMController {
 		return itemList;
 	}
 	
-	
 	/*
 	 * 출하등록
+	 * ajax를 통해 전달받은 param을 이용하여 선택된 수주서를 ST_OUT, ST_OUT_DETAIL에 INSERT
+	 * @param	orderCode
+	 * @return	String
 	 */
 	@ResponseBody
 	@PostMapping("/sales/receive-order/{orderCode}/stock-out-reg")
@@ -443,6 +475,9 @@ public class OMController {
 	
 	/*
 	 * 작업지시등록
+	 * ajax를 통해 전달받은 param을 이용하여 선택된 수주서를 WO에 INSERT
+	 * @param	orderCode
+	 * @return	String
 	 */
 	@ResponseBody
 	@PostMapping("/sales/receive-order/{orderCode}/work-order-reg")
