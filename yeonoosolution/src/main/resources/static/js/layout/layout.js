@@ -65,9 +65,8 @@ var menuList = [
 			{
 				name: '출하(납품)관리',
 				value: [
-					{ name: '출하(납품) 등록', value: '' },
-					{ name: '출하(납품) 라벨출력', value: '' },
-					{ name: '출하(납품) 조회', value: '' }
+					{ name: '출하(납품) 등록', value: '/sales/stock/' },
+					{ name: '출하(납품) 조회', value: '/sales/stock/detail/' }
 				]
 			}
 		]
