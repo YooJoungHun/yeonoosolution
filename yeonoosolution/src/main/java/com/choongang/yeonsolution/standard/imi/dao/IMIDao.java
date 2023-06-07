@@ -25,4 +25,7 @@ public interface IMIDao {
 	// 거래처 목록
 	List<IMICompanyDto> selectCompanyList();
 
+	// 검색 리스트
+	List<IMIItemDto> selectItemListBySearchKeyWord(String searchKeyWord);
+
 }

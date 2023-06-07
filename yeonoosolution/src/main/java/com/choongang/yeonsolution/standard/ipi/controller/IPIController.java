@@ -30,7 +30,7 @@ public class IPIController {
 	public String pmi() {
 		log.info("Ipi Controller Start");
 		
-		return "standard/item-price-info";
+		return "standard/item-price-info.layout";
 	}
 	
 	@ResponseBody
