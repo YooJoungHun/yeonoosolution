@@ -6,9 +6,11 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.choongang.yeonsolution.product.is.domain.IsBomDto;
+import com.choongang.yeonsolution.product.is.domain.IsLossDto;
 import com.choongang.yeonsolution.product.is.domain.IsPaginationDto;
 import com.choongang.yeonsolution.product.is.domain.IsWhDto;
 import com.choongang.yeonsolution.product.is.domain.IsWhStockDetailDto;
+import com.choongang.yeonsolution.product.is.domain.MainPageDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -129,5 +131,52 @@ public class ISDaoImpl implements ISDao {
 		return whDtoList;
 	}
 
+
+	@Override
+	public List<MainPageDto> selectInfoForMainPage() {
+		log.info("is main Dao selectInfoForMainPage() start");
+		List<MainPageDto> mainPageDtoList = null;
+		
+		try {
+			mainPageDtoList = sqlSession.selectList("selectInfoForMainPage");
+		} catch(Exception e) {
+			log.debug("is main Dao selectInfoForMainPage() Exception : " + e.getMessage());
+			e.printStackTrace();
+		}
+				
+		return mainPageDtoList;
+	}
+
+
+	@Override
+	public List<MainPageDto> selectOrdersListForMainPage() {
+		log.info("is main Dao selectOrdersListForMainPage() start");
+		List<MainPageDto> mainPageOrdersList = null;
+		
+		try {
+			mainPageOrdersList = sqlSession.selectList("selectOrdersListForMainPage");
+		} catch(Exception e) {
+			log.debug("is main Dao selectOrdersListForMainPage() Exception : " + e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return mainPageOrdersList;
+	}
+
+
+	@Override
+	public List<IsLossDto> selectLossListForMainPage() {
+		log.info("is main Dao selectLossListForMainPage() start");
+		List<IsLossDto> mainPageLossList = null;
+		
+		try {
+			mainPageLossList = sqlSession.selectList("selectLossListForMainPage");
+		} catch(Exception e) {
+			log.debug("is main Dao selectLossListForMainPage() Exception : " + e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return mainPageLossList;
+	}
 	
 }

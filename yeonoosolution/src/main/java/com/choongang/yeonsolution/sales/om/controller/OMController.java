@@ -45,7 +45,7 @@ public class OMController {
 	@GetMapping("/sales/receive-order")
 	public String placeOrder() {
 		
-		return "sales/receive-order";
+		return "sales/receive-order.layout";
 	}
 	
 	/*

@@ -33,7 +33,7 @@ public class AOMController {
 		
 		log.info("[analysisOfMaterials]");
 		
-		return "sales/analysis-of-materials";
+		return "sales/analysis-of-materials.layout";
 	}
 	
 	
