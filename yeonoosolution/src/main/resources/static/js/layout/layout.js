@@ -144,9 +144,9 @@ var menuList = [
 			{
 				name: '재고현황',
 				value: [
-					{ name: '품목별 재고현황', value: '' },
-					{ name: 'BOM 재고현황', value: '' },
-					{ name: '창고별 재고현황', value: '' }
+					{ name: '품목별 재고현황', value: '/product/is/item' },
+					{ name: 'BOM 재고현황', value: '/product/is/bom' },
+					{ name: '창고별 재고현황', value: '/product/is/wh' }
 				]
 			},
 			{
@@ -266,12 +266,14 @@ $(() => {
 	// 현재 페이지에 맞는 메뉴 오픈
 	// menuList 배열 데이터 내에 데이터가 없을 경우 무한루프 발생함...
 	let currentMenu = $('button.list-button[data-path="' + location.pathname + '"]');
-	$(currentMenu).css('background-color', '#FFFFCC');
-	while (true) {
-		currentMenu = $(currentMenu).closest('div.menu-list-section');
-		let section = $(currentMenu).attr('data-section');
-		currentMenu = $('button.list-header[data-target="' + section + '"]');
-		$(currentMenu).click();
-		if ($(currentMenu).attr('data-depth') == '0') break;
+	if (currentMenu.toArray().length > 0) {
+		$(currentMenu).css('background-color', '#FFFFCC');
+		while (true) {
+			currentMenu = $(currentMenu).closest('div.menu-list-section');
+			let section = $(currentMenu).attr('data-section');
+			currentMenu = $('button.list-header[data-target="' + section + '"]');
+			$(currentMenu).click();
+			if ($(currentMenu).attr('data-depth') == '0') break;
+		}
 	}
 });

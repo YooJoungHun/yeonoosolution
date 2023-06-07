@@ -29,7 +29,7 @@ public class ISController {
 	@GetMapping(value = "/product/is/item")
 	public String isItemList() {
 		
-		return "/product/inventory-status-item";
+		return "/product/inventory-status-item.layout";
 	}
 	
 	@GetMapping(value = "/product/is/item/{itemName}")
@@ -48,7 +48,7 @@ public class ISController {
 	@GetMapping(value = "/product/is/bom")
 	public String isBomList() {
 		
-		return "/product/inventory-status-bom";
+		return "/product/inventory-status-bom.layout";
 	}
 	
 	@GetMapping(value = "/product/is/bom/{itemName}")
@@ -76,7 +76,7 @@ public class ISController {
 		model.addAttribute("whDtoWhList", whDtoWhList);
 		model.addAttribute("whDtoMap", whDtoMap);
 		
-		return "/product/inventory-status-wh";
+		return "/product/inventory-status-wh.layout";
 	}
 		
 	@GetMapping(value = "/product/is/wh/{whCode}")
@@ -90,7 +90,7 @@ public class ISController {
 		model.addAttribute("whDtoMap", whDtoMap);
 		model.addAttribute("whDtoWhList", whDtoWhList);
 	  
-		return "/product/inventory-status-wh-detail";
+		return "/product/inventory-status-wh-detail.layout";
 	}
 	
 	@GetMapping(value = "/main")
@@ -101,6 +101,6 @@ public class ISController {
 		model.addAttribute("mainPageMap", mainPageMap);
 		log.info("mainPageMap : " + mainPageMap);
 		
-		return "/main";
+		return "/main.layout";
 	}
 }
