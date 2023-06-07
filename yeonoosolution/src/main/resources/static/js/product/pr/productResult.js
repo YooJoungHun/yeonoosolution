@@ -289,10 +289,26 @@ $(document).on('click', 'button.select-item', e => {
 
 // 초기화 버튼
 $(document).on('click', 'button.reset-search', e => {
-	/*let table = $('table.data-table');
-	$(table).find('th input[type="checkbox"]').prop('checked', false);*/
+	let table = $('table.data-table');
+	$(table).find('th input[type="radio"]').prop('checked', false);
 	let box = $('.wo-header-value');
 	$(box).find('input').val(null);
+});
+
+// 작업시작 버튼
+$(document).on('click', 'button.start-item', e => {
+	
+});
+
+// 작업종료 버튼
+$(document).on('click', 'button.end-item', e => {
+	
+});
+
+// 양품/불량등록 버튼
+$(document).on('click', 'button.good-item, button.bad-item', e => {
+	// data-good Y or N 으로 값 넣기...
+	
 });
 
 // 실적취소 버튼

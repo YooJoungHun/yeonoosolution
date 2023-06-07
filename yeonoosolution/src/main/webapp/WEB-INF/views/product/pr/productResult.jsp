@@ -9,8 +9,8 @@
 			<button type="button" class="reset-search">초기화</button>
 			<button type="button" class="start-item">작업시작</button>
 			<button type="button" class="end-item">작업종료</button>
-			<button type="button" class="good-item">양품등록</button>
-			<button type="button" class="bad-item">불량등록</button>
+			<button type="button" class="good-item" data-good="Y">양품등록</button>
+			<button type="button" class="bad-item" data-good="N">불량등록</button>
 			<button type="button" class="cancel-item">실적 취소</button>
 		</div>
 		<div class="wo-values-container">
