@@ -105,6 +105,17 @@
 		<result			property="materialQuantity"		column="material_quantity"/>
 		<collection		property="lowItem"				resultMap="ItemResultMap"/>
 	</resultMap>
+	<resultMap type="WOWhStockDetail" id="WhStockDetailResultMap">
+		<id				property="whCode"				column="wh_code"/>
+		<id				property="itemCode"				column="item_code"/>
+		<result			property="checkDate"				column="check_date"/>
+		<result			property="beginEndInventory"	column="begin_end_inventory"/>
+		<result			property="goodQuantity"			column="good_quantity"/>
+		<result			property="badQuantity"			column="bad_quantity"/>
+		<result			property="updateUser"			column="update_user"/>
+		<result			property="updateDate"			column="update_date"/>
+		<result			property="memo"					column="memo"/>
+	</resultMap>
 	<!-- WO mapper -->
 	<select id="selectWo" resultMap="WoResultMap">
 		SELECT wo.*, wh.*, orders.*, item.*
@@ -207,6 +218,18 @@
 		WHERE WORK_ORDER_CODE = #{workOrderCode}
 				  AND WORK_STATUS = '확정'
 	</update>
+	<update id="updateWoStartEndDate" parameterType="WOWo">
+		UPDATE WO SET
+			<choose>
+				<when test="startDate != null">
+					START_DATE = #{startDate}
+				</when>
+				<otherwise>
+					END_DATE = #{endDate}
+				</otherwise>
+			</choose>
+		WHERE WORK_ORDER_CODE = #{workOrderCode}
+	</update>
 	<!-- WH mapper -->
 	<select id="selectWh" parameterType="java.lang.String" resultMap="WhResultMap">
 		SELECT * FROM WH WHERE WH_CODE = #{whCode}
@@ -229,5 +252,9 @@
 		FROM BOM B LEFT OUTER JOIN ITEM IT ON (B.LOW_ITEM_CODE = IT.ITEM_CODE)
 				   LEFT OUTER JOIN WH WH ON (IT.WH_CODE = WH.WH_CODE)
 		WHERE HIGH_ITEM_CODE = #{item.itemCode}
+	</select>
+	<!-- WhStockDetail mapper -->
+	<select id="selectWhStockDetail" parameterType="WOWhStockDetail" resultMap="WhStockDetailResultMap">
+		SELECT * FROM WH_STOCK_DETAIL WHERE ITEM_CODE = #{itemCode}
 	</select>
 </mapper>

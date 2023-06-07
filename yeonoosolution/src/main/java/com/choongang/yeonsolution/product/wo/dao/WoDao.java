@@ -14,5 +14,6 @@ public interface WoDao {
 	public int updateWo(Wo wo);
 	public Wo selectOneWo(String workOrderCode);
 	public int updateWoClose(String workOrderCode);
+	public int updateWoStartEndDate(Wo wo);
 	
 }

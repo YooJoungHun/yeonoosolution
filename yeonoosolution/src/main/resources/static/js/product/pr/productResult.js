@@ -297,18 +297,131 @@ $(document).on('click', 'button.reset-search', e => {
 
 // 작업시작 버튼
 $(document).on('click', 'button.start-item', e => {
-	
+	let table = $('table.data-table[role="wo-list"]');
+	let startDate = $(table).find('input[type="radio"]:checked').closest('tr').find('input[name="startDate"]').val();
+	let workOrderCode = $(table).find('input[type="radio"]:checked').closest('tr').find('td[role="workOrderCode"]').text();
+	if (!startDate) {
+		alert('작업 시작시간을 입력해주세요');
+		return;
+	} else if (!tableData.filter(data => data.workOrderCode == workOrderCode)[0].startDate) {
+		alert('작업이 이미 시작되었습니다');
+		return;
+	}
+	let confirm = confirm('작업 시작시간을 등록하시겠습니까?');
+	if (!confirm) return;
+	$.ajax({
+		url: location.protocol + '//' + location.host + '/product/setStartEndDate',
+		type: 'post',
+		data: JSON.stringify({ 'workOrderCode' : workOrderCode, 'date' : startDate, 'type' : 'start' }),
+		dataType: 'json',
+		contentType: 'application/json',
+		success: data => {
+			if (data.result < 1) return;
+			alert('작업 시작시간이 등록되었습니다');
+			$('button.select-item').click();
+		}
+	});
 });
 
 // 작업종료 버튼
 $(document).on('click', 'button.end-item', e => {
-	
+	let table = $('table.data-table[role="wo-list"]');
+	let startDate = $(table).find('input[type="radio"]:checked').closest('tr').find('input[name="startDate"]').val();
+	let endDate = $(table).find('input[type="radio"]:checked').closest('tr').find('input[name="endDate"]').val();
+	let workOrderCode = $(table).find('input[type="radio"]:checked').closest('tr').find('td[role="workOrderCode"]').text();
+	if (!startDate) {
+		alert('작업이 시작되지 않아 종료할 수 없습니다');
+		return;
+	} else if (!endDate) {
+		alert('작업 종료시간을 입력해주세요');
+		return;
+	} else if (!(!tableData.filter(data => data.workOrderCode == workOrderCode)[0].endDate)) {
+		alert('작업이 이미 종료되었습니다');
+		return;
+	}
+	let confirm = confirm('작업 종료시간을 등록하시겠습니까?');
+	if (!confirm) return;
+	$.ajax({
+		url: location.protocol + '//' + location.host + '/product/setStartEndDate',
+		type: 'post',
+		data: JSON.stringify({ 'workOrderCode' : workOrderCode, 'date' : endDate, 'type' : 'end' }),
+		dataType: 'json',
+		contentType: 'application/json',
+		success: data => {
+			if (data.result < 1) return;
+			alert('작업 종료시간이 등록되었습니다');
+			$('button.select-item').click();
+		}
+	});
 });
 
 // 양품/불량등록 버튼
 $(document).on('click', 'button.good-item, button.bad-item', e => {
 	// data-good Y or N 으로 값 넣기...
-	
+	let elem = $(e.target).closest('button.good-item, button.bad-item');
+	let table = $('table.data-table[role="wo-list"]');
+	let startDate = $(table).find('input[type="radio"]:checked').closest('tr').find('input[name="startDate"]').val();
+	let endDate = $(table).find('input[type="radio"]:checked').closest('tr').find('input[name="endDate"]').val();
+	let workOrderCode = $(table).find('input[type="radio"]:checked').closest('tr').find('td[role="workOrderCode"]').text();
+	// work variables
+	let workerUid = $('div.wo-header-value').find(input[name="worker.memberUid"]).val();
+	let workOrderQuantity = $('div.wo-header-value').find(input[name="workOrderQuantity"]).val();
+	if (!workerUid || !workOrderQuantity) {
+		if (!workerUid) alert('작업자코드를 입력해주세요');
+		else alert('작업수량을 입력해주세요');
+		return;
+	}
+	// ajax로 현재 재고에 맞게 bom 이 작성 가능한지 체크
+	let cont = false;
+	$.ajax({
+		url: location.protocol + '//' + location.host + '/product/checkBomForWork',
+		type: 'post',
+		data: JSON.stringify({ 'workOrderCode' : workOrderCode }),
+		dataType: 'json',
+		contentType: 'application/json',
+		success: data => {
+			cont = data.result;
+		}
+	});
+	if (!cont) {
+		alert('재고가 충분하지 않습니다');
+		return;
+	}
+	// ajax로 현재 재고에서 재료 수량 감소, 실적 등록
+	$.ajax({
+		url: location.protocol + '//' + location.host + '/product/insertResult',
+		type: 'post',
+		data: JSON.stringify({
+					'workOrderCode' : workOrderCode,
+					'goodYn' : parseInt($(elem).attr('data-good')),
+					'workOrderQuantity' : workOrderQuantity,
+					'workerUid' : workerUid
+			}),
+		dataType: 'json',
+		contentType: 'application/json',
+		success: data => {
+			if (data.result < 0) return;
+			let tbody = $(table.data-table[role="wo-list"]).closest('tbody');
+			let dat = {
+				code: $(tbody).find('th input[type="radio"]').closest(':checked').closest('tr').find('td[role="workOrderCode"]').text()
+			};
+			// Ajax 이용한 woDetail, bom 테이블 데이터 뽑아오기
+			$.ajax({
+				url: location.protocol + '//' + location.host + '/product/getWoDetails',
+				type: 'post',
+				data: JSON.stringify({ 'workOrderCode': dat.code }),
+				dataType: 'json',
+				contentType: 'application/json',
+				success: datum => {
+					$('table.data-table[role="wo-detail"]').find('tbody').html(createTemplate(subtable, datum.detail));
+					subData = datum.detail;
+					$('table.data-table[role="wo-bom"]').find('tbody').html(createTemplate(thirdtable, datum.bom));
+					thirdData = datum.bom;
+					rowNumbering();
+				}
+			});
+		}
+	});
 });
 
 // 실적취소 버튼

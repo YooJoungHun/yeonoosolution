@@ -44,8 +44,8 @@
 					<input type="datetime-local" name="endDate">
 				</div>
 				<div class="wo-header-item-group">
-					<label for="worker">작업자코드</label>
-					<input type="text" name="worker">
+					<label for="worker.memberUid">작업자코드</label>
+					<input type="text" name="worker.memberUid">
 				</div>
 				<div class="wo-header-item-group">
 					<label for="worker.memberName">작업자명</label>

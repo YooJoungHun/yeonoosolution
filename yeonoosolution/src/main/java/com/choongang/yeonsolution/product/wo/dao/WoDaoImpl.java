@@ -50,4 +50,8 @@ public class WoDaoImpl implements WoDao {
 	public int updateWoClose(String workOrderCode) {
 		return session.update("updateWoClose", workOrderCode);
 	}
+	@Override
+	public int updateWoStartEndDate(Wo wo) {
+		return session.update("updateWoStartEndDate", wo);
+	}
 }

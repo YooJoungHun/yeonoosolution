@@ -1,6 +1,7 @@
 package com.choongang.yeonsolution.product.pr.controller;
 
 import java.util.AbstractMap;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.choongang.yeonsolution.product.wo.domain.Bom;
 import com.choongang.yeonsolution.product.wo.domain.Item;
+import com.choongang.yeonsolution.product.wo.domain.Wo;
 import com.choongang.yeonsolution.product.wo.domain.WoDetail;
 import com.choongang.yeonsolution.product.wo.service.BomService;
+import com.choongang.yeonsolution.product.wo.service.WhStockDetailService;
 import com.choongang.yeonsolution.product.wo.service.WoDetailService;
 import com.choongang.yeonsolution.product.wo.service.WoService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -31,6 +34,7 @@ public class PrController {
 	private final WoService woService;
 	private final WoDetailService woDetailService;
 	private final BomService bomService;
+	private final WhStockDetailService whStockDetailService;
 	
 	@RequestMapping(value = "/productResult")
 	public String productResult(Model model) {
@@ -65,5 +69,60 @@ public class PrController {
 			return str;
 		}).collect(Collectors.toList());
 		return String.format("{ \"detail\" : [%s], \"bom\" : [%s] }", String.join(",", resultWoDetailList), String.join(",", resultBomList));
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/setStartEndDate")
+	public String setStartEndDate(@RequestBody Map<String, Object> data) {
+		Wo wo = new Wo();
+		String workOrderCode = (String)data.get("workOrderCode");
+		wo.setWorkOrderCode(workOrderCode);
+		Date date = (Date)data.get("date");
+		if ((String)data.get("type") == "start") wo.setStartDate(date);
+		else wo.setEndDate(date);
+		int result = woService.modifyWoStartEndDate(wo);
+		return String.format("{ \"result\" : %d }", result);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/checkBomForWork")
+	public String checkBomForWork(@RequestBody Map<String, Object> data) {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		String workOrderCode = (String)data.get("workOrderCode");
+		List<WoDetail> woDetailList = woDetailService.findWoDetail(workOrderCode);
+		WoDetail forBOM = new WoDetail();
+		forBOM.setItem(woService.findOneWo(workOrderCode).getItem());
+		Integer qtt = 0;
+		for (WoDetail wod : woDetailList) qtt += wod.getWorkOrderQuantity();
+		forBOM.setWorkOrderQuantity(qtt);
+		List<Bom> bomList = bomService.findBomWithQuantity(forBOM);
+		boolean isAllowed = true;
+		for (Bom bom : bomList) {
+			isAllowed &= (whStockDetailService.findWhStockDetail(bom.getLowItemCode()).getGoodQuantity() >= bom.getMaterialQuantity());
+			if (!isAllowed) break;
+		}
+		return String.format("{ \"result\" : %b }", isAllowed);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/insertResult")
+	public String insertResult(@RequestBody Map<String, Object> data) {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		String workOrderCode = (String)data.get("workOrderCode");
+		Wo wo = new Wo();
+		wo.setWorkOrderCode(workOrderCode);
+		WoDetail woDetail = new WoDetail();
+		woDetail.setWo(wo);
+		woDetail.setWorkOrderQuantity((Integer)data.get("workOrderQuantity"));
+		woDetail.setGoodYn((String)data.get("goodYn"));
+		//woDetail.setWorker(workOrderCode)
+		//재고 불출 부분 제외하고 추가적으로 작성... 재고 현황에서 수량 감산...
+		// productResult.js의 양품/불량 등록 부분임
+		
+		return String.format("", null);
 	}
 }
