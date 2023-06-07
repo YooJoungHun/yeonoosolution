@@ -42,9 +42,9 @@ public class PmDaoImpl implements PmDao{
 	}
 
 	@Override
-	public int updateOrdersByOrderCode(Map<String, String> map) {
-		log.info("updateOrdersByOrderCode map -> {}", map);
-		int result = session.update("updatePmOrdersByOrderCode", map);
+	public int updateOrdersByOrderCode(PmOrdersDto pmOrdersDto) {
+		log.info("updateOrdersByOrderCode pmOrdersDto -> {}", pmOrdersDto);
+		int result = session.update("updatePmOrdersByOrderCode", pmOrdersDto);
 		return result;
 	}
 
@@ -100,8 +100,6 @@ public class PmDaoImpl implements PmDao{
 		return result;
 	}
 
-	/////////////////////////////////////////////////////////////////////////////
-	
 	@Override
 	public List<PmStockInDto> selectStockInListBySearch(PmSearch search) {
 		List<PmStockInDto> stockInList = session.selectList("selectPmStockInListBySearch", search);
@@ -118,15 +116,15 @@ public class PmDaoImpl implements PmDao{
 	}
 
 	@Override
-	public int updateStockInByInCode(Map<String, Object> map) {
-		log.info("updateStockInByInCode map -> {}", map);
-		int result = session.update("updatePmStockInByInCode", map);
+	public int updateStockInByInCode(PmStockInDto pmStockInDto) {
+		log.info("updateStockInByInCode pmStockInDto -> {}", pmStockInDto);
+		int result = session.update("updatePmStockInByInCode", pmStockInDto);
 		return result;
 	}
 
 	@Override
 	public List<PmWhDto> selectWh() {
-		List<PmWhDto> whList = session.selectList("selectWh");
+		List<PmWhDto> whList = session.selectList("selectPmWh");
 		log.info("whList -> {}", whList);
 		return whList;
 	}
