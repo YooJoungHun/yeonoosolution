@@ -37,8 +37,7 @@ var menuList = [
 	  		{
 	  			name: '창고관리정보',
 	  			value: [
-	  				{ name: '창고등록', value: '' },
-	  				{ name: '창고조회', value: '' }
+	  				{ name: '창고 등록 및 조회', value: '/standard/warehouseLists/' }
 	  			]
 	  		},
 	  		{
@@ -130,8 +129,7 @@ var menuList = [
 			{
 				name: '기타출고관리',
 				value: [
-					{ name: '기타출고등록', value: '' },
-					{ name: '기타출고현황', value: '' }
+					{ name: '기타 출고 등록 및 현황', value: '/product/somStOutLists/' }
 				]
 			},
 			{
