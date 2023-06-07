@@ -53,7 +53,7 @@
 			
 			<div id="bar-chart-container" style="width: 40%; min-height: 50%; display: block; margin: 0 auto;">
 			<h4>금일 수발주 건 수</h4>
-				<canvas id="my-bar-chart" style=" display: block; margin: 0 auto; "></canvas>
+				<canvas id="my-bar-chart" style=" display: block; margin: 0 auto;"></canvas>
 			</div>
 		</div>
 	</div>

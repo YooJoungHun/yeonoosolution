@@ -38,7 +38,7 @@ public class PmController {
 	
 	@GetMapping("/order")
 	public String orderForm() {
-		return "sales/order";
+		return "sales/order.layout";
 	}
 	
 	@GetMapping("/order-list")
@@ -97,7 +97,7 @@ public class PmController {
     
     @GetMapping("/stock-in")
     String stockInForm() {
-    	return "sales/stock-in";
+    	return "sales/stock-in.layout";
     }
     @GetMapping("/stock-in-list")
     @ResponseBody

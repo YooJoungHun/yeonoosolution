@@ -105,6 +105,11 @@
 		background-color: navy;
 		color: white;
 	}
+	
+	#my-bar-chart {
+		height: 80% !important;
+		width: 300px !important;
+	}
 </style>
 
 <script type="text/javascript">
@@ -179,7 +184,7 @@
 					yAxes: [{
 						ticks: {
 							beginAtZero: true,
-							fontSize : 14,
+							stepSize : 1,
 						}
 					}]
 				}
