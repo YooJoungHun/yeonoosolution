@@ -12,6 +12,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MainPageDto {
+	//wo chart
 	private String productType;
 	private Long workOrderCount;
+	
+	//orders chart
+	private String receiveOrPlace;
+	private Long orderCount;
 }

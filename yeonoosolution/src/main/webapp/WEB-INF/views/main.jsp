@@ -36,7 +36,6 @@
 	.info {
 		width: 90%;
 	    height: 300px;
-	    background-color: #f8f8f8;
 	    border: 1px solid #ddd;
 	    display: inline-block;
 	    margin: 0 auto;
@@ -44,6 +43,14 @@
 	    margin-left: 55px;
 	    margin-bottom: 20px;
 	    margin-top: 20px;
+	    overflow: auto;
+	}
+	
+	label {
+		border: 1px solid #ddd;
+		border-radius: 5px;
+		padding: 5px;
+		margin-left: 100px;
 	}
 	
 	.chart-area {
@@ -56,10 +63,47 @@
 		text-align: center;
 	}
 	
-	label {
-		border: 1px solid #ddd;
-		border-radius: 5px;
-		padding: 5px;
+	.company-code {
+		margin-left: 250px;
+	}
+
+	.loss-table {
+		overflow: auto;
+	}
+	
+	.loss-table th, td {
+		padding: 10px 20px;
+		text-align: center;
+		border: 1px solid #b3b3b3;
+	}
+	
+	.loss-table {
+		border-collapse : collapse;
+		padding: 20px;
+		white-space: nowrap;
+		table-layout: fixed;
+		background-color: #f8f8f8;
+	}
+	
+	h2 {
+		margin-left: 55px;
+	}
+	
+	.work-order-code, .item-code {
+		background-color: #e6f2ff;
+	}
+	
+	.sorder, .defective-loss-quantity {
+		background-color: #ffffcc;
+	}
+	
+	.reg-user, .reg-date, .defective-loss-date {
+		background-color: #d9d9d9;
+	}
+	
+	.loss-list:hover td {
+		background-color: navy;
+		color: white;
 	}
 </style>
 <title>Insert title here</title>
@@ -121,16 +165,40 @@
 		<input type="hidden" class="work-order-count" value="${main.workOrderCount}">
 	</c:forEach>
 	
+	<c:forEach var="orders" items="${mainPageMap.orders}">
+		<input type="hidden" class="receive-or-place" value="${orders.receiveOrPlace}">
+		<input type="hidden" class="orders-count" value="${orders.orderCount}">
+	</c:forEach>
+	
 	<div class="content">
+		<h2>안녕하세요 ${mainPageMap.memberDto.memberName}님! 좋은 하루 되세요!</h2>
 		<div class="info">
-			<h2>안녕하세요 ${mainPageMap.memberDto.memberName}님!</h2>
-			<p><label>현재 접속한 ID</label>${mainPageMap.memberDto.memberId}</p>
-			<p><label>부서 코드</label>${mainPageMap.memberDto.deptCode}</p>
-			<p><label>직책 코드</label>${mainPageMap.memberDto.jobCode}</p>
-			<p><label>회사 코드</label>${mainPageMap.memberDto.companyCode}</p>
-			<p><label>권한</label>${mainPageMap.memberDto.memberRole}</p>
-			
-		</div>	
+			<div class="loss-table-div">
+			<h3>LOSS 물품 현황</h3>
+			<table class="loss-table">
+				<tr>
+					<th>작업 지시 코드 </th>
+					<th>등록 순번 </th>
+					<th>물품 코드 </th>
+					<th>LOSS 수량 </th>
+					<th>판별 일자 </th>
+					<th>등록 근무자</th>
+					<th>등록 일</th>
+				</tr>
+				<c:forEach var="loss" items="${mainPageMap.loss}">
+				<tr class="loss-list">
+					<td class="work-order-code">${loss.workOrderCode}</td>
+					<td class="sorder">${loss.sorder}</td>
+					<td class="item-code">${loss.itemCode}</td>
+					<td class="defective-loss-quantity">${loss.defectiveLossQuantity}</td>
+					<td class="defective-loss-date">${loss.defectiveLossDate}</td>
+					<td class="reg-user">${loss.regUser}</td>
+					<td class="reg-date">${loss.regDate}</td>
+				</tr>
+				</c:forEach>
+			</table>
+			</div>
+		</div>
 		<div class="chart-area">
 		
 			<div id="chartContainer" style="width: 40%; height: auto; display: block; margin: 0 auto;">
@@ -140,7 +208,7 @@
 			</div>
 			
 			<div id="bar-chart-container" style="width: 40%; height: auto; display: block; margin: 0 auto;">
-			<h4>금일 작업 완료 건</h4>
+			<h4>금일 수발주 건 수</h4>
 				<canvas id="my-bar-chart" style="margin: 0 auto; display: block; width: 80%; height: 31%"></canvas>
 			</div>
 		</div>
@@ -155,6 +223,22 @@
 	let workOrderCount = $(".work-order-count").map(function() {
 		return $(this).val();
 	}).get();
+	
+	let receiveOrPlace = $(".receive-or-place").map(function() {
+		return $(this).val();
+	}).get();
+	
+	let ordersCount = $(".orders-count").map(function() {
+		return $(this).val();
+	}).get();
+	
+	if(productType.length == 0) {
+		productType = ["일반", "재작업", "개발품(시제품)"];
+		workOrderCount = ["0", "0", "0"];
+	} else if(receiveOrPlace.length == 0) {
+		workOrderCount = ["수주", "발주"];
+		ordersCount = ["0", "0"];
+	}
 	
 	console.log("productType : " + productType + ", workOrderCount : " + workOrderCount);
 	 
@@ -181,28 +265,32 @@
 	}
  );
 	
+	console.log("receiveOrPlace : " + receiveOrPlace + ", ordersCount : " + ordersCount);
 	
 	const context = document.getElementById('my-bar-chart').getContext('2d');
 	const myBarChart = new Chart(context, {
 	    type: 'bar',
 	    data: {
-	        labels: ["1", "2", "3"],
+	        labels: receiveOrPlace,
 	        datasets: [{
-	            label: '금일 작업 완료 건',
-	            data: ["10", "20", "30"],
+	            label: '금일 수발주 건 수',
+	            data: ordersCount,
 	            backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)'],
 	            borderColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)'],
 	            borderWidth: 3
 	        }]
 	    },
-	    options: {
-	    	responsive: false,
-	        scales: {
-	            y: {
-	                beginAtZero: true
-	            }
-	        }
-	    }
+		options: {
+			responsive: false,
+			scales: {
+				yAxes: [{
+					ticks: {
+						beginAtZero: true,
+						fontSize : 14,
+					}
+				}]
+			}
+		}
 	}
  );
 </script>

@@ -80,6 +80,7 @@
   		
   	  <!-- 메인 페이지 -->
 		<typeAlias alias="MainPageDto" type="com.choongang.yeonsolution.product.is.domain.MainPageDto"/>
+		<typeAlias alias="IsLossDto" type="com.choongang.yeonsolution.product.is.domain.IsLossDto"/>
   	</typeAliases>
   	
 </configuration>

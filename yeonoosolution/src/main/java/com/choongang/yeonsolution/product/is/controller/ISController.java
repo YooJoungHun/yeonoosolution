@@ -101,6 +101,6 @@ public class ISController {
 		model.addAttribute("mainPageMap", mainPageMap);
 		log.info("mainPageMap : " + mainPageMap);
 		
-		return "/product/main";
+		return "/main";
 	}
 }

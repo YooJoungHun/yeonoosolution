@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.choongang.yeonsolution.product.is.dao.ISDao;
 import com.choongang.yeonsolution.product.is.domain.IsBomDto;
+import com.choongang.yeonsolution.product.is.domain.IsLossDto;
 import com.choongang.yeonsolution.product.is.domain.IsPaginationDto;
 import com.choongang.yeonsolution.product.is.domain.IsWhDto;
 import com.choongang.yeonsolution.product.is.domain.IsWhStockDetailDto;
@@ -97,11 +98,20 @@ public class ISServiceImpl implements ISService {
 	public Map<String, Object> findInfoForMainPage(HttpSession session) {
 		log.info("is main Service findInfoForMainPage() start");
 		Map<String, Object> mainPageMap = new HashMap<String, Object>();
+		//wo chart
 		List<MainPageDto> mainPageDtoList = isDao.selectInfoForMainPage();
+		
+		//orders chart
+		List<MainPageDto> mainPageOrdersList = isDao.selectOrdersListForMainPage();
+		
+		//loss list
+		List<IsLossDto> mainPageLossList = isDao.selectLossListForMainPage();
 		
 		MemberDto memberDto = (MemberDto) session.getAttribute("member");
 		mainPageMap.put("memberDto", memberDto);
 		mainPageMap.put("mainPageDtoList", mainPageDtoList);
+		mainPageMap.put("orders", mainPageOrdersList);
+		mainPageMap.put("loss", mainPageLossList);
 		
 		return mainPageMap;
 	}

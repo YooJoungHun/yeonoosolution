@@ -37,7 +37,6 @@
 	
 	.wh-data {
 		border-collapse : collapse;
-		width: 100%;
 		padding: 20px;
 		margin: 0 auto;
 		white-space: nowrap;
@@ -97,7 +96,7 @@
 		background-color: #ffffcc;
 	}
 	
-	.wh-code, .wh-name {
+	.wh-code, .wh-name, .good-quantity, .bad-quantity {
 		background-color: #e6f2ff;
 	}
 	
@@ -199,6 +198,8 @@
 				<th>회사 명</th>
 				<th>제품 코드</th>
 				<th id="item-name">제품 명</th>
+				<th id="item-name">양품 수량</th>
+				<th id="item-name">불량 수량</th>
 				<th>입고 근무자</th>
 				<th id="update-date">입고 일자</th>
 			</tr>
@@ -210,6 +211,8 @@
 				<td class="company-code">${whMap.companyCode}</td>
 				<td class="item-code">${whMap.itemCode}</td>
 				<td class="item-name">${whMap.itemName}</td>
+				<td class="good-quantity">${whMap.goodQuantity}</td>
+				<td class="bad-quantity">${whMap.badQuantity}</td>
 				<td class="member-name">${whMap.memberName}</td>
 				<td class="update-date">${whMap.updateDate}</td>
 			</tr>
