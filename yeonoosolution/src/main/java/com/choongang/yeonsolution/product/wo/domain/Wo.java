@@ -25,5 +25,8 @@ public class Wo {
 	private Date regDate;
 	private String updateUser;
 	private Date updateDate;
+	
+	// workedQuantity
+	private Integer workedQuantity;
 
 }

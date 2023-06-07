@@ -279,7 +279,9 @@ div.wo-content > div.wo-list-content > table tr input[type!="checkbox"] {
 	text-align: center;
 }
 div.wo-content > div.wo-list-content > table tr input[type="date"]:not(:focus)::-webkit-inner-spin-button,
-div.wo-content > div.wo-list-content > table tr input[type="date"]:not(:focus)::-webkit-calendar-picker-indicator {
+div.wo-content > div.wo-list-content > table tr input[type="date"]:not(:focus)::-webkit-calendar-picker-indicator,
+div.wo-content > div.wo-list-content > table tr input[type="datetime-local"]:not(:focus)::-webkit-inner-spin-button,
+div.wo-content > div.wo-list-content > table tr input[type="datetime-local"]:not(:focus)::-webkit-calendar-picker-indicator {
     display: none;
     -webkit-appearance: none;
 }

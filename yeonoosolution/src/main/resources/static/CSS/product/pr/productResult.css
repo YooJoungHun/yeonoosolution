@@ -6,6 +6,19 @@ html, body {
 	margin: 0;
 }
 
+div.right-menu {
+	flex-grow: 1;
+	height: 100%;
+	padding: 1px;
+	overflow-x: auto;
+	overflow-y: auto;
+}
+div.right-menu > div.main-container {
+	height: 150%;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
 div.wo-header {
 	display: flex;
 	flex-direction: column;
@@ -150,6 +163,7 @@ div.wo-content > div.wo-list-content {
 	width: 100%;
 	overflow-x: auto;
 	margin-top: 8px;
+	flex-grow: 1;
 }
 div.wo-content > div.wo-list-content::-webkit-scrollbar {
 	width: 17px;
@@ -174,7 +188,6 @@ div.wo-content > div.wo-list-content > table {
     table-layout: fixed;
     width: max-content;
 	font-size: 14px;
-	max-height: 100%;
 }
 div.wo-content > div.wo-list-content > table > thead > tr > th,
 div.wo-content > div.wo-list-content > table > thead > tr > td {
@@ -263,7 +276,7 @@ div.wo-content > div.wo-list-content > table tr input {
 	text-align: center;
 }
 div.wo-content > div.wo-list-content > table tr select:not(:focus),
-div.wo-content > div.wo-list-content > table tr input:not(:focus, [type="checkbox"]) {
+div.wo-content > div.wo-list-content > table tr input:not(:focus, [type="checkbox"]):not(:focus, [type="radio"]) {
 	border: 0;
 	outline: 0;
 	background-color: transparent;
@@ -271,7 +284,7 @@ div.wo-content > div.wo-list-content > table tr input:not(:focus, [type="checkbo
 	-moz-appearance: none;
 	-webkit-appearance: none;
 }
-div.wo-content > div.wo-list-content > table tr input[type!="checkbox"] {
+div.wo-content > div.wo-list-content > table tr input[type!="checkbox"][type!="radio"] {
 	min-width: 0;
 	max-width: none;
 	size: 1;
