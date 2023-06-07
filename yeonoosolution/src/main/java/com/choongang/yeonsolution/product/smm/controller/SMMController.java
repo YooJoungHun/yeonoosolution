@@ -37,7 +37,7 @@ public class SMMController {
 		List<StMoveDetailDto> stockMoveStatus = smmService.findStockMoveStatusList();
 		
 		model.addAttribute("stockMoveStatus", stockMoveStatus);
-		return "product/stock-move-status";
+		return "product/stock-move-status.layout";
 	}
 	
 	// 이동상세 현황 페이지 검색결과
@@ -56,7 +56,7 @@ public class SMMController {
 		List<StMoveDto> stockMoveRegistration = smmService.findStockMoveRegistrationList();
 		
 		model.addAttribute("stockMoveRegistration", stockMoveRegistration);
-		return "product/stock-move-registration";
+		return "product/stock-move-registration.layout";
 	}
 	
 	// "저장" -> "확정" move_type 변경
