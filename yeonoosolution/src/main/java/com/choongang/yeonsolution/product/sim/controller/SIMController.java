@@ -89,20 +89,24 @@ public class SIMController {
 	@RequestMapping(value = "/ajax/{action}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Map<String, String>> inModify(@PathVariable(name = "action")String action,
 	                                                    @RequestBody(required = false)List<StInDetailDto> sidList) {
-	    Map<String, String> result = new HashMap<String, String>();
-	    System.out.println(sidList);
+		Map<String, String> result = new HashMap<String, String>();
 	        switch (action) {
+	        case "add":
+	        	System.out.println("\n저장\n"+sidList);
+	        	simService.addStInDetail(sidList);
+	        	
+	        	break;
 	        case "update":
 	            //simService.modifyStIn(data); break;
 	        case "delete":
+	        	System.out.println("\n삭제\n"+sidList);
+	        	simService.removeStInDetail(sidList);
+	        	break;
 	            //simService.removeStIn(data); break;
 	        case "fix":
 	            //simService.modifyStInFix(data); break;
 	        case "cancel":
 	            //simService.modifyStInCancel(data); break;
-	        case "save":
-	            simService.addStInDetail(sidList);
-	            break;
 	        }
 	    return ResponseEntity.ok(result);
 	}
@@ -180,22 +184,18 @@ public class SIMController {
 	@PostMapping(value = "/ajax/register")
 	@ResponseBody
 	public ResponseEntity<String> stInSave(@RequestBody(required = false) Map<String, Object> data) {
+		
 		ObjectMapper om = new ObjectMapper();
 		om.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
 		om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		
 		StInDto stInDto = null;
 		stInDto = om.convertValue(data, StInDto.class);
-		
 		String inDate = stInDto.getInDate();
 		stInDto.setInDate(inDate.replace("-", "/"));		
 
-		System.out.println(data);
+		System.out.println("\n입고 등록 이벤트\n"+data);
 		simService.addStIn(stInDto);
-		
-		// 상세
-		List<StInDetailDto> stInDetailDtoList = null;
-		simService.addStInDtail(stInDetailDtoList);
 		
 		return ResponseEntity.ok("등록 완료");
 	}

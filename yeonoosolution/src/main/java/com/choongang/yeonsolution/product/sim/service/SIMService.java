@@ -21,6 +21,7 @@ public interface SIMService {
 	List<CompanyDto> findCompany(); 			// 회사 목록 조회
 	List<WhDto> findWh(); 						// 창고 목록 조회
 	List<ItemDto> findItem(); 					// 아이템 목록 조회
-	void addStInDetail(List<StInDetailDto> sidList);		// 입고 상세 등록
+	void addStInDetail(List<StInDetailDto> sidList);	// 입고 상세 추가
+	void removeStInDetail(List<StInDetailDto> sidList); // 입고 상세 삭제
 	
 }

@@ -40,6 +40,8 @@ public class SIMServiceImpl implements SIMService {
 	@Override
 	public List<ItemDto> findItem() {return simDao.selectItem();}// 아이템 목록 조회
 	@Override
-	public void addStInDetail(List<StInDetailDto> sidList) {simDao.insertStInDetail(sidList);}
+	public void addStInDetail(List<StInDetailDto> sidList) {simDao.insertStInDetail(sidList);} // 입고 상세 추가
+	@Override
+	public void removeStInDetail(List<StInDetailDto> sidList) {simDao.deleteStInDetail(sidList);} // 입고 상세 삭제
 	
 }

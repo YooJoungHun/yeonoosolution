@@ -227,19 +227,6 @@
 				'저장',
 				#{memo, jdbcType=VARCHAR})
 	</insert>
-<!-- 입고 상세 등록 -->
-	<insert id="insertStInDetail" parameterType="java.util.List">
-	    <foreach collection="list" item="sid" open="INSERT ALL" close="SELECT * FROM DUAL">
-	        INTO ST_IN_DETAIL(IN_CODE, SORDER, WH_CODE, ITEM_CODE, IN_QUANTITY, IN_PRICE, MEMO)
-	        VALUES( #{sid.inCode, jdbcType=VARCHAR},
-	                #{sid.sorder, jdbcType=BIGINT},
-	                #{sid.whCode, jdbcType=VARCHAR},
-	                #{sid.itemCode, jdbcType=VARCHAR},
-	                #{sid.inQuantity, jdbcType=VARCHAR},
-	                #{sid.inPrice, jdbcType=BIGINT},
-	                #{sid.memo, jdbcType=VARCHAR})
-	    </foreach>
-	</insert>
 <!-- 회사 목록 조회 -->
 	<select id="selectStInCompany" resultType="SIMCompanyDto">
 		SELECT * FROM COMPANY
@@ -252,6 +239,38 @@
 	<select id="selectStInItem" resultType="SIMItemDto">
 		SELECT * FROM ITEM
 	</select>
+<!-- 입고 상세 추가 -->
+	<insert id="insertStInDetail" parameterType="java.util.List">
+	    <foreach collection="list" item="sid" open="INSERT ALL" close="SELECT * FROM DUAL">
+	        INTO ST_IN_DETAIL(IN_CODE, SORDER, WH_CODE, ITEM_CODE, IN_QUANTITY, IN_PRICE, MEMO)
+	        VALUES( #{sid.inCode, jdbcType=VARCHAR},
+	                #{sid.sorder, jdbcType=BIGINT},
+	                #{sid.whCode, jdbcType=VARCHAR},
+	                #{sid.itemCode, jdbcType=VARCHAR},
+	                #{sid.inQuantity, jdbcType=VARCHAR},
+	                #{sid.inPrice, jdbcType=BIGINT},
+	                #{sid.memo, jdbcType=VARCHAR})
+	    </foreach>
+	</insert>
+<!-- 입고 상세 삭제 -->
+<!-- 	<delete id="insertStInDetail" parameterType="java.util.List">
+	    <foreach collection="list" item="sid" open="INSERT ALL" close="SELECT * FROM DUAL">
+	        INTO ST_IN_DETAIL(IN_CODE, SORDER, WH_CODE, ITEM_CODE, IN_QUANTITY, IN_PRICE, MEMO)
+	        VALUES( #{sid.inCode, jdbcType=VARCHAR},
+	                #{sid.sorder, jdbcType=BIGINT},
+	                #{sid.whCode, jdbcType=VARCHAR},
+	                #{sid.itemCode, jdbcType=VARCHAR},
+	                #{sid.inQuantity, jdbcType=VARCHAR},
+	                #{sid.inPrice, jdbcType=BIGINT},
+	                #{sid.memo, jdbcType=VARCHAR})
+	    </foreach>
+	</delete> -->
+	<delete id="deleteStInDetail" parameterType="java.util.List">
+	    <foreach collection="list" item="sid" open="DELETE FROM ST_IN_DETAIL WHERE IN_CODE = (" close=")" separator=",">
+	        #{sid.inCode, jdbcType=VARCHAR}
+	    </foreach>
+	</delete>
+
 <!-- 	<insert id="insertStIn" parameterType="SIMStInDto">
 		INSERT	INTO ST_IN(IN_CODE, COMPANY_CODE, CUSTOMER_CODE, BEGIN_END_INVENTORY, IN_DATE, REG_DATE, REG_USER, IN_TYPE, MEMO)
 		VALUES(	(SELECT NVL(MAX(IN_CODE)+1 , 1) FROM ST_IN),

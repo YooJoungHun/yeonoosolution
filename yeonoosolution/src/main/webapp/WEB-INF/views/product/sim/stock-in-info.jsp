@@ -8,13 +8,6 @@
 <body>
 	<main>
 		<section class="content-header">
-			<div class="content-btn">
-				<button onclick="btnEvent('find')" class="btn custom-btn custom-btn-primary btn-white">조회</button>
-				<button onclick="btnEvent('save')" class="btn custom-btn custom-btn-primary btn-white">저장</button>
-				<button onclick="resetEvent()" class="btn custom-btn custom-btn-secondary btn-white">초기화</button>
-			</div>
-
-			
 			<div class="stock-in-list">
 				<div class="stock-in-item">
 					<input id="updateDate" name="updateDate" type="date" hidden="1">
@@ -68,25 +61,17 @@
 					<div class="item-content"><input id="memo" name="memo" placeholder="비고" class="form-control"></div>
 				</div>
 			</div>
+			
 		</section>
-			
-			
-			
-			
-			
-			
-			
 			
 			
 			
 			
 		<section class="content-body">
 			<div class="content-btn">
-				<button onclick="btnEvent('find')">조회</button>
-				<button onclick="btnEvent('save')">저장</button>
-				<button onclick="btnEvent('delete')">삭제</button>
-				<button onclick="btnEvent('fix')">확정</button>
-				<button onclick="btnEvent('cancel')">확정 취소</button>
+				<button onclick="btnEvent('find')" class="btn custom-btn custom-btn-primary btn-white">조회</button>
+				<button onclick="btnEvent('save')" class="btn custom-btn custom-btn-primary btn-white">저장</button>
+				<button onclick="resetEvent()" class="btn custom-btn custom-btn-secondary btn-white">초기화</button>
 			</div>
 			<div class="stock-in-table">
 				<table class="table-in table-content">
@@ -137,6 +122,13 @@
 		
 		
 		<section class="content-footer">
+			<div class="content-btn">
+				<button onclick="btnEvent('find')">조회</button>
+				<button onclick="btnEvent('save')">저장</button>
+				<button onclick="btnEvent('delete')">삭제</button>
+				<button onclick="btnEvent('fix')">확정</button>
+				<button onclick="btnEvent('cancel')">확정 취소</button>
+			</div>
 			<div class="stock-in-detail-table">
 				<table class="table-in-detail table-content">
 					<thead>
@@ -156,15 +148,15 @@
 						<c:forEach var="stIn" items="${stInList}" varStatus="status">
 						<c:forEach var="sid" items="${stIn.stInDetailDto}">
 							<tr class="stInDetailRow" ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}>
-								<td><input type="text" disabled="disabled" class="sidSorder" value="${sid.sorder}" readonly="readonly"></td>
+								<td><input type="text" disabled="disabled" class="sidSorder" name="sorder" value="${sid.sorder}" readonly="readonly"></td>
 								<td><input type="checkbox" class="sidCheckBox"></td>
-								<td><input type="text" disabled="disabled" class="inCode" value="${stIn.inCode}" readonly="readonly"></td>
-								<td><input type="text" disabled="disabled" class="sidWhCode" value="${sid.whCode}"></td>
-								<td><input type="text" disabled="disabled" class="sidItemCode" value="${sid.itemCode}"></td>
-								<td><input type="number" disabled="disabled" class="sidInQuantity" value="${sid.inQuantity}"></td>
-								<td><input type="text" disabled="disabled" class="sidInPrice" value="${sid.inPrice}"></td>
-								<td><input type="text" disabled="disabled" class="sidWhDtoWhName" value="${sid.whDto.whName}"></td>
-								<td><input type="text" disabled="disabled" class="sidMemo" value="${sid.memo}"></td>
+								<td><input type="text" disabled="disabled" class="inCode" name="inCode" value="${stIn.inCode}" readonly="readonly"></td>
+								<td><input type="text" disabled="disabled" class="sidWhCode" name="whCode" value="${sid.whCode}"></td>
+								<td><input type="text" disabled="disabled" class="sidItemCode" name="itemCode" value="${sid.itemCode}"></td>
+								<td><input type="number" disabled="disabled" class="sidInQuantity" name="inQuantity" value="${sid.inQuantity}" min="1"></td>
+								<td><input type="text" disabled="disabled" class="sidInPrice" name="inPrice" value="${sid.inPrice}"></td>
+								<td><input type="text" disabled="disabled" class="sidWhDtoWhName" name="whName" value="${sid.whDto.whName}"></td>
+								<td><input type="text" disabled="disabled" class="sidMemo" name="memo" value="${sid.memo}"></td>
 							</tr>
 						</c:forEach>
 						</c:forEach>

@@ -10,11 +10,6 @@
 <body>
 	<main>
 		<section class="content-header">
-			<div class="content-btn">
-				<button onclick="$('input[type=checkbox]').is(':checked')? alert('체크박스 클릭시 등록 불가'):btnEvent('register')">등록</button>
-				<button onclick="btnEvent('reset')">초기화</button>
-			</div>
-			
 			
 			<div class="stock-in-list">
 				<div class="stock-in-item">
@@ -56,7 +51,10 @@
 			
 			
 		<section class="content-body">
-
+			<div class="content-btn">
+				<button onclick="$('input[type=checkbox]').is(':checked')? alert('체크박스 클릭시 등록 불가'):btnEvent('register')">등록</button>
+				<button onclick="btnEvent('reset')">초기화</button>
+			</div>
 			<div class="stock-in-table">
 				<table class="table-in table-content">
 					<thead>
@@ -128,15 +126,15 @@
 						<c:forEach var="stIn" items="${stInList}" varStatus="status">
 						<c:forEach var="sid" items="${stIn.stInDetailDto}">
 							<tr class="stInDetailRow"  ${stIn.inType == '확정'? 'style="background-color:rgba(0,0,0, 0.2);"':''}>
-								<td><input type="text" disabled="disabled" class="sidSorder" value="${sid.sorder}" readonly="readonly"></td>
+								<td><input type="text" disabled="disabled" class="sidSorder" name="sorder" value="${sid.sorder}" readonly="readonly"></td>
 								<td><input type="checkbox" class="sidCheckBox"></td>
-								<td><input type="text" disabled="disabled" class="inCode" value="${stIn.inCode}" readonly="readonly"></td>
-								<td><input type="text" disabled="disabled" class="sidWhCode" value="${sid.whCode}"></td>
-								<td><input type="text" disabled="disabled" class="sidItemCode" value="${sid.itemCode}"></td>
-								<td><input type="number" disabled="disabled" class="sidInQuantity" value="${sid.inQuantity}"></td>
-								<td><input type="text" disabled="disabled" class="sidInPrice" value="${sid.inPrice}"></td>
-								<td><input type="text" disabled="disabled" class="sidWhDtoWhName" value="${sid.whDto.whName}"></td>
-								<td><input type="text" disabled="disabled" class="sidMemo" value="${sid.memo}"></td>
+								<td><input type="text" disabled="disabled" class="inCode" name="inCode" value="${stIn.inCode}" readonly="readonly"></td>
+								<td><input type="text" disabled="disabled" class="sidWhCode" name="whCode" value="${sid.whCode}"></td>
+								<td><input type="text" disabled="disabled" class="sidItemCode" name="itemCode" value="${sid.itemCode}"></td>
+								<td><input type="number" disabled="disabled" class="sidInQuantity" name="inQuantity" value="${sid.inQuantity}" min="1"></td>
+								<td><input type="text" disabled="disabled" class="sidInPrice" name="inPrice" value="${sid.inPrice}"></td>
+								<td><input type="text" disabled="disabled" class="sidWhDtoWhName" name="whName" value="${sid.whDto.whName}"></td>
+								<td><input type="text" disabled="disabled" class="sidMemo" name="memo" value="${sid.memo}"></td>
 							</tr>
 						</c:forEach>
 						</c:forEach>

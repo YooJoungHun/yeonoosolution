@@ -50,8 +50,11 @@ public class SIMDaoImpl implements SIMDao {
 	/** 회사 목록 조회 */
 	@Override
 	public List<ItemDto> selectItem() {return session.selectList("selectStInItem");}
-	/** 입고 상세 등록 */
+	/** 입고 상세 추가 */
 	@Override
 	public void insertStInDetail(List<StInDetailDto> sidList) {session.insert("insertStInDetail", sidList);}
+	/** 입고 상세 삭제 */
+	@Override
+	public void deleteStInDetail(List<StInDetailDto> sidList) {session.insert("deleteStInDetail", sidList);}
 
 }

@@ -394,9 +394,6 @@ function regEvent() {
 
 	if(!obj.customerCode || !obj.inDate) return alert('값을 입력해주세요');
 
-	// AJAX
-	// let xhr = new XMLHttpRequest();
-	// xhr.open('post', `${contextPath}
 	$.ajax({
 		url: `${contextPath}/product/sim/ajax/register`,
 		type: 'post',
@@ -410,73 +407,252 @@ function regEvent() {
 	});
 }
 
-// 입고 상세 이벤트
-function getDetailMap(index, code){
-	const detailMap = {
-		sorder: 	`<td><input type="text" 	class="addSorder" name="sorder" value=${index}></td>`,
-		dtCheckBox: `<td><input type="checkbox" class="addCheckBox"></td>`,
-		inCode: 	`<td><input type="text" 	class="inCode" name="inCode" readonly="readonly" value=${code}></td>`,
-		whCode: 	`<td><input type="text" 	class="addWhCode" name="whCode"></td>`,
-		itemCode: 	`<td><input type="text" 	class="addItemCode" name="itemCode"></td>`,
-		inQuantity: `<td><input type="number" 	class="addInQuantity" name="inQuantity"></td>`,
-		inPrice: 	`<td><input type="text" 	class="addInPrice" name="inPrice"></td>`,
-		whName: 	`<td><input type="text" 	class="addWhName" name="whName"></td>`,
-		memo: 		`<td><input type="text" 	class="addMemo" name="memo"></td>`
-	}
-	return detailMap;
+
+// 데이터
+function getDetailMap(index, code) {
+  const detailMap = {
+    sorder: `<td><input type="text" class="addSorder" name="sorder" value=${index}></td>`,
+    dtCheckBox: `<td><input type="checkbox" class="addCheckBox"></td>`,
+    inCode: `<td><input type="text" class="inCode" name="inCode" readonly="readonly" value=${code}></td>`,
+    whCode: `<td><input type="text" class="addWhCode" name="whCode"></td>`,
+    itemCode: `<td><input type="text" class="addItemCode" name="itemCode"></td>`,
+    inQuantity: `<td><input type="number" class="addInQuantity" name="inQuantity" min="1"></td>`,
+    inPrice: `<td><input type="text" class="addInPrice" name="inPrice"></td>`,
+    whName: `<td><input type="text" class="addWhName" name="whName"></td>`,
+    memo: `<td><input type="text" class="addMemo" name="memo"></td>`
+  };
+  return detailMap;
 }
+
 let rowIndex = 1;
 let detailData = {};
 
 // 추가
 function addDetailEvent() {
-	let checkInCode = $('.table-in input:checked');
-	if(checkInCode.length != 1) return alert('1개만 선택해 주세요');
-	let code = checkInCode.closest('tr').find('.inCode').val();
-	let detailMap = getDetailMap(rowIndex, code);
-	
-	// 객체 저장
-	detailData[rowIndex] = detailMap;
-	rowIndex++;
-	
-	// 인덱스 업데이트
-	updateIndex();
-	// 객체 업데이트
-	updateObject();
+  let checkInCode = $('.table-in input:checked');
+  if (checkInCode.length !== 1) return alert('1개만 선택해 주세요');
+  let code = checkInCode.closest('tr').find('.inCode').val();
+  let detailMap = getDetailMap(rowIndex, code);
+
+  // sorder 값 설정
+  let sorder = getNextSorder(code);
+  detailMap['sorder'] = `<td><input type="text" class="addSorder" name="sorder" value="${sorder}"></td>`;
+
+  // 객체 저장
+  detailData[rowIndex] = detailMap;
+  rowIndex++;
+
+  // 인덱스 업데이트
+  updateIndex();
+  // 객체 업데이트
+  updateObject();
 }
 
 // 제거
 function removeDetailEvent() {
-	let checkRows = $('.table-in-detail tbody input:checked').closest('tr');
-	if (checkRows.length == 0) return;
-  
-	checkRows.each(function () {
-		let removeIndex = $(this).attr('id');
-  
-		// status 확인
-		let status = getRowStatus(removeIndex);
-		if (status == 'add') {
-			delete detailData[removeIndex];
-		}else {
-			$(this).attr('data-status', 'delete');
-		}
-		$(this).css('display', 'none');
-	});
-  
-	updateIndex();
-	updateObject();
+  let checkRows = $('.table-in-detail tbody input:checked').closest('tr');
+  if (checkRows.length === 0) return;
+
+  checkRows.each(function () {
+    let removeIndex = $(this).attr('id');
+
+    // status 확인
+    let status = getRowStatus(removeIndex);
+    if (status === 'add') {
+      delete detailData[removeIndex];
+      $(this).remove();
+    } else {
+      $(this).attr('data-status', 'delete');
+      $(this).css('display', 'none');
+    }
+  });
+
+  updateIndex();
+  updateObject();
 }
 
 // 행 상태 설정
 function setRowStatus(index, status) {
-	let row = $(`.table-in-detail tbody tr[id=${index}]`);
-	row.attr('data-status', status);
+  let row = $(`.table-in-detail tbody tr[id=${index}]`);
+  row.attr('data-status', status);
 }
+
 // 행 상태 리턴
 function getRowStatus(index) {
-	let row = $(`.table-in-detail tbody tr[id=${index}]`);
-	return row.attr('data-status');
+  let row = $(`.table-in-detail tbody tr[id=${index}]`);
+  return row.attr('data-status');
 }
+
+// 객체 업데이트
+function updateObject() {
+  // 기존 행의 인덱스
+  let oldIndex = $(".table-in-detail tbody tr").map(function () {
+    return $(this).attr('id');
+  }).get();
+
+  // 객체 저장
+  for (let index in detailData) {
+    let data = detailData[index];
+
+    // 존재하는 행은 업데이트
+    if (oldIndex.includes(index)) {
+      for (let key in data) {
+        $(`#${index} .${key}`).html(data[key]);
+      }
+    } else {
+      // 존재하지 않는 행이면 새로 추가
+      let addTr = `<tr class="addInDetail" id=${index} data-status="add">`;
+      for (let key in data) {
+        addTr += data[key];
+      }
+      addTr += `</tr>`;
+      $('.table-in-detail tbody').append(addTr);
+    }
+  }
+}
+
+// 인덱스 업데이트
+function updateIndex() {
+  let checkInCode = $('.table-in input:checked').closest('tr').find('.inCode').val();
+  let currentIndex = $('.table-in-detail tbody tr .inCode').filter(function () {
+    return $(this).val() === checkInCode;
+  }).length + 1;
+
+  for (let index in detailData) {
+    let detailMap = detailData[index];
+
+    // sorder 값 설정
+    if (!detailMap.hasOwnProperty('sorder')) {
+      detailMap['sorder'] = `<td><input type="text" class="addSorder" name="sorder" disabled="disabled" value=${currentIndex}></td>`;
+      currentIndex++;
+    }
+  }
+}
+
+// inCode에 해당하는 sorder 값을 가져옴
+function getNextSorder(inCode) {
+  let sorder = 1;
+  let sorderValues = Object.values(detailData).map(data => parseInt($(data['sorder']).find('input').val()));
+
+  while (sorderValues.includes(sorder)) {
+    sorder++;
+  }
+
+  return sorder;
+}
+
+// // sorder 추출 함수
+// function getMaxSorder() {
+//   return Math.max(...Object.values(detailData).map(detail => detail.sorder));
+// }
+
+// // 추가
+// function addDetailEvent() {
+//   let checkInCode = $('.table-in input:checked');
+//   if(checkInCode.length != 1) return alert('1개만 선택해 주세요');
+  
+//   let inCode = checkInCode.closest('tr').find('.inCode').val();
+//   let sorder = getMaxSorder() + 1;
+
+//   // 객체 저장
+//   detailData[sorder] = { inCode, sorder };  // 기타 필요한 필드를 여기에 추가하세요.
+
+//   // 객체 업데이트
+//   updateObject();
+// }
+
+// // 추가
+// function addDetailEvent() {
+//   let checkInCode = $('.table-in input:checked');
+//   if (checkInCode.length !== 1) return alert('1개만 선택해 주세요');
+//   let code = checkInCode.closest('tr').find('.inCode').val();
+//   let detailMap = getDetailMap(rowIndex, code);
+
+//   // sorder 값 설정
+//   let sorder = getNextSorder(code);
+//   detailMap['sorder'] = `<td><input type="text" class="addSorder" name="sorder" value="${sorder}"></td>`;
+
+//   // 객체 저장
+//   detailData[rowIndex] = detailMap;
+//   rowIndex++;
+
+//   // 인덱스 업데이트
+//   updateIndex();
+//   // 객체 업데이트
+//   updateObject();
+// }
+
+// // 제거
+// function removeDetailEvent() {
+// 	let checkRows = $('.table-in-detail tbody input:checked').closest('tr');
+// 	if (checkRows.length == 0) return;
+  
+// 	checkRows.each(function () {
+// 		let removeIndex = $(this).attr('id');
+  
+// 		// status 확인
+// 		let status = getRowStatus(removeIndex);
+// 		if (status == 'add') {
+// 			delete detailData[removeIndex];
+// 			$(this).remove();
+// 		}else {
+// 			$(this).attr('data-status', 'delete');
+// 			$(this).css('display', 'none');
+// 		}
+// 	});
+  
+// 	updateIndex();
+// 	updateObject();
+// }
+
+// // 행 상태 설정
+// function setRowStatus(index, status) {
+// 	let row = $(`.table-in-detail tbody tr[id=${index}]`);
+// 	row.attr('data-status', status);
+// }
+// // 행 상태 리턴
+// function getRowStatus(index) {
+// 	let row = $(`.table-in-detail tbody tr[id=${index}]`);
+// 	return row.attr('data-status');
+// }
+
+// // 객체 업데이트
+// function updateObject() {
+// 	// 기존 행의 인덱스
+// 	let oldIndex = $(".table-in-detail tbody tr").map(function() { return $(this).attr('id'); }).get();
+	
+// 	// 객체 저장
+// 	for (let index in detailData) {
+// 			let data = detailData[index];
+			
+// 			// 존재하는 행은 업데이트
+// 			if(oldIndex.includes(index)) {
+// 					for(let key in data) {
+// 							$(`#${index} .${key}`).html(data[key]);
+// 					}
+// 			} else {
+// 		// 존재하지 않는 행이면 새로 추가
+// 					let addTr = `<tr class="addInDetail" id=${index} data-status="add">`;
+// 					for (let key in data) {
+// 							addTr += data[key];
+// 					}
+// 					addTr += `</tr>`;
+// 					$('.table-in-detail tbody').append(addTr);
+// 			}
+// 	}
+// }
+
+// // 인덱스 업데이트
+// function updateIndex() {
+// 	let checkInCode = $('.table-in input:checked').closest('tr').find('.inCode').val();
+// 	let currentIndex = $('.table-in-detail tbody tr .inCode').filter(function() {return $(this).val() === checkInCode;}).length+1;
+// 	console.log(currentIndex);
+
+// 	for (let index in detailData) {
+// 		let detailMap = detailData[index];
+// 		detailMap['sorder'] = `<td><input type="text" class="addSorder" name="sorder" disabled="disabled" value=${currentIndex}></td>`;
+// 	}
+// }
 
 // 저장
 // function saveDetailEvent() {
@@ -517,35 +693,126 @@ function getRowStatus(index) {
 // 		}
 // 	}
 // }
+
+// 저장
+// function saveDetailEvent() {
+// 	$('.table-in-detail input').prop('disabled', false).prop('readonly', false);
+
+
+// 	let checkInCode = $('.table-in input:checked');
+// 	if(checkInCode.length != 1) return alert('1개만 선택해 주세요');
+// 	let inCode = checkInCode.closest('tr').find('.inCode').val();
+
+	
+	
+// 	$('.table-in-detail tbody tr').each(function() {
+// 		if($(this).find('.inCode').val() == inCode){
+// 			let dataStatus = $(this).attr('data-status');
+// 			if(dataStatus == 'add'){
+// 				console.log($(this).find('input'));
+// 				$.ajax({
+// 					url: `${contextPath}/product/sim/ajax/save`,
+// 					type: 'post',
+// 					data: $(this).find('input').serialize(),
+// 					contentType: 'application/json;',
+// 					success: function(data) {
+// 						console.log(data);
+// 					}
+// 				});
+// 			}else if(dataStatus == 'delete'){
+// 				console.log($(this).find('input'));
+// 				$.ajax({
+// 					url: `${contextPath}/product/sim/ajax/delete`,
+// 					type: 'post',
+// 					data: $(this).find('input').serialize(),
+// 					contentType: 'application/json;',
+// 					success: function(data) {
+// 						console.log(data);
+// 					}
+// 				});
+// 			}
+// 		}
+// 	});
+
+// 	// 이어서 하기
+
+// 	let obj = [];
+// 	let tbody = $('.table-in-detail tbody');
+
+// 	tbody.find('tr').each(function () {
+// 		let detailObj = {};
+// 		$(this).find('input').each(function () {
+// 			let key = $(this).attr('name');
+// 			let value = $(this).val();
+// 			detailObj[key] = value;
+// 		});
+// 		obj.push(detailObj);
+// 	});
+// 	console.log(obj);
+
+
+// }
+
+
+
+
+
+
+// 저장
 function saveDetailEvent() {
-	let checkInCode = $('.table-in input:checked');
-	if(checkInCode.length != 1) return alert('1개만 선택해 주세요');
-	let inCode = checkInCode.closest('tr').find('.inCode').val();
+  $('.table-in-detail input').prop('disabled', false).prop('readonly', false);
 
-	$('.table-in-detail tbody tr').each(function() {
-		if($(this).find('.inCode').val() == inCode){
-			console.log('inCode가 같음');
-		}
-	});
+  let checkInCode = $('.table-in input:checked');
+  if (checkInCode.length != 1) return alert('1개만 선택해 주세요');
+  let inCode = checkInCode.closest('tr').find('.inCode').val();
 
-	// 이어서 하기
+	let addData = [];
+	let deleteData = [];
 
-	let obj = [];
-	let tbody = $('.table-in-detail tbody');
+  $('.table-in-detail tbody tr').each(function() {
+    if($(this).find('.inCode').val() == inCode) {
+      let dataStatus = $(this).attr('data-status');
+      if(dataStatus == 'add' || dataStatus == 'delete') {
+        let inputs = $(this).find('input');
+        let dataToSend = {};
 
-	tbody.find('tr').each(function () {
-		let detailObj = {};
-		$(this).find('input').each(function () {
-			let key = $(this).attr('name');
-			let value = $(this).val();
-			detailObj[key] = value;
+        inputs.each(function() {
+          dataToSend[this.name] = $(this).val();
+        });
+
+				if(dataStatus == 'add') {
+					addData.push(dataToSend);
+				}else if(dataStatus == 'delete') {
+					deleteData.push(dataToSend);
+				}
+      }
+    }
+  });
+	if(addData.length > 0) {
+		$.ajax({
+			url: `${contextPath}/product/sim/ajax/add`,
+			type: 'post',
+			data: JSON.stringify(addData),
+			contentType: 'application/json; charset=utf-8',
+			success: function(data) {
+				console.log(data);
+			}
 		});
-		obj.push(detailObj);
-	});
-	console.log(obj);
-
-
+	}
+	if(deleteData.length > 0) {
+		$.ajax({
+			url: `${contextPath}/product/sim/ajax/delete`,
+			type: 'post',
+			data: JSON.stringify(deleteData),
+			contentType: 'application/json; charset=utf-8',
+			success: function(data) {
+				console.log(data);
+			}
+		});
+	}
 }
+
+
 
 
 
@@ -567,43 +834,7 @@ function saveDetailEvent() {
 // 	}
 // }
 
-// 객체 업데이트
-function updateObject() {
-    // 기존 행의 인덱스
-    let oldIndex = $(".table-in-detail tbody tr").map(function() { return $(this).attr('id'); }).get();
-    
-    // 객체 저장
-    for (let index in detailData) {
-        let data = detailData[index];
-        
-        // 존재하는 행은 업데이트
-        if(oldIndex.includes(index)) {
-            for(let key in data) {
-                $(`#${index} .${key}`).html(data[key]);
-            }
-        } else {
-			// 존재하지 않는 행이면 새로 추가
-            let addTr = `<tr class="addInDetail" id=${index} data-status="add">`;
-            for (let key in data) {
-                addTr += data[key];
-            }
-            addTr += `</tr>`;
-            $('.table-in-detail tbody').append(addTr);
-        }
-    }
-}
 
-
-
-// 인덱스 업데이트
-function updateIndex() {
-	let currentIndex = 1;
-	for (let index in detailData) {
-		let detailMap = detailData[index];
-		detailMap['sorder'] = `<td><input type="text" class="addSorder" name="sorder" disabled="disabled" value=${currentIndex}></td>`;
-		currentIndex++;
-	}
-}
 
 // Date 포멧
 function formatDateMinus(date) {

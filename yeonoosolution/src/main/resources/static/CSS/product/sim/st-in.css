@@ -1,11 +1,9 @@
 @charset "UTF-8";
 section {
-	margin: 30px 50px;
+	margin: 50px 50px;
 	font-size: 13px;
 }
-section > div:first-child {
-	margin: 20px 0px;
-}
+
 .table-content {
 	display: block;
 	table-layout: fixed;
