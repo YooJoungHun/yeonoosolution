@@ -37,14 +37,14 @@ public class SMMController {
 		List<StMoveDetailDto> stockMoveStatus = smmService.findStockMoveStatusList();
 		
 		model.addAttribute("stockMoveStatus", stockMoveStatus);
-		return "product/stock-move-status.layout";
+		return "product/smm/stock-move-status.layout";
 	}
 	
 	// 이동상세 현황 페이지 검색결과
 	@ResponseBody
 	@GetMapping("/product/stockMoveSearch")
 	public List<StMoveDetailDto> stockMoveSearchList(String keyword, String startDate, String endDate) {
-		
+		System.out.println(keyword);
 		List<StMoveDetailDto> stockMoveSearch = smmService.findStockMoveSearchListByKeywordAndDate(keyword, startDate, endDate);
 		return stockMoveSearch;
 	}
@@ -56,7 +56,7 @@ public class SMMController {
 		List<StMoveDto> stockMoveRegistration = smmService.findStockMoveRegistrationList();
 		
 		model.addAttribute("stockMoveRegistration", stockMoveRegistration);
-		return "product/stock-move-registration.layout";
+		return "product/smm/stock-move-registration.layout";
 	}
 	
 	// "저장" -> "확정" move_type 변경
