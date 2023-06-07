@@ -75,10 +75,8 @@ var menuList = [
 	{
 		name: '구매관리',
 		value: [
-			{ name: '구매발주', value: '' },
-			{ name: '구매입고 등록', value: '' },
-			{ name: '구매입고 라벨발행', value: '' },
-			{ name: '구매입고 내역조회', value: '' }
+			{ name: '구매발주', value: '/sales/order' },
+			{ name: '구매입고 등록', value: '/sales/stock-in' }
 		]
 	},
 	{
