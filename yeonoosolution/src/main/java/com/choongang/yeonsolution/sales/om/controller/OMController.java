@@ -2,8 +2,6 @@ package com.choongang.yeonsolution.sales.om.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,7 +20,6 @@ import com.choongang.yeonsolution.sales.om.domain.OMOrdersDetailDto;
 import com.choongang.yeonsolution.sales.om.domain.OMOrdersDto;
 import com.choongang.yeonsolution.sales.om.domain.OMOrdersItemDto;
 import com.choongang.yeonsolution.sales.om.service.OMService;
-import com.choongang.yeonsolution.standard.am.domain.MemberDto;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -58,7 +55,7 @@ public class OMController {
 	@ResponseBody
 	public List<OMOrdersDto> placeOrderList() {
 		
-		
+		//log.info("[placeOrder] -> {}", companyCode);
 		
 		List<OMOrdersDto> placeOrderList = omService.findPlaceOrderListByCompanyCode();
 		//model.addAttribute("placeOrderList", placeOrderList);
@@ -72,20 +69,14 @@ public class OMController {
 	 */
 	@PatchMapping("/sales/receive-order/{orderCode}/confirm")
 	@ResponseBody
-	public int modifyStatusToConfirmByOrderCode(@PathVariable String orderCode, HttpSession session){
-		log.info("[modifyStatusToConfirmByOrderCode] orderCode -> {}", orderCode);
-		MemberDto memberDto = (MemberDto) session.getAttribute("member");
-		OMOrdersDto ordersDto = new OMOrdersDto();
+	public int modifyStatusToConfirmByorderCode(@PathVariable String orderCode){
+		log.info("[modifyConfirmStatus] orderCode -> {}", orderCode);
 		
-		//ordersDto.setOrderEmpid(memberDto.getMemberName());
-		ordersDto.setUpdateUser(memberDto.getMemberName());
-		ordersDto.setOrderCode(orderCode);
+		int orderStatus = omService.modifyStatusToConfirmByorderCode(orderCode);
 		
-		log.info("[modifyStatusToConfirmByOrderCode] ordersDto.toString() -> {}", ordersDto.toString());
+		log.info("[modifyConfirmStatus] orderStatus -> {}", orderCode);
+		log.info("[modifyConfirmStatus] orderStatus.getOrderStatus() -> {}", orderStatus);
 		
-		int orderStatus = omService.modifyStatusToConfirmByOrderCode(ordersDto);
-		
-		log.info("[modifyStatusToConfirmByOrderCode] orderStatus -> {}", orderStatus);
 		
 		return orderStatus;
 	}
@@ -95,19 +86,14 @@ public class OMController {
 	 */
 	@PatchMapping("/sales/receive-order/{orderCode}/cancel")
 	@ResponseBody
-	public int modifyStatusToCancelByOrderCode(@PathVariable String orderCode, HttpSession session){
+	public int modifyStatusToCancelByorderCode(@PathVariable String orderCode){
 		log.info("[modifyStatusToCancel] orderCode -> {}", orderCode);
 		
-		MemberDto memberDto = (MemberDto) session.getAttribute("member");
-		OMOrdersDto ordersDto = new OMOrdersDto();
+		int orderStatus = omService.modifyStatusToCancelByorderCode(orderCode);
 		
-		//ordersDto.setOrderEmpid(memberDto.getMemberName());
-		ordersDto.setUpdateUser(memberDto.getMemberName());
-		ordersDto.setOrderCode(orderCode);
+		log.info("[modifyStatusToCancel] orderStatus -> {}", orderCode);
+		log.info("[modifyStatusToCancel] orderStatus.getOrderStatus() -> {}", orderStatus);
 		
-		int orderStatus = omService.modifyStatusToCancelByOrderCode(ordersDto);
-		
-		log.info("[modifyStatusToCancel] orderStatus -> {}", orderStatus);
 		
 		return orderStatus;
 	}
@@ -117,17 +103,15 @@ public class OMController {
 	 */
 	@PatchMapping("/sales/receive-order/{orderCode}/modify-type")
 	@ResponseBody
-	public String modifyOrderTypeByOrderCode(@PathVariable String orderCode, String receiveOrderType, HttpSession session){
-		log.info("[modifyOrderTypeByOrderCode] orderCode, receiveOrderType -> {}, {}", orderCode, receiveOrderType);
+	public String modifyOrderTypeByOrderCode(@PathVariable String orderCode,
+										    String receiveOrderType){
+		log.info("[modifyOrderTypeByOrderCode] orderCode -> {}", orderCode);
+		log.info("[modifyOrderTypeByOrderCode] receiveOrderType -> {}", receiveOrderType);
 		
-		MemberDto memberDto = (MemberDto) session.getAttribute("member");
 		OMOrdersDto ordersDto = new OMOrdersDto();
-		//ordersDto.setOrderEmpid(memberDto.getMemberName());
-		ordersDto.setUpdateUser(memberDto.getMemberName());
 		ordersDto.setReceiveOrderType(receiveOrderType);
-		ordersDto.setOrderCode(orderCode);
 		
-		int orderType = omService.modifyOrderTypeByorderCode(ordersDto);
+		int orderType = omService.modifyOrderTypeByorderCode(orderCode, ordersDto);
 		String orderTypeStr =  Integer.toString(orderType);
 		
 		log.info("[modifyOrderTypeByOrderCode] orderStatus -> {}", orderCode);
@@ -141,19 +125,17 @@ public class OMController {
 	 */
 	@PatchMapping("/sales/receive-order/{orderCode}/change-order-date")
 	@ResponseBody
-	public int modifyOrderDateByOrderCode(@PathVariable String orderCode, String orderDate, HttpSession session){
+	public int modifyOrderDateByOrderCode(@PathVariable String orderCode, String orderDate){
 										    
 		log.info("[modifyOrderDateByOrderCode] orderCode -> {}", orderCode);
 		log.info("[modifyOrderDateByOrderCode] orderDate -> {}", orderDate);
 		
-		MemberDto memberDto = (MemberDto) session.getAttribute("member");
 		OMOrdersDto ordersDto = new OMOrdersDto();
-		//ordersDto.setOrderEmpid(memberDto.getMemberName());
-		ordersDto.setUpdateUser(memberDto.getMemberName());
 		ordersDto.setOrderDate(orderDate);
 		ordersDto.setOrderCode(orderCode);
 		log.info("[modifyOrderDateByOrderCode] orderDate.toString -> {}", ordersDto.toString());
 		int modifiedOrderDate = omService.modifyOrderDateByorderCode(ordersDto);
+		//String orderTypeStr =  Integer.toString(orderType);
 		
 		log.info("[modifyOrderTypeByOrderCode] modifiedOrderDate -> {}", modifiedOrderDate);
 		log.info("[modifyOrderTypeByOrderCode] ordersDto.getOrderDate() -> {}", ordersDto.getOrderDate());
@@ -166,19 +148,17 @@ public class OMController {
 	 */
 	@PatchMapping("/sales/receive-order/{orderCode}/change-due-date")
 	@ResponseBody
-	public int modifyOrderDueByOrderCode(@PathVariable String orderCode, String dueDate, HttpSession session){
+	public int modifyOrderDueByOrderCode(@PathVariable String orderCode, String dueDate){
 										    
 		log.info("[modifyOrderDueByOrderCode] orderCode -> {}", orderCode);
 		log.info("[modifyOrderDueByOrderCode] orderDate -> {}", dueDate);
 		
-		MemberDto memberDto = (MemberDto) session.getAttribute("member");
 		OMOrdersDto ordersDto = new OMOrdersDto();
-		//ordersDto.setOrderEmpid(memberDto.getMemberName());
-		ordersDto.setUpdateUser(memberDto.getMemberName());
 		ordersDto.setDueDate(dueDate);
 		ordersDto.setOrderCode(orderCode);
 		log.info("[modifyOrderDueByOrderCode] ordersDto.toString -> {}", ordersDto.toString());
 		int modifiedDueDate = omService.modifyDueDateByorderCode(ordersDto);
+		//String orderTypeStr =  Integer.toString(orderType);
 		
 		log.info("[modifyOrderDueByOrderCode] modifiedDueDate -> {}", modifiedDueDate);
 		log.info("[modifyOrderDueByOrderCode] ordersDto.getDueDate() -> {}", ordersDto.getDueDate());
@@ -192,18 +172,16 @@ public class OMController {
 	@PatchMapping("/sales/receive-order/{orderCode}/modify-empid")
 	@ResponseBody
 	public int modifyEmpidByOrderCode(@PathVariable String orderCode, 
-									  @RequestBody OMOrdersDto ordersDto, 
-									  HttpSession session){
+									  @RequestBody OMOrdersDto ordersDto){
 										    
 		ordersDto.setOrderCode(orderCode);
 		
 		log.info("[modifyEmpidByOrderCode] orderCode -> {}", ordersDto.getOrderCode());
 		log.info("[modifyEmpidByOrderCode] ordersDto.getOrderEmpid() -> {}", ordersDto.getOrderEmpid());
-		MemberDto memberDto = (MemberDto) session.getAttribute("member");
-		//ordersDto.setOrderEmpid(memberDto.getMemberName());
-		ordersDto.setUpdateUser(memberDto.getMemberName());
+		
 		log.info("[modifyEmpidByOrderCode] ordersDto.toString -> {}", ordersDto.toString());
 		int modifiedEmpid = omService.modifyEmpidByOrderCode(ordersDto);
+		//String orderTypeStr =  Integer.toString(orderType);
 		
 		log.info("[modifyEmpidByOrderCode] modifiedEmpid -> {}", modifiedEmpid);
 		log.info("[modifyEmpidByOrderCode] ordersDto.getOrderEmpid() -> {}", ordersDto.getOrderEmpid());
@@ -217,12 +195,9 @@ public class OMController {
 	 * receive-opder-insert
 	 */
 	@PostMapping(value = "/sales/om/insert-receive-order")
-	public String receiveOrderAdd(OMOrdersDto ordersDto, HttpSession session) {
-		MemberDto memberDto = (MemberDto) session.getAttribute("member");
-		ordersDto.setRegUser(memberDto.getMemberName());
-		ordersDto.setUpdateUser(memberDto.getMemberName());
-		ordersDto.setCompanyCode(memberDto.getCompanyCode());
+	public String receiveOrderAdd(OMOrdersDto ordersDto, Model model) {
 		log.info("[receiveOrderAdd] ordersDto.toString -> {}", ordersDto.toString());
+		
 		omService.addReceiveOrder(ordersDto);
 		
 		return "redirect:/sales/receive-order";
@@ -259,18 +234,21 @@ public class OMController {
 	}
 	
 	
-	////
+	//
 	/*
 	 * 수주 detail-content List
 	 * 
 	 */
+	//@GetMapping("/place-order-detail-list/{orderCode}")
 	@GetMapping("/sales/receive-order/place-order-detail-list")
 	@ResponseBody
+	//public List<OrdersDto> placeOrderDetailList(@PathVariable String orderCode) {
 	public List<OMOrdersDetailDto> placeOrderDetailList(@RequestParam("orderCode") String orderCode) {
 		
 		log.info("[placeOrderDetailList] orderCode -> {}", orderCode);
 		
 		List<OMOrdersDetailDto> placeOrderDetailList = omService.findPlaceOrderDetailListByCompanyCode(orderCode);
+		//model.addAttribute("placeOrderList", placeOrderList);
 		
 		return placeOrderDetailList;
 	}
@@ -279,12 +257,9 @@ public class OMController {
 	 * receive-opder-detail-insert
 	 */
 	@PostMapping(value = "/sales/om/insert-receive-order-detail")
-	public String receiveOrderDetailAdd(OMOrdersDetailDto ordersDetailDto, HttpSession session) {
-		log.info("[receiveOrderDetailAdd] ordersDetailDto -> {}", ordersDetailDto);
-		MemberDto memberDto = (MemberDto) session.getAttribute("member");
-		ordersDetailDto.setRegUser(memberDto.getMemberName());
-		ordersDetailDto.setUpdateUser(memberDto.getMemberName());
-		ordersDetailDto.setCompanyCode(memberDto.getCompanyCode());
+	public String receiveOrderDetailAdd(OMOrdersDetailDto ordersDetailDto, Model model) {
+		log.info("[receiveOrderDetailAdd] ordersDto.toString -> {}", ordersDetailDto.toString());
+		
 		omService.addReceiveOrderDetail(ordersDetailDto);
 		
 		return "redirect:/sales/receive-order";

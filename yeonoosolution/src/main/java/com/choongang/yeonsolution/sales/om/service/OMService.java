@@ -11,13 +11,13 @@ public interface OMService {
 
 	List<OMOrdersDto> findPlaceOrderListByCompanyCode();
 
-	int modifyStatusToConfirmByOrderCode(OMOrdersDto ordersDto);
+	int modifyStatusToConfirmByorderCode(String orderCode);
 
-	int modifyStatusToCancelByOrderCode(OMOrdersDto ordersDto);
+	int modifyStatusToCancelByorderCode(String orderCode);
 
 	List<OMOrdersDetailDto> findPlaceOrderDetailListByCompanyCode(String orderCode);
 
-	int modifyOrderTypeByorderCode(OMOrdersDto ordersDto);
+	int modifyOrderTypeByorderCode(String orderCode, OMOrdersDto ordersDto);
 
 	void addReceiveOrder(OMOrdersDto ordersDto);
 

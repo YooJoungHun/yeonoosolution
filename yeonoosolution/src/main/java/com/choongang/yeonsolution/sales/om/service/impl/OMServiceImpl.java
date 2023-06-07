@@ -37,26 +37,26 @@ public class OMServiceImpl implements OMService {
 
 
 	@Override
-	public int modifyStatusToConfirmByOrderCode(OMOrdersDto ordersDto) {
+	public int modifyStatusToConfirmByorderCode(String orderCode) {
 		
-		int orderStatus = omDao.updateStatusToConfirmByOrderCode(ordersDto);
+		int orderStatus = omDao.updateStatusToConfirmByorderCode(orderCode);
 		
 		return orderStatus;
 	}
 
 
 	@Override
-	public int modifyStatusToCancelByOrderCode(OMOrdersDto ordersDto) {
+	public int modifyStatusToCancelByorderCode(String orderCode) {
 		
-		int orderStatus = omDao.updateStatusToCancelByOrderCode(ordersDto);
+		int orderStatus = omDao.updateStatusToCancelByorderCode(orderCode);
 
 		return orderStatus;
 	}
 
 	@Override
-	public int modifyOrderTypeByorderCode(OMOrdersDto ordersDto) {
+	public int modifyOrderTypeByorderCode(String orderCode, OMOrdersDto ordersDto) {
 		
-		int orderType = omDao.updateOrderTypeByorderCode(ordersDto);
+		int orderType = omDao.updateOrderTypeByorderCode(orderCode, ordersDto);
 		
 		return orderType;
 	}

@@ -14,13 +14,13 @@ public interface OMDao {
 
 	List<OMOrdersDto> selectPlaceOrderListByCompanyCode();
 
-	int updateStatusToConfirmByOrderCode(OMOrdersDto ordersDto);
+	int updateStatusToConfirmByorderCode(String orderCode);
 
-	int updateStatusToCancelByOrderCode(OMOrdersDto ordersDto);
+	int updateStatusToCancelByorderCode(String orderCode);
 
 	List<OMOrdersDetailDto> selectPlaceOrderDetailListByCompanyCode(String orderCode);
 
-	int updateOrderTypeByorderCode(OMOrdersDto ordersDto);
+	int updateOrderTypeByorderCode(String orderCode, OMOrdersDto ordersDto);
 
 	void insertReceiveOrder(OMOrdersDto ordersDto);
 
