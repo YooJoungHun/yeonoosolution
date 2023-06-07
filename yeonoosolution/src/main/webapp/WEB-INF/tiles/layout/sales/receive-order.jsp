@@ -12,15 +12,6 @@
 		overflow: auto;
 	}
 	
-	.side-bar {
-		flex: 0 0 210px; /* 사이드바의 너비를 고정값으로 설정 */
-		border: 1px solid #ddd;
-		padding: 20px;
-		float: left;
-		height: 100vh;
-		background-color: #D9D9D9;
-	}
-	
 	.receive-order-container {
 		width: 1500px;
 		height: 100vh;
@@ -83,7 +74,7 @@
 
 	/* 테이블  */
 	#table-content {
-		border:3px solid;
+		border:1px solid;
 		padding: 5px;
 		text-align: center;
 	}
@@ -333,22 +324,22 @@
 					if(order.orderCode === checkedRowId){
 						radio.prop("checked", true); // 이전에 체크된 radio 선택
 					}
-	
-					row.append($('<td>').append(radio));
-					row.append('<td class="bg-gray">' + order.orderStatus + '</td>');
-					row.append('<td class="bg-gray">' + order.orderCode + '</td>');
-					row.append('<td class="bg-gray">' + order.customerCode + '</td>');
-					row.append('<td	class="bg-orange">' + order.receiveOrderType + '</td>');
-					row.append('<td class="bg-gray">' + order.companyName + '</td>');
-					row.append('<td class="bg-blue">' + order.orderDate.substring(0, 10) + '</td>');
-					row.append('<td class="bg-blue">' + (order.orderEmpid ? order.orderEmpid : '') + '</td>');
-					row.append('<td class="bg-orange">' + (order.deliveryPlan ? order.deliveryPlan : '') + '</td>');
-					row.append('<td class="bg-blue">' + order.dueDate.substring(0, 10) + '</td>');
-					row.append('<td class="bg-blue">' + order.regDate.substring(0, 10) + '</td>');
-					row.append('<td class="bg-gray">' + (order.regUser ? order.regUser : '') + '</td>');
-					row.append('<td class="bg-gray">' + order.updateDate.substring(0, 10) + '</td>');
-					row.append('<td class="bg-gray">' + (order.updateUser ? order.updateUser : '') + '</td>');
 					
+					row.append($('<td>').append(radio));
+					row.append($('<td>').addClass('bg-gray').text(order.orderStatus));
+					row.append($('<td>').addClass('bg-gray').text(order.orderCode));
+					row.append($('<td>').addClass('bg-gray').text(order.customerCode));
+					row.append($('<td>').addClass('bg-orange').text(order.receiveOrderType));
+					row.append($('<td>').addClass('bg-gray').text(order.companyName));
+					row.append($('<td>').addClass('bg-blue').text(order.orderDate ? order.orderDate.substring(0, 10) : ''));
+					row.append($('<td>').addClass('bg-blue').text(order.orderEmpid ? order.orderEmpid : ''));
+					row.append($('<td>').addClass('bg-orange').text(order.deliveryPlan ? order.deliveryPlan : ''));
+					row.append($('<td>').addClass('bg-blue').text(order.dueDate ? order.dueDate.substring(0, 10) : ''));
+					row.append($('<td>').addClass('bg-blue').text(order.regDate ? order.regDate.substring(0, 10) : ''));
+					row.append($('<td>').addClass('bg-gray').text(order.regUser ? order.regUser : ''));
+					row.append($('<td>').addClass('bg-gray').text(order.updateDate ? order.updateDate.substring(0, 10) : ''));
+					row.append($('<td>').addClass('bg-gray').text(order.updateUser ? order.updateUser : ''));
+
 					table.append(row);
 					 
 				});
@@ -946,7 +937,7 @@
 			    				type: "POST",
 			    				dataType: "text",
 			    				success: function(data){
-			    					location.replace("/wo"); 
+			    					location.replace("/product/wo"); 
 			    				},
 			    				error: function(){
 			    					console.log("작업지시등록 변경 Error");
@@ -966,43 +957,34 @@
 	});
 		
 
-	document.addEventListener("DOMContentLoaded", function() {
-	
-		// '수주서 작성' 버튼 클릭 시 폼 보이기
-		document.getElementById("insert-receive-form-button").addEventListener("click", function() {
-			document.getElementById("table-insert-receive-form-container").style.display = "block";
-		});
-		
-		// 폼 제출 시 폼 숨기기
-		document.getElementById("table-insert-receive-form").addEventListener("submit", function() {
-			document.getElementById("table-insert-receive-form-container").style.display = "none";
-		});
-		
-		// '수주서 상세 작성' 버튼 클릭 시 폼 보이기
-		document.getElementById("insert-receive-detail-form-button").addEventListener("click", function() {
-			
-			let orderCode = $("input[name='selectRow']:checked").val();
-			
-			if (!orderCode) {
-				alert("항목을 선택해주세요."); 
-				return; 
-			}
-			
-			document.getElementById("table-insert-receive-detail-form-container").style.display = "block";
-		});
-		
-		// 폼 제출 시 폼 숨기기
-		document.getElementById("table-insert-receive-detail-form").addEventListener("submit", function() {
-			document.getElementById("table-insert-receive-detail-form-container").style.display = "none";
-		});
-		
+	$(document).ready(function() {
+	    // '수주서 작성' 버튼 클릭 시 폼 보이기
+	    $("#insert-receive-form-button").click(function() {
+	        $("#table-insert-receive-form-container").show();
+	    });
+
+	    // 폼 제출 시 폼 숨기기
+	    $("#table-insert-receive-form").submit(function() {
+	        $("#table-insert-receive-form-container").hide();
+	    });
+
+	    // '수주서 상세 작성' 버튼 클릭 시 폼 보이기
+	    $("#insert-receive-detail-form-button").click(function() {
+	        let orderCode = $("input[name='selectRow']:checked").val();
+
+	        if (!orderCode) {
+	            alert("항목을 선택해주세요.");
+	            return;
+	        }
+
+	        $("#table-insert-receive-detail-form-container").show();
+	    });
+
+	    // 폼 제출 시 폼 숨기기
+	    $("#table-insert-receive-detail-form").submit(function() {
+	        $("#table-insert-receive-detail-form-container").hide();
+	    });
 	});
-	
-	
-	
-	
-	///////////////////////////////////////////////
-	///////////////////////////////////////////////
 	
 	//document ready
 	$(function() {
@@ -1018,7 +1000,6 @@
 		});
 		
 		loadPlaceOrderList();
-		
 		
 		$('#quantity').on('input', calculateAmount);
 		$('#price').on('input', calculateAmount);

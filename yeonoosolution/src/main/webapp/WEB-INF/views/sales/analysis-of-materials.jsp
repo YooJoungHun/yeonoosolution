@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="analysis-of-materials-body-container">
 	
-	<div class="analysis-of-materials-container">
+	<div class="analysis-of-materials-container" >
 		
 		<div class="analysis-of-materials-container-btn">
 		
@@ -59,8 +59,6 @@
 				</table>
 		
 		</div>	<!-- /class="semi-manufactures-container" -->
-		
-		
 	
 	</div>
 </div>	<!-- /id="analysis-of-materials-body-container" -->
