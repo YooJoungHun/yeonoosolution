@@ -153,7 +153,7 @@
 	<!-- 직급 등록  -->
 	<insert id="umInsertJobByJobName" parameterType="UMJobDto">
 		INSERT INTO job(job_code, job_name, job_yn, reg_date, reg_user)
-		VALUES ('JOB' || JOB_ID_SEQ.NEXTVAL, #{jobName}, 'Y', sysdate, 'YYYY/MM/DD HH24:MI:SS'), #{memberUid})
+		VALUES ('JOB' || JOB_ID_SEQ.NEXTVAL, #{jobName}, 'Y', sysdate, #{memberUid})
 	</insert>
 	
 	<!-- 직급 등록 시 똑같은 직급이름이 있는 지 확인  -->

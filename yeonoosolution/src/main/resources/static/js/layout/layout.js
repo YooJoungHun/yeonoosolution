@@ -24,15 +24,14 @@ var menuList = [
            {
               name: '품목관리정보',
               value: [
-                 { name: '품목등록(제품)', value: '' },
-                 { name: '품목등록(반제품)', value: '' },
-                 { name: '품목등록(원자재)', value: '' }
+                 { name: '품목 등록', value: '/standard/imi' },
+               
               ]
            },
            {
-              name: '품목단가정보',
+              name: '품목 단가 정보',
               value: [
-                 { name: '품목단가관리', value: '' }
+                 { name: '품목 단가 관리', value: '/standard/ipi' }
               ]
            },
            {
@@ -44,10 +43,7 @@ var menuList = [
            {
               name: '생산관리정보',
               value: [
-                 { name: '공정코드등록', value: '' },
-                 { name: '품목별공정등록', value: '' },
-                 { name: '생산라인등록', value: '' },
-                 { name: 'BOM 등록', value: '' }
+                 { name: 'BOM 등록', value: '/standard/pmi' }
               ]
            }
         ]
