@@ -111,8 +111,8 @@ var menuList = [
          {
             name: '이동관리',
             value: [
-               { name: '이동등록', value: '' },
-               { name: '이동현황', value: '' }
+               { name: '이동등록', value: '/product/stockMoveRegistration' },
+               { name: '이동현황', value: '/product/stockMoveStatus' }
             ]
          },
          {
