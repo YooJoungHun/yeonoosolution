@@ -15,6 +15,7 @@ public class IPIServiceImpl implements IPIService {
 
 	@Override
 	public int modifyItemByItemDto(IMIItemDto itemDto) {
+		
 		itemDto.setPurchasePrice(itemDto.getPurchasePrice() == null ? 0 : itemDto.getPurchasePrice());
 		itemDto.setSalesPrice(itemDto.getSalesPrice() == null ? 0 : itemDto.getSalesPrice());
 		itemDto.setMemo(itemDto.getMemo() == null ? "" : itemDto.getMemo());

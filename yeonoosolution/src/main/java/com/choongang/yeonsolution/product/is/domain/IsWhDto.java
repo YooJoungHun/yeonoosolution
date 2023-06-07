@@ -27,6 +27,8 @@ public class IsWhDto {
 	private String itemName;
 	private String wdCode;
 	private String memberName;
+	private	Long goodQuantity;
+	private	Long badQuantity;
 	
 	//pagination 용도 데이터
 	private int startRow;

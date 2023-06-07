@@ -63,8 +63,12 @@ public class IMIServiceImpl implements IMIService {
 
 	@Override
 	public List<IMICompanyDto> findCompanyList() {
+		List<IMICompanyDto> companyList = imiDao.selectCompanyList();
 		
-		return imiDao.selectCompanyList();
+		for (IMICompanyDto company : companyList) {
+			company.setOrderType(company.getOrderType() == null ? "자체 생산" : company.getOrderType());
+		}
+		return companyList;
 	}
 
 }

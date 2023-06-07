@@ -28,23 +28,26 @@
 		
 	</select>
 	
-	<update id="updateStatusToConfirmByorderCode" parameterType="String">
+	<update id="updateStatusToConfirmByOrderCode" parameterType="OMOrdersDto">
 		UPDATE	orders
 		SET		order_status = '확정',
+				update_user  = #{updateUser},
 				update_date  = SYSDATE
 		WHERE	order_code = #{orderCode}
 	</update>
 	
-	<update id="updateStatusToCancelByorderCode" parameterType="String">
+	<update id="updateStatusToCancelByorderCode" parameterType="OMOrdersDto">
 		UPDATE	orders
 		SET		order_status = '저장',
+				update_user  = #{updateUser},
 				update_date  = SYSDATE
 		WHERE	order_code = #{orderCode}
 	</update>
 	
-	<update id="updateOrderTypeByorderCode" parameterType="Map">
+	<update id="updateOrderTypeByorderCode" parameterType="OMOrdersDto">
 		UPDATE	orders
-		SET		receive_order_type = #{ordersDto.receiveOrderType},
+		SET		receive_order_type = #{receiveOrderType},
+				update_user  = #{updateUser},
 				update_date  = SYSDATE
 		WHERE	order_code = #{orderCode}
 	</update>
@@ -52,6 +55,7 @@
 	<update id="updateOrderDateByOrderCode" parameterType="OMOrdersDto">
 		UPDATE	orders
 		SET		order_date = #{orderDate},
+				update_user  = #{updateUser},
 				update_date  = SYSDATE
 		WHERE	order_code = #{orderCode}
 	</update>
@@ -59,6 +63,7 @@
 	<update id="updateDueDateByOrderCode" parameterType="OMOrdersDto">
 		UPDATE	orders
 		SET		due_date = #{dueDate},
+				update_user  = #{updateUser},
 				update_date  = SYSDATE
 		WHERE	order_code = #{orderCode}
 	</update>
@@ -66,6 +71,7 @@
 	<update id="updateEmpidByOrderCode" parameterType="OMOrdersDto">
 		UPDATE	orders
 		SET		order_empid = #{orderEmpid},
+				update_user  = #{updateUser},
 				update_date  = SYSDATE
 		WHERE	order_code = #{orderCode}
 	</update>
@@ -92,7 +98,7 @@
 		VALUES(
 		
 			'ORDER' || order_code_SEQ.NEXTVAL,
-			'COMPANY1',
+			#{companyCode, jdbcType=VARCHAR},
 			#{customerCode, jdbcType=VARCHAR},
 			'수주',
 			#{receiveOrderType, jdbcType=VARCHAR},
@@ -102,10 +108,8 @@
 			'저장',
 			#{dueDate, jdbcType=VARCHAR},
 			#{memo, jdbcType=VARCHAR},
-			<!-- #{regDate, jdbcType=VARCHAR}, -->
 			SYSDATE,
 			#{regUser, jdbcType=VARCHAR},
-			<!-- #{updateDate, jdbcType=VARCHAR}, -->
 			SYSDATE,
 			#{updateUser, jdbcType=VARCHAR}
 		

@@ -6,7 +6,7 @@
 
 	<select id="selectIsItemListByItemCode" parameterType="IsWhStockDetailDto" resultType="IsWhStockDetailDto">
 		select		i.item_name, i.item_code, i.item_type, wd.wh_code, wd.good_quantity, 
-			  		wd.bad_quantity, wd.update_user, i.stock_unit
+			  		wd.bad_quantity, wd.update_user, i.stock_unit, i.memo
 		from		wh_stock_detail wd, item i
 		where		wd.item_code = i.item_code
 		and			i.item_name like '%' || upper(#{itemName}) || '%'
@@ -28,7 +28,8 @@
 		select		*
 		from		(select		rownum rn, n.*
       				 from		(select		i.item_code, i.item_name, wd.wh_code as wdCode, w.wh_name,
-      				 						w.company_code, m.member_name, w.update_date, w.use_yn
+      				 						w.company_code, m.member_name, w.update_date, w.use_yn,
+      				 						wd.good_quantity, wd.bad_quantity
             					 from		item i
             					 join		wh_stock_detail wd on i.item_code = wd.item_code
             					 join		wh w on wd.wh_code = w.wh_code
@@ -48,7 +49,8 @@
 		select		*
 		from		(select		rownum rn, n.*
       				 from		(select		i.item_code, i.item_name, wd.wh_code as wdCode, w.wh_name,
-      				 						w.company_code, m.member_name, w.update_date, w.use_yn
+      				 						w.company_code, m.member_name, w.update_date, w.use_yn,
+      				 						wd.good_quantity, wd.bad_quantity
             					 from		item i
             					 join		wh_stock_detail wd on i.item_code = wd.item_code
             					 join		wh w on wd.wh_code = w.wh_code
@@ -59,7 +61,8 @@
 	</select>
 	
 	<select id="selectIsBomListByItemNameAndItemType" parameterType="IsBomDto" resultType="IsBomDto">
-		select 		b.low_item_code, i.item_name, wd.wh_code, w.wh_name, wd.good_quantity, wd.bad_quantity
+		select 		b.low_item_code, i.item_name, wd.wh_code, w.wh_name, wd.good_quantity, wd.bad_quantity,
+					io.item_name as high_item_name
 		from 		bom b
 		join 		item i on b.low_item_code = i.item_code
 		join 		item io on b.high_item_code = io.item_code
@@ -67,6 +70,28 @@
 		join 		wh w on wd.wh_code = w.wh_code
 		where 		io.item_name like '%' || upper(#{itemName}) || '%'
 		and 		i.item_type = #{itemType}
+	</select>
+	
+	<select id="selectInfoForMainPage" resultType="MainPageDto">
+		select 		product_type, count(product_type) as work_order_count
+		from 		wo
+		where 		work_status = '확정'
+		and 		trunc(reg_date) = trunc(sysdate)
+		group by 	product_type
+	</select>
+	
+	<select id="selectOrdersListForMainPage" resultType="MainPageDto">
+		select 		count(order_code) as order_count, receive_or_place
+		from 		orders
+		where 		order_status = '확정'
+		and			order_date = sysdate
+		group by 	receive_or_place
+	</select>
+	
+	<select id="selectLossListForMainPage" resultType="IsLossDto">
+		select		*
+		from		loss
+		where		defective_loss_type = 'LOSS'
 	</select>
 	
 </mapper>

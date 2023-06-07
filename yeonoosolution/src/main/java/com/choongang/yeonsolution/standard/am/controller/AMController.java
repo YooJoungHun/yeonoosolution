@@ -58,15 +58,6 @@ public class AMController {
 	}
 	
 	/**
-	 * 레이아웃 포함 전 로그아웃 임시페이지 페이지 호출
-	 * @return 로그아웃 테스트 페이지 url
-	 */
-	@GetMapping("/logout-btn")
-	public String logoutBtnPage() {
-		return "standard/logout-btn";
-	}
-	
-	/**
 	 * 403 error 처리 페이지
 	 * @return 403 error 처리 페이지 url 
 	 */
