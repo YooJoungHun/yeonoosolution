@@ -29,4 +29,6 @@ public class PmOrdersDto {
 	
 	// 거래처명
 	private String customerName;
+	private String column;
+	private String data;
 }

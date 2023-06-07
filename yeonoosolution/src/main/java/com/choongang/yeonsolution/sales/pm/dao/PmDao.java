@@ -16,7 +16,7 @@ public interface PmDao {
 
 	List<PmOrdersDto> selectOrdersBySearch(PmSearch search);
 	List<PmOrdersDetailDto> selectOrdersDetailByOrderCode(String orderCode);
-	int updateOrdersByOrderCode(Map<String, String> map);
+	int updateOrdersByOrderCode(PmOrdersDto pmOrdersDto);
 	List<PmCompanyDto> selectCompanyBySearch(String search);
 	List<PmItemDto> selectItemyBySearch(String search);
 	String insertOrder(PmOrdersDto order);
@@ -26,7 +26,7 @@ public interface PmDao {
 	
 	List<PmStockInDto> selectStockInListBySearch(PmSearch search);
 	List<PmStInDetailDto> selectStockInDetailByInCode(String inCode);
-	int updateStockInByInCode(Map<String, Object> map);
+	int updateStockInByInCode(PmStockInDto pmStockInDto);
 	List<PmWhDto> selectWh();
 	void updateWhStockDetailBystInDetail(Map<String, Object> map);
 	void updateWhStockDetailBystInDetail(PmStInDetailDto stInDetail);

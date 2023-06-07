@@ -2,6 +2,8 @@ package com.choongang.yeonsolution.sales.pm.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -30,13 +32,13 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/pm")
+@RequestMapping("/sales")
 public class PmController {
 	private final PmService pmService;
 	
 	@GetMapping("/order")
 	public String orderForm() {
-		return "sales/order";
+		return "sales/order.layout";
 	}
 	
 	@GetMapping("/order-list")
@@ -56,11 +58,10 @@ public class PmController {
 		List<PmOrdersDetailDto> ordersDetailList = pmService.findOrdersDetailByOrderCode(orderCode);
 		return ordersDetailList;
 	}
-	
 	@PatchMapping ("/order/{orderCode}")
 	@ResponseBody
-	public String ordersModifyByorderCode(@PathVariable String orderCode, @RequestParam String column, @RequestParam String data){
-		String msg = pmService.modifyOrdersByOrderCode(orderCode, column, data);
+	public String ordersModifyByorderCode(PmOrdersDto pmOrdersDto, HttpSession session){
+		String msg = pmService.modifyOrdersByOrderCode(pmOrdersDto, session);
 		log.info("msg -> {}", msg);
 		return msg;
 	}
@@ -81,21 +82,22 @@ public class PmController {
 	}
 	@PostMapping("/order-add")
 	@ResponseBody
-    public String orderAdd(@RequestBody PmOrdersDataDto orderData) {
-        String resultMsg = pmService.addOrder(orderData);
+    public String orderAdd(@RequestBody PmOrdersDataDto orderData, HttpSession session) {
+		System.out.println(orderData.getOrder());
+        String resultMsg = pmService.addOrder(orderData, session);
         return resultMsg;
     }
     @PostMapping("/order-modify")
     @ResponseBody
-    public String OrderSave(@RequestBody PmOrdersDataDto orderData) {
-    	String resultMsg = pmService.modifyOrder(orderData);
+    public String OrderSave(@RequestBody PmOrdersDataDto orderData, HttpSession session) {
+    	String resultMsg = pmService.modifyOrder(orderData, session);
     	return resultMsg;
     }
     
     
     @GetMapping("/stock-in")
     String stockInForm() {
-    	return "sales/stock-in";
+    	return "sales/stock-in.layout";
     }
     @GetMapping("/stock-in-list")
     @ResponseBody
@@ -112,11 +114,10 @@ public class PmController {
     	List<PmStInDetailDto> stockInDetailList = pmService.findStockInDetailByInCode(inCode);
     	return stockInDetailList;
     }
-    
     @PatchMapping ("st-in/{inCode}")
     @ResponseBody
-    public String stockInModifyByorderCode(@PathVariable String inCode, @RequestParam String column, @RequestParam String data){
-    	String msg = pmService.modifyStockInByInCode(inCode, column, data);
+    public String stockInModifyByorderCode(PmStockInDto pmStockInDto, HttpSession session){
+    	String msg = pmService.modifyStockInByInCode(pmStockInDto, session);
     	log.info("msg -> {}", msg);
     	return msg;
     }
@@ -126,18 +127,16 @@ public class PmController {
         List<PmWhDto> whList = pmService.findWhList();
         return whList;
     }
-    
     @PostMapping("/st-in-add")
 	@ResponseBody
-    public String stInAdd(@RequestBody PmStInDataDto stInData) {
-        String resultMsg = pmService.addStIn(stInData);
+    public String stInAdd(@RequestBody PmStInDataDto stInData, HttpSession session) {
+        String resultMsg = pmService.addStIn(stInData, session);
         return resultMsg;
     }
-    
     @PostMapping("/st-in-modify")
     @ResponseBody
-    public String stInSave(@RequestBody PmStInDataDto stInData) {
-    	String resultMsg = pmService.modifyStIn(stInData);
+    public String stInSave(@RequestBody PmStInDataDto stInData, HttpSession session) {
+    	String resultMsg = pmService.modifyStIn(stInData, session);
     	return resultMsg;
     }
 }

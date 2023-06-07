@@ -13,5 +13,6 @@ public interface WoDao {
 	public int insertWo(Wo wo);
 	public int updateWo(Wo wo);
 	public Wo selectOneWo(String workOrderCode);
+	public int updateWoClose(String workOrderCode);
 	
 }
