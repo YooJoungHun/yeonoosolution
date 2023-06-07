@@ -8,19 +8,16 @@ var menuList = [
 	  		{
 	  			name: '기본정보',
 	  			value: [ 
-	  				{ name: '회사정보', value: '' },
-	  				{ name: '거래처정보', value: '' },
-	  				{ name: '배송지정보', value: '' }
+	  				{ name: '회사정보', value: '/standard/companyInfo/' },
+	  				{ name: '거래처정보', value: '/standard/customerInfo/' }
 	  			]
 	  		},
 	  		{
 	  			name: '사용자관리',
 	  			value: [
-	  				{ name: '개인정보수정', value: '' },
-	  				{ name: '부서등록', value: '' },
-	  				{ name: '직급코드', value: '' },
-	  				{ name: '조직도', value: '' },
-	  				{ name: '사용자계정관리', value: '' }
+	  				{ name: '개인정보수정', value: '/standard/myPage/' },
+	  				{ name: '부서등록 및 조회', value: '/standard/dept/' },
+	  				{ name: '직급등록 및 조회', value: '/standard/job/' }
 	  			]
 	  		},
 	  		{
