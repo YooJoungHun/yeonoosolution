@@ -59,7 +59,7 @@ function toggleRowClick(tableId){
 				$(".stockMoveDetailTable tbody").empty();
 				$.each(data, function(index, item) {
 					var row = $("<tr>");
-					row.append($("<td>").text(index + 1));
+					row.append($("<td class='moveCount'>").text(index + 1));
 					
 					var checkbox = $('<input>').attr('type', 'checkbox').addClass('checkItem');
 					row.append($("<td>").append(checkbox));
@@ -105,7 +105,7 @@ function addButtonClick(tableId, btnId){
 			
 			$('.' + tableId + ' tbody').append(`
 				<tr data-status="stMoveRegistrationAdd">
-					<td>${rowCount}</td>
+					<td class="moveCount">${rowCount}</td>
 					<td><input type="checkbox" class="checkItem" checked></td>
 					<td class="moveCode"></td> //이동번호
 					<td class="moveDate"><input type="text"></td> //이동일자(달력)
@@ -131,7 +131,7 @@ function addButtonClick(tableId, btnId){
 
 			$('.' + tableId + ' tbody').append(`
 				<tr data-status='stMoveDetailAdd'>
-					<td>${rowCount}</td>
+					<td class="moveCount">${rowCount}</td>
 					<td><input type="checkbox" class="checkItem" checked></td>
 					<td class="itemCode"></td> //제품코드
 					<td class="itemName"></td> //품명

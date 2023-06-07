@@ -44,7 +44,7 @@ public class SMMController {
 	@ResponseBody
 	@GetMapping("/product/stockMoveSearch")
 	public List<StMoveDetailDto> stockMoveSearchList(String keyword, String startDate, String endDate) {
-		System.out.println(keyword);
+		
 		List<StMoveDetailDto> stockMoveSearch = smmService.findStockMoveSearchListByKeywordAndDate(keyword, startDate, endDate);
 		return stockMoveSearch;
 	}
