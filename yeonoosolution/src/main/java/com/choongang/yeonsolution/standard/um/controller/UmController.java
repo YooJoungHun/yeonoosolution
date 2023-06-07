@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.boot.autoconfigure.batch.BatchProperties.Job;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,7 +47,7 @@ public class UmController {
 		model.addAttribute("deptDepartmentDtoList", deptDepartmentDtoList);
 		model.addAttribute("jobDtoList", jobDtoList);
 
-		return "/standard/mypage";
+		return "/standard/mypage.layout";
 	}
 	
 	// 개인정보수정 -> 프로필 이미지 업로드할 때만 실행.
@@ -89,7 +89,7 @@ public class UmController {
 	public String deptList(Model model) {
 		List<DepartmentDto> deptDepartmentDtoList = umService.findDeptList();
 		model.addAttribute("deptDepartmentDtoList", deptDepartmentDtoList);
-		return "/standard/deptList";
+		return "/standard/deptList.layout";
 	}
 
 	@GetMapping("/standard/dept/search/")
@@ -143,7 +143,7 @@ public class UmController {
 
 		List<JobDto> jobDtoList = umService.findJobList();
 		model.addAttribute("jobDtoList", jobDtoList);
-		return "standard/jobList";
+		return "standard/jobList.layout";
 	}
 
 	
