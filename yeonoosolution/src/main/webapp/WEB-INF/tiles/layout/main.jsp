@@ -69,6 +69,7 @@
 
 	.loss-table {
 		overflow: auto;
+		width: 100%;
 	}
 	
 	.loss-table th, td {

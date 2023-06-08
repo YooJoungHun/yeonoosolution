@@ -76,7 +76,7 @@
 		select 		product_type, count(product_type) as work_order_count
 		from 		wo
 		where 		work_status = '확정'
-		and 		trunc(reg_date) = trunc(sysdate)
+		and 		trunc(reg_date) = '2023/06/08'
 		group by 	product_type
 	</select>
 	
@@ -84,7 +84,7 @@
 		select 		count(order_code) as order_count, receive_or_place
 		from 		orders
 		where 		order_status = '확정'
-		and			trunc(order_date) = trunc(sysdate)
+		and			trunc(order_date) = '2023/06/08'
 		group by 	receive_or_place
 	</select>
 	

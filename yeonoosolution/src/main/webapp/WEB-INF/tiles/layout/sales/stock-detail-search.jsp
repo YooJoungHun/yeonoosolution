@@ -4,13 +4,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <style type="text/css">
-		.side-bar {
-				  flex: 0 0 210px;
-			      border: 1px solid #ddd;
-			      padding: 20px;
-			      float: left;
-			      height: 100vh;
-			      margin-right: 30px;}
+		
+		.main-container {
+				   		overflow: auto !important;
+				   		margin-left: 30px;
+				   	}
 
 		.all-button {
 					    display: inline-flex;
@@ -32,11 +30,6 @@
 						   border-color: #888888;
 						  }
 
-
-
-		
-		
-		
 		
 		.stout-with-item-table {
 				 		   		border-collapse: collapse;}
@@ -61,10 +54,11 @@
 		   								   	   background-color: #8C8C8C;}
 		.stout-with-item-table-div {border:1px solid #9E9E9E; width: 1200px;}
 		
-		.listColor1 { background-color: #E6E6E6;}
-		.listColor2 { background-color: #E6F5FF;}
-		.listColor3 { background-color: #FAF2C8;}
+		.listColor1 { background-color: #D9D9D9;}
+		.listColor2 { background-color: #E6F2FF;}
+		.listColor3 { background-color: #FFFFCC;}
 		.listColor4 { background-color: #FFC19E;}
+
 
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -87,44 +81,22 @@
 			
 		
 		$(function(){
-		const container = document.getElementById('table-size');
-		
-		const tbody = container.querySelector('tbody');
-		
-		const rows = tbody.getElementsByTagName('tr');
-
-		const table = container.querySelector('table');
-		
-		
-		let rowsHeight = 0;
-		for (let i = 0; i < rows.length; i++) {
-		  rowsHeight += rows[i].clientHeight;
-		}
-		
-		const tableWidth = table.clientWidth;
-		
-		const newHeight = Math.min(rowsHeight, 400);
-		
-		const newWidth = Math.min(tableWidth, 1500); 
-		
-		container.style.height = newHeight + 'px';
-		container.style.width = newWidth + 'px'; 
-			
-		
-		
-			/* const container = document.getElementById('table-size');
-			
+			const container = document.getElementById('table-size');
 			const tbody = container.querySelector('tbody');
-		
 			const rows = tbody.getElementsByTagName('tr');
-		
+			const table = container.querySelector('table');
+			
+			
 			let rowsHeight = 0;
-			for (let i = 0; i < rows.length; i++) {
-			  rowsHeight += rows[i].clientHeight;
-			}
-		
+				for (let i = 0; i < rows.length; i++) {
+				  rowsHeight += rows[i].clientHeight;
+					}
+			
+			const tableWidth = table.clientWidth;
 			const newHeight = Math.min(rowsHeight, 400);
-		
-			container.style.height = newHeight + 'px';  */
+			const newWidth = Math.min(tableWidth, 1500); 
+			
+			container.style.height = newHeight + 'px';
+			container.style.width = newWidth + 'px'; 
 		});
 		</script> 

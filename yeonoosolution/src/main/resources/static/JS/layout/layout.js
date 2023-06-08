@@ -8,16 +8,16 @@ var menuList = [
            {
               name: '기본정보',
               value: [ 
-                 { name: '회사정보', value: '/standard/companyInfo/' },
-                 { name: '거래처정보', value: '/standard/customerInfo/' }
+                 { name: '회사정보', value: '/standard/companyInfo' },
+                 { name: '거래처정보', value: '/standard/customerInfo' }
               ]
            },
            {
               name: '사용자관리',
               value: [
-                 { name: '개인정보수정', value: '/standard/myPage/' },
-                 { name: '부서등록 및 조회', value: '/standard/dept/' },
-                 { name: '직급등록 및 조회', value: '/standard/job/' },
+                 { name: '개인정보수정', value: '/standard/myPage' },
+                 { name: '부서등록 및 조회', value: '/standard/dept' },
+                 { name: '직급등록 및 조회', value: '/standard/job' },
                  { name: '사용자 계정 관리', value: '/standard/user-admin' }
               ]
            },
@@ -201,6 +201,25 @@ const extractMenu = (data) => {
    }
    return dataList;
 };
+
+const findMenu = (data) => {
+	let dataList = [];
+	for (let datum of data) {
+		if (typeof datum.value == 'string') dataList[dataList.length] = datum;
+		else dataList = dataList.concat(findMenu(datum.value));
+	}
+	return dataList;
+};
+$(document).on('blur', '#menusearch', e => {
+	let target = $('#menusearch').val();
+	let datum = findMenu(menuList).filter(data => data.name == target)[0];
+	if (!(!datum) && location.pathname != datum.value) {
+		location.href = location.protocol + '//' + location.host + datum.value;
+	}
+});
+$(document).on('keydown', '#menusearch', e => {
+	if (e.keyCode == 13) $('#menusearch').blur();
+});
 
 // 실제 메뉴 목록
 var dataList = [];
