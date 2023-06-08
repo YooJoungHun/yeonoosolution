@@ -25,4 +25,7 @@ public interface IMIService {
 	// 거래처 목록
 	List<IMICompanyDto> findCompanyList();
 
+	// 검색 결과 리스트
+	List<IMIItemDto> findItemListBySearchKeyWord(String searchKeyWord);
+
 }

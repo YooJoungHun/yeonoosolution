@@ -3,7 +3,7 @@ package com.choongang.yeonsolution.product.smm.domain;
 import lombok.Data;
 
 @Data
-public class whDto {
+public class WhDto {
 	
 	private String whCode;
 	private String companyCode;

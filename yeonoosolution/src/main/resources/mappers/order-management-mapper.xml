@@ -90,9 +90,7 @@
 			due_date,
 			memo,
 			reg_date,
-			reg_user,
-			update_date,
-			update_user
+			reg_user
 		
 		)
 		VALUES(
@@ -109,9 +107,7 @@
 			#{dueDate, jdbcType=VARCHAR},
 			#{memo, jdbcType=VARCHAR},
 			SYSDATE,
-			#{regUser, jdbcType=VARCHAR},
-			SYSDATE,
-			#{updateUser, jdbcType=VARCHAR}
+			#{regUser, jdbcType=VARCHAR}
 		
 		)
 	
@@ -165,7 +161,6 @@
 								  )
 		VALUES					  ( 
 									#{orderDetailCode, jdbcType=VARCHAR}, 
-									<!-- 'ORDER' || order_code_seq.currval,  -->
 									orders_detail_sorder_SEQ.NEXTVAL,
 									#{itemCode, jdbcType=VARCHAR}, 
 									#{quantity, jdbcType=NUMERIC}, 
@@ -252,7 +247,6 @@
 		    )
 		SELECT
 		    (SELECT out_code FROM st_out WHERE order_code = #{orderCode}),
-		    <!-- 10, -->
 		    (SELECT COALESCE(MAX(sorder), 0) + 1 FROM st_out_detail),
 		    o.item_code
 		FROM
@@ -301,6 +295,8 @@
 		        company_code,
 		        company_name
 		FROM    company
+		WHERE company_code != 'COMPANY1'
+		
 	</select>
 	
 	<select id="selectItemList" resultType="OMOrdersItemDto">
@@ -346,7 +342,6 @@
 	<select id="selectSemiManufacturesListByCompanyCode" parameterType="String" resultType="OMOrdersAOMDto">
 	
 		SELECT
-		        <!-- bom.low_item_code AS item_code, -->
 		        bom.low_item_code,
 		        i.item_name,
 		        i.item_type,
@@ -365,29 +360,6 @@
 		
 		WHERE   o.order_code = #{orderCode}
 	
-	<!-- 
-		SELECT
-		    od.item_code,
-		    i.item_name,
-		    i.item_type,
-		    i.stock_unit,
-		    wsd.good_quantity,
-		    wod.work_order_quantity
-		
-		FROM    orders o
-		JOIN    orders_detail od 
-		ON      o.order_code = od.order_detail_code
-		JOIN    item i 
-		ON      od.item_code = i.item_code
-		JOIN    wh_stock_detail wsd
-		ON      i.item_code = wsd.item_code
-		JOIN    wo w
-		ON      o.order_code = w.order_code
-		JOIN    wo_detail wod
-		ON      w.work_order_code = wod.work_order_code
-		
-		WHERE   o.order_code = #{orderCode}
-		 -->
 	</select>
 	
 </mapper>

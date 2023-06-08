@@ -11,18 +11,10 @@
 	}
 	.content{
 		margin:0 auto;
-		width: 75%;
+		width: 100%;
 		display: inline-block;
+		margin-left: 30px;
 	}
-	.side-bar {
-	   	width: 200px;
-	   	background-color: #f2f2f2;
-	   	border: 1px solid #ddd;
-	   	padding: 20px;
-	   	float: left;
-	   	height: auto;
-	}
-	
 	.crudBtn{
 	   	display: flex; 
 	   	margin-bottom: 50px;
@@ -100,7 +92,7 @@
 	#jobListTable tr th,
 	#memberSearchTable tr th {
 		height: 40px;
-		background-color: #F6F6F6;
+		background-color: #F8F8F8;
 		width: 10px;
 	}
 	
@@ -134,7 +126,7 @@
 		width: 200px;
 	}
 	.bg-gray{
-		background-color: #EAEAEA
+		background-color: #d9d9d9
 	}
 	#jobListTable tr:hover td ,	
 	#jobListTable tr:hover td input	
@@ -362,7 +354,7 @@
 	 				if(data == 1){
 	 					alert("등록되었습니다.");
 	 				}else if(data == 2){
-	 					alert("같은 이름의 부서가 존재합니다.");
+	 					alert("같은 이름의 직급이 존재합니다.");
 	 				}else{
 	 					alert("등록에 실패하였습니다.");
 	 				}

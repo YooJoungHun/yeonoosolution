@@ -30,7 +30,7 @@ public class PMIController {
 	public String pmi() {
 		log.info("Pmi Controller Start");
 		
-		return "standard/production-management-info";
+		return "standard/production-management-info.layout";
 	}
 	
 	@ResponseBody

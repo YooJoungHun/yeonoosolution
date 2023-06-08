@@ -23,8 +23,9 @@
 	
 	.content{
 		margin:0 auto;
-		width: 75%;
+		width: 100%;
 		display: inline-block;
+		margin-left: 30px;
 	}
 	
 	.filter {
@@ -116,7 +117,7 @@
 	}
 	#customerInfoTable tr th {
 		height: 40px;
-		background-color: #F6F6F6;
+		background-color: #F8F8F8;
 		width: 10px;
 	}
 	/* 테이블에 있는 input 태그를 클릭시.  */
@@ -159,7 +160,7 @@
 		width: 200px;
 	}
 	.bg-gray{
-		background-color: #EAEAEA
+		background-color: #d9d9d9
 	}
 	#customerInfoTbody tr:hover td ,	
 	#customerInfoTbody tr:hover td input,	

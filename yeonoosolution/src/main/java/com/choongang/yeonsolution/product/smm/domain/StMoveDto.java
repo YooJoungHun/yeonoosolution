@@ -3,7 +3,7 @@ package com.choongang.yeonsolution.product.smm.domain;
 import lombok.Data;
 
 @Data
-public class stMoveDto {
+public class StMoveDto {
 	
 	private String moveCode;     	     //이동번호
 	private Long beginEndInventory; //기초/기몰 구분

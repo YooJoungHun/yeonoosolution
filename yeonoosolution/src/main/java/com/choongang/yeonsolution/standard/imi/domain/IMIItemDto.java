@@ -34,4 +34,7 @@ public class IMIItemDto {
 	// 창고 목록 조회용
 	private String whName; 
 	private String whCode2;
+	
+	// 검색 조회용
+	private String searchKeyWord;
 }

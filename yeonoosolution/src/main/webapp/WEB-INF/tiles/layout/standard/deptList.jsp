@@ -11,16 +11,9 @@
 	}
 	.content{
 		margin:0 auto;
-		width: 75%;
+		width: 100%;
 		display: inline-block;
-	}
-	.side-bar {
-	   	width: 200px;
-	   	background-color: #f2f2f2;
-	   	border: 1px solid #ddd;
-	   	padding: 20px;
-	   	float: left;
-	   	height: auto;
+		margin-left: 30px;
 	}
 	
 	.crudBtn{
@@ -97,7 +90,7 @@
 	#deptListTable tr th,
 	#memberSearchTable tr th {
 		height: 40px;
-		background-color: #F6F6F6;
+		background-color: #F8F8F8;
 		width: 10px;
 	}
 	
@@ -138,7 +131,7 @@
 		width: 200px;
 	}
 	.bg-gray{
-		background-color: #EAEAEA
+		background-color: #d9d9d9
 	}
 	#searchName{
 		font-size: 18px;
