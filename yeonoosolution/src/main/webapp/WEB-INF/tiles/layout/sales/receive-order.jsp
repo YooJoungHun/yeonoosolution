@@ -97,11 +97,11 @@
 	}
 	
 	#table-content th {
-		border: 1px solid;			/* 각 셀에 테두리 추가 */
+		border: 1px solid #B3B3B3;			/* 각 셀에 테두리 추가 */
 	}
 	
 	#table-content td {
-		border: 1px solid;			/* 각 셀에 테두리 추가 */
+		border: 1px solid #B3B3B3;			/* 각 셀에 테두리 추가 */
 	}
 	
 	#table-content td:first-child {
@@ -173,7 +173,7 @@
 	}
 	
 	#table-detail-content {
-		border:3px solid;
+		border:1px solid #B3B3B3;
 		padding: 5px;
 		text-align: center;
 		white-space: nowrap; 
@@ -184,11 +184,11 @@
 	}
 	
 	#table-detail-content th {
-		border: 1px solid;			/* 각 셀에 테두리 추가 */
+		border: 1px solid #B3B3B3;			/* 각 셀에 테두리 추가 */
 	}
 	
 	#table-detail-content td {
-		border: 1px solid;			/* 각 셀에 테두리 추가 */
+		border: 1px solid #B3B3B3;			/* 각 셀에 테두리 추가 */
 	}
 	
 	#table-detail-content tr:hover td {
@@ -301,6 +301,16 @@
 		border-radius: 5px;
 		border: 1px solid #D6DAE2;
 	}
+	
+	#customer-code-list input[type="radio"]:checked + label {
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+		background-color: #e6e6e6;
+	}
+	#customer-code-list span:hover {
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+		background-color: #e6e6e6;
+	}
+
 	
 </style>
 <script type="text/javascript">
@@ -547,42 +557,50 @@
 	
 	// 회사코드 모달 창 
 	$(function() {
-	  	
-	  	$.ajax({
-	  		url : '/sales/receive-order/customer-code-list',
-	  		type : 'GET',
-	  		dataType : 'json',
-	  		success : function(data) {
-	  			let ul = $('#customer-code-list');
-	  			ul.empty();
-	  			for (var i = 0; i < data.length; i++) {
-	  				let item = data[i];
-	                let radio = $('<input type="radio" name="customer" value="' + item.companyCode + '">');
-	                let label = $('<label>' + item.companyCode + ' - ' + item.companyName + '</label>');
-					let span = $('<span></span></br>').append(radio).append(label);
-	                ul.append(span);
-	                
-	  			}
-	  		},
-	  		error: function(xhr, status, error) {
-			      console.log('Error:', error);
-			}
-	  	});
-	  	
-	  	$('#customer-code-modal .btn-primary').click(function(){
-	  		let selectedCustomer = $('input[name="customer"]:checked');
-	  		
-	  		if(selectedCustomer.length > 0){
-	  			let companyCode = selectedCustomer.val();
-	  			let companyName = selectedCustomer.next('label').text().split(' - ')[1];
-	  			$('#customer-code').val(companyCode);
-	  			$('#company-name-modal').val(companyName);
-	  		}
-	  		
-	  		$('#customer-code-modal').modal('hide');
-	  		
-	  	});
-	});
+		  $.ajax({
+		    url: '/sales/receive-order/customer-code-list',
+		    type: 'GET',
+		    dataType: 'json',
+		    success: function(data) {
+		      let ul = $('#customer-code-list');
+		      ul.empty();
+		      for (var i = 0; i < data.length; i++) {
+		        let item = data[i];
+		        let radio = $('<input type="radio" name="customer" value="' + item.companyCode + '">');
+		        let label = $('<label>' + item.companyCode + ' - ' + item.companyName + '</label>');
+		        let span = $('<span></span></br>').append(radio).append(label);
+		        
+		        // 클릭 이벤트를 추가하여 라디오 버튼 선택
+		        span.on('click', function() {
+		          $(this).find('input[name="customer"]').prop('checked', true);
+		        });
+		        
+		        ul.append(span);
+		      }
+		    },
+		    error: function(xhr, status, error) {
+		      console.log('Error:', error);
+		    }
+		  });
+
+		  $('#customer-code-modal .btn-primary').click(function() {
+		    let selectedCustomer = $('input[name="customer"]:checked');
+
+		    if (selectedCustomer.length > 0) {
+		      let companyCode = selectedCustomer.val();
+		      let companyName = selectedCustomer.next('label').text().split(' - ')[1];
+		      $('#customer-code').val(companyCode);
+		      $('#company-name-modal').val(companyName);
+		    }
+
+		    $('#customer-code-modal').modal('hide');
+		  });
+		});
+
+	
+	
+	
+	
 	
 	// .receive-order-detail-content 출력
 	function loadPlaceOrderDetailList(){ 	

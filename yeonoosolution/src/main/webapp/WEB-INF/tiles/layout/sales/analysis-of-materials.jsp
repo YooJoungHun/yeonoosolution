@@ -64,7 +64,7 @@
 	}
 	
 	#table-semi-manufactures-content {
-		border:3px solid;
+		border:1px solid;
 		padding: 5px;
 		text-align: center;
 		white-space: nowrap;		/* 셀 내용이 넘칠 경우 줄바꿈 방지 */
@@ -90,13 +90,13 @@
 	}
 	
 	#table-order-content th {
-		border: 1px solid;			/* 각 셀에 테두리 추가 */
+		border: 1px solid #B3B3B3;			/* 각 셀에 테두리 추가 */
 		
 	}
 	
 	#table-order-content td {
 		width: 100px; 
-		border: 1px solid;			/* 각 셀에 테두리 추가 */
+		border: 1px solid #B3B3B3;			/* 각 셀에 테두리 추가 */
 	}
 	
 	#table-order-content th:first-child {
@@ -123,12 +123,12 @@
 	}
 	
 	#table-semi-manufactures-content th {
-		border: 1px solid;			/* 각 셀에 테두리 추가 */
+		border: 1px solid #B3B3B3;			/* 각 셀에 테두리 추가 */
 	}
 	
 	#table-semi-manufactures-content td {
 		width: 100px; 
-		border: 1px solid;			/* 각 셀에 테두리 추가 */
+		border: 1px solid #B3B3B3;			/* 각 셀에 테두리 추가 */
 		
 	}
 	

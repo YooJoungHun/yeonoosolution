@@ -82,13 +82,6 @@ var menuList = [
             value: [
                { name: '작업지시', value: '/product/wo' },
                { name: '작업지시현황', value: '/product/currentWo' },
-               { name: '작업지시서 출력', value: '' }
-            ]
-         },
-         {
-            name: '실적등록',
-            value: [
-               { name: '생산실적등록-OFFICE MODE', value: '/product/productResult' }
             ]
          },
          {
@@ -116,15 +109,14 @@ var menuList = [
             ]
          },
          {
-            name: '기타입고관리',
+            name: '기타 입고 관리',
             value: [
-               { name: '기타입고등록', value: '' },
-               { name: '기타입고 라벨발행', value: '' },
-               { name: '기타입고현황', value: '' }
+               { name: '기타 입고 등록', value: '/product/sim/register' },
+               { name: '기타 입고 현황', value: '/product/sim/status' }
             ]
          },
          {
-            name: '기타출고관리',
+            name: '기타 출고 관리',
             value: [
                { name: '기타 출고 등록 및 현황', value: '/product/somStOutLists/' }
             ]
@@ -132,23 +124,9 @@ var menuList = [
          {
             name: '재고현황',
             value: [
-               { name: '품목별 재고현황', value: '' },
-               { name: 'BOM 재고현황', value: '' },
-               { name: '창고별 재고현황', value: '' }
-            ]
-         },
-         {
-            name: '자동차감창고관리',
-            value: [
-               { name: '자동차감창고등록', value: '' },
-               { name: '자동차감창고 설비연결', value: '' },
-               { name: '자동차감창고 자재투입', value: '' }
-            ]
-         },
-         {
-            name: '재고실사',
-            value: [
-               { name: '재고실사관리', value: '' }
+               { name: '품목별 재고현황', value: '/product/is/item' },
+               { name: 'BOM 재고현황', value: '/product/is/bom' },
+               { name: '창고별 재고현황', value: '/product/is/wh' }
             ]
          }
       ]
@@ -255,11 +233,14 @@ $(() => {
    // menuList 배열 데이터 내에 데이터가 없을 경우 무한루프 발생함...
    let currentMenu = $('button.list-button[data-path="' + location.pathname + '"]');
    $(currentMenu).css('background-color', '#FFFFCC');
-   while (true) {
-      currentMenu = $(currentMenu).closest('div.menu-list-section');
-      let section = $(currentMenu).attr('data-section');
-      currentMenu = $('button.list-header[data-target="' + section + '"]');
-      $(currentMenu).click();
-      if ($(currentMenu).attr('data-depth') == '0') break;
-   }
+   if (currentMenu.toArray().length > 0) {
+		$(currentMenu).css('background-color', '#FFFFCC');
+		while (true) {
+			currentMenu = $(currentMenu).closest('div.menu-list-section');
+			let section = $(currentMenu).attr('data-section');
+			currentMenu = $('button.list-header[data-target="' + section + '"]');
+			$(currentMenu).click();
+			if ($(currentMenu).attr('data-depth') == '0') break;
+		}
+	}
 });

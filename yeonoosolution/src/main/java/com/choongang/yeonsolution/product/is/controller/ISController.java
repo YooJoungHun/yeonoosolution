@@ -16,6 +16,7 @@ import com.choongang.yeonsolution.product.is.domain.IsPaginationDto;
 import com.choongang.yeonsolution.product.is.domain.IsWhDto;
 import com.choongang.yeonsolution.product.is.domain.IsWhStockDetailDto;
 import com.choongang.yeonsolution.product.is.service.ISService;
+import com.choongang.yeonsolution.standard.am.domain.MemberDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +30,7 @@ public class ISController {
 	@GetMapping(value = "/product/is/item")
 	public String isItemList() {
 		
-		return "/product/inventory-status-item";
+		return "/product/inventory-status-item.layout";
 	}
 	
 	@GetMapping(value = "/product/is/item/{itemName}")
@@ -48,7 +49,7 @@ public class ISController {
 	@GetMapping(value = "/product/is/bom")
 	public String isBomList() {
 		
-		return "/product/inventory-status-bom";
+		return "/product/inventory-status-bom.layout";
 	}
 	
 	@GetMapping(value = "/product/is/bom/{itemName}")
@@ -76,7 +77,7 @@ public class ISController {
 		model.addAttribute("whDtoWhList", whDtoWhList);
 		model.addAttribute("whDtoMap", whDtoMap);
 		
-		return "/product/inventory-status-wh";
+		return "/product/inventory-status-wh.layout";
 	}
 		
 	@GetMapping(value = "/product/is/wh/{whCode}")
@@ -90,17 +91,21 @@ public class ISController {
 		model.addAttribute("whDtoMap", whDtoMap);
 		model.addAttribute("whDtoWhList", whDtoWhList);
 	  
-		return "/product/inventory-status-wh-detail";
+		return "/product/inventory-status-wh-detail.layout";
 	}
 	
 	@GetMapping(value = "/main")
 	public String main(HttpSession session, Model model) {
 		log.info("main page start");
 		
-		Map<String, Object> mainPageMap = isService.findInfoForMainPage(session);
-		model.addAttribute("mainPageMap", mainPageMap);
-		log.info("mainPageMap : " + mainPageMap);
+		if((MemberDto) session.getAttribute("member") == null) {
+			return "standard/login";
+		} else {
+			Map<String, Object> mainPageMap = isService.findInfoForMainPage(session);
+			model.addAttribute("mainPageMap", mainPageMap);
+			log.info("mainPageMap : " + mainPageMap);
+		}	
 		
-		return "/main";
+		return "/main.layout";
 	}
 }
