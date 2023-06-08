@@ -12,62 +12,68 @@
 <form name="form1" method="post" action="/sales/stock">
 
 			<button type="submit" class="all-button">
-			  <img src="/images/stout-insert-icon.png" alt="" class="button-icon">
-			  저장
+				<img src="/images/stout-insert-icon.png" alt="" class="button-icon">
+				저장
 			</button>
 		
 			<button type="button" onclick="stOutDelete()" class="all-button">
-			<img src="/images/stout-delete-icon.png" alt="" class="button-icon">
-  				삭제
+				<img src="/images/stout-delete-icon.png" alt="" class="button-icon">
+	  			삭제
   			</button>
 			
 			<button type="button" onclick="location.href='/sales/stock/'" class="all-button">
-			<img src="/images/stout-reset-icon.png" alt="" class="button-icon">
-			초기화
+				<img src="/images/stout-reset-icon.png" alt="" class="button-icon">
+				초기화
 			</button>
 			
 			<button type="button" onclick="confirm()" class="all-button">
-			<img src="/images/stout-confirm-icon.png" alt="" class="button-icon">
-			출고확정
+				<img src="/images/stout-confirm-icon.png" alt="" class="button-icon">
+				출고확정
 			</button>
 			
 			<button type="button" onclick="confirmCancel()" class="all-button">
-			<img src="/images/stout-confirm-cancel-icon.png" alt="" class="button-icon">
-			출고확정취소
+				<img src="/images/stout-confirm-cancel-icon.png" alt="" class="button-icon">
+				출고확정취소
 			</button>
 			
 			<button type="button" onclick="location.href='/sales/receive-order'" class="all-button">
-			<img src="/images/stout-order-find-icon.png" alt="" class="button-icon">
-			수주서 찾기
+				<img src="/images/stout-order-find-icon.png" alt="" class="button-icon">
+				수주서 찾기
 			</button><p>
 			
 		
 				
 			
 			
-<div id="insertForm-background-color">
-	<table  class="insertForm-table" >
+<div id="insertForm-background">
+
+	
+	<table  class="insertForm-table">
 		<tr>
-			<th class="insertForm-not-required" style="width: 50px;">수주번호</th>
-			<td><input type="text"   name="orderCode" style="width:90px; height:22px; border-radius: 3px; border: 1px solid;" > </td>
+			<td colspan="2"><input type="button" value="필수입력" class="color-notice" style="border: 1px solid #F15F5F;">
+							<input type="button" value="선택입력" class="color-notice" style="border: 1px solid #BDBDBD;"></td>
+		</tr>
+		<tr>
+			<th class="insertForm-not-required">수주번호</th>
+			<td><input type="text"   name="orderCode" style="width:90px;" > </td>
 			
 			<th class="insertForm-required">거래처코드</th>
-			<td><select name="customerCode" style="width:110px; height:26px; border-radius: 3px; border: 1px solid;" required="required"  onchange="showSelectedOption()">
-							<option value="" selected >거래처코드 찾기</option>
-							<c:forEach var="C" items="${companyCodeList }">
-								<option value="${C.companyCode }" ${C.companyCode == OL.customerCode ? 'selected' : '' }>${C.companyCode }</option>
-							</c:forEach>
+			<td><select name="customerCode" style="width:110px; height:26px;" required="required"  onchange="showSelectedOption()">
+					<option value="" selected >거래처코드 찾기</option>
+						<c:forEach var="C" items="${companyCodeList }">
+							<option value="${C.companyCode }" ${C.companyCode == OL.customerCode ? 'selected' : '' }>${C.companyCode }</option>
+						</c:forEach>
 			</select></td>
 			
 			
-			<th class="insertForm-required" style="width: 4.2cm;" >기초기말구분</th>
-			<td><input type="number" name="beginEndInventory" required="required" placeholder="0또는1"  style="width:55px; height:22px; border-radius: 3px; border: 1px solid;" ></td> 
+			<th class="insertForm-required" style="width: 5cm;" >기초기말 구분</th>
+			<td><input type="number" name="beginEndInventory" required="required" placeholder="0또는1"  style="width:60px; " ></td> 
 		</tr>
 		<tr>
 			<th class="insertForm-required">출고일</th>
-			<td><input type="Date"  	 name="outDate"   required="required" style="height:22px; border-radius: 3px; border: 1px solid;" ></td>
+			<td><input type="Date"  	 name="outDate"   required="required" style=" margin-right: 15px;"></td>
 			<th class="insertForm-not-required">비고</th>
-			<td><input type="text"       name="memo"  style="height:22px; border-radius: 3px; border: 1px solid;" ></td>
+			<td><input type="text"       name="memo"  style=" margin-right: 15px;" ></td>
 		</tr>
 	</table>
 			<input type="hidden"       name="regUser"   value="${memberName}">
@@ -118,7 +124,7 @@
 				<th>수정자</th>
 				<th>수정일자</th>
 				<th>비고</th>
-				<th></th>
+				<th style="width: 65px;"></th>
 			</tr>
 			<c:forEach var="OL" items="${outList}" varStatus="status">
 			
@@ -140,12 +146,12 @@
 						</select>
 					</td>
 					
-					<td style="width: 90px;" class="listColor1"><c:out 	value ="${OL.companyName}"/></td>
+					<td style="width: 100px;" class="listColor1"><c:out 	value ="${OL.companyName}"/></td>
 					<td class="listColor2"><input  type="date" id="outDate${status.count}"  name="outDate" 	 value="${OL.outDate}" class="listColor2" style="border:none;"></td>
 					<td class="listColor1"><c:out 	value ="${OL.orderCode}"/></td>
-					<td style="width: 40px;" class="listColor2"><c:out 	value ="${OL.regUser}"/></td>
+					<td style="width: 60px;" class="listColor2"><c:out 	value ="${OL.regUser}"/></td>
 					<td style="width: 80px;" class="listColor1"><c:out 	value ="${OL.regDate}" /></td>
-					<td style="width: 40px;" class="listColor1"><c:out 	value ="${OL.updateUser}"/></td> 
+					<td style="width: 60px;" class="listColor1"><c:out 	value ="${OL.updateUser}"/></td> 
 					<td style="width: 80px;" class="listColor1"><c:out 	value ="${OL.updateDate}" /></td> 
 					<td><input  type="text" id="memo${status.count}"		name="memo" 	 value="${OL.memo}" style="border:none; height:25px;"></td>
 
@@ -173,7 +179,6 @@
 </form>
 
 <pre>
-
 
 </pre>
 
@@ -223,7 +228,7 @@
 				</c:forEach>
 			</select></td>
 			
-			<td><input type="number"  name="outQuantity"   required="required" placeholder="입력" style="width:60px;  height:20px; border:none;  text-align:center;"> </td> 
+			<td><input type="number"  name="outQuantity"   required="required" placeholder="입력" style="width:70px;  height:20px; border:none;  text-align:center;"> </td> 
 			<td><input type="text"    name="memo2" 		  placeholder="입력" style="  height:20px; border:none;   text-align:center;" ></td>
 		</tr>
 	</table><p>

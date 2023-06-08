@@ -18,7 +18,7 @@
 			AND s.customer_code = #{customerCode}
 		</if>
 		</where>
-		ORDER BY s.out_code asc
+		ORDER BY LENGTH(s.out_code),s.out_code ASC
 	</select>
 
 	<select id="sdmSelectStOutDetailDtoListByOutCode" resultType="SDMStOutDto" parameterType="SDMStOutDto" >
@@ -91,19 +91,19 @@
 	</update>
 	
 	<select id="sdmCompanyCodeList" resultType="SDMStOutDto">
-		SELECT company_code FROM company where use_yn = 'Y'
+		SELECT company_code FROM company where use_yn = 'Y' ORDER BY LENGTH(company_code),company_code ASC
 	</select>
 	
 	<select id="sdmOutCodeList" resultType="SDMStOutDto">
-		SELECT out_code FROM st_out_detail WHERE delete_status = 'N'
+		SELECT DISTINCT out_code FROM st_out_detail WHERE delete_status = 'N' ORDER BY LENGTH(out_code),out_code ASC
 	</select>
 	
 	<select id="sdmWhCodeList" resultType="SDMStOutDto">
-		SELECT wh_code FROM wh WHERE use_yn ='Y'
+		SELECT wh_code FROM wh WHERE use_yn ='Y' ORDER BY LENGTH(wh_code),wh_code ASC
 	</select>
 	
 	<select id="sdmItemCodeList" resultType="SDMStOutDto">
-		SELECT item_code FROM item WHERE wh_code = 'WH1' and use_yn = 'Y'
+		SELECT item_code FROM item WHERE wh_code = 'WH1' and use_yn = 'Y' ORDER BY LENGTH(item_code),item_code ASC
 	</select>
 
 	<update id="sdmDeleteStOutItemByOutCodeAndSorder" parameterType="SDMStOutDto">
@@ -144,7 +144,7 @@
 	       		and s.customer_code = #{customerCode}
 	       	</when>
 	  	</choose>
-		ORDER BY c.company_code asc, sd.sorder asc
+		ORDER BY LENGTH(c.company_code),c.company_code ASC, sd.sorder ASC
 	</select>
 	
 	<select id="sdmSelectCompanyCodeList2" resultType="SDMStOutDto">

@@ -4,52 +4,51 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <style type="text/css">
-		.side-bar {
-			  flex: 0 0 210px;
-		      border: 1px solid #ddd;
-		      padding: 20px;
-		      float: left;
-		      height: 100vh;}
 	    .All {
 	   		 display: flex;
 	   		 }
 	   	.main-container {
 	   		overflow: auto !important;
 	   	}
-	   	.AllWithoutSidebar {
-	   						margin: 30px;
-	   						border:   ;
-	   					   }
+	   	.AllWithoutSidebar { margin: 30px;}
+	   					   
 	   		 
 		.insertForm-table  { margin-left: 20px;
 				   			 background-color: #F6F6F6;
+				   			 border-collapse: separate; 
 				   			 }
 				   
 		.insertForm-table th { font-weight: 450;
 							   width: 15%;
-							   height: 25px;}
-		.insertForm-table td { 
-				    		   height: 25px;}
+							   height: 25px;
+							   }
+							   
+		.insertForm-table td { height: 25px; border-radius: 3px; border: none;}
+			
+		.insertForm-table input { height: 25px;}
+				 
+				 
 				 
 		.insertForm-required {
 							  border: 1.5px solid #F15F5F;
 							  border-radius: 7px;
-							  font-weight: 600; font-size: 14px;
+							  font-weight: 600; font-size: 14px; 
 							  }
 					  
 		.insertForm-not-required { border: 1.5px solid #BDBDBD;
 					  			   border-radius: 7px;
 					  			   font-weight: 600; font-size: 14px;}
 					  
-		#insertForm-background-color {background-color:#F6F6F6;
-									  width:70%;
-									  height:100px;
+		.color-notice { width: 51px; height:20px; font-size:11px; text-align: center;  border-radius: 7px;  margin-bottom: 7px;}
+		
+		
+		#insertForm-background {background-color:#F6F6F6;
+									  width:80%;
+									  height:120px;
 									  border-radius: 15px;
 									  align-items: center;
 									  display: flex;
 									  } 
-		
-		
 		
 		.stOutTable-class {
 				 		   border-collapse: collapse;}
@@ -64,23 +63,21 @@
 					 
 		.itemInsertForm { border-collapse: collapse;
 						  width:55%;  text-align:center;
-				  		  border:1px solid black; border-collapse:collapse; 
-}				
+				  		  border:1px solid black; border-collapse:collapse; }				
 		.itemInsertForm  th { border:1px solid #9E9E9E; padding:7px 0;  font-size: 14px; height: 2mm;}
 		.itemInsertForm  td { border:1px solid #9E9E9E; padding:5px 0; }
 				
 				
 		.itemInsertForm	th { background-color: #F6F6F6;}
 		
-		.listColor1 { background-color: #E6E6E6;}
-		.listColor2 { background-color: #E6F5FF;}
-		.listColor3 { background-color: #FAF2C8;}
+		.listColor1 { background-color: #D9D9D9;} 
+		.listColor2 { background-color: #E6F2FF;} 
+		.listColor3 { background-color: #FFFFCC;} 
 		.stOutTable-div {
 						 height: 275px;
 						 overflow-y: auto;
 						 overflow-x: auto;}
-		 			th {
-						background-color: #F6F6F6;}
+		 .stOutTable-div th {background-color: #F6F6F6;}
 				
 		.stOutTable-div tr:hover td,
 		.stOutTable-div tr:hover td input,
@@ -179,7 +176,7 @@
 								    border-color: #888888;
 								   }
 								   
-		.stOut-notice { margin-left:440px;
+		.stOut-notice { margin-left:430px;
 						font-size: 15px;
 						color: #5D5D5D;
 						}
@@ -246,8 +243,8 @@
 			            '<td class="listColor2">' + outDetailList.itemCode + '</td>' +
 			            '<td class="listColor1">' + outDetailList.itemName + '</td>' +
 			            '<td class="listColor1">' + outDetailList.whCode + '</td>' +
-			            '<td class="listColor2"><input type="number" id="outQuantity' + rowIndex + '" name="outQuantity" value="' + outDetailList.outQuantity + '" class="listColor2" style="width:40px;"></td>'+      
-			            '<td class="listColor3">' + outDetailList.salesPrice + '</td>' +
+			            '<td class="listColor2"><input type="number" id="outQuantity' + rowIndex + '" name="outQuantity" value="' + outDetailList.outQuantity + '" class="listColor2" style="width:60px;"></td>'+      
+			            '<td class="listColor3" style="width:80px;">' + outDetailList.salesPrice + '</td>' +
 			            '<td class="listColor1">' + outDetailList.totalPrice + '</td>' +
 				        '<td><input type="text"  id="memo2' + rowIndex + '" name="memo2" value="' + (outDetailList.memo2 ? outDetailList.memo2 : '') + '"</td>' +
 				        '<td><button type="button" class="item-update-button" id="updateItemRow"  onclick="goUpdateItemRow(' + rowIndex + ')"><img src="/images/stout-update-icon.png" alt="" class="item-update-button-icon">수정</button></td>'+
@@ -463,45 +460,26 @@
 </script>
 
 <script type="text/javascript">
+		
 		$(function(){
-			
 			const container = document.getElementById('table-size');
-			
 			const tbody = container.querySelector('tbody');
-			
 			const rows = tbody.getElementsByTagName('tr');
-
 			const table = container.querySelector('table');
 			
 			
 			let rowsHeight = 0;
-			for (let i = 0; i < rows.length; i++) {
-			  rowsHeight += rows[i].clientHeight;
-			}
+				for (let i = 0; i < rows.length; i++) {
+				  rowsHeight += rows[i].clientHeight;
+				}
 			
 			const tableWidth = table.clientWidth;
-			
 			const newHeight = Math.min(rowsHeight, 275);
-			
 			const newWidth = Math.min(tableWidth, 1400); 
 			
 			container.style.height = newHeight + 'px';
 			container.style.width = newWidth + 'px'; 
 			
-			/* const container = document.getElementById('table-size');
-			
-			const tbody = container.querySelector('tbody');
-		
-			const rows = tbody.getElementsByTagName('tr');
-		
-			let rowsHeight = 0;
-			for (let i = 0; i < rows.length; i++) {
-			  rowsHeight += rows[i].clientHeight;
-			}
-		
-			const newHeight = Math.min(rowsHeight, 275);
-		
-			container.style.height = newHeight + 'px'; */
 		});
 		</script> 
 
