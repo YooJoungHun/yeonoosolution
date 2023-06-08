@@ -87,13 +87,8 @@ var menuList = [
          {
             name: '생산현황',
             value: [
-               { name: '생산실적조회', value: '' },
-               { name: '전표출력', value: '' },
-               { name: '제품라벨출력', value: '' },
-               { name: '작업일보현황', value: '' },
-               { name: '제품별생산현황', value: '' },
-               { name: '라인별생산현황', value: '' },
-               { name: '품목별불량현황', value: '' }
+               { name: '생산 현황', value: '/product/status/production' },
+               { name: '불량품 현황', value: '/product/status/defect' },
             ]
          }
       ]
@@ -170,6 +165,10 @@ const arrangeMenu = (menuData, depth = 0) => {
    }
    return $(virtual).html();
 };
+
+$(document).on('click', 'button.logout-button', e => {
+	location.href = location.protocol + '//' + location.host + '/standard/logout';
+});
 
 $(document).on('click', 'button.list-header', e => {
    let elem = $(e.target).closest('button.list-header');

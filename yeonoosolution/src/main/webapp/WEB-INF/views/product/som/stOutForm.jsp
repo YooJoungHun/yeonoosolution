@@ -30,18 +30,18 @@
 				<tr>
 					<td><c:out value ="${status.count}"/></td>
 					<td><input type="radio" name="selectRadio" onclick="stOutRadioCheck(${status.index})"></td>
-					<td>
+					<td class="outCodeTd">
 						<input type="hidden" value="${stOutList.outCode}" id="idOutCode${status.index}">
 						<c:out value ="${stOutList.outCode}" />
 					</td> 
-					<td><c:out value ="${stOutList.orderCode != null ? '판매출고' : '기타출고'}"/></td>
-					<td><c:out value ="${stOutList.outType}"/></td>
-					<td><c:out value ="${stOutList.outDate}"/></td>
-					<td><c:out value ="${stOutList.regUser}"/></td>
-					<td><c:out value ="${stOutList.regDate}" /></td>
-					<td><c:out value ="${stOutList.updateUser}"/></td>
-					<td><c:out value ="${stOutList.updateDate}" /></td>
-					<td><c:out value ="${stOutList.memo}"/></td>
+					<td class="orderCodeTd"><c:out value ="${stOutList.orderCode != null ? '판매출고' : '기타출고'}"/></td>
+					<td class="outTypeTd"><c:out value ="${stOutList.outType}"/></td>
+					<td class="outDateTd"><c:out value ="${stOutList.outDate}"/></td>
+					<td class="regUserTd"><c:out value ="${stOutList.regUser}"/></td>
+					<td class="regDateTd"><c:out value ="${stOutList.regDate}" /></td>
+					<td class="updateUserTd"><c:out value ="${stOutList.updateUser}"/></td>
+					<td class="updateDateTd"><c:out value ="${stOutList.updateDate}" /></td>
+					<td class="memoTd"><c:out value ="${stOutList.memo}"/></td>
 				</tr>
 			</c:forEach>
 		</table>

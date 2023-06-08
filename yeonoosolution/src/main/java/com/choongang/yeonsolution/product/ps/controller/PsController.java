@@ -12,6 +12,6 @@ public class PsController {
 
     @GetMapping("/product/status/production")
     public String psList() {
-        return "product/ps/status";
+        return "product/ps/status.layout";
     }
 }

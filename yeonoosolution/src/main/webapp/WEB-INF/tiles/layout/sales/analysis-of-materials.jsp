@@ -6,23 +6,17 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
 <style type="text/css">
+
 	.analysis-of-materials-body-container {
-	display: flex;
-	}
-	
-	.side-bar {
-		flex: 0 0 210px; /* 사이드바의 너비를 고정값으로 설정 */
-		border: 1px solid #ddd;
-		padding: 20px;
-		float: left;
-		height: 100vh;
-		background-color: #D9D9D9;
+		display: flex;
+  	 	overflow: auto;
 	}
 	
 	.analysis-of-materials-container {
-		margin: 30px;
+		width: 1500px;
+		height: 100vh;
 		padding: 20px;
-		
+		overflow: auto;
 	}
 	
 	/* 상위 버튼 */
@@ -47,6 +41,7 @@
 	.receive-order-table-container {
 		height: 320px;
 		overflow: auto;
+		width: 1100px;
 	}
 	
 	.semi-manufactures-container {
@@ -54,11 +49,12 @@
 		overflow: auto;
 		width: 1100px;
 		margin-top: 40px;
+		margin-bottom: 40px;
 	}
 	
 	/* 테이블  */
 	#table-order-content {
-		border:3px solid;
+		border:1px solid;
 		padding: 5px;
 		text-align: center;
 		white-space: nowrap;		/* 셀 내용이 넘칠 경우 줄바꿈 방지 */
@@ -68,7 +64,7 @@
 	}
 	
 	#table-semi-manufactures-content {
-		border:3px solid;
+		border:1px solid;
 		padding: 5px;
 		text-align: center;
 		white-space: nowrap;		/* 셀 내용이 넘칠 경우 줄바꿈 방지 */
@@ -94,13 +90,13 @@
 	}
 	
 	#table-order-content th {
-		border: 1px solid;			/* 각 셀에 테두리 추가 */
+		border: 1px solid #B3B3B3;			/* 각 셀에 테두리 추가 */
 		
 	}
 	
 	#table-order-content td {
 		width: 100px; 
-		border: 1px solid;			/* 각 셀에 테두리 추가 */
+		border: 1px solid #B3B3B3;			/* 각 셀에 테두리 추가 */
 	}
 	
 	#table-order-content th:first-child {
@@ -127,12 +123,12 @@
 	}
 	
 	#table-semi-manufactures-content th {
-		border: 1px solid;			/* 각 셀에 테두리 추가 */
+		border: 1px solid #B3B3B3;			/* 각 셀에 테두리 추가 */
 	}
 	
 	#table-semi-manufactures-content td {
 		width: 100px; 
-		border: 1px solid;			/* 각 셀에 테두리 추가 */
+		border: 1px solid #B3B3B3;			/* 각 셀에 테두리 추가 */
 		
 	}
 	
@@ -187,7 +183,7 @@
 					row.append('<td class="bg-orange">' + order.itemName + '</td>');
 					row.append('<td class="bg-gray">' + order.itemType + '</td>');
 					row.append('<td class="bg-orange">' + order.quantity + '</td>');
-					row.append('<td class="bg-orange">' + order.receiveOrderType + '</td>');
+					row.append('<td class="bg-gray">' + (order.receiveOrderType ? order.receiveOrderType : '') + '</td>');
 					row.append('<td class="bg-gray">' + order.orderDate.substring(0, 10) + '</td>');
 					row.append('<td class="bg-gray">' + order.orderEmpid + '</td>');
 					row.append('<td class="bg-gray">' + order.orderStatus + '</td>');
@@ -213,7 +209,6 @@
 	function loadSemiManufacturesList(){ 	
 		
 		let orderCode = $("input[name='selectRow']:checked").val();
-		console.log("semi-manufactures-orderCode -> " + orderCode);
 		
 		if(orderCode){
 			
@@ -260,7 +255,6 @@
 		
 		// radio 변경시 checked value 변경
 		$(document).on('change', "input[name='selectRow']", function(){
-			console.log("change radio");
 			loadSemiManufacturesList();
 		});
 		

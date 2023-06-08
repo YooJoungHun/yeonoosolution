@@ -25,33 +25,28 @@
 			border: none;
 		}
 		
-		#warehouseTable2 th {
-			background-color: #909090;
+		.whCodeTd {
+			background-color: #d9d9d9
 		}
-					
-		#warehouseTable2 tr:nth-child(even) {
-			background-color: #D8D8D8;
-		}
-		
-		#warehouseTable2 tr:nth-child(even) select{
-			background: #D8D8D8;
-		}
-						
-		#warehouseTable2 tr:nth-child(even) input{
-			background: #D8D8D8;
+		.regDateTd,
+		.regUserNameTd,
+		.updateDateTd,
+		.updateUserNameTd {
+			background-color: #e6f2ff;
 		}
 		
-		#warehouseTable2 tr:hover {
-			background-color: #7C96C9;
+		.whNameTd,
+		.useYnTd,
+		.memoTd {
+			background-color: #ffffcc;
 		}
 		
-		#warehouseTable2 tr:hover select {
-			background-color: #7C96C9;
+		#warehouseTable2 tr:hover td,
+		#warehouseTable2 tr:hover td select,
+		#warehouseTable2 tr:hover td input {
+			background-color: #8EA8DB;
 		}
 		
-		#warehouseTable2 tr:hover input {
-			background-color: #7C96C9;
-		}
 		
 	</style>
 	
@@ -79,27 +74,27 @@
 				<td>
 					<input type="checkbox" name="tableCheckBox" id="checkBox${status.index }">
 				</td>
-				<td>
+				<td class="whCodeTd">
 					<input type="hidden" id="whCode${status.index }" value="${whList.whCode }">
 					${whList.whCode }
 				</td>
-				<td>
+				<td class="whNameTd">
 					<input id="whName${status.index }" type="text" value="${whList.whName }">
 				</td>
-				<td>
+				<td class="useYnTd">
 					<select id="useYn${status.index }">
 						<option value="Y" ${whList.useYn == 'Y' ? 'selected="selected"' : '' }>Y</option>
 						<option value="N" ${whList.useYn == 'N' ? 'selected="selected"' : '' }>N</option>
 					</select>
  				</td>
-				<td>${whList.regDate }</td>
-				<td>${whList.regUserName }</td>
-				<td>${whList.updateDate }</td>
-				<td>
+				<td class="regDateTd">${whList.regDate }</td>
+				<td class="regUserNameTd">${whList.regUserName }</td>
+				<td class="updateDateTd">${whList.updateDate }</td>
+				<td class="updateUserNameTd">
 					<input type="hidden" id="updateUser${status.index }" value="${whList.updateUser }">
 					${whList.updateUserName }
 				</td>
-				<td>
+				<td class="memoTd">
 					<input id="memo${status.index }" type="text" value="${whList.memo }">
 				</td>
 			</tr>

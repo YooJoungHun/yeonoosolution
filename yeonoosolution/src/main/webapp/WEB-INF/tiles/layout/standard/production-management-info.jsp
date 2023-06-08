@@ -111,6 +111,8 @@
 #item-table th {
 	background-color: #9BABB8;
 	font-weight: bold;
+	position: sticky;
+	top: 0;
 }
 
 #item-table tr {
@@ -149,6 +151,8 @@
 #item2-table th {
 	background-color: #9BABB8;
 	font-weight: bold;
+	position: sticky;
+	top: 0;
 }
 
 #content-table tr {
@@ -187,6 +191,8 @@
 #item3-table th {
 	background-color: #9BABB8;
 	font-weight: bold;
+	position: sticky;
+	top: 0;
 }
 
 #content-table tr {
