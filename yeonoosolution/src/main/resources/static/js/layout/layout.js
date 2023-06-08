@@ -202,6 +202,25 @@ const extractMenu = (data) => {
    return dataList;
 };
 
+const findMenu = (data) => {
+	let dataList = [];
+	for (let datum of data) {
+		if (typeof datum.value == 'string') dataList[dataList.length] = datum;
+		else dataList = dataList.concat(findMenu(datum.value));
+	}
+	return dataList;
+};
+$(document).on('blur', '#menusearch', e => {
+	let target = $('#menusearch').val();
+	let datum = findMenu(menuList).filter(data => data.name == target)[0];
+	if (!(!datum) && location.pathname != datum.value) {
+		location.href = location.protocol + '//' + location.host + datum.value;
+	}
+});
+$(document).on('keydown', '#menusearch', e => {
+	if (e.keyCode == 13) $('#menusearch').blur();
+});
+
 // 실제 메뉴 목록
 var dataList = [];
 

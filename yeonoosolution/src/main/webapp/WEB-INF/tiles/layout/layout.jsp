@@ -43,7 +43,7 @@
 								</svg>
 							</button>
 						</div>
-						<!-- <div class="menusearch">
+						<div class="menusearch">
 							<button>
 								<svg viewBox="0 0 512 512">
 									<path d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z"/>
@@ -54,7 +54,7 @@
 							<datalist id="menu-search-list">
 								
 							</datalist>
-						</div> -->
+						</div>
 						<!-- <div class="list-item">
 							<div class="menu-text">
 								즐겨찾기
