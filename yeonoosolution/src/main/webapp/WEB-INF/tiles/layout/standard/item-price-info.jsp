@@ -75,6 +75,8 @@
 #content-table th {
 	background-color: #9BABB8;
 	font-weight: bold;
+	position: sticky;
+	top: 0;
 }
 
 #content-table th, #content-table td {
