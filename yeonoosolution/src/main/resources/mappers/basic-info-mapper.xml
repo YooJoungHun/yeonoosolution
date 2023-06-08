@@ -92,6 +92,7 @@
 		FROM	company 
 		WHERE	company_name LIKE '%'|| #{companyName} ||'%'
 		AND		order_type = COALESCE(#{orderType}, order_type)
+		AND 	use_yn = 'Y'
 	</select>
 	
 	<!-- 회사 코드로 이미지 이름 가져옴 -->

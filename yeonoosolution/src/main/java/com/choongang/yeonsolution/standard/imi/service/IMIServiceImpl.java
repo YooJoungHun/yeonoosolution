@@ -38,6 +38,14 @@ public class IMIServiceImpl implements IMIService {
 
 	@Override
 	public int addItem(IMIItemDto itemInfo) {
+		// 중복 등록 검증(제품명으로만 검증)
+		String itemName = itemInfo.getItemName();
+		List<IMIItemDto> itemList = imiDao.selectItemList();
+		for(IMIItemDto item : itemList) {
+			if (itemName.equals(item.getItemName())) {
+				return -1;
+			}
+		}
 		int insertResult = imiDao.insertItem(itemInfo);
 		
 		return insertResult;
@@ -71,4 +79,18 @@ public class IMIServiceImpl implements IMIService {
 		return companyList;
 	}
 
+	@Override
+	public List<IMIItemDto> findItemListBySearchKeyWord(String searchKeyWord) {
+		List<IMIItemDto> searchList = imiDao.selectItemListBySearchKeyWord(searchKeyWord);
+		// null 값 공백 처리
+		for(IMIItemDto item : searchList) {
+			item.setMemo(item.getMemo() == null ? "" : item.getMemo());
+			item.setItemName(item.getItemName() == null ? "" : item.getItemName());
+			item.setStockUnit(item.getStockUnit() == null ? "" : item.getStockUnit());
+			item.setWhCode(item.getWhCode() == null ? "" : item.getWhCode());
+			item.setPurchasePrice(item.getPurchasePrice() == null ? 0 : item.getPurchasePrice());
+			item.setSalesPrice(item.getSalesPrice() == null ? 0 : item.getSalesPrice());
+		}
+		return searchList;
+	}
 }

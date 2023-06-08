@@ -54,16 +54,7 @@ public class AMController {
 	 */
 	@GetMapping("/user-admin")
 	public String userAdminPage() {
-		return "standard/user-admin";
-	}
-	
-	/**
-	 * 레이아웃 포함 전 로그아웃 임시페이지 페이지 호출
-	 * @return 로그아웃 테스트 페이지 url
-	 */
-	@GetMapping("/logout-btn")
-	public String logoutBtnPage() {
-		return "standard/logout-btn";
+		return "standard/user-admin.layout";
 	}
 	
 	/**
