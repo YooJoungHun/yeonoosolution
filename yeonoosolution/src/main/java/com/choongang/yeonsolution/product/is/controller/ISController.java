@@ -16,6 +16,7 @@ import com.choongang.yeonsolution.product.is.domain.IsPaginationDto;
 import com.choongang.yeonsolution.product.is.domain.IsWhDto;
 import com.choongang.yeonsolution.product.is.domain.IsWhStockDetailDto;
 import com.choongang.yeonsolution.product.is.service.ISService;
+import com.choongang.yeonsolution.standard.am.domain.MemberDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -97,9 +98,13 @@ public class ISController {
 	public String main(HttpSession session, Model model) {
 		log.info("main page start");
 		
-		Map<String, Object> mainPageMap = isService.findInfoForMainPage(session);
-		model.addAttribute("mainPageMap", mainPageMap);
-		log.info("mainPageMap : " + mainPageMap);
+		if((MemberDto) session.getAttribute("member") == null) {
+			return "standard/login";
+		} else {
+			Map<String, Object> mainPageMap = isService.findInfoForMainPage(session);
+			model.addAttribute("mainPageMap", mainPageMap);
+			log.info("mainPageMap : " + mainPageMap);
+		}	
 		
 		return "/main.layout";
 	}
