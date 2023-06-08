@@ -4,6 +4,7 @@
 <style type="text/css">
 #search-div {
 	padding: 10px 0px;
+	overflow: auto;
 }
 #content > div{
 	margin-left: 30px;
@@ -209,19 +210,11 @@
 .td-hidden {
 	visibility: hidden;
 }
-
-.side-bar {
-	border: 1px solid #ddd;
-	padding: 20px;
-	float: left;
-	height: 100vh;
-	min-width: 200px;
-}
 #btn-div {
 	display: inline-block;
 }
 .non-change {
-	background-color: #e6e6e6!important;
+	background-color: #d9d9d9!important;
 }
 .non-modal-change {
 	background-color: #e6f2ff!important;
@@ -231,7 +224,7 @@
 }
 .modal-body table tr:hover td:not(.hidden) {
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-	background-color: #e6e6e6;
+	background-color: #d9d9d9;
 }
 .customer-list-tr td{
 	padding: 3px 5px;
@@ -297,10 +290,10 @@ hr {
 			let ordernullCheck = true;
 			saveOrderTr.find('.change-td').each(function() {
 			  	let text = $(this).text().trim();
-				let hasMemoClass = $(this).hasClass('order-memo');
-			  	if ((text === '' && !hasMemoClass) || (text === '' && !$(this).hasClass('delivery-plan'))) {
-			  		ordernullCheck = false;
-			    	return false;
+			  	let nullable = $(this).hasClass('nullable');
+			  	if (text === '' && !nullable) {
+				  		ordernullCheck = false;
+				    	return false;
 		  		}
 			});
 			if (!ordernullCheck) {
@@ -558,7 +551,7 @@ hr {
 		let customerCode = $('<td>').addClass('customer-code change-td modal-change').text(order.customerCode);
 		let customerName = $('<td>').addClass('customer-name non-change').text(order.customerName);
 		let dueDate = $('<td>').addClass('due-date change-td non-modal-change').text(order.dueDate);
-		let orderEmpid = $('<td>').addClass('order-empid').text(order.orderEmpid);
+		let orderEmpid = $('<td>').addClass('order-empid change-td nullable').text(order.orderEmpid);
 		let deliveryPlan = $('<td>').addClass('delivery-plan change-td nullable').text(order.deliveryPlan);
 		let regDate = $('<td>').addClass('reg-date non-change').text(order.regDate);
 		let regUser = $('<td>').addClass('reg-user non-change').text(order.regUser);

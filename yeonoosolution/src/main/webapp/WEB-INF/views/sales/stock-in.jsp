@@ -28,7 +28,7 @@
 		</div>
 		<hr>
 		<div class="tuigrid-header">
-			<span>구매발주</span>
+			<span>구매입고</span>
 			<div>
 				<button type="button" id="order-add" class="order-btn-cl">추가</button>
 				<button type="button" class="order-delete-btn order-status-update-btn order-btn-cl">삭제</button>
