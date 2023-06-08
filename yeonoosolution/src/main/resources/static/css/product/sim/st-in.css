@@ -1,26 +1,59 @@
 @charset "UTF-8";
 section {
-	margin: 50px 50px;
-	font-size: 13px;
+	margin: 40px 50px;
+	font-size: 12px;
+	width: 900px;
+}
+section.content-header {
+	background-color: rgba(0,0,0, 0.05);
+	height: 150px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: stretch;
 }
 
+/* 스크롤 바 */
+::-webkit-scrollbar {
+  width: 8px;
+  height:8px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #e6f2ff;
+}
+
+
+/* 테이블 셀 */
+td.read {
+	background-color: #d9d9d9;
+}
+td.edit{
+	background-color: #e6f2ff;
+}
+td.requ{
+	background-color: #ffffcc;
+}
+tr.selected > td {
+	background-color:rgba(0,0,0, 0.3);
+}
 .table-content {
 	display: block;
 	table-layout: fixed;
-	width: 900px;
 	height: 250px;
 	overflow: auto;
 	border-collapse: collap;
-	border: 1px solid black;
+	border: 1px solid rgba(0,0,0, 0.1);
+}
+table td {
+	font-weight: 700;
 }
 table th {
-	font-weight: 700;
-	background-color: rgba(0,0,0, 0.05);
+	border-bottom: 1px solid rgba(0,0,0, 0.1);
 }
 
 tbody tr, th, td {
 	width: 100px;
-	height: 40px;
+	height: 35px;
 	text-align: center;
 	box-sizing: border-box;
 	padding: 0;
@@ -37,12 +70,8 @@ tbody input[type="text"], input[type="number"] {
 tbody input[type="checkbox"] {
 	width: 30px;
 }
-tbody td[disabled] {
-	background-color: rgba(0,0,0, 0.2);
-}
 .stock-in-list {
 	display: flex;
-	flex: 1;
 }
 .content-btn  button{
 	border-radius: 10px;
@@ -60,17 +89,12 @@ tbody td[disabled] {
 
 /* 버튼 */
 .content-btn {
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 }
-.custom-btn {
-	margin-right: 10px;
-}
-
 
 
 
 .stock-in-item {
-	background-color: rgba(0,0,0, 0.05);
 	display: flex;
 	padding: 10px 20px;
 	height: auto;
@@ -79,8 +103,10 @@ tbody td[disabled] {
 	border-radius: 10px;
 	border: none;
 	width: 130px;
-	height: 30px;
+	height: 30px !important;
 	margin-left: 5px;
+	font-size: 14px !important;
+	padding: 0px  !important;;
 }
 
 .stock-in-list .item-title {
