@@ -1,14 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/product/sim/stock-in-modal.jsp"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>입고</title>
-</head>
-
-<body>
-	<main>
+<%@ include file="/WEB-INF/views/product/sim/preset.jsp" %>
 		<section class="content-header">
 			
 			<div class="stock-in-list">
@@ -193,7 +185,3 @@
 
 			
 		</section> --%>
-	</main>
-	
-</body>
-</html>

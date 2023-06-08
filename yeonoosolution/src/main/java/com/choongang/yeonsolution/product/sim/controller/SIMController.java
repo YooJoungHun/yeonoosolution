@@ -50,9 +50,9 @@ public class SIMController {
 	    System.out.println(requestURI);
 	    
 	    if(requestURI.endsWith("/register")) {
-	        return "product/sim/in-register";
+	        return "product/sim/stock-in.layout";
 	    } else {
-	        return "product/sim/in-status";
+	        return "product/sim/stock-in-info.layout";
 	    }
 	}
 	
