@@ -246,6 +246,18 @@
 		WHERE WOD.WORK_ORDER_CODE = #{workOrderCode}
 		ORDER BY WOD.SORDER ASC
 	</select>
+	<insert id="insertWoDetailWithResult" parameterType="WOWoDetail">
+		INSERT INTO WO_DETAIL
+			(WORK_ORDER_CODE, SORDER, ITEM_CODE, WORKER,
+			 WORK_ORDER_QUANTITY, GOOD_YN)
+		VALUES
+			(#{wo.workOrderCode},
+			 (SELECT NVL(MAX(SORDER), 0) + 1
+			  FROM WO_DETAIL
+			  WHERE WORK_ORDER_CODE = #{wo.workOrderCode}),
+			 #{item.itemCode}, #{worker},
+			 #{workOrderQuantity}, #{goodYn})
+	</insert>
 	<!-- BOM mapper -->
 	<select id="selectBomWithQuantity" parameterType="WOWoDetail" resultMap="BomResultMap">
 		SELECT B.HIGH_ITEM_CODE, B.LOW_ITEM_CODE, IT.*, WH.*, B.MATERIAL_QUANTITY * #{workOrderQuantity} MATERIAL_QUANTITY
@@ -257,4 +269,9 @@
 	<select id="selectWhStockDetail" parameterType="WOWhStockDetail" resultMap="WhStockDetailResultMap">
 		SELECT * FROM WH_STOCK_DETAIL WHERE ITEM_CODE = #{itemCode}
 	</select>
+	<update id="updateWhStockDetailWithWoDetail" parameterType="WOBom">
+		UPDATE WH_STOCK_DETAIL SET
+			GOOD_QUANTITY = GOOD_QUANTITY - #{materialQuantity}
+		WHERE ITEM_CODE = #{lowItemCode}
+	</update>
 </mapper>

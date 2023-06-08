@@ -18,4 +18,8 @@ public class WoDetailDaoImpl implements WoDetailDao {
 	public List<WoDetail> selectWoDetail(String workOrderCode) {
 		return session.selectList("selectWoDetail", workOrderCode);
 	}
+	@Override
+	public int insertWoDetailWithResult(WoDetail woDetail) {
+		return session.insert("insertWoDetailWithResult", woDetail);
+	}
 }

@@ -6,5 +6,6 @@ import com.choongang.yeonsolution.product.wo.domain.WoDetail;
 
 public interface WoDetailDao {
 	public List<WoDetail> selectWoDetail(String workOrderCode);
+	public int insertWoDetailWithResult(WoDetail woDetail);
 	
 }

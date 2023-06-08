@@ -21,6 +21,7 @@ import com.choongang.yeonsolution.product.wo.service.BomService;
 import com.choongang.yeonsolution.product.wo.service.WhStockDetailService;
 import com.choongang.yeonsolution.product.wo.service.WoDetailService;
 import com.choongang.yeonsolution.product.wo.service.WoService;
+import com.choongang.yeonsolution.standard.am.service.AMService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,6 +36,7 @@ public class PrController {
 	private final WoDetailService woDetailService;
 	private final BomService bomService;
 	private final WhStockDetailService whStockDetailService;
+	private final AMService amService;
 	
 	@RequestMapping(value = "/productResult")
 	public String productResult(Model model) {
@@ -113,16 +115,25 @@ public class PrController {
 		mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		String workOrderCode = (String)data.get("workOrderCode");
-		Wo wo = new Wo();
-		wo.setWorkOrderCode(workOrderCode);
+		Wo wo = woService.findOneWo(workOrderCode);
 		WoDetail woDetail = new WoDetail();
 		woDetail.setWo(wo);
+		woDetail.setWorker(amService.findMemberByMemberId((String)data.get("workerUid")).getMemberName());
 		woDetail.setWorkOrderQuantity((Integer)data.get("workOrderQuantity"));
 		woDetail.setGoodYn((String)data.get("goodYn"));
 		//woDetail.setWorker(workOrderCode)
 		//재고 불출 부분 제외하고 추가적으로 작성... 재고 현황에서 수량 감산...
+		int[] result = { 0, 0 };
+		woDetail.setItem(wo.getItem());
+		List<Bom> bomList = bomService.findBomWithQuantity(woDetail);
+		result[0] = 1;
+		for (Bom bom : bomList) {
+			result[0] *= whStockDetailService.modifyWhStockDetailWithWoDetail(bom);
+		}
+		//result[0] = whStockDetailService.modifyWhStockDetailWithWoDetail(woDetail);
 		// productResult.js의 양품/불량 등록 부분임
-		
-		return String.format("", null);
+		System.out.println(woDetail);
+		result[1] = woDetailService.addWoDetailWithResult(woDetail);
+		return String.format("{ \"result\" : [%d,%d] }", result[0], result[1]);
 	}
 }

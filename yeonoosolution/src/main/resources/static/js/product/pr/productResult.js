@@ -364,8 +364,8 @@ $(document).on('click', 'button.good-item, button.bad-item', e => {
 	let endDate = $(table).find('input[type="radio"]:checked').closest('tr').find('input[name="endDate"]').val();
 	let workOrderCode = $(table).find('input[type="radio"]:checked').closest('tr').find('td[role="workOrderCode"]').text();
 	// work variables
-	let workerUid = $('div.wo-header-value').find(input[name="worker.memberUid"]).val();
-	let workOrderQuantity = $('div.wo-header-value').find(input[name="workOrderQuantity"]).val();
+	let workerUid = $('div.wo-header-value').find('input[name="worker.memberUid"]').val();
+	let workOrderQuantity = parseInt($('div.wo-header-value').find('input[name="workOrderQuantity"]').val());
 	if (!workerUid || !workOrderQuantity) {
 		if (!workerUid) alert('작업자코드를 입력해주세요');
 		else alert('작업수량을 입력해주세요');
@@ -379,10 +379,14 @@ $(document).on('click', 'button.good-item, button.bad-item', e => {
 		data: JSON.stringify({ 'workOrderCode' : workOrderCode }),
 		dataType: 'json',
 		contentType: 'application/json',
+		async: false,
 		success: data => {
+			console.log('1. check');
 			cont = data.result;
+			console.log('2. data.result = ' + data.result);
 		}
 	});
+	console.log('3. after check');
 	if (!cont) {
 		alert('재고가 충분하지 않습니다');
 		return;
@@ -400,7 +404,7 @@ $(document).on('click', 'button.good-item, button.bad-item', e => {
 		dataType: 'json',
 		contentType: 'application/json',
 		success: data => {
-			if (data.result < 0) return;
+			if (data.result[0] * data.result[1] < 0) return;
 			let tbody = $(table.data-table[role="wo-list"]).closest('tbody');
 			let dat = {
 				code: $(tbody).find('th input[type="radio"]').closest(':checked').closest('tr').find('td[role="workOrderCode"]').text()

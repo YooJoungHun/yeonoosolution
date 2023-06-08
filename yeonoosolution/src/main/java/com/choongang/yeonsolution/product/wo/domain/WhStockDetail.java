@@ -8,7 +8,7 @@ import lombok.Data;
 public class WhStockDetail {
 	private String whCode; // PK
 	private String itemCode; // PK
-	private Date checkDate;
+	private String checkDate;
 	private Integer beginEndInventory;
 	private Integer goodQuantity;
 	private Integer badQuantity;

@@ -18,4 +18,8 @@ public class WoDetailServiceImpl implements WoDetailService {
 	public List<WoDetail> findWoDetail(String workOrderCode) {
 		return woDetailDao.selectWoDetail(workOrderCode);
 	}
+	@Override
+	public int addWoDetailWithResult(WoDetail woDetail) {
+		return woDetailDao.insertWoDetailWithResult(woDetail);
+	}
 }
