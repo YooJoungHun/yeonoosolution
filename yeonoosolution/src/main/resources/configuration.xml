@@ -6,5 +6,82 @@
     	<setting name="mapUnderscoreToCamelCase" value="true"/>
   	</settings>
   	
+  	<typeAliases>
+	<!-- 출고관리 -->
+  		<typeAlias type="com.choongang.yeonsolution.sales.sdm.domain.SDMStOutDto" alias="SDMStOutDto"/>
+
+ 	<!-- 권한 관리 -->
+  		<typeAlias alias="AMMemberDto" type="com.choongang.yeonsolution.standard.am.domain.MemberDto"/>
+  		<typeAlias alias="AMDto" type="com.choongang.yeonsolution.standard.am.domain.AMDto"/>
+  		
+	<!-- 구매 관리 -->
+  		<typeAlias alias="PmOrdersDto" type="com.choongang.yeonsolution.sales.pm.domain.PmOrdersDto"/>
+  		<typeAlias alias="PmOrdersDetailDto" type="com.choongang.yeonsolution.sales.pm.domain.PmOrdersDetailDto"/>
+  		<typeAlias alias="PmSearch" type="com.choongang.yeonsolution.sales.pm.domain.PmSearch"/>
+  		<typeAlias alias="PmCompanyDto" type="com.choongang.yeonsolution.sales.pm.domain.PmCompanyDto"/>
+  		<typeAlias alias="PmItemDto" type="com.choongang.yeonsolution.sales.pm.domain.PmItemDto"/>
+  		<typeAlias alias="PmStockInDto" type="com.choongang.yeonsolution.sales.pm.domain.PmStockInDto"/>
+  		<typeAlias alias="PmStInDetailDto" type="com.choongang.yeonsolution.sales.pm.domain.PmStInDetailDto"/>
+  		<typeAlias alias="PmWhDto" type="com.choongang.yeonsolution.sales.pm.domain.PmWhDto"/>
+
+      <!--  재고 현황 조회  -->
+      	<typeAlias alias="IsWhStockDetailDto" type="com.choongang.yeonsolution.product.is.domain.IsWhStockDetailDto"/>
+  		<typeAlias alias="IsWhDto" type="com.choongang.yeonsolution.product.is.domain.IsWhDto"/>
+  		<typeAlias alias="IsPaginationDto" type="com.choongang.yeonsolution.product.is.domain.IsPaginationDto"/>
+  		<typeAlias alias="IsBomDto" type="com.choongang.yeonsolution.product.is.domain.IsBomDto"/>
+      
+      <!-- 생산 지시  -->
+  		<typeAlias type="com.choongang.yeonsolution.product.wo.domain.Wo" alias="WOWo"/>
+  		<typeAlias type="com.choongang.yeonsolution.product.wo.domain.Wh" alias="WOWh"/>
+  		<typeAlias type="com.choongang.yeonsolution.product.wo.domain.Orders" alias="WOOrders"/>
+  		<typeAlias type="com.choongang.yeonsolution.product.wo.domain.Item" alias="WOItem"/>
+  		<typeAlias type="com.choongang.yeonsolution.product.wo.domain.Company" alias="WOCompany"/>
+      
+      <!-- 수주서 관리 -->
+      	<typeAlias alias="OMOrdersDto" type="com.choongang.yeonsolution.sales.om.domain.OMOrdersDto"/>
+  		<typeAlias alias="OMOrdersDetailDto" type="com.choongang.yeonsolution.sales.om.domain.OMOrdersDetailDto"/>
+  		<typeAlias alias="OMOrdersCompanyDto" type="com.choongang.yeonsolution.sales.om.domain.OMOrdersCompanyDto"/>
+  		<typeAlias alias="OMOrdersItemDto" type="com.choongang.yeonsolution.sales.om.domain.OMOrdersItemDto"/>
+  		<typeAlias alias="OMOrdersAOMDto" type="com.choongang.yeonsolution.sales.om.domain.OMOrdersAOMDto"/>
+  	  
+  	  <!-- 제품 등록/단가/Bom 관리 -->
+  		<typeAlias alias="IMIItemDto" type="com.choongang.yeonsolution.standard.imi.domain.IMIItemDto"/>
+  		<typeAlias alias="IMICompanyDto" type="com.choongang.yeonsolution.standard.imi.domain.IMICompanyDto"/>
+  		<typeAlias alias="PMIBomDto" type="com.choongang.yeonsolution.standard.pmi.domain.PMIBomDto"/>
+  		
+  		
+  	  <!--  기타 입고  -->
+  		<typeAlias alias="SIMStInDto"			type="com.choongang.yeonsolution.product.sim.domain.StInDto"/>
+  		<typeAlias alias="SIMStInDetailDto" 	type="com.choongang.yeonsolution.product.sim.domain.StInDetailDto"/>
+  		<typeAlias alias="SIMCompanyDto" 		type="com.choongang.yeonsolution.product.sim.domain.CompanyDto"/>
+  		<typeAlias alias="SIMItemDto" 			type="com.choongang.yeonsolution.product.sim.domain.ItemDto"/>
+  		<typeAlias alias="SIMOrdersDto" 		type="com.choongang.yeonsolution.product.sim.domain.OrdersDto"/>
+  		<typeAlias alias="SIMOrdersDetailDto" 	type="com.choongang.yeonsolution.product.sim.domain.OrdersDetailDto"/>
+  		<typeAlias alias="SIMWhDto" 			type="com.choongang.yeonsolution.product.sim.domain.WhDto"/>
+  		<typeAlias alias="SIMWhStockDetailDto" 	type="com.choongang.yeonsolution.product.sim.domain.WhStockDetailDto"/>
+  	
+  	  <!-- 사용자관리 -->
+  		<typeAlias alias="BICompanyDto" type="com.choongang.yeonsolution.standard.bi.domain.CompanyDto"/>
+  		<typeAlias alias="BIMemberDto" type="com.choongang.yeonsolution.standard.bi.domain.MemberDto"/>
+  		<typeAlias alias="UMDepartmentDto" type="com.choongang.yeonsolution.standard.um.domain.DepartmentDto"/>
+  		<typeAlias alias="UMJobDto" type="com.choongang.yeonsolution.standard.um.domain.JobDto"/>
+  		
+  	  <!-- 이동 재고 관리 -->
+  		<typeAlias alias="SMMStMoveDto" type="com.choongang.yeonsolution.product.smm.domain.StMoveDto" />
+		<typeAlias alias="SMMStMoveDetailDto" type="com.choongang.yeonsolution.product.smm.domain.StMoveDetailDto" />
+		<typeAlias alias="SMMItemDto" type="com.choongang.yeonsolution.product.smm.domain.ItemDto" />
+		<typeAlias alias="SMMWhDto" type="com.choongang.yeonsolution.product.smm.domain.WhDto" />
+	
+	  <!-- 창고  -->
+		<typeAlias alias="WMIWhDto" type="com.choongang.yeonsolution.standard.wmi.domain.WMIWhDto"/>
+		
+	  <!-- 기타출고 -->	
+  		<typeAlias alias="SOMStOutDto" type="com.choongang.yeonsolution.product.som.domain.SOMStOutDto"/>
+  		
+  	  <!-- 메인 페이지 -->
+		<typeAlias alias="MainPageDto" type="com.choongang.yeonsolution.product.is.domain.MainPageDto"/>
+		<typeAlias alias="IsLossDto" type="com.choongang.yeonsolution.product.is.domain.IsLossDto"/>
+
+  	</typeAliases>
   	
 </configuration>

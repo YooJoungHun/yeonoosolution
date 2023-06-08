@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.choongang.yeonsolution.basic-info-mapper">
+
+	<!-- 로그인 한 직원의 companyCode로 내 회사 정보 가져옴 -->
+	<select id="biSelectCompanyInfoByCompanyCode" parameterType="java.lang.String" resultType="BICompanyDto">
+		SELECT 	*
+		FROM	company
+		WHERE 	company_code = #{companyCode}
+	</select>
+	
+	<!-- 해당 회사에 이미 저장되어있는 이미지 파일을 삭제하기 위해 이름을 가져옴  -->
+	<select id="biSelectCompanyImgByCompanyCode" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT 	company_logo
+		FROM	company
+		WHERE 	company_code = #{companyCode}
+	</select>
+	
+	<!-- 회사 정보 수정 -->
+	<update id="biUpdateCompanyInfoByCompanyCode" parameterType="BICompanyDto">
+		UPDATE	company
+		SET		business_type 	= #{businessType},
+				company_name 	= #{companyName},
+				business_code 	= #{businessCode},
+				owner_name		= #{ownerName},
+				tel				= #{tel},
+				address			= #{address},
+				update_user		= #{memberUid},
+				update_date		= sysdate
+		WHERE	company_code	= #{companyCode}
+	</update>
+	
+	<!-- 회사 로고 이미지 등록  -->
+	<update id="biUpdateCompanyLogoImgByCompanyCode" parameterType="BICompanyDto">
+		UPDATE	company
+		SET		company_logo	= #{companyLogo}
+		WHERE	company_code	= #{companyCode}
+	</update>
+	
+	<!-- 거래처 정보  -->
+	<select id="biSelectCustomerInfoByCompanyCode" parameterType="java.lang.String" resultType="BICompanyDto">
+		<![CDATA[
+
+		SELECT		ROWNUM  rn , c.*
+		FROM		company c
+		WHERE		company_code <> #{companyCode}
+		AND   		use_yn = 'Y'
+		
+
+
+		]]>
+		
+	</select>
+	
+	<!-- 거래처 등록  -->
+	<insert id="biInsertCustomerInfo" parameterType="BICompanyDto">
+		INSERT INTO company (COMPANY_CODE, BUSINESS_TYPE, ORDER_TYPE, COMPANY_NAME, BUSINESS_CODE, OWNER_NAME, TEL, ADDRESS, REG_DATE, REG_USER, USE_YN )
+		VALUES ('COMPANY' || COMPANY_ID_SEQ.NEXTVAL, #{businessType}, #{orderType}, #{companyName}, #{businessCode}, #{ownerName}, #{tel}, #{address}, sysdate, #{memberUid}, 'Y')
+	</insert>
+	
+	<!-- kind == 1 : 회사 정보 수정 -->
+	<!-- kind == 2 : 회사 정보 삭제-->
+	<update id="biUpdateCustomerInfoByCompanyCode" parameterType="BICompanyDto">
+		UPDATE	company
+		SET		
+		<choose>
+			<when test="kind == 1">
+				business_type	= #{businessType},
+				order_type		= #{orderType},
+				company_name	= #{companyName},
+				business_code	= #{businessCode},
+				owner_name		= #{ownerName},
+				tel				= #{tel},
+				address			= #{address},
+				update_user		= #{memberUid},
+				update_date		= sysdate
+			</when>
+			<when test="kind == 2">
+				use_yn 			= 'N',
+				update_user		= #{memberUid},
+				update_date		= sysdate
+			</when>
+		</choose>
+		WHERE	company_code	= #{companyCode}
+	</update>
+	
+	<!-- 거래처 정보 조회  -->
+	<select id="biSelectCustomerInfoByCompanyNameAndOrderType" parameterType="BICompanyDto" resultType="BICompanyDto">
+		SELECT	*
+		FROM	company 
+		WHERE	company_name LIKE '%'|| #{companyName} ||'%'
+		AND		order_type = COALESCE(#{orderType}, order_type)
+		AND 	use_yn = 'Y'
+	</select>
+	
+	<!-- 회사 코드로 이미지 이름 가져옴 -->
+	<select id="biSelectCompanyLogoImgByCompanyCode" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT	company_logo
+		FROM	company
+		WHERE	company_code	= #{companyCode}
+	</select>
+</mapper>

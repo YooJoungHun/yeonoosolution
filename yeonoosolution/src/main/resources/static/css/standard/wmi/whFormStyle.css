@@ -1,0 +1,87 @@
+@charset "UTF-8";
+
+	.whAll {
+		display: flex;
+	}
+	
+	.WhFormDiv {
+		margin: 30px;
+	}
+	
+	.WhFormDiv input {
+		height: 1.6rem;
+	}
+	
+	.WhFormDiv select {
+		height: 1.9rem;
+	}
+	
+	#warehouseTable {
+		border-collapse: collapse;
+		background-color: #F8F8F8;
+		padding: 20px;
+		width: 120%;
+		text-align: center;
+		border-color: black;
+	}
+	
+	#warehouseTable th {
+		background-color: #F1F1F1;
+	}
+	
+	#warehouseTable	input {
+		border: none;
+	}
+	
+	#warehouseTable	select {
+		border: none;
+	}
+				
+	.whCodeTd {
+		background-color: #d9d9d9
+	}
+	.regDateTd,
+	.regUserNameTd,
+	.updateDateTd,
+	.updateUserNameTd {
+		background-color: #e6f2ff;
+	}
+	
+	.whNameTd,
+	.useYnTd,
+	.memoTd {
+		background-color: #ffffcc;
+	}
+	
+	#warehouseTable select{
+		background: #ffffcc;
+		
+	}
+					
+	#warehouseTable input{
+		background: #ffffcc;
+		
+	}
+	
+	#warehouseTable tr:hover td,
+	#warehouseTable	tr:hover td select,
+	#warehouseTable	tr:hover td input {
+		background-color: #8EA8DB;
+	}
+	
+	.WhFormDiv button {
+		background-color: #F5F5F5;
+		border: 1px solid #D6DAE2;
+		outline: none;
+		border-radius: 5px;
+		padding: 0 12px;
+		height: 32px;
+	}
+	
+	.WhFormDiv button:not(:last-child) {
+		margin-right: 4px;
+	}
+	
+	.WhFormDiv button:hover {
+		background-color: #8EA8DB;
+	}

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="item-management-mapper">
+	<!-- 제품 리스트  -->
+	<select id="imiSelectItemList" resultType="IMIItemDto">
+		SELECT *
+		FROM item
+		WHERE use_yn = 'Y'
+	</select>
+	
+	<!-- 제품 등록  -->
+	<insert id="insertItem" parameterType="IMIItemDto">
+		INSERT INTO item (item_code, wh_code, company_code, item_name, item_type, 
+								stock_unit, memo, start_date, end_date, reg_user, reg_date, update_user, update_date, use_yn)
+		VALUES ('ITEM' || ITEM_CODE_SEQ.nextval, #{whCode}, #{companyCode}, #{itemName}, #{itemType}, 
+				#{stockUnit}, #{memo}, #{startDate}, #{endDate}, #{regUser}, #{regDate}, #{updateUser}, #{updateDate}, 'Y')
+	</insert>
+	
+	<!-- 창고 리스트  -->
+	<select id="selectWhList" resultType="IMIItemDto">
+		SELECT wh_code as whCode2, wh_name
+		FROM wh
+		WHERE use_yn = 'Y'
+	</select>
+	
+	<!-- 제품 삭제 시 업데이트  -->
+	<update id="updateItemByItemCode" parameterType="String">
+		UPDATE item SET use_yn = 'N'
+		WHERE item_code = #{itemCode}
+	</update>
+	
+	<!-- 제품 수정 시 업데이트 -->
+	<update id="updateItemByItemDto" parameterType="IMIItemDto">
+		UPDATE item SET wh_code = #{whCode}, company_code = #{companyCode}, item_name = #{itemName}, item_type = #{itemType}, stock_unit = #{stockUnit},
+						memo = #{memo}, start_date = #{startDate}, end_date = #{endDate}, update_user = #{updateUser}, update_date = #{updateDate}
+		WHERE item_code = #{itemCode}							
+	</update>
+	
+	<!-- 거래처 목록 리스트 -->
+	<select id="selectCompanyList" resultType="IMICompanyDto">
+		SELECT *
+		FROM company
+	</select>
+	
+	<!-- 단가 정보 등록/업데이트  -->
+	<update id="updateIpiByItemDto" parameterType="IMIItemDto">
+		UPDATE item SET purchase_price = #{purchasePrice}, sales_price = #{salesPrice}, memo = #{memo}, start_date = #{startDate}, end_date = #{endDate},
+						update_user = #{updateUser}, update_date = #{updateDate}
+		WHERE item_code = #{itemCode}
+	</update>
+	
+	<!-- Bom 완제품 리스트 -->
+	<select id="selectProductItemList" resultType="IMIItemDto">
+		SELECT *
+		FROM item
+		WHERE item_type = '완제품'
+		AND use_yn = 'Y'
+	</select>
+	
+	<!-- Bom 반제품 리스트  -->
+	<select id="selectSemiProductItemList" resultType="IMIItemDto">
+		SELECT *
+		FROM item
+		WHERE use_yn = 'Y'
+		AND (item_type = '반제품' OR item_type = '원자재')
+	</select>
+	
+	<!-- Bom Tree 리스트  -->
+	<select id="selectBomListBy" parameterType="String" resultType="PMIBomDto">
+		SELECT b.high_item_code, b.low_item_code, b.material_quantity, i.item_name, i.item_type, i.stock_unit
+		FROM bom b
+		JOIN item i ON b.low_item_code = i.item_code
+		WHERE b.high_item_code = #{itemCode}
+	</select>
+	
+	<!-- Bom 인서트 -->
+	<insert id="insertBomByBomDto" parameterType="PMIBomDto">
+		INSERT INTO bom (high_item_code, low_item_code, material_quantity)
+		VALUES(#{highItemCode}, #{lowItemCode}, #{materialQuantity})
+	</insert>
+	
+	<!-- Bom 딜리트  -->
+	<delete id="deleteBomByBomDto" parameterType="PMIBomDto">
+		DELETE FROM bom
+		WHERE high_item_code = #{highItemCode}
+		AND low_item_code = #{lowItemCode}
+	</delete>
+	
+	<!-- 키워드 검색 리스트  -->
+	<select id="selectItemListBySearchKeyWord" parameterType="String" resultType="IMIItemDto">
+		SELECT * 
+		FROM item
+		WHERE use_yn = 'Y'
+		AND item_name LIKE '%' || #{searchKeyWord} || '%'
+	</select> 
+
+</mapper>
