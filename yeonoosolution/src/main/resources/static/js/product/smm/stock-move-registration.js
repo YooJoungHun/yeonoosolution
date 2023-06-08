@@ -59,7 +59,7 @@ function toggleRowClick(tableId){
 				$(".stockMoveDetailTable tbody").empty();
 				$.each(data, function(index, item) {
 					var row = $("<tr>");
-					row.append($("<td>").text(index + 1));
+					row.append($("<td class='moveCount'>").text(index + 1));
 					
 					var checkbox = $('<input>').attr('type', 'checkbox').addClass('checkItem');
 					row.append($("<td>").append(checkbox));

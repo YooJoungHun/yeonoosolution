@@ -16,6 +16,7 @@
 	overflow-y: auto;
 	overflow-x: auto;
 	position: relative;
+	border: 1px solid #D9D9D9;
 }
 
 .divTable td, .divTable, tr{
@@ -28,20 +29,24 @@
 	font-weight: bold;
 }
 
-.stockMoveRegistrationTable thead, 
-.stockMoveDetailTable thead{
+.stockMoveRegistrationTable th, 
+.stockMoveDetailTable th{
 	position: sticky;
 	top: 0;
-	border: 1px solid #B3B3B3;
+	background: #f8f8f8;
+	border: 1px solid #D6DAE2;
+	padding: 5px;
 }
 
 .stockMoveRegistrationTable td , 
 .stockMoveDetailTable td{
-	border: 1px solid darkgray;
+	border: 1px solid #D9D9D9;
 	padding: 5px;
 }
 
-.stockMoveRegistrationTable
+.moveCount{
+	min-width: 50px;
+}
 
 .moveCode,
 .moveType,
@@ -52,7 +57,7 @@
 .itemName,
 .stockQuantity,
 .whCodeOut{
-	background-color: #e6e6e6;	/* 회색 */
+	background-color: #d9d9d9;	/* 회색 */
 }
 
 .moveDate,
@@ -74,7 +79,6 @@
 
 .buttons{
 	margin-top: 15px;
-	
 }
 
 .buttons button, 
@@ -86,6 +90,7 @@
 	border-radius: 5px;
 	padding: 0 12px;
 	height: 32px;
+	font-size: 14px;
 }
 
 .buttons button:not(:last-child) {
@@ -104,7 +109,7 @@
 
 
 .selected-row{
-	background-color: lightgray;
+	background-color: #d9d9d9;
 }
 
 #itemCodeTable, #whCodeInTable { 
@@ -113,7 +118,7 @@
 
 #itemCodeTable tbody tr:hover,
 #whCodeInTable tbody tr:hover    {
-	background-color: rgba(240,240,221,0.5);
+	background-color: #F0F0DD;
 	cursor: pointer;
 }
 

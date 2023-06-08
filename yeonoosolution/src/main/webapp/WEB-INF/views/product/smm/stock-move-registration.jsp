@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -19,7 +18,7 @@
 		<table class="stockMoveRegistrationTable">
 			<thead>
 				<tr>
-					<th>No.</th>
+					<th class="moveCount">No.</th>
 					<th><input type="checkbox" class="checkAll"></th>
 					<th>이동번호</th>
 					<th>이동일자</th>
@@ -34,7 +33,7 @@
 			<tbody>
 				<c:forEach var="move" items="${stockMoveRegistration}" varStatus="status">
 					<tr>
-						<td>${status.count }</td>
+						<td class="moveCount">${status.count }</td>
 						<td><input type="checkbox" class="checkItem"></td>
 						<td class="moveCode">${move.moveCode }</td> <!-- 이동번호 -->
 						<td class="moveDate">${move.moveDate }</td> <!-- 이동일자 -->
@@ -59,7 +58,7 @@
 		<table class="stockMoveDetailTable">
 			<thead>
 				<tr>
-					<th>No.</th>
+					<th class="moveCount">No.</th>
 					<th><input type="checkbox" class="checkAll"></th>
 					<th>제품코드</th>
 					<th>품명</th>
