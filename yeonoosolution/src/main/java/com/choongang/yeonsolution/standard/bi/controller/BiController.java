@@ -36,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 public class BiController {
 	private final BiService biService;
 	
-	@GetMapping("/standard/companyInfo/")
+	@GetMapping("/standard/companyInfo")
 	public String companyInfoDetailByCompanyCode(@AuthenticationPrincipal UserDetailsDto userDetails, MemberDto memberDto, Model model) {
 		
 		memberDto.setCompanyCode(userDetails.getMemberDto().getCompanyCode());
@@ -77,7 +77,7 @@ public class BiController {
 		return result;
 	}
 	
-	@GetMapping("/standard/customerInfo/")
+	@GetMapping("/standard/customerInfo")
 	public String customerInfoListByCompanyCode(Model model, @AuthenticationPrincipal UserDetailsDto userDetails) {
 		
 		 String companyCode = userDetails.getMemberDto().getCompanyCode();

@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<div class="container">
 	<div class="content">
 		<div class="input-div">
 			<h2>품목별 재고 현황</h2>
@@ -37,3 +38,4 @@
 		</div>	
 	</div>
 	<br>
+</div>
