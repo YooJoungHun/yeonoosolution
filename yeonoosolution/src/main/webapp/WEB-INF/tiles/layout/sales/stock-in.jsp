@@ -221,18 +221,11 @@
 .td-hidden {
 	visibility: hidden;
 }
-.side-bar {
-	border: 1px solid #ddd;
-	padding: 20px;
-	float: left;
-	height: 100vh;
-	min-width: 180px;
-}
 #btn-div {
 	display: inline-block;
 }
 .non-change {
-	background-color: #e6e6e6!important;
+	background-color: #d9d9d9!important;
 }
 .non-modal-change {
 	background-color: #e6f2ff!important;
@@ -242,7 +235,7 @@
 }
 .modal-body table tr:hover td:not(.hidden) {
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-	background-color: #e6e6e6;
+	background-color: #d9d9d9;
 }
 .customer-list-tr td{
 	padding: 3px 5px;
