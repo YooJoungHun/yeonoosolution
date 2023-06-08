@@ -1,0 +1,92 @@
+@charset "UTF-8";
+.container{
+	padding: 0 10px;
+}
+.divTable{
+	overflow: auto;
+	height: 300px;
+	border: 1px solid #D9D9D9;
+}
+
+#stockMove{
+	width: 100%;
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+
+#stockMove th{
+	font-size: 14px;
+	padding: 5px;
+	position: sticky;
+	top: 0;
+	background: #f8f8f8;
+	border: 1px solid #D6DAE2;
+	box-shadow: 0 2px 2px -2px gray;
+	white-space: nowrap;
+}
+
+#stockMove td {
+	font-size: 14px;
+	border: 1px solid #D9D9D9;
+	padding: 5px;
+	text-align: center;
+	white-space: nowrap;
+}
+
+.buttons button{
+	background-color: white;
+	border: 1px solid #D6DAE2;
+	outline: none;
+	border-radius: 5px;
+	padding: 0 12px;
+	height: 32px;
+}
+
+.buttons button:not(:last-child) {
+	margin-right: 4px;
+}
+
+.buttons button:hover{
+	background-color: #FFFFCC;
+}
+
+.buttons {
+	margin: 15px auto;
+}
+
+.label-group {
+	margin-bottom: 20px;
+}
+
+.label-group label {
+	margin-bottom: 5px;
+}
+
+.label-group input {
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+
+.moveCount{
+	min-width: 50px;
+}
+
+.moveCode,
+.itemName,
+.stockQuantity,
+.whCodeOut,
+.whCodeIn,
+.moveQuantity,
+.moveType{
+	background-color: #d9d9d9;
+}
+
+.moveDate,
+.itemCode{
+	background-color: #ffffcc;
+}
+
+.memo{
+	background-color: #e6f2ff
+}

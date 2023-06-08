@@ -22,4 +22,5 @@ public class ItemDto {
 	private Date 	regDate;
 	private String 	updateUser;
 	private Date	updateDate;
+	private String 	useYn;
 }

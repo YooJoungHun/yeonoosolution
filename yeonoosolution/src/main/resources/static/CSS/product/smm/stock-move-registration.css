@@ -1,0 +1,130 @@
+@charset "UTF-8";
+.container{
+	max-width: 100% !important;
+}
+
+.stockMoveRegistrationTable, .stockMoveDetailTable{
+	display: black;
+	width: 100%;
+	border-collapse: collapse;
+	text-align: center;
+
+}
+
+.divTable{
+	height: 184px;
+	overflow-y: auto;
+	overflow-x: auto;
+	position: relative;
+	border: 1px solid #D9D9D9;
+}
+
+.divTable td, .divTable, tr{
+	white-space: nowrap;
+	font-size: 14px;
+}
+
+.container h5{
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.stockMoveRegistrationTable th, 
+.stockMoveDetailTable th{
+	position: sticky;
+	top: 0;
+	background: #f8f8f8;
+	border: 1px solid #D6DAE2;
+	padding: 5px;
+}
+
+.stockMoveRegistrationTable td , 
+.stockMoveDetailTable td{
+	border: 1px solid #D9D9D9;
+	padding: 5px;
+}
+
+.moveCount{
+	min-width: 50px;
+}
+
+.moveCode,
+.moveType,
+.moveRegDate,
+.moveRegUser,
+.moveUpdateDate,
+.moveUpdateUser,
+.itemName,
+.stockQuantity,
+.whCodeOut{
+	background-color: #d9d9d9;	/* 회색 */
+}
+
+.moveDate,
+.itemCode,
+.whCodeIn,
+.moveQuantity{
+	background-color: #ffffcc;     /* 노란 */
+	cursor: pointer;
+}
+
+.moveMemo{
+	background-color: #e6f2ff;   /* 파란 */
+	max-width: 150px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	cursor: pointer;
+}
+
+.buttons{
+	margin-top: 15px;
+}
+
+.buttons button, 
+#registrationBtns button, 
+#detailBtns button{
+	background-color: white;
+	border: 1px solid #D6DAE2;
+	outline: none;
+	border-radius: 5px;
+	padding: 0 12px;
+	height: 32px;
+	font-size: 14px;
+}
+
+.buttons button:not(:last-child) {
+	margin-right: 4px;
+}
+
+.buttons button:hover,
+#registrationBtns button:hover, 
+#detailBtns button:hover {
+	background-color: #FFFFCC;
+}
+
+#registrationBtns, #detailBtns {
+	margin: 10px auto;
+}
+
+
+.selected-row{
+	background-color: #d9d9d9;
+}
+
+#itemCodeTable, #whCodeInTable { 
+	width: 100% !important;
+}
+
+#itemCodeTable tbody tr:hover,
+#whCodeInTable tbody tr:hover    {
+	background-color: #F0F0DD;
+	cursor: pointer;
+}
+
+.stockMoveRegistrationTable tr[data-delete-status='delete-registration'] td,
+.stockMoveDetailTable tr[data-delete-status='delete-detail'] td {
+	background-color: darkgray;
+	opacity: 0.9;
+	text-decoration: line-through;
+}

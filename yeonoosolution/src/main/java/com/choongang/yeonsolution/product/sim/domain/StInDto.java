@@ -21,7 +21,10 @@ public class StInDto {
 	private String	deleteStatus;
 	private String 	memo;
 	
+	// 검색
+	private Long 	orderType;
 	
+	// 참조
 	private List<StInDetailDto> stInDetailDto;
 	private OrdersDto ordersDto;
 	private CompanyDto companyDto;

@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <style type="text/css">
+.main-container {
+	overflow: auto !important;
+}
 
 .user-admin-body{
 	display: flex;
@@ -37,6 +40,8 @@
     font-weight: bold;
 	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 	transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+    width: 200px;
+    height: 40px;
 }
 
 #user-admin-btn-div button:hover{
@@ -72,12 +77,14 @@
 	height : 80%;
 	overflow: auto;
 	white-space: nowrap;
+    width: 100%;
+    margin-left: 6%;
 }
 
 .user-admin-tuigrid-header {
 	display: flex;
     justify-content: flex-start;
-    margin-left: 1%;
+    margin-left: 6%;
     font-weight: bold;
     font-size: large;
     font-style: italic;
@@ -102,7 +109,7 @@
 	border-top: none;
 }
 
-.user-admin-member-tables {
+.user-admin-member-tables thead{
 	margin: 0 auto;
 	border-collapse: collapse;
 	white-space: nowrap;
@@ -124,6 +131,7 @@
 
 .user-admin-member-checkbox {
 	min-width: 50px;
+	max-width: 50px;
 }
 
 .user-admin-dept-code, .user-admin-job-code, 
@@ -138,18 +146,22 @@
 	max-width: 250px;
 }
 
-#user-admin-member-list-table{
-	z-index: 99;
+#user-admin-member-list-table tr.user-admin-update-row{
+	border: 3px solid #d12626;
 }
 
-#user-admin-member-list-table-body tr:hover{
+#user-admin-member-list-table-body td{
+	text-align: center;
+}
+
+#user-admin-member-list-table tbody tr:hover td{
 	background-color: #8C8C8C;
 }
 
 #user-admin-member-list-table td > input{
 	border: none;
 	outline: none;
-	background-color: inherit !important;
+	background-color: inherit;
 }
 
 #user-admin-member-list-table td > select{
@@ -159,10 +171,6 @@
 	color: black !important;
 	opacity: 1 !important;
 	background-color: inherit;
-}
-
-.user-admin-update-row{
-	background-color: #8C8C8C !important;
 }
 
 .user-admin-bg-gray {
@@ -387,14 +395,12 @@ select:not(:-internal-list-box) {
 		if ($checkbox.is(':checked')) {
 			$tr.find('td input').removeAttr('readonly');
 			$tr.find('td select').removeAttr('disabled');
-			$tr.find('td input').addClass('user-admin-update-row');
 			$tr.addClass('user-admin-update-row');
 		} else {
 			$tr.find('td input').attr('readonly', 'readonly');
 			$tr.find('td select').attr('disabled', 'disabled');
-			if ($tr.hasClass('user-admin-update-row') || $tr.find('td input').hasClass('user-admin-update-row')) {
+			if ($tr.hasClass('user-admin-update-row')) {
 				$tr.removeClass('user-admin-update-row');
-				$tr.find('td input').removeClass('user-admin-update-row');
 			}
 		}
 	}
@@ -429,6 +435,7 @@ select:not(:-internal-list-box) {
 		let printLocation = $('#user-admin-member-list-table-body');
 		printMember(member, printLocation);
 		let $newRow = $('#user-admin-member-list-table-body tr:last');
+		$newRow.addClass('user-admin-new-row');
 		$newRow.find('.user-admin-member-checkbox input').focus();
 		$newRow.find('.user-admin-member-checkbox input').click();
 	});
@@ -494,11 +501,17 @@ select:not(:-internal-list-box) {
 				dataType : 'json',
 				contentType: 'application/json',
 				data: JSON.stringify(memberList),
-				success : function(textStatus, xhr){
-					let $printLocation = $('#user-admin-member-list-table-body');
-					alert('저장이 완료되었습니다');
-					$printLocation.empty();
-					getMemberList($printLocation);
+				success : function(textStatus, xhr, result){
+					console.log('result : ' + result);
+					if(result > 0){
+						let $printLocation = $('#user-admin-member-list-table-body');
+						alert('저장이 완료되었습니다');
+						$printLocation.empty();
+						getMemberList($printLocation);
+					} else {
+						alert('사용중인 아이디입니다. 아이디를 확인해주세요.');
+					}
+					
 				},
 				error : function(xhr, textStatus){
 					handleError(xhr.status);

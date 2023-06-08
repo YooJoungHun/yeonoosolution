@@ -15,7 +15,7 @@
 			<button type="button" id="confirmation-cancel-btn" value="확정 취소">확정 취소</button>
 			<button type="button" id="stock-out-reg-btn" value="출하 등록">출하 등록</button>
 			<button type="button" id="work-order-reg-btn" value="작업 지시 등록">작업 지시 등록</button>
-			<button type="button" id="analysis-bom-btn" value="작업 지시 등록" onclick="location.href='/sales/analysis-of-materials'">자재 요소 분석</button>
+			<button type="button" id="analysis-bom-btn" value="자재 요소 분석" onclick="location.href='/sales/analysis-of-materials'">자재 요소 분석</button>
 			<button id="insert-receive-form-button">새 수주서 작성</button>
 			<button id="insert-receive-detail-form-button">세부항목 작성</button>
 			
@@ -48,7 +48,7 @@
 						<tr>
 							<th>거래처코드</th>
 							<td>
-								<input type="text" id="customer-code" name="customerCode" required="required" readonly>
+								<input type="text" id="customer-code" name="customerCode" required="required" readonly placeholder="조회를 클릭해주세요">
 								<button id="customer-code-modal-btn" data-bs-toggle="modal" data-bs-target="#customer-code-modal" value="조회">조회</button>
 							</td>
 						</tr>
@@ -74,7 +74,7 @@
 						</tr>
 						<tr>
 							<th>수주담당자</th>
-							<td><input type="text" name="orderEmpid" ></td>
+							<td><input type="text" name="orderEmpid" required="required"></td>
 						</tr>	
 						<tr>
 							<th>인도조건</th>
@@ -218,7 +218,7 @@
 						<tr>
 							<th>제품코드</th>
 							<td>
-								<input type="text" id="item-code" name="itemCode" required="required" readonly="readonly">
+								<input type="text" id="item-code" name="itemCode" required="required" readonly="readonly" placeholder="조회를 클릭해주세요">
 								<button type="button" id="item-code-modal-btn" data-bs-toggle="modal" data-bs-target="#item-code-modal" value="제품조회">제품조회</button>
 							</td>
 						</tr>
@@ -277,7 +277,7 @@
 			</div>	<!-- /id="table-insert-receive-detail-form-container" -->
 		
 			<div id="table-detail-content-div">
-				<h5>수주서 세부항목</h5>
+				<h4>수주서 세부항목</h4>
 				<table id="table-detail-content">
 					<thead>
 						<tr>

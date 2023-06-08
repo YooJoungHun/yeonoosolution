@@ -84,37 +84,44 @@ public class AMServiceImpl implements AMService{
 	public int membersSaveByMemberList(List<MemberDto> memberList) {
 		
 		int result = 0;
-		Field[] fields = MemberDto.class.getDeclaredFields();
-		for (MemberDto memberDto : memberList) {
-			if (memberDto.getMemberUid() != null) {
-				MemberDto foundMemberDto = amDao.selectMember(memberDto.getMemberUid());
-		        for (Field field : fields) {
-		        	//필드 접근 허용
-		            field.setAccessible(true);
-		            
-		            try {
-						if (field.get(memberDto) != null) {
-							//field.set(해당 필드값을 set 할 인스턴스, set 해줄 값)
-							field.set(foundMemberDto, field.get(memberDto));
+		
+		try {
+			Field[] fields = MemberDto.class.getDeclaredFields();
+			for (MemberDto memberDto : memberList) {
+				if (memberDto.getMemberUid() != null) {
+					MemberDto foundMemberDto = amDao.selectMember(memberDto.getMemberUid());
+			        for (Field field : fields) {
+			        	//필드 접근 허용
+			            field.setAccessible(true);
+			            
+			            try {
+							if (field.get(memberDto) != null) {
+								//field.set(해당 필드값을 set 할 인스턴스, set 해줄 값)
+								field.set(foundMemberDto, field.get(memberDto));
+							}
+						} catch (IllegalArgumentException e) {
+							e.printStackTrace();
+						} catch (IllegalAccessException e) {
+							e.printStackTrace();
 						}
-					} catch (IllegalArgumentException e) {
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						e.printStackTrace();
-					}
-		        }
-		        
-				result = amDao.updateMember(foundMemberDto);
-				
-			} else {
-				//초기비밀번호 : 아이디
-				memberDto.setPassword(passwordEncoder.encode(memberDto.getMemberId()));
-				memberDto.setRegUser(memberDto.getUpdateUser());
-				result = amDao.insertMember(memberDto);
+			        }
+			        
+					result = amDao.updateMember(foundMemberDto);
+					
+				} else {
+					//초기비밀번호 : 아이디
+					memberDto.setPassword(passwordEncoder.encode(memberDto.getMemberId()));
+					memberDto.setRegUser(memberDto.getUpdateUser());
+					result = amDao.insertMember(memberDto);
+				}
 			}
+			
+		} catch (Exception e) {
+			result = -1;
 		}
 		
 		return result;
+		
 	}
 
 	/**

@@ -2,28 +2,43 @@ package com.choongang.yeonsolution.product.smm.dao;
 
 import java.util.List;
 
-import com.choongang.yeonsolution.product.smm.domain.itemDto;
-import com.choongang.yeonsolution.product.smm.domain.stMoveDetailDto;
-import com.choongang.yeonsolution.product.smm.domain.stMoveDto;
+import com.choongang.yeonsolution.product.smm.domain.ItemDto;
+import com.choongang.yeonsolution.product.smm.domain.StMoveDetailDto;
+import com.choongang.yeonsolution.product.smm.domain.StMoveDto;
+import com.choongang.yeonsolution.product.smm.domain.WhDto;
 
 public interface SMMDao {
 
-	List<stMoveDetailDto> selectStockMoveStatusList();
+	List<StMoveDetailDto> selectStockMoveStatusList();
 
-	List<stMoveDetailDto> selectStockMoveSearchListByKeywordAndDate(String keyword, String startDate, String endDate);
+	List<StMoveDetailDto> selectStockMoveSearchListByKeywordAndDate(String keyword, String startDate, String endDate);
 
-	List<stMoveDto> selectStockMoveRegistrationList();
+	List<StMoveDto> selectStockMoveRegistrationList();
 
-	void updateStockMoveConfirmationByMoveCodes(String moveCode);
+	void updateStockMoveConfirmationByMoveCode(String moveCode);
 
-	List<stMoveDetailDto> selectStockMoveDetailListByMoveCode(String moveCode);
+	List<StMoveDetailDto> selectStockMoveDetailListByMoveCode(String moveCode);
 
-	void insertStockMoveRegistrationByMoveDateAndMoveMemo(String moveDate, String moveMemo);
+	void insertStockMoveRegistrationByMemberUidAndMoveDateAndMoveMemo(String memberUid, String moveDate, String moveMemo);
 
-	List<itemDto> selectItemCodeList();
+	List<ItemDto> selectItemCodeList();
 
-	List<itemDto> selectItemCodeRowDataListByItemCode(String itemCode);
+	List<WhDto> selectWhCodeList();
 
+	List<ItemDto> selectItemCodeRowDataListByItemCode(String itemCode);
 
+	void insertStockMoveDetailByStMoveDetailDto(StMoveDetailDto stMoveDetailDto);
+
+	List<StMoveDetailDto> selectSorderByMoveCode(String moveCode);
+
+	void updateStockMoveRegistrationByMoveCodeAndMoveMemo(String moveCode, String moveMemo);
+
+	void updateStockMoveRegistrationDeleteStatusByMoveCode(String moveCode);
+
+	void updateStockMoveDetailByMoveCodeAndSorderAndMoveMemo(String moveCode, String sorder, String moveMemo);
+
+	void deleteStockMoveDetailByMoveCodeAndSorder(String moveCode, String sorder);
+
+	void updateStockMoveRegistrationDateAndUserByMemberUidAndMoveCode(String memberUid, String moveCode);
 
 }
