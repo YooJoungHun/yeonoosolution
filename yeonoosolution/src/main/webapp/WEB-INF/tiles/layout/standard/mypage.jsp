@@ -79,7 +79,7 @@
 	}
 </style>
 
-	<script type="text/javascript">
+<script type="text/javascript">
 	function modifyMyInfo(){
 		var result = confirm("저장하시겠습니까?");
 		
@@ -134,9 +134,9 @@
 			        contentType: false, // 이미지 업로드시 필수 :  contentType: false를 설정하면 jQuery가 자동으로 컨텐츠 타입을 설정하지 않고, 브라우저가 자동으로 multipart/form-data로 설정함.
 			        success: function(data) {
 			          if (data === 1) {
-			        	  alert("이미지 저장 성공");
+			        	  //alert("이미지 저장 성공");
 			          } else {
-			        	  alert("이미지 저장 실패");
+			        	  //alert("이미지 저장 실패");
 			          }
 			        }
 			   });
@@ -238,9 +238,6 @@
 					}
 				}
 			});
-		}
-		
-		
-	}
-	
-	</script>
+		}	
+	}	
+</script>
