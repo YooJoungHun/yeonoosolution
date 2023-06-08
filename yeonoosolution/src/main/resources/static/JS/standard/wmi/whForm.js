@@ -78,7 +78,7 @@
 	function openInsertWhWindow() {
 		var editUrl = "/standard/warehouseInsertForm/";
 		
-		var editWindow = window.open(editUrl, "edit_window", "wideth=200, heigt=100");
+		var editWindow = window.open(editUrl, "edit_window", "width=400, height=500")
 		
 	}
 	
