@@ -51,14 +51,14 @@
   		
   		
   	  <!--  기타 입고  -->
-  		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.StInDto"				alias="SIMStInDto"/>
-  		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.StInDetailDto"		alias="SIMStInDetailDto"/>
-  		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.CompanyDto"			alias="SIMCompanyDto"/>
-  		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.ItemDto"				alias="SIMItemDto"/>
-  		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.OrdersDto"			alias="SIMOrdersDto"/>
-  		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.OrdersDetailDto"		alias="SIMOrdersDetailDto"/>
-  		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.WhDto"				alias="SIMWhDto"/>
-  		<typeAlias type="com.choongang.yeonsolution.product.sim.domain.WhStockDetailDto"	alias="SIMWhStockDetailDto"/>
+  		<typeAlias alias="SIMStInDto"			type="com.choongang.yeonsolution.product.sim.domain.StInDto"/>
+  		<typeAlias alias="SIMStInDetailDto" 	type="com.choongang.yeonsolution.product.sim.domain.StInDetailDto"/>
+  		<typeAlias alias="SIMCompanyDto" 		type="com.choongang.yeonsolution.product.sim.domain.CompanyDto"/>
+  		<typeAlias alias="SIMItemDto" 			type="com.choongang.yeonsolution.product.sim.domain.ItemDto"/>
+  		<typeAlias alias="SIMOrdersDto" 		type="com.choongang.yeonsolution.product.sim.domain.OrdersDto"/>
+  		<typeAlias alias="SIMOrdersDetailDto" 	type="com.choongang.yeonsolution.product.sim.domain.OrdersDetailDto"/>
+  		<typeAlias alias="SIMWhDto" 			type="com.choongang.yeonsolution.product.sim.domain.WhDto"/>
+  		<typeAlias alias="SIMWhStockDetailDto" 	type="com.choongang.yeonsolution.product.sim.domain.WhStockDetailDto"/>
   	
   	  <!-- 사용자관리 -->
   		<typeAlias alias="BICompanyDto" type="com.choongang.yeonsolution.standard.bi.domain.CompanyDto"/>

@@ -105,7 +105,7 @@ function addButtonClick(tableId, btnId){
 			
 			$('.' + tableId + ' tbody').append(`
 				<tr data-status="stMoveRegistrationAdd">
-					<td class="moveCount">${rowCount}</td>
+					<td>${rowCount}</td>
 					<td><input type="checkbox" class="checkItem" checked></td>
 					<td class="moveCode"></td> //이동번호
 					<td class="moveDate"><input type="text"></td> //이동일자(달력)
@@ -131,7 +131,7 @@ function addButtonClick(tableId, btnId){
 
 			$('.' + tableId + ' tbody').append(`
 				<tr data-status='stMoveDetailAdd'>
-					<td class="moveCount">${rowCount}</td>
+					<td>${rowCount}</td>
 					<td><input type="checkbox" class="checkItem" checked></td>
 					<td class="itemCode"></td> //제품코드
 					<td class="itemName"></td> //품명
