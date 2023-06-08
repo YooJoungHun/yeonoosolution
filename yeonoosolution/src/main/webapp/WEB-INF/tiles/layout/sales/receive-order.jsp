@@ -382,6 +382,7 @@
 					url: "/sales/receive-order/" + orderCode + "/confirm",
 					type: "PATCH",
 					success: function(data){
+						alert("확정되었습니다."); 
 						loadPlaceOrderList();
 					},
 					error: function(){
@@ -404,6 +405,7 @@
 					url: "/sales/receive-order/" + orderCode + "/cancel",
 					type: "PATCH",
 					success: function(data){
+						alert("취소되었습니다."); 
 						loadPlaceOrderList();
 					},
 					error: function(){

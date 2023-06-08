@@ -12,6 +12,6 @@ public class DsController {
 
     @GetMapping("/product/status/defect")
     public String dsList() {
-        return "product/ds/status";
+        return "product/ds/status.layout";
     }
 }
