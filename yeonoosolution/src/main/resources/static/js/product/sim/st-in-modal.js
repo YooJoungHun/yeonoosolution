@@ -43,6 +43,15 @@ $(function() {
 		});
 	});
 
+	// orderModal Open
+	$(document).on('click', '#orderCode', ()=>{
+		console.log('오더 모달 오픈');
+		$('#orderModal').modal('show');
+		$('#orderModal tbody tr').off('click').click((e)=>{
+			$('#orderCode').val($(e.target).closest('tr').find('.orderCode').text());
+			$('#orderModal').modal('hide');
+		});
+	});
 	// Row 클릭시 값 입력
 	//$(document).on('click', '#companyModal tbody tr', selectCompanyModal);
 	//$(document).on('click', '#whModal tbody tr', selectWhModal);
@@ -71,11 +80,11 @@ $(function() {
 		],
 		// 컬럼명 정의
 		'columnDefs': [
-			{ 'className': 'companyCode', 'targets': 0 },
-			{ 'className': 'companyName', 'targets': 1 },
-			{ 'className': 'businessType', 'targets': 2 },
-			{ 'className': 'ownerName', 'targets': 3 },
-			{ 'className': 'tel', 'targets': 4 }
+			{'className': 'companyCode', 'targets': 0 },
+			{'className': 'companyName', 'targets': 1 },
+			{'className': 'businessType', 'targets': 2 },
+			{'className': 'ownerName', 'targets': 3 },
+			{'className': 'tel', 'targets': 4 }
 		],
 		// 페이징
 		'pageLength': 5,
@@ -83,6 +92,7 @@ $(function() {
 		'initComplete': function(settings, json) {
 			$('#modal-company_wrapper').css({'max-width':'100%','overflow-x':'auto'})
 	}});
+
 	// whModal 생성
 	$('#modal-wh').DataTable({
 		'ajax': {
@@ -97,21 +107,18 @@ $(function() {
 			{'data': 'memo'}
 		],
 		'columnDefs': [
-			{ 'className': 'whCode', 'targets': 0 },
-			{ 'className': 'companyCode', 'targets': 1 },
-			{ 'className': 'whName', 'targets': 2 },
-			{ 'className': 'useYn', 'targets': 3 },
-			{ 'className': 'memo', 'targets': 4 }
+			{'className': 'whCode', 'targets': 0 },
+			{'className': 'companyCode', 'targets': 1 },
+			{'className': 'whName', 'targets': 2 },
+			{'className': 'useYn', 'targets': 3 },
+			{'className': 'memo', 'targets': 4 }
 		],
 		'pageLength': 5,
 		'initComplete': (setting, json)=>{$('#modal-wh_wrapper').css({'max-width':'100%','overflow-x':'auto'})}
 	});
 
-	// Modal창 Open시 컬럼 사이즈 조정
-	$('#modal-company, #modal-wh, #modal-item').on('shown.bs.modal', function () {
-        $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
-    });
-	// whModal 생성
+
+	// itemModal 생성
 	$('#modal-item').DataTable({
 		'ajax': {
 			'url': `${contextPath}/product/sim/modal/findItem`,
@@ -128,23 +135,53 @@ $(function() {
 			{'data': 'memo'}
 		],
 		'columnDefs': [
-			{ 'className': 'itemCode', 'targets': 0 },
-			{ 'className': 'whCode', 'targets': 1 },
-			{ 'className': 'companyCode', 'targets': 2 },
-			{ 'className': 'itemName', 'targets': 3 },
-			{ 'className': 'itemType', 'targets': 4 },
-			{ 'className': 'salesPrice', 'targets': 5 },
-			{ 'className': 'useYn', 'targets': 6 },
-			{ 'className': 'memo', 'targets': 7 }
+			{'className': 'itemCode', 'targets': 0 },
+			{'className': 'whCode', 'targets': 1 },
+			{'className': 'companyCode', 'targets': 2 },
+			{'className': 'itemName', 'targets': 3 },
+			{'className': 'itemType', 'targets': 4 },
+			{'className': 'salesPrice', 'targets': 5 },
+			{'className': 'useYn', 'targets': 6 },
+			{'className': 'memo', 'targets': 7 }
 		],
 		'pageLength': 5,
 		'initComplete': (setting, json)=>{$('#modal-item_wrapper').css({'max-width':'100%','overflow-x':'auto'})}
 	});
 
+	// ordersModal 생성
+	$('#modal-order').DataTable({
+		'ajax': {
+			'url': `${contextPath}/product/sim/modal/findOrders`,
+			'dataSrc': ''
+		},
+		'columns': [
+			{'data': 'orderCode'},
+			{'data': 'customerCode'},
+			{'data': 'receiveOrderType'},
+			{'data': 'orderEmpId'},
+			{'data': 'deliveryPlan'},
+			{'data': 'orderStatus'},
+			{'data': 'dueDate'},
+			{'data': 'memo'}
+		],
+		'columnDefs': [
+			{'className': 'orderCode', 'targets': 0 },
+			{'className': 'customerCode', 'targets': 1 },
+			{'className': 'receiveOrderType', 'targets': 2 },
+			{'className': 'orderEmpId', 'targets': 3 },
+			{'className': 'deliveryPlan', 'targets': 4 },
+			{'className': 'orderStatus', 'targets': 5 },
+			{'className': 'dueDate', 'targets': 6 },
+			{'className': 'memo', 'targets': 7 }
+		],
+		'pageLength': 5,
+		'initComplete': (setting, json)=>{$('#modal-orders_wrapper').css({'max-width':'100%','overflow-x':'auto'})}
+	});
+
 	// Modal창 Open시 컬럼 사이즈 조정
-	$('#modal-company, #modal-wh, #modal-item').on('shown.bs.modal', function () {
-        $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
-    });
+	$('#modal-company, #modal-wh, #modal-item, #modal-orders').on('shown.bs.modal', function () {
+		$.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
+	});
 });
 
 // Company Select Event

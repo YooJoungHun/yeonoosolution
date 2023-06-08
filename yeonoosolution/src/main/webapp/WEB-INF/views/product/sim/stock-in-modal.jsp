@@ -108,5 +108,41 @@
       </div>
     </div>
     
+    
+    <!-- Item List Modal -->
+    <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document" style="max-width: 80%; width: auto;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="orderLabel">수주 목록</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- DataTable goes here -->
+            <table id="modal-order" class="display" style="width:100%">
+                <thead class="modal-thead">
+                    <tr>
+                        <th>수주 번호</th>
+                        <th>거래처 코드</th>
+                        <th>수주 유형</th>
+                        <th>담당자</th>
+                        <th>인도조건</th>
+                        <th>상태</th>
+                        <th>납기일</th>
+                        <th>비고</th>
+                    </tr>
+                </thead>
+                <tbody class="modal-tbody"></tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
 </body>
 </html>

@@ -239,6 +239,10 @@
 	<select id="selectStInItem" resultType="SIMItemDto">
 		SELECT * FROM ITEM
 	</select>
+<!-- 수주 목록 조회 -->
+	<select id="selectOrders" resultType="SIMOrdersDto">
+		SELECT * FROM ORDERS WHERE RECEIVE_OR_PLACE LIKE '수주' AND DELETE_STATUS LIKE 'N'
+	</select>
 <!-- 입고 상세 추가 -->
 	<insert id="insertStInDetail" parameterType="java.util.List">
 	    <foreach collection="list" item="sid" open="INSERT ALL" close="SELECT * FROM DUAL">
