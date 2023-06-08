@@ -33,7 +33,7 @@
 .stockMoveDetailTable th{
 	position: sticky;
 	top: 0;
-	background: white;
+	background: #f8f8f8;
 	border: 1px solid #D6DAE2;
 	padding: 5px;
 }
