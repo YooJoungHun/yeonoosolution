@@ -42,9 +42,9 @@
 	}
 	
  	.wh-stock-detail-list {
-	    width: 100%; /* 원하는 가로 크기를 설정하세요 */
-	    height: 400px; /* 원하는 세로 크기를 설정하세요 */
-	    overflow: auto; /* 내용이 넘칠 경우 스크롤 표시 */
+	    width: 100%; 
+	    height: 400px; 
+	    overflow: auto;
 		border: 1px solid #ddd;
 		margin: 0 auto;
 		background-color: #f8f8f8;
