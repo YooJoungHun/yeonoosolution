@@ -43,7 +43,7 @@ public class SIMController {
 	    String requestURI = request.getRequestURI();
 	    
 	   // 기타입고 등록
-	    if(requestURI.endsWith("/register")) stInDto.setOrderType("2");
+	    if(requestURI.endsWith("/register")) stInDto.setOrderType(Long.parseLong("2"));
 	    
 	    List<StInDto> stInList = simService.findStIn(stInDto);
 	    model.addAttribute("stInList", stInList);
@@ -78,6 +78,8 @@ public class SIMController {
 		String inDate = stInDto.getInDate();
 		stInDto.setInDate(inDate.replace("-", "/"));
 		
+		System.out.println(action+stInDto);
+		
 		switch (action) {
 		case "find":
 			redirectAttributes.addFlashAttribute("stInDto", stInDto); break;
@@ -90,7 +92,7 @@ public class SIMController {
 		case "cancel":
 			simService.modifyStInCancel(stInDto); break;
 		}
-		return "product/sim/in-status";
+		return "redirect:/product/sim/status";
 	}
 	
 	/** Ajax 등록, 수정, 삭제 */

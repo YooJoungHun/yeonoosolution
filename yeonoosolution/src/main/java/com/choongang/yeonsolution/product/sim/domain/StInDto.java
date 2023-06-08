@@ -22,7 +22,7 @@ public class StInDto {
 	private String 	memo;
 	
 	// 검색
-	private String 	orderType;
+	private Long 	orderType;
 	
 	// 참조
 	private List<StInDetailDto> stInDetailDto;

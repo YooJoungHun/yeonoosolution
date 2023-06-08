@@ -27,25 +27,6 @@ function btnEvent(event){
 		btn.fn();
 }
 
-function findGet(url, method) {
-	let form = document.createElement('form');
-	form.setAttribute('method', method);
-	form.setAttribute('action', url);
-	params = getParams();
-
-	console.log(params['regDate']);
-
-	for (let key in params) {
-		let field = document.createElement('input');
-		field.setAttribute('type', 'hidden');
-		field.setAttribute('name', key);
-		field.setAttribute('value', params[key]);
-		form.appendChild(field);
-		console.log(field)
-	}
-	document.body.appendChild(form);
-	form.submit();
-}
 // 이벤트 등록
 $(()=> {
 	$(document).on('click', '.stInRow', tableRowClick);
@@ -313,51 +294,12 @@ function getParams() {
 }
 
 
-// JavaScript로 form submit (검색)
-function btnEvent(url, method) {
-	let form = document.createElement('form');
-	form.setAttribute('method', method);
-	form.setAttribute('action', url);
-	params = getParam();
-
-	for (let key in params) {
-		let field = document.createElement('input');
-		field.setAttribute('type', 'hidden');
-		field.setAttribute('name', key);
-		field.setAttribute('value', params[key]);
-		form.appendChild(field);
-		console.log(field)
-	}
-	document.body.appendChild(form);
-	form.submit();
-}
 
 
 
 
-// // Ajax 이벤트
-// function btnAction(url, method) {
-// 	let obj;
-// 	if(method == 'get'){
-// 		findGet(url, method);
-// 		return;
-// 	}else{
-// 		obj = getParams();
-// 	}
-// 	if (!obj) return;
-// 	console.log(obj);
 
-// 	// AJAX
-// 	let xhr = new XMLHttpRequest();
-// 	xhr.open(method, url);
-// 	xhr.setRequestHeader('Content-Type', 'application/json');
-// 	xhr.send(JSON.stringify(obj));
-// 	xhr.onload = function () {
-// 		if (xhr.status === 200) {
-// 			console.log(xhr.responseText);
-// 		}
-// 	}
-// }
+
 
 
 
@@ -798,6 +740,26 @@ function saveDetailEvent() {
 			}
 		});
 	}
+}
+
+// 버튼 이벤트
+function findGet(url, method) {
+	let form = document.createElement('form');
+	form.setAttribute('method', method);
+	form.setAttribute('action', url);
+	params = getParam();
+
+
+	for (let key in params) {
+		let field = document.createElement('input');
+		field.setAttribute('type', 'hidden');
+		field.setAttribute('name', key);
+		field.setAttribute('value', params[key]);
+		form.appendChild(field);
+		console.log(field)
+	}
+	document.body.appendChild(form);
+	form.submit();
 }
 
 // Date 포멧
