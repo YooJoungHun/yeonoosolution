@@ -76,7 +76,7 @@
 			margin: 30px;
 		}
 		
-		input {
+		.stOutFormDiv input {
 			height: 1.6rem;
 		}
 		
@@ -86,6 +86,7 @@
 			padding: 20px;
 			width: 120%;
 			text-align: center;
+			border-color: black;
 		}
 		
 		#stOutDetailTable {
@@ -94,28 +95,37 @@
 			padding: 20px;
 			width: 120%;
 			text-align: center;
+			border-color: black;
 		}
 		
-		th {
-			background-color: #909090;
+		#stOutTable th,
+		#stOutDetailTable th {
+			background-color: #F1F1F1;
 		}
 		
-		tr:nth-child(even) {
-			background-color: #D8D8D8;
+		.outCodeTd,
+		.orderCodeTd {
+			background-color: #d9d9d9;
 		}
 		
-		tr:hover {
-			background-color: #7C96C9;
+		.outTypeTd,
+		.memoTd {
+			background-color: #ffffcc;
 		}
 		
-		.side-bar {
-			border: 1px solid #ddd;
-			padding: 20px;
-			float: left;
-			height: 100vh;
+		.outDateTd,
+		.regDateTd,
+		.regUserTd,
+		.updateDateTd,
+		.updateUserTd {
+			background-color: #e6f2ff;
 		}
 		
-		button {
+		.stOutFormDiv tr:hover td {
+			background-color: #8EA8DB;
+		}
+		
+		.stOutFormDiv button {
 			background-color: #F5F5F5;
 			border: 1px solid #D6DAE2;
 			outline: none;
@@ -124,11 +134,11 @@
 			height: 32px;
 		}
 		
-		button:not(:last-child) {
+		.stOutFormDiv button:not(:last-child) {
 			margin-right: 4px;
 		}
 		
-		button:hover {
+		.stOutFormDiv button:hover {
 			background-color: #8EA8DB;
 		}
 		

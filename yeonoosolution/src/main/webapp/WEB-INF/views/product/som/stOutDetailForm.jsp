@@ -5,11 +5,21 @@
 <style>
 
 	#stOutDetailTable2 {
-    		border-collapse: collapse;
-			background-color: #F8F8F8;
-			padding: 20px;
-			width: 100%;
-			text-align: center;
+   		border-collapse: collapse;
+		background-color: #F8F8F8;
+		padding: 20px;
+		width: 100%;
+		text-align: center;
+	}
+	
+	.itemCodeTd,
+	.itemNameTd,
+	.whCodeStTd {
+		background-color: #d9d9d9;
+	}
+	.outQuantityTd,
+	.memoStTd {
+		background-color: #ffffcc;
 	}
 	
 </style>
@@ -26,11 +36,11 @@
 	<c:forEach var="stOutDetail" items="${stOutDetailList }" varStatus="status">
 		<tr>
 			<td>${stOutDetail.sorder }</td>
-			<td>${stOutDetail.itemCode }</td>
-			<td>${stOutDetail.itemName }</td>
-			<td>${stOutDetail.whCode }</td>				
-			<td>${stOutDetail.outQuantity }</td>				
-			<td>${stOutDetail.memo}</td>				
+			<td class="itemCodeTd">${stOutDetail.itemCode }</td>
+			<td class="itemNameTd">${stOutDetail.itemName }</td>
+			<td class="whCodeStTd">${stOutDetail.whCode }</td>				
+			<td class="outQuantityTd">${stOutDetail.outQuantity }</td>				
+			<td class="memoStTd">${stOutDetail.memo}</td>				
 		</tr>
 	</c:forEach>
 </table>
