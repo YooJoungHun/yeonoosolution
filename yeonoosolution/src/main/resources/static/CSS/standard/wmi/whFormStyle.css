@@ -25,6 +25,10 @@
 		border-color: black;
 	}
 	
+	#warehouseTable th {
+		background-color: #F1F1F1;
+	}
+	
 	#warehouseTable	input {
 		border: none;
 	}

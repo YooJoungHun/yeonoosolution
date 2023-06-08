@@ -98,6 +98,11 @@
 			border-color: black;
 		}
 		
+		#stOutTable th,
+		#stOutDetailTable th {
+			background-color: #F1F1F1;
+		}
+		
 		.outCodeTd,
 		.orderCodeTd {
 			background-color: #d9d9d9;
