@@ -44,27 +44,27 @@
 					<td>
 						<input type="checkbox" name="tableCheckBox" id="checkBox${status.index }">
 					</td>
-					<td>
+					<td class="whCodeTd">
 						<input type="hidden" id="whCode${status.index }" value="${whList.whCode }">
 						${whList.whCode }
 					</td>
-					<td>
+					<td class="whNameTd">
 						<input id="whName${status.index }" type="text" value="${whList.whName }">
 					</td>
-					<td>
+					<td class="useYnTd">
 						<select id="useYn${status.index }">
 							<option value="Y" ${whList.useYn == 'Y' ? 'selected="selected"' : '' }>Y</option>
 							<option value="N" ${whList.useYn == 'N' ? 'selected="selected"' : '' }>N</option>
 						</select>
 	 				</td>
-					<td>${whList.regDate }</td>
-					<td>${whList.regUserName }</td>
-					<td>${whList.updateDate }</td>
-					<td>
+					<td class="regDateTd">${whList.regDate }</td>
+					<td class="regUserNameTd">${whList.regUserName }</td>
+					<td class="updateDateTd">${whList.updateDate }</td>
+					<td class="updateUserNameTd">
 						<input type="hidden" id="updateUser${status.index }" value="${whList.updateUser }">
 						${whList.updateUserName }
 					</td>
-					<td>
+					<td class="memoTd">
 						<input id="memo${status.index }" type="text" value="${whList.memo }">
 					</td>
 				</tr>

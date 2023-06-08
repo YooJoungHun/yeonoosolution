@@ -84,7 +84,7 @@
 		select 		count(order_code) as order_count, receive_or_place
 		from 		orders
 		where 		order_status = '확정'
-		and			trunc(order_date) = trunc(sysdate)
+		and			trunc(order_date) = '2023/06/08'
 		group by 	receive_or_place
 	</select>
 	

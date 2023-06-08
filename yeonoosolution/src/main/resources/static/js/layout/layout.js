@@ -166,6 +166,10 @@ const arrangeMenu = (menuData, depth = 0) => {
    return $(virtual).html();
 };
 
+$(document).on('click', 'button.logout-button', e => {
+	location.href = location.protocol + '//' + location.host + '/standard/logout';
+});
+
 $(document).on('click', 'button.list-header', e => {
    let elem = $(e.target).closest('button.list-header');
    let target = $(elem).attr('data-target');

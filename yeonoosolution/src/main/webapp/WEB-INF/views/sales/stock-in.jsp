@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html>ßßßßßß
 <div id="contain">
 	<div id="content">
 		<div id="btn-div">
@@ -29,7 +28,7 @@
 		</div>
 		<hr>
 		<div class="tuigrid-header">
-			<span>구매발주</span>
+			<span>구매입고</span>
 			<div>
 				<button type="button" id="order-add" class="order-btn-cl">추가</button>
 				<button type="button" class="order-delete-btn order-status-update-btn order-btn-cl">삭제</button>

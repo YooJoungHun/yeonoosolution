@@ -73,7 +73,7 @@
 				</c:forEach>			
 				<c:if test="${empty outListWithDetail}">
 					<tr>
-			        	<td colspan="16" rowspan="3" style="width: 1200px; text-align: center; font-size:20px; ">검색내역이 없습니다.</td>
+			        	<td colspan="16" rowspan="3" style="width: 1150px; text-align: center; font-size:20px; ">검색내역이 없습니다.</td>
 			        </tr>
 				</c:if>
 				
