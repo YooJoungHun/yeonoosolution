@@ -38,8 +38,6 @@
 							<th class="user-admin-member-role">권한</th>
 						</tr>
 					</thead>
-				</table>
-				<table id="user-admin-member-list-table" class="user-admin-member-list-table user-admin-member-tables">
 					<tbody id="user-admin-member-list-table-body">
 					</tbody>
 				</table>
