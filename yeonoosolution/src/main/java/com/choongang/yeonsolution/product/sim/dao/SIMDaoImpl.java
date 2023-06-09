@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.choongang.yeonsolution.product.sim.domain.CompanyDto;
 import com.choongang.yeonsolution.product.sim.domain.ItemDto;
+import com.choongang.yeonsolution.product.sim.domain.OrdersDto;
 import com.choongang.yeonsolution.product.sim.domain.StInDetailDto;
 import com.choongang.yeonsolution.product.sim.domain.StInDto;
 import com.choongang.yeonsolution.product.sim.domain.WhDto;
@@ -60,5 +61,8 @@ public class SIMDaoImpl implements SIMDao {
 			session.insert("deleteStInDetail", sid);
 		}
 	}
+	/** 입고 상세 삭제 */
+	@Override
+	public List<OrdersDto> selectOrders() {return session.selectList("selectOrders");}
 
 }

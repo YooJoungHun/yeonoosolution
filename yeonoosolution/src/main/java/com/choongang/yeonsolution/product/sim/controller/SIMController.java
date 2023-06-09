@@ -179,6 +179,8 @@ public class SIMController {
 			findList = simService.findWh(); break;
 		case "findItem":
 			findList = simService.findItem(); break;
+		case "findOrders":
+			findList = simService.findOrders(); break;
 		}
 		return new ResponseEntity<>(findList, status);
 	}

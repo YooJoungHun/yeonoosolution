@@ -4,7 +4,12 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<style type="text/css">	
+<style type="text/css">
+	.container {
+		width: 100%;
+		display: flex;
+	}
+
 	.whStockDetail {
 		border-collapse : collapse;
 		padding: 20px;
@@ -38,7 +43,6 @@
 		display: inline-block;
 		width: 80%;
 		margin: 0px auto;
-		margin-left: 3%;
 	}
 	
  	.wh-stock-detail-list {
