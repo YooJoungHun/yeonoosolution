@@ -21,7 +21,7 @@
 			<div class="top-menu">
 				<div class="top-left">
 					<button type="button" class="menuBtn" id="hideBtn"></button>
-					<span style="font-size: 22px; color: white; margin-left: 10px; font-weight: 900; cursor: pointer;" onclick="location.href = location.protocol + '//' + location.host + '/main';">TEAM PROJECT</span>
+					<span style="font-size: 22px; color: white; margin-left: 10px; font-weight: 900; cursor: pointer;" onclick="location.href = location.protocol + '//' + location.host + '/';">TEAM PROJECT</span>
 				</div>
 				<div class="top-right">
 					<button type="button" class="logout-button" title="로그아웃">
