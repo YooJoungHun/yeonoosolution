@@ -155,4 +155,15 @@ public class SMMDaoImpl implements SMMDao {
 		sqlSession.update("updateStockMoveRegistrationDateAndUserByMemberUidAndMoveCode", updateStockMoveRegistrationMap);
 	}
 
+	@Override
+	public void updateWhStockDetailByStockMoveDetailList(StMoveDetailDto stMoveDetailDto) {
+		sqlSession.update("updateWhStockDetailByStockMoveDetailList", stMoveDetailDto);
+	}
+
+	@Override
+	public void updateWhStockDetailByStMoveDetailMap(Map<String, Object> stMoveDetailMap) {
+		sqlSession.selectOne("orders.updatePmWhStockDetailByStInDetail", stMoveDetailMap);
+		
+	}
+
 }
