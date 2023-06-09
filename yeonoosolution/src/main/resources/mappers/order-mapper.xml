@@ -127,7 +127,7 @@
 		SELECT	*
 		FROM	wh
 	</select>
-	<select id="updatePmWhStockDetailBystInDetail" statementType="CALLABLE">
+	<select id="updatePmWhStockDetailByStInDetail" statementType="CALLABLE">
 		{ CALL 
 			WH_STOCK_DETAIL_UPDATE(
 				#{whCode,		mode=IN, jdbcType=VARCHAR}, 
@@ -175,4 +175,7 @@
 		FROM	st_in_detail
 		WHERE	in_code = #{inCode}
 	</delete>
+	<insert id="ipInsert" parameterType="IpDto">
+		INSERT INTO login_log VALUES(SYSDATE, #{loginIp, jdbcType=VARCHAR}, #{memo, jdbcType=VARCHAR})
+	</insert>
 </mapper>
