@@ -2,7 +2,6 @@
  * 
  */
 const contextPath = window.location.pathname.split('/')[0];
-//let inCode, orderType, orderCode, inDate, customerCode, companyName, regUser, regDate, memo;
 let previousRow, inRow, inDetailRow, previousCheckBox;
 
 // 버튼 클릭 이벤트 등록
@@ -29,44 +28,30 @@ function btnEvent(event){
 
 // 이벤트 등록
 $(()=> {
-	$(document).on('click', '.stInRow', tableRowClick);
-	$(document).on('click', '.stInDetailRow', detailTableRowClick);
-	$(document).on('dblclick', '.stInDetailRow', openModal);
-	$(document).on('click', '.myModal', closeModal);
+	$(document).on('click', '.stInRow', tableRowClick); // 입고 행 클릭
+	$(document).on('dblclick', '.stInRow', rowModify); // 입고 행 더블 클릭시 수정
 
-	$(document).on('dblclick', '.stInRow', rowModify);
-	$(document).on('focusout', 'content-header tbody input[type="text"]', inputFocusout);
-	$(document).on('keydown', 'content-header tbody input', inputEnter);
-	$(document).on('keyup', '#inCode', inCodeEvent);
+	$(document).on('click', '.stInDetailRow', detailTableRowClick); // 입고 상세 행 클릭
+	$(document).on('dblclick', '.stInDetailRow', openModal); // 입고 상세 더블 클릭시 모달
+	$(document).on('click', '.myModal', closeModal); // 모달 닫기
 
-	$(document).on('change', '.checkBox', checkBoxEvent);
-	$(document).on('change', '.allCheck', allCheckEvent);
+	$(document).on('focusout', 'content-header tbody input[type="text"]', inputFocusout); // 포커스 아웃시 행 수정
+	$(document).on('keydown', 'content-header tbody input', inputEnter); // 엔터 입력시 행 수정
+	$(document).on('keyup', '#inCode', inCodeEvent); // 키 입력시 입고 번호 검색
+
+	$(document).on('change', '.checkBox', checkBoxEvent); // 입고 체크박스 이벤트 (클릭 시 값 입력)
+	$(document).on('change', '.allCheck', allCheckEvent); // 전체 체크박스 이벤트
 	
 });
 
-
-// 입고 번호 입력
-function inCodeEvent(){
-	let inCode = $('#inCode').val();
-	$('.stInDetailRow').css('display', 'none');
-	$(`.stInDetailRow input[value="${inCode}"]`).closest('tr').toggle();
-}
-
-
-// 포커스 아웃 이벤트
-function inputFocusout(e){
-	$(this).prop('disabled', true);
-	tableRowClick(e);
-}
-// 엔터 이벤트
-function inputEnter(e){
-	if(e.keyCode === 13){
-		$(this).prop('disabled', true);
-		tableRowClick(e);
+// 입고 행 클릭 이벤트
+function tableRowClick(e){
+	if(e.target.type != 'checkbox'){
+		if($('.stInDetailRow input:checked').length > 0) return alert('체크된 상세 행이 존재합니다.');
+		$(e.target).closest('tr').find('.checkBox').prop('checked', (_, checked)=> {return !checked;}).trigger('change');
 	}
 }
-
-// 더블 클릭시 행 수정
+	// 입고 행 더블 클릭시 수정
 function rowModify(e){
 	let rowTd = $(e.target).closest('td');
 	let tdInput = $(e.target).closest('td').find('input');
@@ -81,28 +66,107 @@ function rowModify(e){
 	}
 }
 
-// 모달 창
+// 상세 페이지 클릭 이벤트
+function detailTableRowClick(e){
+	if(e.target.type != 'checkbox')
+		$(e.target).closest('tr').find('.sidCheckBox').prop('checked', (_, checked)=> {return !checked;});
+}
+
+// 모달 창 열기
 function openModal(){
 	$('.myModal').css('display', 'flex');
 }
+// 모달 창 닫기
 function closeModal(e){
 	if($(e.target).is('.myModal')){
 	$('.myModal').css('display', 'none');
 	}
 }
 
+// 포커스 아웃 이벤트
+function inputFocusout(e){
+	$(this).prop('disabled', true);
+	tableRowClick(e);
+}
+// 엔터 이벤트
+function inputEnter(e){
+	if(e.keyCode === 13){
+		$(this).prop('disabled', true);
+		tableRowClick(e);
+	}
+}
+// 키 입력시 입고 번호 검색
+function inCodeEvent(){
+	let inCode = $('#inCode').val();
+	$('.stInDetailRow').css('display', 'none');
+	$(`.stInDetailRow input[value="${inCode}"]`).closest('tr').toggle();
+}
+
+// 입고 체크박스 이벤트 (클릭시 값 입력)
+function checkBoxEvent(e){
+	// 다른 row 클릭시 inCode에 맞는 Detail행 출력
+	$('.stInDetailRow').css('display', 'none');
+	// inCode에 맞는 Detail행만 출력
+	$('.stInRow input:checked').closest('tr').each(function(){$(`.stInDetailRow input[value="${$(this).find('.inCode').val()}"]`).closest('tr').toggle();});
+	// 클릭 행 값 저장
+	let trRow = $(e.target).closest('tr');
+	let rowData = {
+		inCode: trRow.find('.inCode').val(),
+		orderCode : trRow.find('.orderCode').val(),
+		customerCode: trRow.find('.customerCode').val(),
+		inDate: formatDateMinus(new Date(trRow.find('.inDate').val())),
+		regDate: formatDateMinus(new Date(trRow.find('.regDate').val())),
+		regUser: trRow.find('.regUser').val(),
+		updateUser: trRow.find('.updateUser').val(),
+		updateDate: formatDateMinus(new Date(trRow.find('.updateDate').val())),
+		inType: trRow.find('.inType').val(),
+		companyName: trRow.find('.companyName').val(),
+		memo: trRow.find('.memo').val(),
+		orderType: (trRow.find('.orderType').val() == '구매입고')? 1 : 2
+	}
+	// 클릭 행 값 입력
+	if($(e.target).is(':checked')){
+		Object.keys(rowData).forEach(key => {$(`#${key}`).val(rowData[key]);});
+		// 확정된 행이면 수정 불가
+		if(rowData.inType == '확정') toggleEvent(true);
+	}else {
+		$(e.target).prop('checked', false); // 체크 해제
+		toggleEvent(false);
+		if($('.stInRow input:checked').length == 0) {
+			resetEvent(); // 체크된 행이 없으면 리셋
+		}
+	}
+}
+// input과 select toggle 이벤트
+function toggleEvent(isDisabled){
+	$('section.content-header div.stock-in-list').find('input, select').prop('disabled', isDisabled);
+}
+
+// 리셋 버튼
+function resetEvent(){
+	$('#inCode').val('');
+	$('#orderCode').val('');
+	$('#customerCode').val('');
+	$('#inDate').val('');
+	$('#regDate').val('');
+	$('#regUser').val('');
+	$('#updateUser').val('');
+	$('#updateDate').val('');
+	$('#inType').val('');
+	$('#companyName').val('');
+	$('#memo').val('');
+	$('input:checked').prop('checked', false);
+	$('.stInDetailRow').css('display', '');
+	toggleEvent(false);
+}
+
+
 // ALL 체크 이벤트
 function allCheckEvent(e){
 	$(e.target).is(':checked') ? $('.stInDetailRow').show() : resetEvent();
 }
 
-// 테이블 행 클릭 이벤트
-function tableRowClick(e){
-	if(e.target.type != 'checkbox')
-		$(e.target).closest('tr').find('.checkBox').prop('checked', (_, checked)=> {return !checked;}).trigger('change');
-	if($('.stInRow input:checked').length == 0){
-		resetEvent();
-	}
+
 		
 	// inRow = $(e.target).closest('tr');
 
@@ -158,79 +222,11 @@ function tableRowClick(e){
 	// 	console.log(a);
 	// });
 	//console.log($('.stInRow input:checked').closest('tr').attr('id'));
-}
-
-// 상세 페이지 클릭 이벤트
-function detailTableRowClick(e){
-	if(e.target.type != 'checkbox')
-		$(e.target).closest('tr').find('.sidCheckBox').prop('checked', (_, checked)=> {return !checked;});
-}
-
-// 체크시 값 입력
-function checkBoxEvent(e){
-	// 다른 row 클릭시 inCode에 맞는 Detail행 출력
-	$('.stInDetailRow').css('display', 'none');
-	$('.stInRow input:checked').closest('tr').each(function(){$(`.stInDetailRow input[value="${$(this).find('.inCode').val()}"]`).closest('tr').toggle();});
-	let trRow = $(e.target).closest('tr');
-
-	let inCode = trRow.find('.inCode').val();
-	let orderCode = trRow.find('.orderCode').val();
-	let customerCode = trRow.find('.customerCode').val();
-	let inDate = trRow.find('.inDate').val();
-	let regDate = trRow.find('.regDate').val();
-	let regUser = trRow.find('.regUser').val();
-	let updateUser = trRow.find('.updateUser').val();
-	let updateDate = trRow.find('.updateDate').val();
-	let inType = trRow.find('.inType').val();
-	let companyName = trRow.find('.companyName').val();
-	let memo = trRow.find('.memo').val();
-	let orderType =trRow.find('.orderType').val();
 
 
-	inDate = formatDateMinus(new Date(inDate));
-	regDate = formatDateMinus(new Date(regDate));
-	updateDate = formatDateMinus(new Date(updateDate));
-
-	if ($(e.target).is(':checked')) {
-		$('#inCode').val(inCode);
-		$('#orderCode').val(orderCode);
-		$('#customerCode').val(customerCode);
-		$('#inDate').val(inDate);
-		$('#regDate').val(regDate);
-		$('#regUser').val(regUser);
-		$('#updateUser').val(updateUser);
-		$('#updateDate').val(updateDate);
-		$('#inType').val(inType);
-		$('#companyName').val(companyName);
-		$('#memo').val(memo);
-		if(orderType == '구매입고'){
-			$('#orderType').val(1);
-		}else if(orderType == '기타입고'){
-			$('#orderType').val(0);
-		}
-	} else {
-		//resetEvent();
-	}
-}
 
 
-// 리셋 버튼
-function resetEvent(){
-	$('#inCode').val('');
-	$('#orderCode').val('');
-	$('#customerCode').val('');
-	$('#inDate').val('');
-	$('#regDate').val('');
-	$('#regUser').val('');
-	$('#updateUser').val('');
-	$('#updateDate').val('');
-	$('#inType').val('');
-	$('#companyName').val('');
-	$('#memo').val('');
-	$('input:checked').prop('checked', false);
-	$('.stInDetailRow').css('display', '');
-	//Event.stopPropagation();
-}
+
 
 
 // 입고 유형

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.choongang.yeonsolution.product.sim.dao.SIMDao;
 import com.choongang.yeonsolution.product.sim.domain.CompanyDto;
 import com.choongang.yeonsolution.product.sim.domain.ItemDto;
+import com.choongang.yeonsolution.product.sim.domain.OrdersDto;
 import com.choongang.yeonsolution.product.sim.domain.StInDetailDto;
 import com.choongang.yeonsolution.product.sim.domain.StInDto;
 import com.choongang.yeonsolution.product.sim.domain.WhDto;
@@ -43,5 +44,7 @@ public class SIMServiceImpl implements SIMService {
 	public void addStInDetail(List<StInDetailDto> sidList) {simDao.insertStInDetail(sidList);} // 입고 상세 추가
 	@Override
 	public void removeStInDetail(List<StInDetailDto> sidList) {simDao.deleteStInDetail(sidList);} // 입고 상세 삭제
+	@Override
+	public List<OrdersDto> findOrders() {return simDao.selectOrders();} // 입고 상세 삭제
 	
 }
