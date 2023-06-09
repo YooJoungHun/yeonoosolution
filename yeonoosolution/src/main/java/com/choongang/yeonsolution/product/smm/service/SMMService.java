@@ -15,7 +15,7 @@ public interface SMMService {
 
 	List<StMoveDto> findStockMoveRegistrationList();
 
-	void modifyStockMoveConfirmationBymoveCode(String moveCode);
+	void modifyStockMoveConfirmationBymoveCode(String moveCode, String memberName);
 
 	List<StMoveDetailDto> findStockMoveDetailListByMoveCode(String moveCode);
 

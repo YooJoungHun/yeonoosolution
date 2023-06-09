@@ -23,6 +23,8 @@
   		<typeAlias alias="PmStockInDto" type="com.choongang.yeonsolution.sales.pm.domain.PmStockInDto"/>
   		<typeAlias alias="PmStInDetailDto" type="com.choongang.yeonsolution.sales.pm.domain.PmStInDetailDto"/>
   		<typeAlias alias="PmWhDto" type="com.choongang.yeonsolution.sales.pm.domain.PmWhDto"/>
+  		
+  		<typeAlias alias="IpDto" type="com.choongang.yeonsolution.sales.pm.domain.IpDto"/>
 
       <!--  재고 현황 조회  -->
       	<typeAlias alias="IsWhStockDetailDto" type="com.choongang.yeonsolution.product.is.domain.IsWhStockDetailDto"/>
