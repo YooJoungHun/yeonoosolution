@@ -75,7 +75,7 @@ public class SecurityConfig{
 					//로그아웃 설정	
 					.logout()
 						.logoutUrl("/standard/logout")
-						.logoutSuccessUrl("/main")
+						.logoutSuccessUrl("/")
 						.and()
 					.rememberMe()
 						.key("secret")
