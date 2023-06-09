@@ -36,7 +36,7 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler{
 		RequestCache requestCache = new HttpSessionRequestCache();
 		SavedRequest savedRequest = requestCache.getRequest(request, response);
 		//login페이지로 직접 접속한 경우 redirectUrl의 default값 설정
-		String redirectUrl = "/";
+		String redirectUrl = "/main";
 		//인증성공한 member의 정보를 session에 set 해주기 위한 객체
 		UserDetailsDto memberInfo = (UserDetailsDto) authentication.getPrincipal();
 		
