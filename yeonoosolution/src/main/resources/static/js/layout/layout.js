@@ -168,6 +168,10 @@ const arrangeMenu = (menuData, depth = 0) => {
 
 $(document).on('click', 'button.logout-button', e => {
 	location.href = location.protocol + '//' + location.host + '/standard/logout';
+	/*let form = $('<form method="post"></form>');
+	$(form).attr('action', location.protocol + '//' + location.host + '/standard/logout');
+	$(document).find('body').append($(form));
+	$(form).submit();*/
 });
 
 $(document).on('click', 'button.list-header', e => {

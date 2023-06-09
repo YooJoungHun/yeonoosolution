@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" 	uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn"	uri="http://java.sun.com/jsp/jstl/functions" %>
-
+<%@ include file="/WEB-INF/views/product/sim/stock-in-modal.jsp"%>
 
 <!-- CSS for DataTables and Bootstrap and StIn -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">

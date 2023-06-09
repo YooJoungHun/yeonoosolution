@@ -94,7 +94,7 @@ public class ISController {
 		return "/product/inventory-status-wh-detail.layout";
 	}
 	
-	@GetMapping(value = "/main")
+	@GetMapping(value = "/")
 	public String main(HttpSession session, Model model) {
 		log.info("main page start");
 		
