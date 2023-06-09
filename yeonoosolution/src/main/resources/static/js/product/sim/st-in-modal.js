@@ -2,66 +2,7 @@
  * 
  */
 
-// 축약형 표현 $(document).ready(function() {
-$(function() {
-	// comapnyModal Open
-	$(document).on('click', '#customerCode, #companyName', ()=>{
-		$('#companyModal').modal('show');
-		$('#companyModal tbody tr').click((e)=>{
-			let clickRow = $(e.target).closest('tr');
-			$('#customerCode').val(clickRow.find('.companyCode').text());
-			$('#companyName').val(clickRow.find('.companyName').text());
-			$('#companyModal').modal('hide');
-		});
-	});
-	
-	// whModal Open
-	$(document).on('click', '.addWhCode, .addWhName', (inputRow)=>{
-		$('#whModal').modal('show');
-		$('#whModal tbody tr').off('click').click((e)=>{
-
-			let clickRow = $(e.target).closest('tr');
-			let row = $(inputRow.target).closest('tr');
-
-			row.find('.addWhCode').val(clickRow.find('.whCode').text());
-			row.find('.addWhName').val(clickRow.find('.whName').text());
-			$('#whModal').modal('hide');
-		});
-	});
-
-	// itemModal Open
-	$(document).on('click', '.addItemCode, .addInPrice', (inputRow)=>{
-		$('#itemModal').modal('show');
-		$('#itemModal tbody tr').off('click').click((e)=>{
-
-			let clickRow = $(e.target).closest('tr');
-			let row = $(inputRow.target).closest('tr');
-
-			row.find('.addItemCode').val(clickRow.find('.itemCode').text());
-			row.find('.addInPrice').val(clickRow.find('.salesPrice').text());
-			$('#itemModal').modal('hide');
-		});
-	});
-
-	// orderModal Open
-	$(document).on('click', '#orderCode', ()=>{
-		console.log('오더 모달 오픈');
-		$('#orderModal').modal('show');
-		$('#orderModal tbody tr').off('click').click((e)=>{
-			$('#orderCode').val($(e.target).closest('tr').find('.orderCode').text());
-			$('#orderModal').modal('hide');
-		});
-	});
-	// Row 클릭시 값 입력
-	//$(document).on('click', '#companyModal tbody tr', selectCompanyModal);
-	//$(document).on('click', '#whModal tbody tr', selectWhModal);
-	//$(document).on('click', '#itemModal tbody tr', selectItemModal);
-	
-	// 임시 확인용 /////////////////////////////
-	$(document).on('click', '.table-in tbody', ()=>{
-		console.log($('input[type="checkbox"]').is(':checked'));
-	});
-
+$(()=>{
 	// CompanyModal 생성
 	$('#modal-company').DataTable({
 		// 데이터 가져오기
@@ -182,6 +123,71 @@ $(function() {
 	$('#modal-company, #modal-wh, #modal-item, #modal-orders').on('shown.bs.modal', function () {
 		$.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
 	});
+});
+
+
+// Modal창 Open 및 Close
+// 축약형 표현 $(document).ready(function() {
+$(function() {
+	// comapnyModal Open
+	$(document).on('click', '#customerCode, #companyName', ()=>{
+		$('#companyModal').modal('show');
+		$('#companyModal tbody tr').click((e)=>{
+			let clickRow = $(e.target).closest('tr');
+			$('#customerCode').val(clickRow.find('.companyCode').text());
+			$('#companyName').val(clickRow.find('.companyName').text());
+			$('#companyModal').modal('hide');
+		});
+	});
+	
+	// whModal Open
+	$(document).on('click', '.addWhCode, .addWhName', (inputRow)=>{
+		$('#whModal').modal('show');
+		$('#whModal tbody tr').off('click').click((e)=>{
+
+			let clickRow = $(e.target).closest('tr');
+			let row = $(inputRow.target).closest('tr');
+
+			row.find('.addWhCode').val(clickRow.find('.whCode').text());
+			row.find('.addWhName').val(clickRow.find('.whName').text());
+			$('#whModal').modal('hide');
+		});
+	});
+
+	// itemModal Open
+	$(document).on('click', '.addItemCode, .addInPrice', (inputRow)=>{
+		$('#itemModal').modal('show');
+		$('#itemModal tbody tr').off('click').click((e)=>{
+
+			let clickRow = $(e.target).closest('tr');
+			let row = $(inputRow.target).closest('tr');
+
+			row.find('.addItemCode').val(clickRow.find('.itemCode').text());
+			row.find('.addInPrice').val(clickRow.find('.salesPrice').text());
+			$('#itemModal').modal('hide');
+		});
+	});
+
+	// orderModal Open
+	$(document).on('click', '#orderCode', ()=>{
+		console.log('오더 모달 오픈');
+		$('#orderModal').modal('show');
+		$('#orderModal tbody tr').off('click').click((e)=>{
+			$('#orderCode').val($(e.target).closest('tr').find('.orderCode').text());
+			$('#orderModal').modal('hide');
+		});
+	});
+	// Row 클릭시 값 입력
+	//$(document).on('click', '#companyModal tbody tr', selectCompanyModal);
+	//$(document).on('click', '#whModal tbody tr', selectWhModal);
+	//$(document).on('click', '#itemModal tbody tr', selectItemModal);
+	
+	// 임시 확인용 /////////////////////////////
+	$(document).on('click', '.table-in tbody', ()=>{
+		console.log($('input[type="checkbox"]').is(':checked'));
+	});
+
+	
 });
 
 // Company Select Event
