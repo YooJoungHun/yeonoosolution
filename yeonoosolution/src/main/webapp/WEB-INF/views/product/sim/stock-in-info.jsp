@@ -10,8 +10,8 @@
 			<div class="item-content"><input id="inCode" name="inCode" placeholder="입고 번호" class="form-control"></div>
 		</div>
 		<div class="stock-in-item">
-			<div class="item-title"><label for="orderCode">수주 번호</label></div>
-			<div class="item-content"><input id="orderCode" name="orderCode" placeholder="수주 번호" class="form-control"></div>
+			<div class="item-title"><label for="orderCode">발주 번호</label></div>
+			<div class="item-content"><input id="orderCode" name="orderCode" placeholder="발주 번호" class="form-control"></div>
 		</div>
 		<div class="stock-in-item">
 			<div class="item-title"><label for="inDate">입고일</label></div>
@@ -80,7 +80,7 @@
 					<th><div class="item-title"><label for="orderType">입고 유형</label></div></th>
 					<th><div class="item-title"><label for="inDate">입고일</label></div></th>
 					<th><div class="item-title"><label for="inCode">입고 번호</label></div></th>
-					<th><div class="item-title"><label for="inCode">수주 번호</label></div></th>
+					<th><div class="item-title"><label for="inCode">발주 번호</label></div></th>
 					<th><div class="item-title"><label for="customerCode">거래처 번호</label></div></th>
 					<th><div class="item-title"><label for="companyName">거래처명</label></div></th>
 					<th><div class="item-title"><label for="regUser">등록자</label></div></th>

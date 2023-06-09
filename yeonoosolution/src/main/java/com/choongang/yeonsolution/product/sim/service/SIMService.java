@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.choongang.yeonsolution.product.sim.domain.CompanyDto;
 import com.choongang.yeonsolution.product.sim.domain.ItemDto;
+import com.choongang.yeonsolution.product.sim.domain.OrdersDto;
 import com.choongang.yeonsolution.product.sim.domain.StInDetailDto;
 import com.choongang.yeonsolution.product.sim.domain.StInDto;
 import com.choongang.yeonsolution.product.sim.domain.WhDto;
@@ -23,6 +24,7 @@ public interface SIMService {
 	List<ItemDto> findItem(); 					// 아이템 목록 조회
 	void addStInDetail(List<StInDetailDto> sidList);	// 입고 상세 추가
 	void removeStInDetail(List<StInDetailDto> sidList); // 입고 상세 삭제
+	List<OrdersDto> findOrders(); // 수주 목록 조회
 	
 	
 }

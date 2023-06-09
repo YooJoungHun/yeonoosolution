@@ -16,7 +16,7 @@ public class OrdersDto {
 	private String 	orderEmpId;
 	private String 	deliveryPlan;
 	private String 	orderStatus;
-	private Date 	deuDate;
+	private Date 	dueDate;
 	private String	memo;
 	private Date 	regDate;
 	private String	regUser;
