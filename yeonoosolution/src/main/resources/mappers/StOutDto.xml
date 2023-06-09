@@ -95,7 +95,7 @@
 	</select>
 	
 	<select id="sdmOutCodeList" resultType="SDMStOutDto">
-		SELECT DISTINCT out_code FROM st_out_detail WHERE delete_status = 'N' ORDER BY LENGTH(out_code),out_code ASC
+		SELECT DISTINCT out_code FROM st_out WHERE delete_status = 'N' ORDER BY LENGTH(out_code),out_code ASC
 	</select>
 	
 	<select id="sdmWhCodeList" resultType="SDMStOutDto">
