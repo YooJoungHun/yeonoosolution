@@ -105,7 +105,6 @@ public class BiDaoImpl implements BiDao {
 		List<CompanyDto> companyDtoList = null;
 		try {
 			companyDtoList = session.selectList("biSelectCustomerInfoByCompanyNameAndOrderType", companyDto);
-			System.out.println("사이즈 -> "+companyDtoList.size());
 		} catch (Exception e) {
 			log.error("bidao selectCustomerInfoByCompanyNameAndOrderType 에러  -> {} ",e.getMessage());
 			// TODO: handle exception

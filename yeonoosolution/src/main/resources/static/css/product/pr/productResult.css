@@ -164,7 +164,10 @@ div.wo-content > div.wo-list-content {
 	overflow-x: auto;
 	margin-top: 8px;
 	flex-grow: 1;
+<<<<<<< HEAD
 	flex-shrink: 0;
+=======
+>>>>>>> refs/remotes/origin/master
 }
 div.wo-content > div.wo-list-content::-webkit-scrollbar {
 	width: 17px;

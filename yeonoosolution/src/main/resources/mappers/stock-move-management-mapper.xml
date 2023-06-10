@@ -72,7 +72,7 @@
 	</select>
 	
 	<!-- 이동확정 변경-->
-	<update id="updateStockMoveConfirmationByMoveCodes" parameterType="java.lang.String">
+	<update id="updateStockMoveConfirmationByMoveCode" parameterType="java.lang.String">
 		UPDATE st_move
 		SET move_type = '확정'
 		where move_code = #{moveCode}
@@ -81,38 +81,49 @@
 	<!-- 이동 세부내역 List -->
 	<select id="selectStockMoveDetailListByMoveCode" parameterType="java.lang.String" resultType="SMMStMoveDetailDto">
 		SELECT 
-			smd.move_code, smd.wh_code_out, smd.wh_code_in, smd.move_quantity, smd.sorder,
+			smd.move_code, smd.wh_code_out, smd.wh_code_in, smd.move_quantity, smd.sorder, smd.memo,
 			i.item_code, i.item_name, 
 			NVL(wsd.good_quantity, 0) + NVL(wsd.bad_quantity, 0) as stock_quantity
 		FROM 
 			st_move_detail smd
 			JOIN item i ON smd.item_code = i.item_code
-			LEFT JOIN wh_stock_detail wsd ON smd.item_code = wsd.item_code
+			LEFT JOIN wh_stock_detail wsd ON smd.item_code = wsd.item_code AND wsd.wh_code = smd.wh_code_out
 		WHERE
 			smd.move_code = #{moveCode}
 		ORDER BY
 			smd.move_code, smd.sorder
 	</select>
 	
-	<!-- 이동등록 추가 -->
-	<insert id="insertStockMoveRegistrationByMoveDateAndMoveMemo" parameterType="map">
+	<!-- 이동등록 insert -->
+	<insert id="insertStockMoveRegistrationByMemberUidAndMoveDateAndMoveMemo" parameterType="map">
 		INSERT INTO st_move (move_code, begin_end_inventory, move_date, reg_date, reg_user, 
 							update_date, update_user, move_type, delete_status, memo)
-		VALUES ('MOVE' || move_code_seq.nextval, 1, #{moveDate}, sysdate, 'COMPANY1.admin@yeonoo.com', 
+		VALUES ('MOVE' || move_code_seq.nextval, 1, #{moveDate}, sysdate, #{memberUid}, 
 							null, null, '저장', 'N', #{moveMemo})
 	</insert>
 	
 	<!-- 제품코드 리스트(모달) -->
 	<select id="selectItemCodeList" resultType="SMMItemDto">
-		SELECT item_code, wh_code, item_name
+		SELECT 
+			item_code, wh_code, item_name
 		FROM 
 			item
 		ORDER BY
 			item_code
 	</select>
 	
+	<!-- 창고코드 리스트(모달) -->
+	<select id="selectWhCodeList" resultType="SMMWhDto">
+		SELECT 
+			wh_code, wh_name
+		FROM
+			wh
+		ORDER BY
+			wh_code
+	</select>
+	
 	<!-- 세부내역 행 기입용 -->
-	<select id="selectItemCodeRowDataListByItemCode" parameterType="java.lang.String" resultType="SMMitemDto">
+	<select id="selectItemCodeRowDataListByItemCode" parameterType="java.lang.String" resultType="SMMItemDto">
 		SELECT 
 			i.item_code, i.wh_code, i.item_name,
 			NVL(wsd.good_quantity, 0) + NVL(wsd.bad_quantity, 0) as stock_quantity
@@ -122,4 +133,85 @@
 		WHERE
 			i.item_code = #{itemCode}
 	</select>
+	
+	<!-- 세부내역 insert -->
+	<insert id="insertStockMoveDetailByStMoveDetailDto" parameterType="SMMStMoveDetailDto">
+		INSERT INTO st_move_detail (move_code, sorder, wh_code_in, wh_code_out, item_code, move_quantity, memo)
+		VALUES (#{moveCode}, #{sorder}, #{whCodeIn}, #{whCodeOut}, #{itemCode}, #{moveQuantity}, #{memo})
+	</insert>
+	
+	<!-- move_code에 맞는 sorder 가져오기 -->
+	<select id="selectSorderByMoveCode" parameterType="java.lang.String" resultType="SMMStMoveDetailDto">
+		SELECT 
+			sorder
+		FROM 
+			st_move_detail
+		WHERE 
+			move_code = #{moveCode}
+	</select>
+	
+	<!-- 이동등록 수정 -->
+	<update id="updateStockMoveRegistrationByMoveCodeAndMoveMemo" parameterType="map">
+		UPDATE 
+			st_move
+		SET 
+			memo = #{moveMemo}
+		WHERE 
+			move_code = #{moveCode}
+	</update>
+	
+	<!-- 이동등록 삭제 ( delete_status 컬럼 N -> Y) -->
+	<update id="updateStockMoveRegistrationDeleteStatusByMoveCode" parameterType="java.lang.String">
+		UPDATE
+			st_move
+		SET
+			delete_status = 'Y'
+		WHERE
+			move_code = #{moveCode}
+	</update>
+	
+	<!-- 세부내역 수정 -->
+	<update id="updateStockMoveDetailByMoveCodeAndSorderAndMoveMemo" parameterType="map">
+		UPDATE
+			st_move_detail
+		SET
+			memo = #{moveMemo}
+		WHERE
+			move_code = #{moveCode}
+		AND
+			sorder = #{sorder}
+	</update>
+	
+	<!-- 세부내역 삭제 -->
+	<delete id="deleteStockMoveDetailByMoveCodeAndSorder" parameterType="map">
+		DELETE 
+			st_move_detail
+		WHERE
+			move_code = #{moveCode}
+		AND
+			sorder = #{sorder}
+	</delete>
+	
+	<!-- 세부내역 등록,수정,삭제 시 이동등록에 수정일자 및 수정자 변경 -->
+	<update id="updateStockMoveRegistrationDateAndUserByMemberUidAndMoveCode" parameterType="map">
+		UPDATE
+			st_move
+		SET
+			update_date = sysdate,
+			update_user = #{memberUid}
+		WHERE
+			move_code = #{moveCode}
+	</update>
+	<!-- 이동 확정 시 재고 변경 -->
+	<update id="updateWhStockDetailByStockMoveDetailList" parameterType="SMMStMoveDetailDto">
+		UPDATE 
+			wh_stock_detail
+		SET
+			good_quantity = good_quantity - #{moveQuantity}
+		WHERE
+			wh_code = #{whCodeOut}
+		AND	
+			item_code = #{itemCode}
+	</update>
+	
 </mapper>

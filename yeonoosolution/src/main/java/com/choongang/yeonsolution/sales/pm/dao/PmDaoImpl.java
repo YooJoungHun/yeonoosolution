@@ -131,7 +131,7 @@ public class PmDaoImpl implements PmDao{
 	// 재고 추가
 	@Override
 	public void updateWhStockDetailBystInDetail(Map<String, Object> map) {
-		session.selectOne("orders.updatePmWhStockDetailBystInDetail", map);
+		session.selectOne("orders.updatePmWhStockDetailByStInDetail", map);
 	}
 	// 재고 빼기
 	@Override

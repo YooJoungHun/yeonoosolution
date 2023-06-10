@@ -36,7 +36,7 @@ public class SOMController {
 		model.addAttribute("stOutList", stOutList);
 		log.info("SOMController stOutList size -> "+ stOutList.size());
 		
-		return "product/som/stOutForm";
+		return "product/som/stOutForm.layout";
 	}
 	
 	@GetMapping(value = "/product/somStOutDetailLists/") // 품목리스트 조회

@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UmController {
 	private final UmService umService;
 
-	@GetMapping("/standard/myPage/")
+	@GetMapping("/standard/myPage")
 	public String myInfoDetailByMemberUid(@AuthenticationPrincipal UserDetailsDto userDetailsDto, 
 										  MemberDto memberDto, 
 										  Model model) {
@@ -47,7 +47,7 @@ public class UmController {
 		model.addAttribute("deptDepartmentDtoList", deptDepartmentDtoList);
 		model.addAttribute("jobDtoList", jobDtoList);
 
-		return "/standard/mypage";
+		return "/standard/mypage.layout";
 	}
 	
 	// 개인정보수정 -> 프로필 이미지 업로드할 때만 실행.
@@ -85,11 +85,11 @@ public class UmController {
 
 	/* 부서 등록 페이지 */
 
-	@GetMapping("/standard/dept/")
+	@GetMapping("/standard/dept")
 	public String deptList(Model model) {
 		List<DepartmentDto> deptDepartmentDtoList = umService.findDeptList();
 		model.addAttribute("deptDepartmentDtoList", deptDepartmentDtoList);
-		return "/standard/deptList";
+		return "/standard/deptList.layout";
 	}
 
 	@GetMapping("/standard/dept/search/")
@@ -138,12 +138,12 @@ public class UmController {
 
 	// 직급등록 및 확인
 
-	@GetMapping("/standard/job/")
+	@GetMapping("/standard/job")
 	public String jobList(Model model) {
 
 		List<JobDto> jobDtoList = umService.findJobList();
 		model.addAttribute("jobDtoList", jobDtoList);
-		return "standard/jobList";
+		return "standard/jobList.layout";
 	}
 
 	
@@ -171,9 +171,9 @@ public class UmController {
 		 return result;
 	 }
 	 
-	 @GetMapping("/standard/job/search/{jobName}")
+	 @GetMapping("/standard/job/search/")
 	 @ResponseBody
-	 public List<JobDto> jobListByjobName(@PathVariable("jobName") String jobName){
+	 public List<JobDto> jobListByjobName(@RequestParam("jobName") String jobName){
 		 List<JobDto> jobDto = umService.findjobListByJobName(jobName);
 		 return jobDto;
 	 }

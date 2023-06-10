@@ -7,9 +7,10 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.choongang.yeonsolution.product.smm.domain.itemDto;
-import com.choongang.yeonsolution.product.smm.domain.stMoveDetailDto;
-import com.choongang.yeonsolution.product.smm.domain.stMoveDto;
+import com.choongang.yeonsolution.product.smm.domain.ItemDto;
+import com.choongang.yeonsolution.product.smm.domain.StMoveDetailDto;
+import com.choongang.yeonsolution.product.smm.domain.StMoveDto;
+import com.choongang.yeonsolution.product.smm.domain.WhDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,69 +20,150 @@ public class SMMDaoImpl implements SMMDao {
 	private final SqlSession sqlSession;
 
 	@Override
-	public List<stMoveDetailDto> selectStockMoveStatusList() {
+	public List<StMoveDetailDto> selectStockMoveStatusList() {
 		
-		List<stMoveDetailDto> stockMoveStatus = sqlSession.selectList("selectStockMoveStatusList");
+		List<StMoveDetailDto> stockMoveStatus = sqlSession.selectList("selectStockMoveStatusList");
 		
 		return stockMoveStatus;
 	}
 
 	@Override
-	public List<stMoveDetailDto> selectStockMoveSearchListByKeywordAndDate(String keyword, String startDate, String endDate) {
+	public List<StMoveDetailDto> selectStockMoveSearchListByKeywordAndDate(String keyword, String startDate, String endDate) {
 			
 		Map<String, Object> stockMoveSearchMap = new HashMap<>();
 		stockMoveSearchMap.put("keyword", keyword);
 		stockMoveSearchMap.put("startDate", startDate);
 		stockMoveSearchMap.put("endDate", endDate);
 		
-		List<stMoveDetailDto> stockMoveSearch = sqlSession.selectList("selectStockMoveSearchListByKeywordAndDate", stockMoveSearchMap);
+		List<StMoveDetailDto> stockMoveSearch = sqlSession.selectList("selectStockMoveSearchListByKeywordAndDate", stockMoveSearchMap);
 		
 		return stockMoveSearch;
 	}
 
 	@Override
-	public List<stMoveDto> selectStockMoveRegistrationList() {
+	public List<StMoveDto> selectStockMoveRegistrationList() {
 		
-		List<stMoveDto> stockMoveRegistration = sqlSession.selectList("selectStockMoveRegistrationList");
+		List<StMoveDto> stockMoveRegistration = sqlSession.selectList("selectStockMoveRegistrationList");
 		
 		return stockMoveRegistration;
 	}
 
 	@Override
-	public void updateStockMoveConfirmationByMoveCodes(String moveCode) {
-		sqlSession.update("updateStockMoveConfirmationByMoveCodes", moveCode);
+	public void updateStockMoveConfirmationByMoveCode(String moveCode) {
+		sqlSession.update("updateStockMoveConfirmationByMoveCode", moveCode);
 	}
 
 	@Override
-	public List<stMoveDetailDto> selectStockMoveDetailListByMoveCode(String moveCode) {
+	public List<StMoveDetailDto> selectStockMoveDetailListByMoveCode(String moveCode) {
 		
-		List<stMoveDetailDto> stockMoveDetail = sqlSession.selectList("selectStockMoveDetailListByMoveCode", moveCode);
+		List<StMoveDetailDto> stockMoveDetail = sqlSession.selectList("selectStockMoveDetailListByMoveCode", moveCode);
 		
 		return stockMoveDetail;
 	}
 
 	@Override
-	public void insertStockMoveRegistrationByMoveDateAndMoveMemo(String moveDate, String moveMemo) {
+	public void insertStockMoveRegistrationByMemberUidAndMoveDateAndMoveMemo(String memberUid, String moveDate, String moveMemo) {
 		
-		Map<String, Object> stockMoveRegistrationMap = new HashMap<>();
-		stockMoveRegistrationMap.put("moveDate", moveDate);
-		stockMoveRegistrationMap.put("moveMemo", moveMemo);
+		Map<String, Object> insertStockMoveRegistrationMap = new HashMap<>();
+		insertStockMoveRegistrationMap.put("memberUid", memberUid);
+		insertStockMoveRegistrationMap.put("moveDate", moveDate);
+		insertStockMoveRegistrationMap.put("moveMemo", moveMemo);
 		
-		sqlSession.insert("insertStockMoveRegistrationByMoveDateAndMoveMemo", stockMoveRegistrationMap);
+		sqlSession.insert("insertStockMoveRegistrationByMemberUidAndMoveDateAndMoveMemo", insertStockMoveRegistrationMap);
 	}
 
 	@Override
-	public List<itemDto> selectItemCodeList() {
+	public List<ItemDto> selectItemCodeList() {
 		
-		List<itemDto> itemCodeList = sqlSession.selectList("selectItemCodeList");
+		List<ItemDto> itemCodeList = sqlSession.selectList("selectItemCodeList");
 		return itemCodeList;
 	}
 
 	@Override
-	public List<itemDto> selectItemCodeRowDataListByItemCode(String itemCode) {
+	public List<WhDto> selectWhCodeList() {
 		
-		List<itemDto> itemCodeRowData = sqlSession.selectList("selectItemCodeRowDataListByItemCode", itemCode);
+		List<WhDto> whCodeList = sqlSession.selectList("selectWhCodeList");
+		return whCodeList;
+	}
+	
+	@Override
+	public List<ItemDto> selectItemCodeRowDataListByItemCode(String itemCode) {
+		
+		List<ItemDto> itemCodeRowData = sqlSession.selectList("selectItemCodeRowDataListByItemCode", itemCode);
 		return itemCodeRowData;
+	}
+
+	@Override
+	public void insertStockMoveDetailByStMoveDetailDto(StMoveDetailDto stMoveDetailDto) {
+		
+		sqlSession.insert("insertStockMoveDetailByStMoveDetailDto", stMoveDetailDto);
+	}
+
+	//move_code로 sorder 가져오기
+	@Override
+	public List<StMoveDetailDto> selectSorderByMoveCode(String moveCode) {
+		
+		List<StMoveDetailDto> sorders = sqlSession.selectList("selectSorderByMoveCode", moveCode);
+		
+		return sorders;
+	}
+
+	@Override
+	public void updateStockMoveRegistrationByMoveCodeAndMoveMemo(String moveCode, String moveMemo) {
+		
+		Map<String, Object> updateStockMoveRegistrationMap = new HashMap<>();
+		updateStockMoveRegistrationMap.put("moveCode", moveCode);
+		updateStockMoveRegistrationMap.put("moveMemo", moveMemo);
+		
+		sqlSession.update("updateStockMoveRegistrationByMoveCodeAndMoveMemo", updateStockMoveRegistrationMap);
+	}
+
+	@Override
+	public void updateStockMoveRegistrationDeleteStatusByMoveCode(String moveCode) {
+		
+		sqlSession.update("updateStockMoveRegistrationDeleteStatusByMoveCode", moveCode);
+	}
+
+	@Override
+	public void updateStockMoveDetailByMoveCodeAndSorderAndMoveMemo(String moveCode, String sorder, String moveMemo) {
+		
+		Map<String, Object> updateStockMoveDetailMap = new HashMap<>();
+		updateStockMoveDetailMap.put("moveCode", moveCode);
+		updateStockMoveDetailMap.put("sorder", sorder);
+		updateStockMoveDetailMap.put("moveMemo", moveMemo);
+		
+		sqlSession.update("updateStockMoveDetailByMoveCodeAndSorderAndMoveMemo", updateStockMoveDetailMap);
+	}
+
+	@Override
+	public void deleteStockMoveDetailByMoveCodeAndSorder(String moveCode, String sorder) {
+		
+		Map<String, Object> deleteStockMoveDetailMap = new HashMap<>();
+		deleteStockMoveDetailMap.put("moveCode", moveCode);
+		deleteStockMoveDetailMap.put("sorder", sorder);
+		
+		sqlSession.update("deleteStockMoveDetailByMoveCodeAndSorder", deleteStockMoveDetailMap);
+	}
+
+	@Override
+	public void updateStockMoveRegistrationDateAndUserByMemberUidAndMoveCode(String memberUid, String moveCode) {
+		
+		Map<String, Object> updateStockMoveRegistrationMap = new HashMap<>();
+		updateStockMoveRegistrationMap.put("memberUid", memberUid);
+		updateStockMoveRegistrationMap.put("moveCode", moveCode);
+		
+		sqlSession.update("updateStockMoveRegistrationDateAndUserByMemberUidAndMoveCode", updateStockMoveRegistrationMap);
+	}
+
+	@Override
+	public void updateWhStockDetailByStockMoveDetailList(StMoveDetailDto stMoveDetailDto) {
+		sqlSession.update("updateWhStockDetailByStockMoveDetailList", stMoveDetailDto);
+	}
+
+	@Override
+	public void updateWhStockDetailByStMoveDetailMap(Map<String, Object> stMoveDetailMap) {
+		sqlSession.selectOne("orders.updatePmWhStockDetailByStInDetail", stMoveDetailMap);
+		
 	}
 
 }

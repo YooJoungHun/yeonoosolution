@@ -35,8 +35,6 @@ public class SecurityConfig{
 	
 	/**
 	 * SecurityFilterChain 설정
-	 * 로그인페이지 설정 : /standard/login → standard/login.jsp
-	 * 로그인페이지 인증제외 설정
 	 */
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
@@ -49,7 +47,7 @@ public class SecurityConfig{
 					//인증 허용 범위 설정
 					.authorizeRequests()
 						.antMatchers("/images/**").permitAll() //static resources 인증 제외
-						.antMatchers("/standard/login", "/standard/not-authorized", "/").permitAll() //로그인 페이지, 권한 부족 페이지, 메인페이지 인증 제외
+						.antMatchers("/standard/login", "/standard/not-authorized", "/main").permitAll() //로그인 페이지, 권한 부족 페이지, 메인페이지 인증 제외
 						.antMatchers(HttpMethod.POST, "/**").hasAnyRole("ADMIN", "MANAGER") // POST 요청은 ADMIN과 MANAGER 역할을 가진 사용자 모두 접근 가능
 						.antMatchers(HttpMethod.PUT, "/**").hasAnyRole("ADMIN", "MANAGER") // PUT 요청은 ADMIN과 MANAGER 역할을 가진 사용자 모두 접근 가능
 						.antMatchers(HttpMethod.DELETE, "/**").hasAnyRole("ADMIN", "MANAGER") // DELETE 요청은 ADMIN과 MANAGER 역할을 가진 사용자 모두 접근 가능
@@ -77,7 +75,7 @@ public class SecurityConfig{
 					//로그아웃 설정	
 					.logout()
 						.logoutUrl("/standard/logout")
-						.logoutSuccessUrl("/standard/login")
+						.logoutSuccessUrl("/")
 						.and()
 					.rememberMe()
 						.key("secret")

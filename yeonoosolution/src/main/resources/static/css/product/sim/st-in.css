@@ -1,0 +1,163 @@
+@charset "UTF-8";
+section {
+	margin: 40px 50px;
+	font-size: 12px;
+	width: 900px;
+}
+section.content-header {
+	background-color: rgba(0,0,0, 0.05);
+	height: 150px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: stretch;
+}
+
+/* 스크롤 바 */
+::-webkit-scrollbar {
+  width: 8px;
+  height:8px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #e6f2ff;
+}
+
+
+/* 테이블 셀 */
+td.read {
+	background-color: #d9d9d9;
+}
+td.edit{
+	background-color: #e6f2ff;
+}
+td.requ{
+	background-color: #ffffcc;
+}
+tr.selected > td {
+	background-color:rgba(0,0,0, 0.3);
+}
+.table-content {
+	display: block;
+	table-layout: fixed;
+	height: 250px;
+	overflow: auto;
+	border-collapse: collap;
+	border: 1px solid rgba(0,0,0, 0.1);
+}
+table td {
+	font-weight: 700;
+}
+table th {
+	border-bottom: 1px solid rgba(0,0,0, 0.1);
+}
+
+tbody tr, th, td {
+	width: 100px;
+	height: 35px;
+	text-align: center;
+	box-sizing: border-box;
+	padding: 0;
+
+}
+tbody input[type="text"], input[type="number"] {
+	width: 100px;
+	height: 30px;
+	border: none;
+	outline: none;
+	background-color: transparent;
+	text-align: center;
+}
+tbody input[type="checkbox"] {
+	width: 30px;
+}
+.stock-in-list {
+	display: flex;
+}
+.content-btn  button{
+	border-radius: 10px;
+	border: none;
+	padding: 8px 15px;
+	margin-right: 10px;
+	background: transparent;
+	border: 1px solid rgba(0,0,0, 0.1);
+}
+.content-btn  button:hover {
+	background-color: rgba(0,0,0, 0.1);
+}
+
+
+
+/* 버튼 */
+.content-btn {
+	margin-bottom: 10px;
+}
+
+
+
+.stock-in-item {
+	display: flex;
+	padding: 10px 20px;
+	height: auto;
+}
+.item-content input, select {
+	border-radius: 10px;
+	border: none;
+	width: 130px;
+	height: 30px !important;
+	margin-left: 5px;
+	font-size: 14px !important;
+	padding: 0px  !important;;
+}
+
+.stock-in-list .item-title {
+	background-color: rgba(0,0,0, 0.1);
+	border-radius: 10px;
+	width: 100px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+tr:hover {
+	background-color: rgba(0,0,0, 0.05);
+}
+
+
+
+
+
+
+.myModal {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+.myModal-window {
+	background-color: #fefefe;
+	margin: 15% auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 80%;
+}
+.myModal-window tr:first-child th:nth-child(-n+3) {
+	background-color: #fefefe;
+	font-size: 20px;
+}
+.myModal-window button {
+	font-size: 20px;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 5px;
+	cursor: auto;
+	background-color: transparent;
+}
+.myModal-window button:hover {
+	background-color: rgba(0, 0, 0, 0.1);
+}

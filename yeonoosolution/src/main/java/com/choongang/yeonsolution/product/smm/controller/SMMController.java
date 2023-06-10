@@ -3,19 +3,25 @@ package com.choongang.yeonsolution.product.smm.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.choongang.yeonsolution.product.smm.domain.itemDto;
-import com.choongang.yeonsolution.product.smm.domain.stMoveDetailDto;
-import com.choongang.yeonsolution.product.smm.domain.stMoveDto;
+import com.choongang.yeonsolution.product.smm.domain.ItemDto;
+import com.choongang.yeonsolution.product.smm.domain.StMoveDetailDto;
+import com.choongang.yeonsolution.product.smm.domain.StMoveDto;
+import com.choongang.yeonsolution.product.smm.domain.WhDto;
 import com.choongang.yeonsolution.product.smm.service.SMMService;
+import com.choongang.yeonsolution.standard.am.domain.MemberDto;
+import com.choongang.yeonsolution.standard.am.security.UserDetailsDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,19 +34,18 @@ public class SMMController {
 	@GetMapping("/product/stockMoveStatus")
 	public String stockMoveStatusList(Model model) {
 		
-		List<stMoveDetailDto> stockMoveStatus = smmService.findStockMoveStatusList();
+		List<StMoveDetailDto> stockMoveStatus = smmService.findStockMoveStatusList();
 		
 		model.addAttribute("stockMoveStatus", stockMoveStatus);
-		
-		return "product/stock-move-status";
+		return "product/smm/stock-move-status.layout";
 	}
 	
 	// 이동상세 현황 페이지 검색결과
 	@ResponseBody
 	@GetMapping("/product/stockMoveSearch")
-	public List<stMoveDetailDto> stockMoveSearchList(String keyword, String startDate, String endDate) {
-		List<stMoveDetailDto> stockMoveSearch = smmService.findStockMoveSearchListByKeywordAndDate(keyword, startDate, endDate);
+	public List<StMoveDetailDto> stockMoveSearchList(String keyword, String startDate, String endDate) {
 		
+		List<StMoveDetailDto> stockMoveSearch = smmService.findStockMoveSearchListByKeywordAndDate(keyword, startDate, endDate);
 		return stockMoveSearch;
 	}
 	
@@ -48,59 +53,112 @@ public class SMMController {
 	@GetMapping("/product/stockMoveRegistration") 
 	public String stockMoveRegistrationList(Model model) {
 		
-		List<stMoveDto> stockMoveRegistration = smmService.findStockMoveRegistrationList();
+		List<StMoveDto> stockMoveRegistration = smmService.findStockMoveRegistrationList();
 		
 		model.addAttribute("stockMoveRegistration", stockMoveRegistration);
-		
-		return "product/stock-move-registration";
+		return "product/smm/stock-move-registration.layout";
 	}
 	
 	// "저장" -> "확정" move_type 변경
 	@ResponseBody
 	@PatchMapping("/product/stockMoveConfirmation/{moveCode}")
-	public void stockMoveConfirmationModify(@PathVariable String moveCode) {
-		System.out.println("stockMoveConfirmation moveCode->" + moveCode);
-		smmService.modifyStockMoveConfirmationBymoveCodes(moveCode);
+	public void stockMoveConfirmationModify(@PathVariable String moveCode, @AuthenticationPrincipal UserDetailsDto userDetailsDto, MemberDto memberDto) {
 		
+		String memberName = userDetailsDto.getMemberDto().getMemberName();
+		smmService.modifyStockMoveConfirmationBymoveCode(moveCode, memberName);
 	}
 	
 	//이동등록 세부내역 List
 	@ResponseBody
 	@GetMapping("/product/stockMoveDetailList/{moveCode}")
-	 public List<stMoveDetailDto> stockMoveDetailList(@PathVariable String moveCode) {
+	 public List<StMoveDetailDto> stockMoveDetailList(@PathVariable String moveCode) {
 		
-		System.out.println("stockMoveDetailList moveCode->" + moveCode);
-		List<stMoveDetailDto> stockMoveDetail = smmService.findStockMoveDetailListByMoveCode(moveCode);
-		
+		List<StMoveDetailDto> stockMoveDetail = smmService.findStockMoveDetailListByMoveCode(moveCode);
 		return stockMoveDetail;
 	}
 	 
-	 //이동등록 추가
+	 //이동등록 insert
 	 @ResponseBody
 	 @PostMapping("/product/stockMoveRegistrationAdd") 
-	 public void stockMoveRegistrationAdd(String moveDate, String moveMemo) {
-		 
-		 System.out.println("재고이동 insert 컨트롤러 스타트");
-		 smmService.addStockMoveRegistrationByMoveDateAndMoveMemo(moveDate, moveMemo);
+	 public void stockMoveRegistrationAdd(@AuthenticationPrincipal UserDetailsDto userDetailsDto, MemberDto memberDto , String moveDate, String moveMemo) {
+		
+		 String memberUid = userDetailsDto.getMemberDto().getMemberUid();
+		 smmService.addStockMoveRegistrationByMemberUidAndMoveDateAndMoveMemo(memberUid, moveDate, moveMemo);
 	 }
 	
 	 // 제품코드 모달 List
 	 @ResponseBody
 	 @GetMapping("/product/itemCodeList")
-	 public List<itemDto> itemCodeList(){
+	 public List<ItemDto> itemCodeList(){
 		 
-		 List<itemDto> itemCodeList = smmService.findItemCodeList();
-		 System.out.println(itemCodeList);
+		 List<ItemDto> itemCodeList = smmService.findItemCodeList();
 		 return itemCodeList;
 	 }
 	
+	 // 입고창고 모달 List
+	 @ResponseBody
+	 @GetMapping("/product/whCodeList")
+	 public List<WhDto> whCodeList(){
+		 
+		 List<WhDto> whCodeList = smmService.findWhCodeList();
+		 return whCodeList;
+	 }
+	 
 	 // 제품코드 모달 클릭했을때 행 기입
 	 @ResponseBody
 	 @GetMapping("product/itemCodeRowDataList")
-	 public List<itemDto> itemCodeRowDataList(String itemCode){
+	 public List<ItemDto> itemCodeRowDataList(String itemCode){
 		 
-		 List<itemDto> itemCodeRowDataList = smmService.findItemCodeRowDataListByItemCode(itemCode);
-		 System.out.println(itemCodeRowDataList);
+		 List<ItemDto> itemCodeRowDataList = smmService.findItemCodeRowDataListByItemCode(itemCode);
 		 return itemCodeRowDataList;
+	 }
+	 
+	 // 세부내역 등록
+	 @ResponseBody
+	 @PostMapping("/product/stockMoveDetailAdd")
+	 public void stockMoveDetailAdd(@RequestBody StMoveDetailDto stMoveDetailDto){
+		 
+		 smmService.addStockMoveDetailByStMoveDetailDto(stMoveDetailDto);
+	 }
+	 
+	 // 이동등록 비고수정
+	 @ResponseBody
+	 @PatchMapping("/product/stockMoveRegistrationModify")
+	 public void stockMoveRegistrationModify(String moveCode, String moveMemo){
+		 
+		 smmService.modifyStockMoveRegistrationByMoveCodeAndMoveMemo(moveCode, moveMemo);
+	 }
+	 
+	 // 이동등록 삭제 ( COLUMN delete_status = "N" -> "Y") 
+	 @ResponseBody
+	 @PatchMapping("/product/stockMoveRegistrationDeleteStatusModify")
+	 public void stockMoveRegistrationDeleteStatusModify(String moveCode) {
+		 
+		 smmService.modifyStockMoveRegistrationDeleteStatusByMoveCode(moveCode);
+	 }
+	 
+	 // 세부내역 수정
+	 @ResponseBody
+	 @PatchMapping("/product/stockMoveDetailModify")
+	 public void stockMoveDetailModify(String moveCode, String sorder, String moveMemo) {
+		 
+		 smmService.modifyStockMoveDetailByMoveCodeAndSorderAndMoveMemo(moveCode, sorder, moveMemo);
+	 }
+	 
+	 // 세부내역 삭제
+	 @ResponseBody
+	 @DeleteMapping("/product/stockMoveDetailRemove")
+	 public void stockMoveDetailRemove(String moveCode, String sorder) {
+		 
+		 smmService.removeStockMoveDetailByMoveCodeAndSorder(moveCode,sorder);
+	 }
+	 
+	 // 세부내역 등록,수정,삭제 시 이동등록에 수정일자 및 수정자 변경
+	 @ResponseBody
+	 @PatchMapping("/product/stockMoveRegistrationDateAndUserModify")
+	 public void stockMoveRegistrationDateAndUserModify(@AuthenticationPrincipal UserDetailsDto userDetailsDto, MemberDto memberDto, String moveCode) {
+		 
+		 String memberUid = userDetailsDto.getMemberDto().getMemberUid();
+		 smmService.modifyStockMoveRegistrationDateAndUserByMemberUidAndMoveCode(memberUid, moveCode);
 	 }
 }

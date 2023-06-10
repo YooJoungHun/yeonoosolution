@@ -46,4 +46,10 @@ public class IMIDaoImpl implements IMIDao {
 		return sqlSession.selectList("selectCompanyList");
 	}
 
+	@Override
+	public List<IMIItemDto> selectItemListBySearchKeyWord(String searchKeyWord) {
+		
+		return sqlSession.selectList("selectItemListBySearchKeyWord", searchKeyWord);
+	}
+
 }

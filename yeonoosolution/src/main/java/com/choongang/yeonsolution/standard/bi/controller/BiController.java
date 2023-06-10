@@ -36,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 public class BiController {
 	private final BiService biService;
 	
-	@GetMapping("/standard/companyInfo/")
+	@GetMapping("/standard/companyInfo")
 	public String companyInfoDetailByCompanyCode(@AuthenticationPrincipal UserDetailsDto userDetails, MemberDto memberDto, Model model) {
 		
 		memberDto.setCompanyCode(userDetails.getMemberDto().getCompanyCode());
@@ -47,7 +47,7 @@ public class BiController {
 		model.addAttribute("companyDtoList", companyDtoList);
 		
 		
-		return "standard/company-info";
+		return "standard/company-info.layout";
 	}
 	
 	@PutMapping("/standard/companyInfo/{companyCode}")
@@ -77,7 +77,7 @@ public class BiController {
 		return result;
 	}
 	
-	@GetMapping("/standard/customerInfo/")
+	@GetMapping("/standard/customerInfo")
 	public String customerInfoListByCompanyCode(Model model, @AuthenticationPrincipal UserDetailsDto userDetails) {
 		
 		 String companyCode = userDetails.getMemberDto().getCompanyCode();
@@ -85,7 +85,7 @@ public class BiController {
 		 List<CompanyDto> companyDtoList = biService.findCustomerInfoByCompanyCode(companyCode);
 		 model.addAttribute("customerLists", companyDtoList);
 		
-		return "standard/customer-info";
+		return "standard/customer-info.layout";
 	}
 	
 	@PutMapping("/standard/customerInfo/{companyCode}")
@@ -100,9 +100,6 @@ public class BiController {
 		log.info("companycode -> {} ", companyCode);
 		
 		result = biService.modifyCustomerInfoByCompanyCode(companyDto);
-
-		System.out.println("컨트롤러 끝");
-		
 		
 		return result;
 	}
