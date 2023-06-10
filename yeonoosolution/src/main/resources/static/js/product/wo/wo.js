@@ -429,6 +429,7 @@ $(document).on('click', 'button.cancel-item', e => {
 		dataType: 'json',
 		contentType: 'application/json',
 		success: data => {
+			if (codeList.length != data.result) alert('실적이 있어 확정취소하지 못한 작업지시가 있습니다');
 			$('button.select-item').click();
 		}
 	});

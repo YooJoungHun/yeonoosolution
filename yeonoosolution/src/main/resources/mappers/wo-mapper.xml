@@ -133,8 +133,8 @@
 						   LEFT OUTER JOIN ORDERS orders ON (wo.ORDER_CODE = orders.ORDER_CODE)
 						   LEFT OUTER JOIN ITEM item ON (wo.ITEM_CODE = item.ITEM_CODE)
 						   LEFT OUTER JOIN (SELECT WORK_ORDER_CODE,
-						   									COUNT(CASE WHEN GOOD_YN = 'Y' THEN 1 END) GOODQUANTITY,
-						   									COUNT(CASE WHEN GOOD_YN = 'N' THEN 1 END) BADQUANTITY
+						   									SUM(CASE WHEN GOOD_YN = 'Y' THEN WORK_ORDER_QUANTITY ELSE 0 END) GOODQUANTITY,
+						   									SUM(CASE WHEN GOOD_YN = 'N' THEN WORK_ORDER_QUANTITY ELSE 0 END) BADQUANTITY
 						   						   FROM WO_DETAIL
 						   						   GROUP BY WORK_ORDER_CODE
 						   						  ) wd ON (wo.WORK_ORDER_CODE = wd.WORK_ORDER_CODE)
@@ -230,6 +230,52 @@
 			</choose>
 		WHERE WORK_ORDER_CODE = #{workOrderCode}
 	</update>
+	<select id="selectWoSearchFixed" parameterType="WOWo" resultMap="WoResultMap">
+		SELECT wo.*, wh.*, orders.*, item.*,
+				  NVL(wd.GOODQUANTITY, 0) GOODQUANTITY, NVL(wd.BADQUANTITY, 0) BADQUANTITY,
+				  NVL(wd.GOODQUANTITY, 0) + NVL(wd.BADQUANTITY, 0) WORKEDQUANTITY
+		FROM WO wo LEFT OUTER JOIN WH wh ON (wo.WH_CODE = wh.WH_CODE)
+						   LEFT OUTER JOIN ORDERS orders ON (wo.ORDER_CODE = orders.ORDER_CODE)
+						   LEFT OUTER JOIN ITEM item ON (wo.ITEM_CODE = item.ITEM_CODE)
+						   LEFT OUTER JOIN (SELECT WORK_ORDER_CODE,
+						   									SUM(CASE WHEN GOOD_YN = 'Y' THEN WORK_ORDER_QUANTITY ELSE 0 END) GOODQUANTITY,
+						   									SUM(CASE WHEN GOOD_YN = 'N' THEN WORK_ORDER_QUANTITY ELSE 0 END) BADQUANTITY
+						   						   FROM WO_DETAIL
+						   						   GROUP BY WORK_ORDER_CODE
+						   						  ) wd ON (wo.WORK_ORDER_CODE = wd.WORK_ORDER_CODE)
+		WHERE wo.DELETE_STATUS = 'N' AND wo.WORK_STATUS = '확정'
+			  <if test="startDate != null">
+			  	<![CDATA[
+			  		AND wo.WORK_ORDER_DATE >= #{startDate}
+			  	]]>
+			  </if>
+			  <if test="endDate != null">
+			  	<![CDATA[
+			  		AND wo.WORK_ORDER_DATE <= #{endDate}
+			  	]]>
+			  </if>
+			  <if test="workOrderCode != null">
+			  	<![CDATA[
+			  		AND wo.WORK_ORDER_CODE LIKE '%' || #{workOrderCode} || '%'
+			  	]]>
+			  </if>
+			  <if test="wh != null and wh.whCode != null">
+			  	<![CDATA[
+			  		AND wh.WH_CODE LIKE '%' || #{wh.whCode} || '%'
+			  	]]>
+			  </if>
+			  <if test="wh != null and wh.whName != null">
+			  	<![CDATA[
+			  		AND wh.WH_NAME LIKE '%' || #{wh.whName} || '%'
+			  	]]>
+			  </if>
+			  <if test="item != null and item.itemName != null">
+			  	<![CDATA[
+			  		AND item.ITEM_NAME LIKE '%' || #{item.itemName} || '%'
+			  	]]>
+			  </if>
+		ORDER BY TO_NUMBER(REPLACE(wo.WORK_ORDER_CODE, 'WORK', '')) DESC
+	</select>
 	<!-- WH mapper -->
 	<select id="selectWh" parameterType="java.lang.String" resultMap="WhResultMap">
 		SELECT * FROM WH WHERE WH_CODE = #{whCode}
@@ -274,4 +320,24 @@
 			GOOD_QUANTITY = GOOD_QUANTITY - #{materialQuantity}
 		WHERE ITEM_CODE = #{lowItemCode}
 	</update>
+	<select id="insertWoDetailWithCheck" parameterType="HashMap" resultType="HashMap" statementType="CALLABLE">
+		{
+			CALL WO_DETAIL_INSERT(
+				#{data.workOrderCode, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String},
+				#{data.goodYn, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String},
+				#{data.workOrderQuantity, mode=IN, jdbcType=NUMERIC, javaType=java.lang.Integer},
+				#{data.workerUid, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String},
+				#{result, mode=OUT, jdbcType=NUMERIC, javaType=java.lang.Integer}
+			)
+		}
+	</select>
+	<select id="deleteWoDetailWithId" parameterType="HashMap" resultType="HashMap" statementType="CALLABLE">
+		{
+			CALL WO_DETAIL_DELETE(
+				#{workOrderCode, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String},
+				#{sorder, mode=IN, jdbcType=NUMERIC, javaType=java.lang.Integer},
+				#{partResult, mode=OUT, jdbcType=NUMERIC, javaType=java.lang.Integer}
+			)
+		}
+	</select>
 </mapper>

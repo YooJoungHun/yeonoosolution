@@ -45,7 +45,14 @@
 				</div>
 				<div class="wo-header-item-group">
 					<label for="worker.memberUid">작업자코드</label>
-					<input type="text" name="worker.memberUid">
+					<input type="text" name="worker.memberUid" list="memberUidList">
+					<datalist id="memberUidList">
+						<c:forEach var="member" items="${memberList }">
+							<option value="${member.memberUid }">
+								${member.memberName } ${member.memberRole }
+							</option>
+						</c:forEach>
+					</datalist>
 				</div>
 				<div class="wo-header-item-group">
 					<label for="worker.memberName">작업자명</label>

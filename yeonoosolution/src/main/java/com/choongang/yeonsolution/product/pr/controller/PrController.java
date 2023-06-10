@@ -1,12 +1,16 @@
 package com.choongang.yeonsolution.product.pr.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +25,9 @@ import com.choongang.yeonsolution.product.wo.service.BomService;
 import com.choongang.yeonsolution.product.wo.service.WhStockDetailService;
 import com.choongang.yeonsolution.product.wo.service.WoDetailService;
 import com.choongang.yeonsolution.product.wo.service.WoService;
+import com.choongang.yeonsolution.standard.am.domain.AMDto;
+import com.choongang.yeonsolution.standard.am.domain.MemberDto;
+import com.choongang.yeonsolution.standard.am.security.UserDetailsDto;
 import com.choongang.yeonsolution.standard.am.service.AMService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -39,8 +46,9 @@ public class PrController {
 	private final AMService amService;
 	
 	@RequestMapping(value = "/productResult")
-	public String productResult(Model model) {
-		
+	public String productResult(@AuthenticationPrincipal UserDetailsDto userDetailsDto, Model model) {
+		List<AMDto> memberList = amService.findMemberListByCompanyCode(userDetailsDto.getMemberDto().getCompanyCode());
+		model.addAttribute("memberList", memberList);
 		return "product/pr/productResult.layout";
 	}
 	
@@ -79,61 +87,52 @@ public class PrController {
 		Wo wo = new Wo();
 		String workOrderCode = (String)data.get("workOrderCode");
 		wo.setWorkOrderCode(workOrderCode);
-		Date date = (Date)data.get("date");
-		if ((String)data.get("type") == "start") wo.setStartDate(date);
+		SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+		Date date = null;
+		try { date = dt.parse(((String)data.get("date")).replace('T', ' ')); }
+		catch (ParseException e) { }
+		if (((String)data.get("type")).equals("start")) wo.setStartDate(date);
 		else wo.setEndDate(date);
 		int result = woService.modifyWoStartEndDate(wo);
 		return String.format("{ \"result\" : %d }", result);
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/checkBomForWork")
-	public String checkBomForWork(@RequestBody Map<String, Object> data) {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		String workOrderCode = (String)data.get("workOrderCode");
-		List<WoDetail> woDetailList = woDetailService.findWoDetail(workOrderCode);
-		WoDetail forBOM = new WoDetail();
-		forBOM.setItem(woService.findOneWo(workOrderCode).getItem());
-		Integer qtt = 0;
-		for (WoDetail wod : woDetailList) qtt += wod.getWorkOrderQuantity();
-		forBOM.setWorkOrderQuantity(qtt);
-		List<Bom> bomList = bomService.findBomWithQuantity(forBOM);
-		boolean isAllowed = true;
-		for (Bom bom : bomList) {
-			isAllowed &= (whStockDetailService.findWhStockDetail(bom.getLowItemCode()).getGoodQuantity() >= bom.getMaterialQuantity());
-			if (!isAllowed) break;
+	@RequestMapping(value = "/checkAndInsertWoDetail")
+	public String checkAndInsert(@RequestBody Map<String, Object> data) {
+		Integer result = 0; // 프로시저 결과 값으로 넣어야함
+		MemberDto memberDto = woDetailService.findMemberByUid((String)data.get("workerUid"));
+		if (memberDto == null) return String.format("{ \"result\" : %d }", result);
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("data", data);
+		param.put("result", result);
+		woDetailService.addWoDetailWithCheck(param);
+		return String.format("{ \"result\" : %d }", (Integer)param.get("result"));
+	}
+	
+	@SuppressWarnings("unchecked")
+	@ResponseBody
+	@RequestMapping(value = "/cancelResult")
+	public String cancelResult(@RequestBody Map<String, Object> data) {
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("workOrderCode", (String)data.get("workOrderCode"));
+		List<Integer> sorders = (ArrayList<Integer>)data.get("sorders");
+		int result = 0;
+		for (Integer sorder : sorders) {
+			Integer partResult = 0;
+			param.put("sorder", sorder);
+			param.put("partResult", partResult);
+			result = woDetailService.removeWoDetailWithId(param);
+			result += (Integer)param.get("partResult");
 		}
-		return String.format("{ \"result\" : %b }", isAllowed);
+		return String.format("{ \"result\": %d }", result);
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/insertResult")
-	public String insertResult(@RequestBody Map<String, Object> data) {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-		String workOrderCode = (String)data.get("workOrderCode");
-		Wo wo = woService.findOneWo(workOrderCode);
-		WoDetail woDetail = new WoDetail();
-		woDetail.setWo(wo);
-		woDetail.setWorker(amService.findMemberByMemberId((String)data.get("workerUid")).getMemberName());
-		woDetail.setWorkOrderQuantity((Integer)data.get("workOrderQuantity"));
-		woDetail.setGoodYn((String)data.get("goodYn"));
-		//woDetail.setWorker(workOrderCode)
-		//재고 불출 부분 제외하고 추가적으로 작성... 재고 현황에서 수량 감산...
-		int[] result = { 0, 0 };
-		woDetail.setItem(wo.getItem());
-		List<Bom> bomList = bomService.findBomWithQuantity(woDetail);
-		result[0] = 1;
-		for (Bom bom : bomList) {
-			result[0] *= whStockDetailService.modifyWhStockDetailWithWoDetail(bom);
-		}
-		//result[0] = whStockDetailService.modifyWhStockDetailWithWoDetail(woDetail);
-		// productResult.js의 양품/불량 등록 부분임
-		System.out.println(woDetail);
-		result[1] = woDetailService.addWoDetailWithResult(woDetail);
-		return String.format("{ \"result\" : [%d,%d] }", result[0], result[1]);
+	@RequestMapping(value = "/productResult/getMemberName")
+	public String getMemberName(@RequestBody Map<String, Object> data) {
+		MemberDto memberDto = woDetailService.findMemberByUid((String)data.get("memberUid"));
+		if (memberDto == null) return "{ \"memberName\" : null }";
+		return String.format("{ \"memberName\" : \"%s\" }", memberDto.getMemberName());
 	}
 }

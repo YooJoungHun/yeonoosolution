@@ -22,6 +22,7 @@ import com.choongang.yeonsolution.product.wo.domain.Wh;
 import com.choongang.yeonsolution.product.wo.domain.Wo;
 import com.choongang.yeonsolution.product.wo.service.ItemService;
 import com.choongang.yeonsolution.product.wo.service.WhService;
+import com.choongang.yeonsolution.product.wo.service.WoDetailService;
 import com.choongang.yeonsolution.product.wo.service.WoService;
 import com.choongang.yeonsolution.standard.am.security.UserDetailsDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -35,6 +36,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping(value = "/product")
 public class WOController {
 	private final WoService woService;
+	private final WoDetailService woDetailService;
 	private final ItemService itemService;
 	private final WhService whService;
 	
@@ -145,6 +147,7 @@ public class WOController {
 		List<String> codeList = (List<String>)data.get("workOrderCode");
 		int result = 0;
 		for (String workOrderCode : codeList) {
+			if (woDetailService.findWoDetail(workOrderCode).size() > 0) continue;
 			result += woService.modifyWoCancel(workOrderCode);
 		}
 		return String.format("{ \"result\": %d }", result);
@@ -223,5 +226,27 @@ public class WOController {
 			result += woService.modifyWoClose(workOrderCode);
 		}
 		return String.format("{ \"result\": %d }", result);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/wo/searchFixed")
+	public String woSearchFixed(@RequestBody Map<String, Object> data) {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		Wh wh = new Wh();
+		Item item = new Item();
+		if (data.containsKey("wh.whCode")) wh.setWhCode((String)data.get("wh.whCode"));
+		if (data.containsKey("wh.whName")) wh.setWhName((String)data.get("wh.whName"));
+		if (data.containsKey("item.itemName")) item.setItemName((String)data.get("item.itemName"));
+		Wo searcher = mapper.convertValue(data, Wo.class);
+		searcher.setWh(wh);
+		searcher.setItem(item);
+		List<Wo> woSearchList = woService.findWoSearchFixed(searcher);//검색 결과를 내뱉음
+		List<String> woStringList = woSearchList.stream().map(wo -> {
+			try { return mapper.writeValueAsString(wo); }
+			catch (JsonProcessingException e) { return null; }
+		}).collect(Collectors.toList());
+		return String.format("[%s]", String.join(",", woStringList));
 	}
 }

@@ -54,4 +54,8 @@ public class WoServiceImpl implements WoService {
 	public int modifyWoStartEndDate(Wo wo) {
 		return wod.updateWoStartEndDate(wo);
 	}
+	@Override
+	public List<Wo> findWoSearchFixed(Wo searcher) {
+		return wod.selectWoSearchFixed(searcher);
+	}
 }
