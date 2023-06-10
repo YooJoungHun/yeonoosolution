@@ -282,7 +282,9 @@
 	</select>
 	<!-- Item mapper -->
 	<select id="selectItem" parameterType="java.lang.String" resultMap="ItemResultMap">
-		SELECT * FROM ITEM WHERE ITEM_CODE = #{itemCode}
+		SELECT IT.*, WH.*
+		FROM ITEM IT LEFT OUTER JOIN WH WH ON (IT.WH_CODE = WH.WH_CODE)
+		WHERE ITEM_CODE = #{itemCode}
 	</select>
 	<!-- WoDetail mapper -->
 	<select id="selectWoDetail" parameterType="java.lang.String" resultMap="WoDetailResultMap">

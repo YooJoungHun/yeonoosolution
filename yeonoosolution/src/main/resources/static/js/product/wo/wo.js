@@ -87,7 +87,7 @@ var tableLayout = [
 	{ header: '품목유형', name: 'item.itemType', width: '121px', compType: 'readonly', dataType: null, data: null, styles: [], compare: false },
 	{ header: '품명', name: 'item.itemName', width: '305px', compType: 'readonly', dataType: null, data: null, styles: [], compare: false },
 	{ header: '수량', name: 'itemQuantity', width: '50px', compType: 'required', dataType: 'number', data: null, styles: [], compare: true },
-	{ header: '창고', name: 'wh.whCode', width: '92px', compType: 'editable', dataType: 'text', data: null, styles: [], compare: true },
+	{ header: '창고', name: 'wh.whCode', width: '92px', compType: 'readonly', dataType: 'text', data: null, styles: [], compare: true },
 	{ header: '창고명', name: 'wh.whName', width: '91px', compType: 'readonly', dataType: null, data: null, styles: [], compare: false },
 	{ header: '작업지시유형', name: 'workOrderType', width: '110px', compType: 'readonly', dataType: null, data: [{value:'', text:'--'}, {value:'자재수동투입', text:'자재수동투입'}, {value:'자재자동차감', text:'자재자동차감'}], styles: [{'width':'110px'}], compare: true }
 ];
@@ -476,9 +476,13 @@ $(document).on('blur', 'input[name="item.itemCode"]', e => {
 			if (data != null) {
 				$(elem).closest('tr').find('td[role="item.itemType"]').text(data.itemType);
 				$(elem).closest('tr').find('td[role="item.itemName"]').text(data.itemName);
+				$(elem).closest('tr').find('td[role="wh.whCode"]').text(data.wh.whCode);
+				$(elem).closest('tr').find('td[role="wh.whName"]').text(data.wh.whName);
 			} else {
 				$(elem).closest('tr').find('td[role="item.itemType"]').text('');
 				$(elem).closest('tr').find('td[role="item.itemName"]').text('');
+				$(elem).closest('tr').find('td[role="wh.whCode"]').text('');
+				$(elem).closest('tr').find('td[role="wh.whName"]').text('');
 			}
 		}
 	});
