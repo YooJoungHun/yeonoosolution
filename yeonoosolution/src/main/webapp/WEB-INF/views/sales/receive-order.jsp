@@ -13,7 +13,7 @@
 			<button type="button" id="delete-btn" value="삭제">삭제</button>
 			<button type="button" id="order-confirmation-btn" value="수주 확정">수주 확정</button>
 			<button type="button" id="confirmation-cancel-btn" value="확정 취소">확정 취소</button>
-			<button type="button" id="stock-out-reg-btn" value="출하 등록">출하 등록</button>
+			<button type="button" id="stock-out-reg-btn" value="출하 등록">출고 등록</button>
 			<button type="button" id="work-order-reg-btn" value="작업 지시 등록">작업 지시 등록</button>
 			<button type="button" id="analysis-bom-btn" value="자재 요소 분석" onclick="location.href='/sales/analysis-of-materials'">자재 요소 분석</button>
 			<button id="insert-receive-form-button">새 수주서 작성</button>
