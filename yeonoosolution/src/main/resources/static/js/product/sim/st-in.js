@@ -68,6 +68,7 @@ function rowModify(e){
 
 // 상세 페이지 클릭 이벤트
 function detailTableRowClick(e){
+	if($('.table-in input:checked').length != 1) return alert('입고를 1개만 선택해주세요.');
 	if(e.target.type != 'checkbox')
 		$(e.target).closest('tr').find('.sidCheckBox').prop('checked', (_, checked)=> {return !checked;});
 }
@@ -97,9 +98,9 @@ function inputEnter(e){
 }
 // 키 입력시 입고 번호 검색
 function inCodeEvent(){
-	let inCode = $('#inCode').val();
+	let inCode = $('#inCode').val().toUpperCase();
 	$('.stInDetailRow').css('display', 'none');
-	$(`.stInDetailRow input[value="${inCode}"]`).closest('tr').toggle();
+	$(`.stInDetailRow .inCode[value="${inCode}"]`).closest('tr').toggle();
 }
 
 // 입고 체크박스 이벤트 (클릭시 값 입력)
@@ -167,67 +168,6 @@ function allCheckEvent(e){
 }
 
 
-		
-	// inRow = $(e.target).closest('tr');
-
-	// let rowId = inRow.attr('id');
-	// let checkBox = inRow.find('.checkBox');
-
-	
-	//if ($(e.target).is(':checked'));
-	//let inCode = inRow.find('.inCode').val();
-
-	
-
-	//$(e.target).closest('tr').find('.checkBox:checked').val();
-
-	// if(previousRow != null && previousRow != inRow){
-	// 	previousCheckBox.prop('checked', false);
-	// }
-	// if(rowId == previousRow){
-	// 	checkBox.prop('checked', false).trigger('change');
-	// 	previousRow = null;
-	// }else{
-	// 	checkBox.prop('checked', true).trigger('change');
-	// 	previousRow = rowId;
-	// 	previousCheckBox = checkBox;
-	// }
-		
-		
-		//$(`.stInDetailRow input[value="${$(this).attr('id')}"]`).closest('tr').toggle();
-		//$(`.stInDetail input:checked`).closest('tr').toggle();
-		//console.log($(`.stInRow input:checked`).closest('tr').attr('id'));
-		//$('.stInRow input:checked').each(()=>{console.log($(this));});
-		//rows.toggle();
-	// let rows = [];
-	// $("tr.stInRow input[type=checkbox]:checked").closest("tr.stInRow").each(function() {rows.push($(this).attr("id"));});
-	// console.log(rows);
-
-	// console.log($('.stInRow input:checked').closest('tr'));
-
-	//let columns = document.querySelectorAll('.stInRow input:checked');
-	//let columns1 = Array.from(document.querySelectorAll('input:checked')).map(input => input.closest('.stInRow'));
-	
-
-	//let rows = Array.from(columns).map(rows => rows.parentNode.id);
-	//console.log(columns1);
-	//$('.stInRow input:checked').closest('tr').each(()=>{rows.push(this);});
-	//rows = $('.stInRow input:checked');
-
-	//console.log(rows);
-	// let a = $('.stInRow input:checked').closest('tr');
-	// console.log(typeof a);
-	
-	// Array.forEach(function(a){
-	// 	console.log(a);
-	// });
-	//console.log($('.stInRow input:checked').closest('tr').attr('id'));
-
-
-
-
-
-
 
 // 입고 유형
 function orderTypeEvent(select){
@@ -293,12 +233,6 @@ function getParams() {
 
 
 
-
-
-
-
-
-
 // 입고 등록 이벤트
 function regEvent() {
 	let obj = {
@@ -323,7 +257,7 @@ function regEvent() {
 }
 
 
-// 데이터
+// 상세 맵 데이터
 function getDetailMap(index, code) {
   const detailMap = {
     sorder: `<td><input type="text" class="addSorder" name="sorder" value=${index}></td>`,
@@ -457,237 +391,13 @@ function getNextSorder(inCode) {
 }
 
 
-
-
-
-
-
-
-
-// // sorder 추출 함수
-// function getMaxSorder() {
-//   return Math.max(...Object.values(detailData).map(detail => detail.sorder));
-// }
-
-// // 추가
-// function addDetailEvent() {
-//   let checkInCode = $('.table-in input:checked');
-//   if(checkInCode.length != 1) return alert('1개만 선택해 주세요');
-  
-//   let inCode = checkInCode.closest('tr').find('.inCode').val();
-//   let sorder = getMaxSorder() + 1;
-
-//   // 객체 저장
-//   detailData[sorder] = { inCode, sorder };  // 기타 필요한 필드를 여기에 추가하세요.
-
-//   // 객체 업데이트
-//   updateObject();
-// }
-
-// // 추가
-// function addDetailEvent() {
-//   let checkInCode = $('.table-in input:checked');
-//   if (checkInCode.length !== 1) return alert('1개만 선택해 주세요');
-//   let code = checkInCode.closest('tr').find('.inCode').val();
-//   let detailMap = getDetailMap(rowIndex, code);
-
-//   // sorder 값 설정
-//   let sorder = getNextSorder(code);
-//   detailMap['sorder'] = `<td><input type="text" class="addSorder" name="sorder" value="${sorder}"></td>`;
-
-//   // 객체 저장
-//   detailData[rowIndex] = detailMap;
-//   rowIndex++;
-
-//   // 인덱스 업데이트
-//   updateIndex();
-//   // 객체 업데이트
-//   updateObject();
-// }
-
-// // 제거
-// function removeDetailEvent() {
-// 	let checkRows = $('.table-in-detail tbody input:checked').closest('tr');
-// 	if (checkRows.length == 0) return;
-  
-// 	checkRows.each(function () {
-// 		let removeIndex = $(this).attr('id');
-  
-// 		// status 확인
-// 		let status = getRowStatus(removeIndex);
-// 		if (status == 'add') {
-// 			delete detailData[removeIndex];
-// 			$(this).remove();
-// 		}else {
-// 			$(this).attr('data-status', 'delete');
-// 			$(this).css('display', 'none');
-// 		}
-// 	});
-  
-// 	updateIndex();
-// 	updateObject();
-// }
-
-// // 행 상태 설정
-// function setRowStatus(index, status) {
-// 	let row = $(`.table-in-detail tbody tr[id=${index}]`);
-// 	row.attr('data-status', status);
-// }
-// // 행 상태 리턴
-// function getRowStatus(index) {
-// 	let row = $(`.table-in-detail tbody tr[id=${index}]`);
-// 	return row.attr('data-status');
-// }
-
-// // 객체 업데이트
-// function updateObject() {
-// 	// 기존 행의 인덱스
-// 	let oldIndex = $(".table-in-detail tbody tr").map(function() { return $(this).attr('id'); }).get();
-	
-// 	// 객체 저장
-// 	for (let index in detailData) {
-// 			let data = detailData[index];
-			
-// 			// 존재하는 행은 업데이트
-// 			if(oldIndex.includes(index)) {
-// 					for(let key in data) {
-// 							$(`#${index} .${key}`).html(data[key]);
-// 					}
-// 			} else {
-// 		// 존재하지 않는 행이면 새로 추가
-// 					let addTr = `<tr class="addInDetail" id=${index} data-status="add">`;
-// 					for (let key in data) {
-// 							addTr += data[key];
-// 					}
-// 					addTr += `</tr>`;
-// 					$('.table-in-detail tbody').append(addTr);
-// 			}
-// 	}
-// }
-
-// // 인덱스 업데이트
-// function updateIndex() {
-// 	let checkInCode = $('.table-in input:checked').closest('tr').find('.inCode').val();
-// 	let currentIndex = $('.table-in-detail tbody tr .inCode').filter(function() {return $(this).val() === checkInCode;}).length+1;
-// 	console.log(currentIndex);
-
-// 	for (let index in detailData) {
-// 		let detailMap = detailData[index];
-// 		detailMap['sorder'] = `<td><input type="text" class="addSorder" name="sorder" disabled="disabled" value=${currentIndex}></td>`;
-// 	}
-// }
-
-// 저장
-// function saveDetailEvent() {
-// 	let obj = [];
-// 	let tbody = $('.table-in-detail tbody');
-
-// 	tbody.find('tr').each(function () {
-// 		let detailObj = {};
-// 		$(this).find('input').each(function () {
-// 			let key = $(this).attr('name');
-// 			let value = $(this).val();
-// 			detailObj[key] = value;
-// 		});
-// 		obj.push(detailObj);
-// 	});
-// 	console.log(obj);
-// 	// for (let index in detailData) {
-// 	// 	let detailMap = detailData[index];
-// 	// 	let detailObj = {};
-
-// 	// 	for (let key in detailMap) {
-// 	// 		let value = $(`#${index} .${key}`).text();
-// 	// 		detailObj[key] = value;
-// 	// 	}
-// 	// 	obj.push(detailObj);
-// 	// }
-// 	// console.log(obj);
-
-// 	// AJAX
-// 	let xhr = new XMLHttpRequest();
-// 	xhr.open('post', `${contextPath}/product/sim/ajax/save`);
-// 	xhr.setRequestHeader('Content-Type', 'application/json');
-// 	xhr.send(JSON.stringify(obj));
-// 	xhr.onload = function () {
-// 		if (xhr.status === 200) {
-// 			alert(xhr.responseText);
-// 			location.reload('div.stock-in-table');
-// 		}
-// 	}
-// }
-
-// 저장
-// function saveDetailEvent() {
-// 	$('.table-in-detail input').prop('disabled', false).prop('readonly', false);
-
-
-// 	let checkInCode = $('.table-in input:checked');
-// 	if(checkInCode.length != 1) return alert('1개만 선택해 주세요');
-// 	let inCode = checkInCode.closest('tr').find('.inCode').val();
-
-	
-	
-// 	$('.table-in-detail tbody tr').each(function() {
-// 		if($(this).find('.inCode').val() == inCode){
-// 			let dataStatus = $(this).attr('data-status');
-// 			if(dataStatus == 'add'){
-// 				console.log($(this).find('input'));
-// 				$.ajax({
-// 					url: `${contextPath}/product/sim/ajax/save`,
-// 					type: 'post',
-// 					data: $(this).find('input').serialize(),
-// 					contentType: 'application/json;',
-// 					success: function(data) {
-// 						console.log(data);
-// 					}
-// 				});
-// 			}else if(dataStatus == 'delete'){
-// 				console.log($(this).find('input'));
-// 				$.ajax({
-// 					url: `${contextPath}/product/sim/ajax/delete`,
-// 					type: 'post',
-// 					data: $(this).find('input').serialize(),
-// 					contentType: 'application/json;',
-// 					success: function(data) {
-// 						console.log(data);
-// 					}
-// 				});
-// 			}
-// 		}
-// 	});
-
-// 	// 이어서 하기
-
-// 	let obj = [];
-// 	let tbody = $('.table-in-detail tbody');
-
-// 	tbody.find('tr').each(function () {
-// 		let detailObj = {};
-// 		$(this).find('input').each(function () {
-// 			let key = $(this).attr('name');
-// 			let value = $(this).val();
-// 			detailObj[key] = value;
-// 		});
-// 		obj.push(detailObj);
-// 	});
-// 	console.log(obj);
-
-
-// }
-
-
-
-
-
-
 // 상세 페이지 저장
 function saveDetailEvent() {
   $('.table-in-detail input').prop('disabled', false).prop('readonly', false);
 
-  let checkInCode = $('.table-in input:checked');
-  if (checkInCode.length != 1) return alert('1개만 선택해 주세요');
-  let inCode = checkInCode.closest('tr').find('.inCode').val();
+  if ($('.table-in input:checked').length != 1) return alert('입고를 1개만 선택해 주세요');
+
+  let inCode = $('.table-in input:checked').closest('tr').find('.inCode').val();
 
 	let addData = [];
 	let deleteData = [];
@@ -704,11 +414,11 @@ function saveDetailEvent() {
           dataToSend[this.name] = $(this).val();
         });
 
-				if(dataStatus == 'add') {
-					addData.push(dataToSend);
-				}else if(dataStatus == 'delete') {
-					deleteData.push(dataToSend);
-				}
+		if(dataStatus == 'add') {
+			addData.push(dataToSend);
+		}else if(dataStatus == 'delete') {
+			deleteData.push(dataToSend);
+		}
       }
     }
   });
@@ -720,7 +430,7 @@ function saveDetailEvent() {
 			data: JSON.stringify(addData),
 			contentType: 'application/json; charset=utf-8',
 			success: function(data) {
-				console.log(data);
+				location.reload();
 			}
 		});
 	}
@@ -732,14 +442,21 @@ function saveDetailEvent() {
 			data: JSON.stringify(deleteData),
 			contentType: 'application/json; charset=utf-8',
 			success: function(data) {
-				alert(data);
+				location.reload();
 			}
 		});
 	}
 }
 
+
+
+
+
+
+
 // 버튼 이벤트
 function findGet(url, method) {
+	if(method == 'PUT') if($('.table-in input:checked').length != 1) return alert('입고를 1개만 선택해 주세요');
 	let form = document.createElement('form');
 	form.setAttribute('method', method);
 	form.setAttribute('action', url);
