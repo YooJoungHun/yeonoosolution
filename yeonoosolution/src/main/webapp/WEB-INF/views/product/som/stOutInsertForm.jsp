@@ -18,7 +18,7 @@
 				var selWhCode		= document.getElementById("wh_insert").value;
 				var selItemCode		= document.getElementById("item_insert").value;
 				var selOutQuantity	= document.getElementById("outQuantity_insert").value;
-				var selMemo			= $('memo_insert').val();
+				var selMemo			= document.getElementById('memo_insert').value;
 				
 				
 				var SOMStOutDto = {

@@ -2,6 +2,8 @@ package com.choongang.yeonsolution.standard.wmi.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.choongang.yeonsolution.standard.am.domain.MemberDto;
 import com.choongang.yeonsolution.standard.wmi.domain.WMIWhDto;
 import com.choongang.yeonsolution.standard.wmi.service.WMIService;
 
@@ -82,7 +85,7 @@ public class WMIController {
 	// 창고 등록
 	@ResponseBody
 	@PostMapping("/standard/insertWh/")
-	public String WHAdd(@ModelAttribute WMIWhDto whDto, Model model) {
+	public String WHAdd(HttpSession session ,@ModelAttribute WMIWhDto whDto, Model model) {
 		log.info("WMIController WHAdd start");
 		int insertResult = wmiService.addtWareHouseByWhDto(whDto);
 		log.info("WMIController WHAdd insertResult -> "+ insertResult);

@@ -17,11 +17,11 @@
 			if(confirm("등록하시겠습니까?")){
 				// 확인 버튼을 누른 경우 처리할 내용 작성
 				var selWhName = $("#wh_name_insert").val();
-				alert(selWhName);
+				//alert(selWhName);
 				var selUseYn = $("#useYn_insert").val();
-				alert(selUseYn);
+				//alert(selUseYn);
 				var selRegDate = $("#regDate_insert").val();
-				alert(selRegDate);
+				//alert(selRegDate);
 				var selMemo = $("#memo_insert").val();
 				
 				var whDto = {
