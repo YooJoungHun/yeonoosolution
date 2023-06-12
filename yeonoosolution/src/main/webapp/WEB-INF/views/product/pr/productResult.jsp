@@ -11,6 +11,7 @@
 			<button type="button" class="end-item">작업종료</button>
 			<button type="button" class="good-item" data-good="Y">양품등록</button>
 			<button type="button" class="bad-item" data-good="N">불량등록</button>
+			<button type="button" class="loss-item" data-good="L">LOSS등록</button>
 			<button type="button" class="cancel-item">실적 취소</button>
 		</div>
 		<div class="wo-values-container">
