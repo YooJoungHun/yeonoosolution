@@ -116,7 +116,7 @@ var subtable = [
 	{ header: '작업순번', name: 'sorder', width: '60px', compType: 'readonly', dataType: 'number', data: null, styles: [], compare: false },
 	{ header: '수량', name: 'workOrderQuantity', width: '100px', compType: 'readonly', dataType: 'number', data: null, styles: [], compare: false },
 	{ header: '작업자', name: 'worker', width: '120px', compType: 'readonly', dataType: 'text', data: null, styles: [], compare: false },
-	{ header: '불량여부', name: 'goodYn', width: '60px', compType: 'readonly', dataType: 'select', data: [{value: 'Y', text: 'Y'}, {value: 'N', text: 'N'}], styles: [], compare: false }
+	{ header: '불량여부', name: 'goodYn', width: '60px', compType: 'readonly', dataType: 'select', data: [{value: 'Y', text: 'Y'}, {value: 'N', text: 'N'}, {value: 'L', text: 'L'}], styles: [], compare: false }
 ];
 var thirdtable = [
 	{ header: 'numbering', name: null, width: '50px', compType: 'numbering', dataType: 'numbering', data: null, styles: [], compare: false },
@@ -421,6 +421,60 @@ $(document).on('click', 'button.good-item', e => {
 $(document).on('click', 'button.bad-item', e => {
 	// data-good Y or N 으로 값 넣기...
 	let elem = $(e.target).closest('button.bad-item');
+	let table = $('table.data-table[role="wo-list"]');
+	let startDate = $(table).find('input[type="radio"]:checked').closest('tr').find('input[name="startDate"]').val();
+	let endDate = $(table).find('input[type="radio"]:checked').closest('tr').find('input[name="endDate"]').val();
+	let workOrderCode = $(table).find('input[type="radio"]:checked').closest('tr').find('td[role="workOrderCode"]').text();
+	// work variables
+	let workerUid = $('div.wo-header-value').find('input[name="worker.memberUid"]').val();
+	let workOrderQuantity = parseInt($('div.wo-header-value').find('input[name="workOrderQuantity"]').val());
+	if (!workerUid || !workOrderQuantity) {
+		if (!workerUid) alert('작업자코드를 입력해주세요');
+		else alert('작업수량을 입력해주세요');
+		return;
+	}
+	$.ajax({
+		url: location.protocol + '//' + location.host + '/product/checkAndInsertWoDetail',
+		type: 'post',
+		data: JSON.stringify({
+					'workOrderCode' : workOrderCode,
+					'goodYn' : $(elem).attr('data-good'),
+					'workOrderQuantity' : workOrderQuantity,
+					'workerUid' : workerUid
+			}),
+		dataType: 'json',
+		contentType: 'application/json',
+		success: data => {
+			if (data.result < 1) {
+				if (data.result == -1) {
+					alert('원자재 재고가 충분하지 않습니다');
+				} else {
+					alert('작업 진행 중 오류가 발생했습니다');
+				}
+				return;
+			}
+			let tbody = $(table.data-table[role="wo-list"]).closest('tbody');
+			// Ajax 이용한 woDetail, bom 테이블 데이터 뽑아오기
+			$.ajax({
+				url: location.protocol + '//' + location.host + '/product/getWoDetails',
+				type: 'post',
+				data: JSON.stringify({ 'workOrderCode': workOrderCode }),
+				dataType: 'json',
+				contentType: 'application/json',
+				success: datum => {
+					$('table.data-table[role="wo-detail"]').find('tbody').html(createTemplate(subtable, datum.detail));
+					subData = datum.detail;
+					$('table.data-table[role="wo-bom"]').find('tbody').html(createTemplate(thirdtable, datum.bom));
+					thirdData = datum.bom;
+					rowNumbering();
+				}
+			});
+		}
+	});
+});
+$(document).on('click', 'button.loss-item', e => {
+	// data-good Y or N 으로 값 넣기...
+	let elem = $(e.target).closest('button.loss-item');
 	let table = $('table.data-table[role="wo-list"]');
 	let startDate = $(table).find('input[type="radio"]:checked').closest('tr').find('input[name="startDate"]').val();
 	let endDate = $(table).find('input[type="radio"]:checked').closest('tr').find('input[name="endDate"]').val();
