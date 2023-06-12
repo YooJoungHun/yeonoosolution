@@ -502,8 +502,8 @@ select:not(:-internal-list-box) {
 				contentType: 'application/json',
 				data: JSON.stringify(memberList),
 				success : function(textStatus, xhr, result){
-					console.log('result : ' + result);
-					if(result > 0){
+					console.log('result : ' + result.responseText);
+					if(result.responseText > 0){
 						let $printLocation = $('#user-admin-member-list-table-body');
 						alert('저장이 완료되었습니다');
 						$printLocation.empty();
