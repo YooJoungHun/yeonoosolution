@@ -8,7 +8,7 @@
   	
   	<typeAliases>
 	<!-- 출고관리 -->
-  		<typeAlias type="com.choongang.yeonsolution.sales.sdm.domain.SDMStOutDto" alias="SDMStOutDto"/>
+  		<typeAlias alias="SDMStOutDto" type="com.choongang.yeonsolution.sales.sdm.domain.SDMStOutDto" />
 
  	<!-- 권한 관리 -->
   		<typeAlias alias="AMMemberDto" type="com.choongang.yeonsolution.standard.am.domain.MemberDto"/>
