@@ -14,7 +14,7 @@
 			st_move sm
             JOIN st_move_detail smd ON sm.move_code = smd.move_code
             JOIN item i ON smd.item_code = i.item_code
-            LEFT JOIN wh_stock_detail wsd ON smd.item_code = wsd.item_code
+            LEFT JOIN wh_stock_detail wsd ON smd.item_code = wsd.item_code AND wsd.wh_code = smd.wh_code_out
 		WHERE 
 			sm.move_type = '확정'
 		AND 
@@ -35,7 +35,7 @@
 			st_move sm
 			JOIN st_move_detail smd ON sm.move_code = smd.move_code
 			JOIN item i ON smd.item_code = i.item_code
-			LEFT JOIN wh_stock_detail wsd ON smd.item_code = wsd.item_code
+			LEFT JOIN wh_stock_detail wsd ON smd.item_code = wsd.item_code AND wsd.wh_code = smd.wh_code_out
 		WHERE 
 			sm.move_type = '확정'
 		AND 

@@ -45,6 +45,7 @@ public class SMMServiceImpl implements SMMService {
 	@Override
 	public void modifyStockMoveConfirmationBymoveCode(String moveCode, String memberName) {
 		
+		// "저장" -> "확정" 변경
 		smmDao.updateStockMoveConfirmationByMoveCode(moveCode);
 		
 		List<StMoveDetailDto> stMoveDetailList = smmDao.selectStockMoveDetailListByMoveCode(moveCode);
