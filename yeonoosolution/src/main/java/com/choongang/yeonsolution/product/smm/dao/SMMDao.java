@@ -1,6 +1,7 @@
 package com.choongang.yeonsolution.product.smm.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.choongang.yeonsolution.product.smm.domain.ItemDto;
 import com.choongang.yeonsolution.product.smm.domain.StMoveDetailDto;
@@ -40,5 +41,9 @@ public interface SMMDao {
 	void deleteStockMoveDetailByMoveCodeAndSorder(String moveCode, String sorder);
 
 	void updateStockMoveRegistrationDateAndUserByMemberUidAndMoveCode(String memberUid, String moveCode);
+
+	void updateWhStockDetailByStockMoveDetailList(StMoveDetailDto stMoveDetailDto);
+
+	void updateWhStockDetailByStMoveDetailMap(Map<String, Object> stMoveDetailMap);
 
 }

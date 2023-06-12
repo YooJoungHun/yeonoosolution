@@ -84,6 +84,12 @@ var menuList = [
                { name: '작업지시현황', value: '/product/currentWo' },
             ]
          },
+		 {
+			 name: '실적등록',
+			 value: [
+				 { name: '생산실적등록-OFFICE MODE', value: '/product/productResult' }
+			 ]
+		 },
          {
             name: '생산현황',
             value: [
@@ -168,10 +174,6 @@ const arrangeMenu = (menuData, depth = 0) => {
 
 $(document).on('click', 'button.logout-button', e => {
 	location.href = location.protocol + '//' + location.host + '/standard/logout';
-	/*let form = $('<form method="post"></form>');
-	$(form).attr('action', location.protocol + '//' + location.host + '/standard/logout');
-	$(document).find('body').append($(form));
-	$(form).submit();*/
 });
 
 $(document).on('click', 'button.list-header', e => {
@@ -238,24 +240,22 @@ $(() => {
          elem[0].classList.add('active');
          $('.contents-main').find('.left-menu').hide('slide', { direction: 'left', duration: 150 });
       }
-   });
-   $('div#menu-list-group').html(arrangeMenu(menuList));
-   
-   // 자동완성 목록 삽입
-   dataList = extractMenu(menuList);
-   let virtualDataList = $('<datalist></datalist>');
-   for (let data of dataList) {
-      let option = $('<option>');
-      $(option).attr('value', data);
-      $(virtualDataList).append($(option));
-   }
-   $('datalist#menu-search-list').html($(virtualDataList).html());
-   
-   // 현재 페이지에 맞는 메뉴 오픈
-   // menuList 배열 데이터 내에 데이터가 없을 경우 무한루프 발생함...
-   let currentMenu = $('button.list-button[data-path="' + location.pathname + '"]');
-   $(currentMenu).css('background-color', '#FFFFCC');
-   if (currentMenu.toArray().length > 0) {
+	});
+	$('div#menu-list-group').html(arrangeMenu(menuList));
+	
+	// 자동완성 목록 삽입
+	dataList = extractMenu(menuList);
+	let virtualDataList = $('<datalist></datalist>');
+	for (let data of dataList) {
+		let option = $('<option>');
+		$(option).attr('value', data);
+		$(virtualDataList).append($(option));
+	}
+	$('datalist#menu-search-list').html($(virtualDataList).html());
+	
+	// 현재 페이지에 맞는 메뉴 오픈
+	let currentMenu = $('button.list-button[data-path="' + location.pathname + '"]');
+	if (currentMenu.toArray().length > 0) {
 		$(currentMenu).css('background-color', '#FFFFCC');
 		while (true) {
 			currentMenu = $(currentMenu).closest('div.menu-list-section');
