@@ -86,6 +86,8 @@ public class WMIController {
 	@ResponseBody
 	@PostMapping("/standard/insertWh/")
 	public String WHAdd(HttpSession session ,@ModelAttribute WMIWhDto whDto, Model model) {
+		MemberDto memberDto = (MemberDto) session.getAttribute("member");
+		whDto.setRegUser(memberDto.getMemberUid());
 		log.info("WMIController WHAdd start");
 		int insertResult = wmiService.addtWareHouseByWhDto(whDto);
 		log.info("WMIController WHAdd insertResult -> "+ insertResult);
