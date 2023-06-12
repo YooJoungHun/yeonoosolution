@@ -263,6 +263,7 @@
 		    (
 		        work_order_code,
 		       	order_code,
+		       	WH_CODE,
 		        item_code,
 		        item_quantity,
 		        work_status,
@@ -274,6 +275,7 @@
 		SELECT
             'WORK' || (SELECT COALESCE(MAX(TO_NUMBER(SUBSTR(work_order_code, 5))), 0) + 1 FROM wo),
  			o.order_code,
+ 			IT.WH_CODE,
 		    od.item_code,
 		    od.quantity,
 		    '저장',
@@ -286,6 +288,7 @@
 		    orders o
 		    INNER JOIN orders_detail od
 		    ON o.order_code = od.order_detail_code
+		    LEFT OUTER JOIN ITEM IT ON (OD.ITEM_CODE = IT.ITEM_CODE)
 			WHERE o.order_code = #{orderCode}
 	
 	</insert>
@@ -340,23 +343,22 @@
 	</select>
 	
 	<select id="selectSemiManufacturesListByCompanyCode" parameterType="String" resultType="OMOrdersAOMDto">
-	
+
 		SELECT
 		        bom.low_item_code,
 		        i.item_name,
 		        i.item_type,
 		        i.stock_unit,
-		        wsd.good_quantity,
+		        NVL(wsd.good_quantity,0) AS good_quantity,
 		        wo.work_order_code,
-		        wd.work_order_quantity
+		        wo.item_quantity WORK_ORDER_QUANTITY
         
 		FROM    orders o
 			JOIN    orders_detail od    ON  o.order_code = od.order_detail_code
 			JOIN    bom                 ON  od.item_code = bom.high_item_code
 			JOIN    item i              ON  bom.low_item_code = i.item_code 
-			JOIN    wh_stock_detail wsd ON  bom.low_item_code = wsd.item_code
+			LEFT OUTER JOIN    wh_stock_detail wsd ON  bom.low_item_code = wsd.item_code
 			JOIN    wo                  ON  o.order_code = wo.order_code
-			JOIN    wo_detail wd        ON  wo.work_order_code = wd.work_order_code  
 		
 		WHERE   o.order_code = #{orderCode}
 	

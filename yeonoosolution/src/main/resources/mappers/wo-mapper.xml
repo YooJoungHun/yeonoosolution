@@ -196,7 +196,6 @@
 	<update id="updateWo" parameterType="WOWo">
 		UPDATE WO SET
 			WH_CODE = #{wh.whCode, jdbcType=VARCHAR},
-			ORDER_CODE = #{orders.orderCode, jdbcType=VARCHAR},
 			ITEM_CODE = #{item.itemCode, jdbcType=VARCHAR},
 			ITEM_QUANTITY = #{itemQuantity, jdbcType=NUMERIC},
 			PRODUCT_TYPE = #{productType, jdbcType=VARCHAR},
