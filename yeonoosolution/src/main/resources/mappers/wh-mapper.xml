@@ -57,9 +57,9 @@
 			('WH' || wh_code_seq.nextval),
 			'COMPANY1',
 			#{whName},
-			'COMPANY1.admin@yeonoo.com',
+			#{regUser},
 			#{regDate},
-			'COMPANY1.admin@yeonoo.com',
+			#{regUser},
 			#{regDate},
 			#{useYn},
 			#{memo}

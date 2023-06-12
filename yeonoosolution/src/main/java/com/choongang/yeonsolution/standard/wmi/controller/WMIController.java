@@ -63,7 +63,9 @@ public class WMIController {
 	// 수정 및 삭제 시 사용
 	@ResponseBody
 	@PutMapping(value = "/standard/warehouseModified/")
-	public int WHSave(@ModelAttribute WMIWhDto whDto, Model model) {
+	public int WHSave(HttpSession session, @ModelAttribute WMIWhDto whDto, Model model) {
+		MemberDto memberDto = (MemberDto) session.getAttribute("member");
+		whDto.setUpdateUser(memberDto.getMemberUid());
 		log.info("WMIController WHSave start");
 		
 		System.out.println("whDto.getUseYn()->"+whDto.getUseYn());
@@ -85,7 +87,9 @@ public class WMIController {
 	// 창고 등록
 	@ResponseBody
 	@PostMapping("/standard/insertWh/")
-	public String WHAdd(HttpSession session ,@ModelAttribute WMIWhDto whDto, Model model) {
+	public String WHAdd(HttpSession session, @ModelAttribute WMIWhDto whDto, Model model) {
+		MemberDto memberDto = (MemberDto) session.getAttribute("member");
+		whDto.setRegUser(memberDto.getMemberUid());
 		log.info("WMIController WHAdd start");
 		int insertResult = wmiService.addtWareHouseByWhDto(whDto);
 		log.info("WMIController WHAdd insertResult -> "+ insertResult);
