@@ -23,6 +23,8 @@
   		<typeAlias alias="PmStockInDto" type="com.choongang.yeonsolution.sales.pm.domain.PmStockInDto"/>
   		<typeAlias alias="PmStInDetailDto" type="com.choongang.yeonsolution.sales.pm.domain.PmStInDetailDto"/>
   		<typeAlias alias="PmWhDto" type="com.choongang.yeonsolution.sales.pm.domain.PmWhDto"/>
+  		
+  		<typeAlias alias="IpDto" type="com.choongang.yeonsolution.sales.pm.domain.IpDto"/>
 
       <!--  재고 현황 조회  -->
       	<typeAlias alias="IsWhStockDetailDto" type="com.choongang.yeonsolution.product.is.domain.IsWhStockDetailDto"/>
@@ -32,10 +34,13 @@
       
       <!-- 생산 지시  -->
   		<typeAlias type="com.choongang.yeonsolution.product.wo.domain.Wo" alias="WOWo"/>
+  		<typeAlias type="com.choongang.yeonsolution.product.wo.domain.WoDetail" alias="WOWoDetail"/>
   		<typeAlias type="com.choongang.yeonsolution.product.wo.domain.Wh" alias="WOWh"/>
   		<typeAlias type="com.choongang.yeonsolution.product.wo.domain.Orders" alias="WOOrders"/>
   		<typeAlias type="com.choongang.yeonsolution.product.wo.domain.Item" alias="WOItem"/>
   		<typeAlias type="com.choongang.yeonsolution.product.wo.domain.Company" alias="WOCompany"/>
+  		<typeAlias type="com.choongang.yeonsolution.product.wo.domain.Bom" alias="WOBom"/>
+  		<typeAlias type="com.choongang.yeonsolution.product.wo.domain.WhStockDetail" alias="WOWhStockDetail"/>
       
       <!-- 수주서 관리 -->
       	<typeAlias alias="OMOrdersDto" type="com.choongang.yeonsolution.sales.om.domain.OMOrdersDto"/>

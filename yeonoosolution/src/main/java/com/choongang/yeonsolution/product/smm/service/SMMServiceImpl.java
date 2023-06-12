@@ -1,6 +1,8 @@
 package com.choongang.yeonsolution.product.smm.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -41,9 +43,22 @@ public class SMMServiceImpl implements SMMService {
 	}
 
 	@Override
-	public void modifyStockMoveConfirmationBymoveCode(String moveCode) {
+	public void modifyStockMoveConfirmationBymoveCode(String moveCode, String memberName) {
 		
 		smmDao.updateStockMoveConfirmationByMoveCode(moveCode);
+		
+		List<StMoveDetailDto> stMoveDetailList = smmDao.selectStockMoveDetailListByMoveCode(moveCode);
+		
+		for(StMoveDetailDto stMoveDetailDto : stMoveDetailList) {
+			smmDao.updateWhStockDetailByStockMoveDetailList(stMoveDetailDto);
+			
+			Map<String, Object> stMoveDetailMap = new HashMap<String, Object>();
+			stMoveDetailMap.put("whCode", stMoveDetailDto.getWhCodeIn());
+			stMoveDetailMap.put("itemCode", stMoveDetailDto.getItemCode());
+			stMoveDetailMap.put("inQuantity", stMoveDetailDto.getMoveQuantity());
+			stMoveDetailMap.put("updateUser", memberName);
+			smmDao.updateWhStockDetailByStMoveDetailMap(stMoveDetailMap);
+		}
 	}
 
 	@Override

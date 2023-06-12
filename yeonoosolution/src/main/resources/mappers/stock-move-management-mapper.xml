@@ -87,7 +87,7 @@
 		FROM 
 			st_move_detail smd
 			JOIN item i ON smd.item_code = i.item_code
-			LEFT JOIN wh_stock_detail wsd ON smd.item_code = wsd.item_code
+			LEFT JOIN wh_stock_detail wsd ON smd.item_code = wsd.item_code AND wsd.wh_code = smd.wh_code_out
 		WHERE
 			smd.move_code = #{moveCode}
 		ORDER BY
@@ -202,6 +202,16 @@
 		WHERE
 			move_code = #{moveCode}
 	</update>
-	
+	<!-- 이동 확정 시 재고 변경 -->
+	<update id="updateWhStockDetailByStockMoveDetailList" parameterType="SMMStMoveDetailDto">
+		UPDATE 
+			wh_stock_detail
+		SET
+			good_quantity = good_quantity - #{moveQuantity}
+		WHERE
+			wh_code = #{whCodeOut}
+		AND	
+			item_code = #{itemCode}
+	</update>
 	
 </mapper>

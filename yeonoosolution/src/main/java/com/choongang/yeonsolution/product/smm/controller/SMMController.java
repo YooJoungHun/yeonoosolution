@@ -62,9 +62,10 @@ public class SMMController {
 	// "저장" -> "확정" move_type 변경
 	@ResponseBody
 	@PatchMapping("/product/stockMoveConfirmation/{moveCode}")
-	public void stockMoveConfirmationModify(@PathVariable String moveCode) {
+	public void stockMoveConfirmationModify(@PathVariable String moveCode, @AuthenticationPrincipal UserDetailsDto userDetailsDto, MemberDto memberDto) {
 		
-		smmService.modifyStockMoveConfirmationBymoveCode(moveCode);
+		String memberName = userDetailsDto.getMemberDto().getMemberName();
+		smmService.modifyStockMoveConfirmationBymoveCode(moveCode, memberName);
 	}
 	
 	//이동등록 세부내역 List
