@@ -168,7 +168,8 @@ public class WOController {
 			String itemCode = (String)((Map<String, Object>)item.get("item")).get("itemCode");
 			it.setItemCode(itemCode);
 			Wh wh = new Wh();
-			String whCode = (String)((Map<String, Object>)item.get("wh")).get("whCode");
+			//String whCode = (String)((Map<String, Object>)item.get("wh")).get("whCode");
+			String whCode = itemService.findItem(itemCode).getWh().getWhCode();
 			wh.setWhCode(whCode);
 			Orders orders = new Orders();
 			String orderCode = (Map<String, Object>)item.get("orders") == null ? null : (String)((Map<String, Object>)item.get("wh")).get("orderCode");
