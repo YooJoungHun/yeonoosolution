@@ -90,7 +90,7 @@
 	   var updateUserInput = document.getElementById("updateUser"+rowIndex).value;
 	   var memoInput = document.getElementById("memo"+rowIndex).value;
 	   
-	   alert("useYnInput -> "+ useYnInput);
+	   // alert("useYnInput -> "+ useYnInput);
 	   
 	   var kindCheck = kindNumber;
 	   
@@ -122,7 +122,7 @@
 	   // 체크 박스를 2개 체크했으면 length가 2가 된다.
 	   var checkBoxes = document.querySelectorAll('input[name="tableCheckBox"]:checked');
 	   console.log(checkBoxes.length);
-	   alert("체크 갯수 -> "+ checkBoxes.length);
+	   // alert("체크 갯수 -> "+ checkBoxes.length);
 	   
 	   // 체크 된게 없으면 길이가 0, 고로 리턴 false
 	   if(checkBoxes.length == 0) {
@@ -141,9 +141,9 @@
 	      console.log("로우 인덱스 -> "+rowIndex);
 	      
 	      var whDto     = getCheckBoxData(rowIndex, kindNumber);
-	      //var warehouseCode    = document.getElementById("whCode"+rowIndex).value;
+	      // var warehouseCode    = document.getElementById("whCode"+rowIndex).value;
 	      
-	      alert("useYn -> "+ whDto.useYn);
+	      // alert("useYn -> "+ whDto.useYn);
 	      
 	      $.ajax({
 	         url : "/standard/warehouseModified/",
