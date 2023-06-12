@@ -30,4 +30,5 @@ public class SOMStOutDto {
 	private String	whName;
 	private String  itemName;
 	
+	private String	memberName;
 }

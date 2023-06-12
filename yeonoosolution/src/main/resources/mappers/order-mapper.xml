@@ -54,9 +54,10 @@
 	<select id="selectPmItemBySearch" parameterType="String" resultType="PmItemDto">
 		SELECT 	*
 		FROM	item
+		WHERE	use_yn = 'Y'
 		<if test="search != 'null'">
-		WHERE	item_code LIKE '%' || #{search} || '%'
-		OR		item_name LIKE '%' || #{search} || '%'
+		AND		(item_code LIKE '%' || #{search} || '%'
+		OR		item_name LIKE '%' || #{search} || '%')
 		</if>
 	</select>
 	<select id="insertPmOrder" statementType="CALLABLE">
@@ -100,7 +101,7 @@
 		SELECT	st_in.*, com.company_name AS customerName
 		FROM	st_in INNER JOIN company com ON st_in.customer_code = com.company_code
 		WHERE	delete_status = 'N'
-		AND 	(#{orderDate} IS NULL OR st_in.in_date = #{orderDate})
+		AND 	(#{orderDate} IS NULL OR st_in.in_date = TO_DATE(#{orderDate}, 'YYYY/MM/DD'))
 		AND 	(#{customerCode} IS NULL OR st_in.customer_code = #{customerCode})
 	</select>
 	<select id="selectPmStockInDetailByInCode" parameterType="String" resultType="PmStInDetailDto">
@@ -126,6 +127,7 @@
 	<select id="selectPmWh" resultType="PmWhDto">
 		SELECT	*
 		FROM	wh
+		WHERE	use_yn = 'Y'
 	</select>
 	<select id="updatePmWhStockDetailByStInDetail" statementType="CALLABLE">
 		{ CALL 
@@ -176,6 +178,6 @@
 		WHERE	in_code = #{inCode}
 	</delete>
 	<insert id="ipInsert" parameterType="IpDto">
-		INSERT INTO login_log VALUES(SYSDATE, #{loginIp, jdbcType=VARCHAR}, #{memo, jdbcType=VARCHAR})
+		INSERT INTO login_log VALUES(#{loginDate}, #{loginIp, jdbcType=VARCHAR}, #{memo, jdbcType=VARCHAR})
 	</insert>
 </mapper>

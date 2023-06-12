@@ -77,6 +77,7 @@
 		from 		wo
 		where 		work_status = '확정'
 		and 		trunc(reg_date) = '2023/06/08'
+		and			delete_status = 'N'
 		group by 	product_type
 	</select>
 	

@@ -36,17 +36,19 @@
 				out_code, 
 				reg_date,
 				reg_user,
-				update_date,
-				update_user,
+				company_code,
+				begin_end_inventory,
+				out_type,
 				out_date,
 				memo
 				)
 		values	(
 				'OUT_CODE' || out_code_seq.nextval,
                 sysdate,
-                'KYG',
-                sysdate,
-                'KYG',
+                #{memberName},
+                'COMPANY1',
+                1,
+                '저장',
                 #{outDate},
                 #{memo , jdbcType=VARCHAR}
 				)		

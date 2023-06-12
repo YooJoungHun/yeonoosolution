@@ -1,9 +1,14 @@
 package com.choongang.yeonsolution.standard.am.domain;
 
+import java.io.Serializable;
+
 import lombok.Data;
 
 @Data
-public class MemberDto {
+public class MemberDto implements Serializable{
+	
+	private static final long serialVersionUID = -2549822693402232989L;
+	
 	public String memberUid;
 	public String deptCode;
 	public String jobCode;

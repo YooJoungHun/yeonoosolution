@@ -120,31 +120,37 @@ function addButtonClick(tableId, btnId){
 			
 			scrollToBottom();
 		} else if(btnId === 'detailBtns'){
-
-			let moveCode = $('.stockMoveRegistrationTable .selected-row').find('.moveCode').text();
+			let moveStatus = $('.stockMoveRegistrationTable .selected-row').find('.moveType').text();
 			
-			// 재고이동 선택안하고 세부내역 등록할 때
-			if(!moveCode){
-				alert('먼저 이동등록을 선택하세요');
+			//확정이면 플러스로 행 추가 불가
+			if(moveStatus === '확정'){
+				alert('이동상태가 확정이면 세부내역에 대해 추가 또는 삭제가 불가능합니다');
 				return;
+			} else{
+				let moveCode = $('.stockMoveRegistrationTable .selected-row').find('.moveCode').text();
+			
+				// 재고이동 선택안하고 세부내역 등록할 때
+				if(!moveCode){
+					alert('먼저 이동등록을 선택하세요');
+					return;
+				}
+	
+				$('.' + tableId + ' tbody').append(`
+					<tr data-status='stMoveDetailAdd'>
+						<td>${rowCount}</td>
+						<td><input type="checkbox" class="checkItem" checked></td>
+						<td class="itemCode"></td> //제품코드
+						<td class="itemName"></td> //품명
+						<td class="stockQuantity"></td> //재고수량
+						<td class="whCodeOut"></td> //출고창고
+						<td class="whCodeIn"></td> //입고창고
+						<td class="moveQuantity"><input type="text"></td> //이동수량
+						<td class="moveMemo"><input type="text"></td> //비고
+					</tr>
+				`);
 			}
-
-			$('.' + tableId + ' tbody').append(`
-				<tr data-status='stMoveDetailAdd'>
-					<td>${rowCount}</td>
-					<td><input type="checkbox" class="checkItem" checked></td>
-					<td class="itemCode"></td> //제품코드
-					<td class="itemName"></td> //품명
-					<td class="stockQuantity"></td> //재고수량
-					<td class="whCodeOut"></td> //출고창고
-					<td class="whCodeIn"></td> //입고창고
-					<td class="moveQuantity"><input type="text"></td> //이동수량
-					<td class="moveMemo"><input type="text"></td> //비고
-				</tr>
-			`);
 		}
 			scrollToBottom();
-	
 	});
 	
 	// 이동일자 선택 시 달력창
@@ -171,13 +177,21 @@ function removeButtonClick(tableId, btnId){
 				}
 			});
 		} else if(btnId === 'detailBtns') {
-			$('.' + tableId + ' tr').has('.checkItem:checked').each(function(){
-				if($(this).attr('data-delete-status') === 'delete-detail'){
-					$(this).removeAttr('data-delete-status');
-				} else{
-					$(this).attr('data-delete-status', 'delete-detail');
-				}
-			});
+		
+			let moveStatus = $('.stockMoveRegistrationTable .selected-row').find('.moveType').text();
+			
+			if(moveStatus === '확정'){
+				alert('이동상태가 확정이면 세부내역에 대해 추가 또는 삭제가 불가능합니다');
+				return;
+			} else{
+				$('.' + tableId + ' tr').has('.checkItem:checked').each(function(){
+					if($(this).attr('data-delete-status') === 'delete-detail'){
+						$(this).removeAttr('data-delete-status');
+					} else{
+						$(this).attr('data-delete-status', 'delete-detail');
+					}
+				});
+			}
 		}
 	});
 }
@@ -447,8 +461,7 @@ $(document).ready(function(){
 					type: 'PATCH',
 					success: function(data){
 						alert("이동 확정이 되었습니다.");
-						selectedRow.find('.moveType').text('확정');
-						
+						location.reload();
 					}
 				});
 			}
