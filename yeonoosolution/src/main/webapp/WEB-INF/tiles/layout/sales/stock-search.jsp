@@ -243,10 +243,10 @@
 			            '<td class="listColor2">' + outDetailList.itemCode + '</td>' +
 			            '<td class="listColor1">' + outDetailList.itemName + '</td>' +
 			            '<td class="listColor1">' + outDetailList.whCode + '</td>' +
-			            '<td class="listColor2"><input type="number" id="outQuantity' + rowIndex + '" name="outQuantity" value="' + outDetailList.outQuantity + '" class="listColor2" style="width:60px;"></td>'+      
-			            '<td class="listColor3" style="width:80px;">' + outDetailList.salesPrice + '</td>' +
-			            '<td class="listColor1">' + outDetailList.totalPrice + '</td>' +
-				        '<td><input type="text"  id="memo2' + rowIndex + '" name="memo2" value="' + (outDetailList.memo2 ? outDetailList.memo2 : '') + '"</td>' +
+			            '<td class="listColor2"><input type="number" id="outQuantity' + rowIndex + '" name="outQuantity" value="' + outDetailList.outQuantity + '" class="listColor2" style="width:70px;">EA</td>'+      
+			            '<td class="listColor3" style="width:80px;">' + outDetailList.salesPrice + '원</td>' +
+			            '<td class="listColor1">' + outDetailList.totalPrice + '원</td>' +
+				        '<td><input type="text"  id="memo2' + rowIndex + '" name="memo2" value="' + (outDetailList.memo ? outDetailList.memo : '') + '"</td>' +
 				        '<td><button type="button" class="item-update-button" id="updateItemRow"  onclick="goUpdateItemRow(' + rowIndex + ')"><img src="/images/stout-update-icon.png" alt="" class="item-update-button-icon">수정</button></td>'+
 				        '<td><button type="button" class="item-delete-button" id="deleteItem"  onclick="goDeleteItem(' + rowIndex + ')"><img src="/images/stout-delete-icon.png" alt="" class="item-delete-button-icon">삭제</button></td>'+ 
 			            '</tr>';

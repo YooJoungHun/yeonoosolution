@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Company Code</title>
+<title>여누솔루션</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/layout/layout.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/sanitize.css">

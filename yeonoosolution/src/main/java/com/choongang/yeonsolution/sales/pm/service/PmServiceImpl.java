@@ -144,6 +144,9 @@ public class PmServiceImpl implements PmService{
 		search.setOrderDate(search.getOrderDate().replaceAll("-", "/"));
 		List<PmStockInDto> stockInList = pmDao.selectStockInListBySearch(search);
 		for(PmStockInDto stockIn : stockInList) {
+			if(stockIn.getInDate().length() <= 9) {
+				stockIn.setInDate("20" + stockIn.getInDate());
+			}
 			if(stockIn.getInDate() != null && stockIn.getInDate().length() > 9) {
 				stockIn.setInDate(stockIn.getInDate().substring(0, 10).replaceAll("/", "-"));
 			}
