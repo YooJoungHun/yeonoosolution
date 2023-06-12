@@ -24,4 +24,6 @@ public class WMIWhDto {
 	// 회원 join
 	private String	regUserName;
 	private String	updateUserName;
+	
+	private	String	memberName;
 }

@@ -142,6 +142,10 @@
 			background-color: #8EA8DB;
 		}
 		
+		.main-container {
+	   		overflow: auto !important;
+	   	}
+		
 	</style>
 	
 

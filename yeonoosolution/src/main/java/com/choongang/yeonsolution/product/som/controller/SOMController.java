@@ -2,6 +2,7 @@ package com.choongang.yeonsolution.product.som.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.choongang.yeonsolution.product.som.domain.SOMStOutDto;
 import com.choongang.yeonsolution.product.som.service.SOMService;
-
+import com.choongang.yeonsolution.standard.am.domain.MemberDto;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -72,7 +73,9 @@ public class SOMController {
 	
 	@ResponseBody
 	@PostMapping(value = "/product/insertsomStOut/")
-	public String stOutAdd(@ModelAttribute SOMStOutDto stOutDto, Model model) {
+	public String stOutAdd(HttpSession session ,@ModelAttribute SOMStOutDto stOutDto, Model model) {
+		MemberDto memberDto = (MemberDto) session.getAttribute("member");
+		stOutDto.setMemberName(memberDto.getMemberName());
 		log.info("SOMController stOutAdd start");
 		int insertResult = somService.addStOutBySOMStOutDto(stOutDto);
 		log.info("SOMController stOutAdd insertResult -> "+ insertResult);
