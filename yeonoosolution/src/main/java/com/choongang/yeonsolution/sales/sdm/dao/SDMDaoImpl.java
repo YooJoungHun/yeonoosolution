@@ -174,7 +174,7 @@ public class SDMDaoImpl implements SDMDao {
 	@Override
 	public void insertStOutItem(SDMStOutDto stout) {
 		try {
-			session.insert("sdmInsertStOutItem",stout);
+			session.selectOne("sdmInsertStOutItem",stout);
 		} catch (Exception e) {
 			log.error("daoimpl insertStOutItem -> {} ",e.getMessage());
 		}

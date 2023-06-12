@@ -42,7 +42,6 @@
 					<th>수량</th>
 					<th>단가</th>
 					<th>총액</th>
-					<th>비고(출고)</th>
 					<th>비고(물품)</th>
 				</tr>
 				<c:forEach var="OD" items="${outListWithDetail}" varStatus="status">
@@ -63,8 +62,7 @@
 						<td style="text-align:center; width: 30px;" class="listColor1"><c:out 	value ="${OD.outQuantity}" /></td>
 						<td style="text-align:center; width: 60px;" class="listColor3"><c:out 	value ="${OD.salesPrice}" /></td>
 						<td style="text-align:center; width: 75px;" class="listColor4"><c:out 	value ="${OD.totalPrice}" /></td>
-						<td style="width: 60px;" class="listColor1"><c:out 	value ="${OD.memo}" /></td>
-						<td style="width: 60px;" class="listColor1"><c:out 	value ="${OD.memo2}" /></td>
+						<td style="width: 120px;" class="listColor1"><c:out 	value ="${OD.memo2}" /></td>
 					</tr>
 					</c:when>	
 				</c:choose>

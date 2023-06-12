@@ -79,9 +79,42 @@
 		<result		property="regDate"			column="reg_date"/>
 		<result		property="updateUser"		column="update_user"/>
 		<result		property="updateDate"		column="update_date"/>
+		<!-- just for Java -->
+		<result		property="goodQuantity"		column="goodQuantity"/>
+		<result		property="badQuantity"		column="badQuantity"/>
+		<result		property="workedQuantity"	column="workedQuantity"/>
+		<!-- jfj end -->
 		<collection	property="wh"					resultMap="WhResultMap"/>
 		<collection	property="orders"				resultMap="OrdersResultMap"/>
 		<collection	property="item"				resultMap="ItemResultMap"/>
+	</resultMap>
+	<resultMap type="WOWoDetail" id="WoDetailResultMap">
+		<id			property="sorder"				column="sorder"/>
+		<result		property="worker"				column="worker"/>
+		<result		property="workDate"				column="work_date"/>
+		<result		property="workOrderQuantity"	column="work_order_quantity"/>
+		<result		property="workerCount"			column="worker_count"/>
+		<result		property="goodYn"				column="good_yn"/>
+		<result		property="memo"					column="memo"/>
+		<collection property="wo"					resultMap="WoResultMap"/>
+		<collection property="item"					resultMap="ItemResultMap"/>
+	</resultMap>
+	<resultMap type="WOBom" id="BomResultMap">
+		<id				property="highItemCode"			column="high_item_code"/>
+		<id				property="lowItemCode"		column="low_item_code"/>
+		<result			property="materialQuantity"		column="material_quantity"/>
+		<collection		property="lowItem"				resultMap="ItemResultMap"/>
+	</resultMap>
+	<resultMap type="WOWhStockDetail" id="WhStockDetailResultMap">
+		<id				property="whCode"				column="wh_code"/>
+		<id				property="itemCode"				column="item_code"/>
+		<result			property="checkDate"				column="check_date"/>
+		<result			property="beginEndInventory"	column="begin_end_inventory"/>
+		<result			property="goodQuantity"			column="good_quantity"/>
+		<result			property="badQuantity"			column="bad_quantity"/>
+		<result			property="updateUser"			column="update_user"/>
+		<result			property="updateDate"			column="update_date"/>
+		<result			property="memo"					column="memo"/>
 	</resultMap>
 	<!-- WO mapper -->
 	<select id="selectWo" resultMap="WoResultMap">
@@ -94,13 +127,14 @@
 	</select>
 	<select id="selectWoSearch" parameterType="WOWo" resultMap="WoResultMap">
 		SELECT wo.*, wh.*, orders.*, item.*,
-				  NVL(wd.GOODQUANTITY, 0) GOODQUANTITY, NVL(wd.BADQUANTITY, 0) BADQUANTITY
+				  NVL(wd.GOODQUANTITY, 0) GOODQUANTITY, NVL(wd.BADQUANTITY, 0) BADQUANTITY,
+				  NVL(wd.GOODQUANTITY, 0) + NVL(wd.BADQUANTITY, 0) WORKEDQUANTITY
 		FROM WO wo LEFT OUTER JOIN WH wh ON (wo.WH_CODE = wh.WH_CODE)
 						   LEFT OUTER JOIN ORDERS orders ON (wo.ORDER_CODE = orders.ORDER_CODE)
 						   LEFT OUTER JOIN ITEM item ON (wo.ITEM_CODE = item.ITEM_CODE)
 						   LEFT OUTER JOIN (SELECT WORK_ORDER_CODE,
-						   									COUNT(CASE WHEN GOOD_YN = 'Y' THEN 1 END) GOODQUANTITY,
-						   									COUNT(CASE WHEN GOOD_YN = 'N' THEN 1 END) BADQUANTITY
+						   									SUM(CASE WHEN GOOD_YN = 'Y' THEN WORK_ORDER_QUANTITY ELSE 0 END) GOODQUANTITY,
+						   									SUM(CASE WHEN GOOD_YN = 'N' THEN WORK_ORDER_QUANTITY ELSE 0 END) BADQUANTITY
 						   						   FROM WO_DETAIL
 						   						   GROUP BY WORK_ORDER_CODE
 						   						  ) wd ON (wo.WORK_ORDER_CODE = wd.WORK_ORDER_CODE)
@@ -184,12 +218,128 @@
 		WHERE WORK_ORDER_CODE = #{workOrderCode}
 				  AND WORK_STATUS = '확정'
 	</update>
+	<update id="updateWoStartEndDate" parameterType="WOWo">
+		UPDATE WO SET
+			<choose>
+				<when test="startDate != null">
+					START_DATE = #{startDate}
+				</when>
+				<otherwise>
+					END_DATE = #{endDate}
+				</otherwise>
+			</choose>
+		WHERE WORK_ORDER_CODE = #{workOrderCode}
+	</update>
+	<select id="selectWoSearchFixed" parameterType="WOWo" resultMap="WoResultMap">
+		SELECT wo.*, wh.*, orders.*, item.*,
+				  NVL(wd.GOODQUANTITY, 0) GOODQUANTITY, NVL(wd.BADQUANTITY, 0) BADQUANTITY,
+				  NVL(wd.GOODQUANTITY, 0) + NVL(wd.BADQUANTITY, 0) WORKEDQUANTITY
+		FROM WO wo LEFT OUTER JOIN WH wh ON (wo.WH_CODE = wh.WH_CODE)
+						   LEFT OUTER JOIN ORDERS orders ON (wo.ORDER_CODE = orders.ORDER_CODE)
+						   LEFT OUTER JOIN ITEM item ON (wo.ITEM_CODE = item.ITEM_CODE)
+						   LEFT OUTER JOIN (SELECT WORK_ORDER_CODE,
+						   									SUM(CASE WHEN GOOD_YN = 'Y' THEN WORK_ORDER_QUANTITY ELSE 0 END) GOODQUANTITY,
+						   									SUM(CASE WHEN GOOD_YN = 'N' THEN WORK_ORDER_QUANTITY ELSE 0 END) BADQUANTITY
+						   						   FROM WO_DETAIL
+						   						   GROUP BY WORK_ORDER_CODE
+						   						  ) wd ON (wo.WORK_ORDER_CODE = wd.WORK_ORDER_CODE)
+		WHERE wo.DELETE_STATUS = 'N' AND wo.WORK_STATUS = '확정'
+			  <if test="startDate != null">
+			  	<![CDATA[
+			  		AND wo.WORK_ORDER_DATE >= #{startDate}
+			  	]]>
+			  </if>
+			  <if test="endDate != null">
+			  	<![CDATA[
+			  		AND wo.WORK_ORDER_DATE <= #{endDate}
+			  	]]>
+			  </if>
+			  <if test="workOrderCode != null">
+			  	<![CDATA[
+			  		AND wo.WORK_ORDER_CODE LIKE '%' || #{workOrderCode} || '%'
+			  	]]>
+			  </if>
+			  <if test="wh != null and wh.whCode != null">
+			  	<![CDATA[
+			  		AND wh.WH_CODE LIKE '%' || #{wh.whCode} || '%'
+			  	]]>
+			  </if>
+			  <if test="wh != null and wh.whName != null">
+			  	<![CDATA[
+			  		AND wh.WH_NAME LIKE '%' || #{wh.whName} || '%'
+			  	]]>
+			  </if>
+			  <if test="item != null and item.itemName != null">
+			  	<![CDATA[
+			  		AND item.ITEM_NAME LIKE '%' || #{item.itemName} || '%'
+			  	]]>
+			  </if>
+		ORDER BY TO_NUMBER(REPLACE(wo.WORK_ORDER_CODE, 'WORK', '')) DESC
+	</select>
 	<!-- WH mapper -->
 	<select id="selectWh" parameterType="java.lang.String" resultMap="WhResultMap">
 		SELECT * FROM WH WHERE WH_CODE = #{whCode}
 	</select>
 	<!-- Item mapper -->
 	<select id="selectItem" parameterType="java.lang.String" resultMap="ItemResultMap">
-		SELECT * FROM ITEM WHERE ITEM_CODE = #{itemCode}
+		SELECT IT.*, WH.*
+		FROM ITEM IT LEFT OUTER JOIN WH WH ON (IT.WH_CODE = WH.WH_CODE)
+		WHERE ITEM_CODE = #{itemCode}
+	</select>
+	<!-- WoDetail mapper -->
+	<select id="selectWoDetail" parameterType="java.lang.String" resultMap="WoDetailResultMap">
+		SELECT WOD.*, WO.*, IT.*
+		FROM WO_DETAIL WOD LEFT OUTER JOIN WO WO ON (WOD.WORK_ORDER_CODE = WO.WORK_ORDER_CODE)
+						   LEFT OUTER JOIN ITEM IT ON (WOD.ITEM_CODE = IT.ITEM_CODE)
+		WHERE WOD.WORK_ORDER_CODE = #{workOrderCode}
+		ORDER BY WOD.SORDER ASC
+	</select>
+	<insert id="insertWoDetailWithResult" parameterType="WOWoDetail">
+		INSERT INTO WO_DETAIL
+			(WORK_ORDER_CODE, SORDER, ITEM_CODE, WORKER,
+			 WORK_ORDER_QUANTITY, GOOD_YN)
+		VALUES
+			(#{wo.workOrderCode},
+			 (SELECT NVL(MAX(SORDER), 0) + 1
+			  FROM WO_DETAIL
+			  WHERE WORK_ORDER_CODE = #{wo.workOrderCode}),
+			 #{item.itemCode}, #{worker},
+			 #{workOrderQuantity}, #{goodYn})
+	</insert>
+	<!-- BOM mapper -->
+	<select id="selectBomWithQuantity" parameterType="WOWoDetail" resultMap="BomResultMap">
+		SELECT B.HIGH_ITEM_CODE, B.LOW_ITEM_CODE, IT.*, WH.*, B.MATERIAL_QUANTITY * #{workOrderQuantity} MATERIAL_QUANTITY
+		FROM BOM B LEFT OUTER JOIN ITEM IT ON (B.LOW_ITEM_CODE = IT.ITEM_CODE)
+				   LEFT OUTER JOIN WH WH ON (IT.WH_CODE = WH.WH_CODE)
+		WHERE HIGH_ITEM_CODE = #{item.itemCode}
+	</select>
+	<!-- WhStockDetail mapper -->
+	<select id="selectWhStockDetail" parameterType="WOWhStockDetail" resultMap="WhStockDetailResultMap">
+		SELECT * FROM WH_STOCK_DETAIL WHERE ITEM_CODE = #{itemCode}
+	</select>
+	<update id="updateWhStockDetailWithWoDetail" parameterType="WOBom">
+		UPDATE WH_STOCK_DETAIL SET
+			GOOD_QUANTITY = GOOD_QUANTITY - #{materialQuantity}
+		WHERE ITEM_CODE = #{lowItemCode}
+	</update>
+	<select id="insertWoDetailWithCheck" parameterType="HashMap" resultType="HashMap" statementType="CALLABLE">
+		{
+			CALL WO_DETAIL_INSERT(
+				#{data.workOrderCode, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String},
+				#{data.goodYn, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String},
+				#{data.workOrderQuantity, mode=IN, jdbcType=NUMERIC, javaType=java.lang.Integer},
+				#{data.workerUid, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String},
+				#{result, mode=OUT, jdbcType=NUMERIC, javaType=java.lang.Integer}
+			)
+		}
+	</select>
+	<select id="deleteWoDetailWithId" parameterType="HashMap" resultType="HashMap" statementType="CALLABLE">
+		{
+			CALL WO_DETAIL_DELETE(
+				#{workOrderCode, mode=IN, jdbcType=VARCHAR, javaType=java.lang.String},
+				#{sorder, mode=IN, jdbcType=NUMERIC, javaType=java.lang.Integer},
+				#{partResult, mode=OUT, jdbcType=NUMERIC, javaType=java.lang.Integer}
+			)
+		}
 	</select>
 </mapper>

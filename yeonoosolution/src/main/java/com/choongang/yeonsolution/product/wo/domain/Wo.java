@@ -28,5 +28,8 @@ public class Wo {
 	
 	// workedQuantity
 	private Integer workedQuantity;
+	// good and bad
+	private Integer goodQuantity;
+	private Integer badQuantity;
 
 }

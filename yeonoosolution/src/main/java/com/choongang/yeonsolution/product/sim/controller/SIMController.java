@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.choongang.yeonsolution.product.sim.domain.CompanyDto;
 import com.choongang.yeonsolution.product.sim.domain.StInDetailDto;
 import com.choongang.yeonsolution.product.sim.domain.StInDto;
 import com.choongang.yeonsolution.product.sim.service.SIMService;
@@ -88,6 +86,7 @@ public class SIMController {
 		case "delete":
 			simService.removeStIn(stInDto); break;
 		case "fix":
+			System.out.println("확정 데이터 \n"+stInDto);
 			simService.modifyStInFix(stInDto); break;
 		case "cancel":
 			simService.modifyStInCancel(stInDto); break;

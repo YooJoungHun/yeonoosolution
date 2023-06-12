@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 
-<mapper namespace="com.choongang.yeonsolution.sales.sdm.domain.SDMStOutDtoMapper">
+<mapper namespace="com.choongang.yeonsolution.sales.sdm.domain.stout-mapper">
 	
 	<select id="sdmSelectOutList" resultType="SDMStOutDto">
 		SELECT  s.out_type, s.out_code, s.delete_status,
@@ -111,18 +111,24 @@
 		SET delete_status = 'Y'
 		WHERE out_code = #{outCode}
 		AND sorder = #{sorder}
-	</update>
+	</update>	
 	
-	<insert id="sdmInsertStOutItem" parameterType="SDMStOutDto">
-		INSERT INTO st_out_detail  (out_code,    wh_code, 
-									sorder,
-									item_code,     out_quantity,   memo,     delete_status)
-									
-							VALUES (#{outCode},  #{whCode},
-								   (select max(sorder) +1 from st_out_detail WHERE out_code = #{outCode}),
-									#{itemCode}, #{outQuantity},  #{memo2}, 'N')
+	<select id="sdmInsertStOutItem" parameterType="SDMStOutDto" statementType="CALLABLE">
+		{
+			CALL STOUT_DETAIL_INSERT(
+				#{outCode, 			mode=IN,  jdbcType=VARCHAR},
+				#{whCode, 			mode=IN,  jdbcType=VARCHAR},
+				#{itemCode, 		mode=IN,  jdbcType=VARCHAR},
+				#{outQuantity, 		mode=IN,  jdbcType=NUMERIC},
+				#{memo2, 			mode=IN,  jdbcType=VARCHAR}
+			)
+		}	
+			
+	</select>
 	
-	</insert>
+	
+	
+	
 	
 	<select id="sdmSelectStOutWithDetailByCustomerCode" resultType="SDMStOutDto">
 		SELECT s.delete_status, sd.delete_status,
@@ -130,7 +136,7 @@
 	           s.order_code, s.out_code, s.out_date, s.reg_user,
 	           s.reg_date, i.item_name, i.item_code, sd.out_quantity,
 	       	   i.sales_price, (i.sales_price * sd.out_quantity) AS totalPrice,
-	       	   s.memo, sd.memo
+	       	   sd.memo as memo2
 		FROM st_out_detail sd
 		LEFT JOIN st_out s
 		ON sd.out_code = s.out_code
